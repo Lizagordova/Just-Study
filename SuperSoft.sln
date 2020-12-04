@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSoft", "SuperSoft\SuperSoft.csproj", "{7B730E56-EDE0-4A3F-B5AE-828626C610B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSoft.Domain", "SuperSoft.Domain\SuperSoft.Domain.csproj", "{2365501E-E2CD-479C-A4DC-B9DBEE46AF70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSoft.Persistence", "SuperSoft.Persistence\SuperSoft.Persistence.csproj", "{035A7CCD-9E74-4A3C-80E3-41AF05CF1B06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B730E56-EDE0-4A3F-B5AE-828626C610B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B730E56-EDE0-4A3F-B5AE-828626C610B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B730E56-EDE0-4A3F-B5AE-828626C610B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B730E56-EDE0-4A3F-B5AE-828626C610B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2365501E-E2CD-479C-A4DC-B9DBEE46AF70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2365501E-E2CD-479C-A4DC-B9DBEE46AF70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2365501E-E2CD-479C-A4DC-B9DBEE46AF70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2365501E-E2CD-479C-A4DC-B9DBEE46AF70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{035A7CCD-9E74-4A3C-80E3-41AF05CF1B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035A7CCD-9E74-4A3C-80E3-41AF05CF1B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035A7CCD-9E74-4A3C-80E3-41AF05CF1B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035A7CCD-9E74-4A3C-80E3-41AF05CF1B06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
