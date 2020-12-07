@@ -4,4 +4,8 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\SuperSoft.Domain\SuperSoft.Domain.csproj" />
+	</ItemGroup>
+
 </Project>
