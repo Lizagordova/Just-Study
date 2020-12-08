@@ -10,6 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
 		<PackageReference Include="Reinforced.Typings" Version="1.5.9" />
 	</ItemGroup>
@@ -23,6 +24,10 @@
 
 	<ItemGroup>
 	  <TypeScriptCompile Include="ClientApp\src\components\Main.tsx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SuperSoft.Persistence\SuperSoft.Persistence.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SuperSoft.Domain.Repositories;
+using SuperSoft.Domain.Services;
+using SuperSoft.Persistence.Repositories;
+using SuperSoft.Persistence.Services;
+using SuperSoft.Persistence.Services.MapperService;
 
 namespace SuperSoft
 {
@@ -21,9 +27,26 @@ namespace SuperSoft
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
-
+			services.AddMvc();
+			services.AddSingleton<MapperService>();
+			services.AddSingleton<ICommentRepository, CommentRepository>();
+			services.AddSingleton<IProjectRepository, ProjectRepository>();
+			services.AddSingleton<ITaskRepository, TaskRepository>();
+			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<ICommentEditorService, CommentEditorService>();
+			services.AddSingleton<ICommentReaderService, CommentReaderService>();
+			services.AddSingleton<IProjectEditorService, ProjectEditorService>();
+			services.AddSingleton<IProjectReaderService, ProjectReaderService>();
+			services.AddSingleton<ITaskEditorService, TaskEditorService>();
+			services.AddSingleton<ITaskReaderService, TaskReaderService>();
+			services.AddSingleton<IUserEditorService, UserEditorService>();
+			services.AddSingleton<IUserReaderService, UserReaderService>();
 			// In production, the React files will be served from this directory
 			services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+			services.AddHttpsRedirection(options =>
+			{
+				options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

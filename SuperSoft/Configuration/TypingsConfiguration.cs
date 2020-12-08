@@ -1,4 +1,5 @@
 ﻿using Reinforced.Typings.Fluent;
+using SuperSoft.Domain.enums;
 
 namespace SuperSoft.Configuration
 {
@@ -11,6 +12,22 @@ namespace SuperSoft.Configuration
 				.CamelCaseForProperties()
 				.CamelCaseForMethods()
 				.AutoOptionalProperties());
+
+			builder
+				.ExportAsEnum<TaskRole>()
+				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<ProjectRole>()
+				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<Role>()
+				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<TaskStatus>()
+				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<TaskType>()
+				.OverrideNamespace("enums");
 		}
 	}
 }
