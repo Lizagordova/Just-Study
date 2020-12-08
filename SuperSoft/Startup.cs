@@ -42,7 +42,7 @@ namespace SuperSoft
 			services.AddSingleton<IUserEditorService, UserEditorService>();
 			services.AddSingleton<IUserReaderService, UserReaderService>();
 			// In production, the React files will be served from this directory
-			services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+			services.AddSpaStaticFiles(configuration => { configuration.RootPath = "client/build"; });
 			services.AddHttpsRedirection(options =>
 			{
 				options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
@@ -78,7 +78,7 @@ namespace SuperSoft
 
 			app.UseSpa(spa =>
 			{
-				spa.Options.SourcePath = "ClientApp";
+				spa.Options.SourcePath = "client";
 
 				if (env.IsDevelopment())
 				{
