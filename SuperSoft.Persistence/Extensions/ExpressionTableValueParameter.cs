@@ -6,8 +6,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Data.SqlClient.Server;
+using System.Data.SqlClient;
+using Microsoft.SqlServer.Server;
 
 namespace SuperSoft.Persistence.Extensions
 {
