@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "mobx": "^6.0.4",
-    "mobx-react": "^7.0.5"
+    "mobx-react": "^7.0.5",
+    "serializr": "^2.0.3"
   }
 }

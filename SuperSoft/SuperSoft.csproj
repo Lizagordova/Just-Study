@@ -20,6 +20,14 @@
 		<Content Remove="$(SpaRoot)**" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+		<None Include="client\src\Menu.tsx" />
+		<None Include="client\src\MyWork\MyWork.tsx" />
+		<None Include="client\src\MyWork\MyWorkStore.tsx" />
+		<None Include="client\stores\CommentStore.tsx" />
+		<None Include="client\stores\ProjectStore.tsx" />
+		<None Include="client\stores\RootStore.tsx" />
+		<None Include="client\stores\TaskStore.tsx" />
+		<None Include="client\stores\UserStore.tsx" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,7 +36,6 @@
 
 	<ItemGroup>
 	  <Folder Include="client\src\Authorization" />
-	  <Folder Include="Controllers" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
