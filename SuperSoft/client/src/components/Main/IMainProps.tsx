@@ -1,5 +1,5 @@
 ﻿import RootStore from "../../stores/RootStore";
 
-export interface MainProps {
+export interface IMainProps {
     store: RootStore;
 }

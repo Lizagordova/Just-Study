@@ -23,6 +23,7 @@
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />
 		<None Include="client\src\components\Main\MainProps.tsx" />
+		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
