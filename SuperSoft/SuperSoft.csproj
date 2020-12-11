@@ -18,11 +18,13 @@
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
 		<Content Remove="$(SpaRoot)**" />
+		<Content Include="client\src\styles\common.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />
 		<None Include="client\src\components\Main\MainProps.tsx" />
+		<None Include="client\src\components\MyWork\MyWork.tsx" />
 		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
@@ -41,7 +43,6 @@
 
 	<ItemGroup>
 	  <Folder Include="client\src\components\Authorization" />
-	  <Folder Include="client\src\components\MyWork" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
