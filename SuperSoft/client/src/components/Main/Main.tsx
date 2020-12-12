@@ -5,7 +5,9 @@ import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { MyWorkPage } from "../MyWork/MyWorkPage";
 import { ProjectsPage } from "../Projects/ProjectsPage";
 import { UsersPage } from "../Users/UsersPage";
+import { observer } from  "mobx-react";
 
+@observer
 export class Main extends React.Component<IMainProps> {
     render() {
         return(

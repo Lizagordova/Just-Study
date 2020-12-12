@@ -1,16 +1,22 @@
-﻿import { observable } from "mobx";
+﻿import { action, observable, makeObservable } from "mobx";
 import UserStore from "./UserStore";
 import ProjectStore from "./ProjectStore";
 import TaskStore from "./TaskStore";
 import CommentsStore from "./CommentsStore";
 
-class RootStore {
-    @observable userStore: UserStore;
-    @observable taskStore: TaskStore;
-    @observable projectStore: ProjectStore;
-    @observable commentStore: CommentsStore;
+export class RootStore {
+    userStore: UserStore;
+    taskStore: TaskStore;
+    projectStore: ProjectStore;
+    commentStore: CommentsStore;
 
     constructor() {
+        makeObservable(this, {
+            userStore: observable,
+            taskStore: observable,
+            projectStore: observable,
+            commentStore: observable
+        });
         this.userStore = new UserStore();
         this.taskStore = new TaskStore();
         this.projectStore = new ProjectStore();

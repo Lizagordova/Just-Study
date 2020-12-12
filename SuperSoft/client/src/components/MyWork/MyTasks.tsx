@@ -5,7 +5,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
     render() {
         return(
             <div>
-                <span>Мои задачи задачные</span>
+                <span>статус задач: {this.props.tasksStatus}</span>
             </div>
         );
     }

@@ -1,5 +1,6 @@
-﻿import RootStore from "../../stores/RootStore";
+﻿import { RootStore } from "../../stores/RootStore";
 
 export interface IMyTasksProps {
     store: RootStore;
-}
+    tasksStatus: string;
+};
