@@ -12,15 +12,15 @@ export class Main extends React.Component<IMainProps> {
             <>
                 <Card>
                     <CardHeader>
-                        <Nav tabs>
+                        <Nav tabs className="nav">
                                 <NavItem>
-                                    <NavLink to="/mywork" exact activeStyle={{color: '#ffffff', backgroundColor:'#0366d6', textDecoration: 'none'}}>МОЯ РАБОТА</NavLink>
+                                    <NavLink to="/mywork" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#66A5AD', textDecoration: 'none'}}>МОЯ РАБОТА</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink to="/projects" exact activeStyle={{color: '#ffffff', backgroundColor:'#0366d6', textDecoration: 'none'}}>ПРОЕКТЫ</NavLink>
+                                    <NavLink to="/projects" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#66A5AD', textDecoration: 'none'}}>ПРОЕКТЫ</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink to="/users" exact activeStyle={{color: '#ffffff', backgroundColor:'#0366d6', textDecoration: 'none'}}>ПОЛЬЗОВАТЕЛИ</NavLink>
+                                    <NavLink to="/users" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#66A5AD', textDecoration: 'none'}}>ПОЛЬЗОВАТЕЛИ</NavLink>
                                 </NavItem>
                         </Nav>
                     </CardHeader>
