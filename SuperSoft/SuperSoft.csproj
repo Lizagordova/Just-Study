@@ -24,8 +24,12 @@
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />
 		<None Include="client\src\components\Main\MainProps.tsx" />
+		<None Include="client\src\components\MyWork\IMyWorkProps.tsx" />
 		<None Include="client\src\components\MyWork\MyWork.tsx" />
+		<None Include="client\src\components\Projects\IProjectsProps.tsx" />
 		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
+		<None Include="client\src\components\Users\IUsersProps.tsx" />
+		<None Include="client\src\components\Users\UsersPage.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />

@@ -1,8 +1,10 @@
 ﻿import React from "react";
 import { IMainProps } from "./IMainProps";
 import { Navbar, Card, CardHeader, Nav, NavItem } from "reactstrap";
-import { NavLink, Switch, Route } from "react-router-dom";
-import { MyWork } from "../MyWork/MyWork";
+import { NavLink, Switch, Route, Redirect } from "react-router-dom";
+import { MyWorkPage } from "../MyWork/MyWorkPage";
+import { ProjectsPage } from "../Projects/ProjectsPage";
+import { UsersPage } from "../Users/UsersPage";
 
 export class Main extends React.Component<IMainProps> {
     render() {
@@ -24,7 +26,10 @@ export class Main extends React.Component<IMainProps> {
                     </CardHeader>
                 </Card>
                 <Switch>
-                    <Route exact path="/mywork" component={MyWork}/>
+                    <Route exact path="/mywork" component={MyWorkPage}/>
+                    <Route exact path="/projects" component={ProjectsPage}/>
+                    <Route exact path="/users" component={UsersPage}/>
+                    <Redirect to="/mywork" />
                 </Switch>
             </>
         )

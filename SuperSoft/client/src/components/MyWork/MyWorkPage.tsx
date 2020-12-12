@@ -1,6 +1,7 @@
 ﻿import React from "react";
+import { IMyWorkProps } from "./IMyWorkProps";
 
-export class  MyWork extends React.Component {
+export class  MyWorkPage extends React.Component<IMyWorkProps> {
     render() {
         return(
             <>

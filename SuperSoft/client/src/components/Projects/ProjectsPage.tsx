@@ -1,14 +1,12 @@
-﻿import React, { Component } from "react";
-import RootStore from "../../stores/RootStore";
+﻿import React from "react";
+import { IProjectsProps } from "./IProjectsProps";
 
-interface ProjectProps {
-    store: RootStore;
-}
-
-export class ProjectsPage extends Component<ProjectProps> {
+export class  ProjectsPage extends React.Component<IProjectsProps> {
     render() {
         return(
-            <></>
-        )
+            <>
+                Мои проекты!
+            </>
+        );
     }
 }
