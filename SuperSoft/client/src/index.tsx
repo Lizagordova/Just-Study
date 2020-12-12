@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
   <React.StrictMode>
-      {console.log('i am here')}
     <App />
   </React.StrictMode>,
   document.getElementById('root')

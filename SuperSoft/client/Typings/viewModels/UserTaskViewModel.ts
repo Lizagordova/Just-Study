@@ -2,12 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { UserViewModel } from './UserViewModel';
 import { TaskViewModel } from './TaskViewModel';
 import { TaskRole } from '../enums/TaskRole';
 
 export class UserTaskViewModel
 {
-	public user: UserTaskViewModel;
+	public user: UserViewModel;
 	public task: TaskViewModel;
 	public role: TaskRole;
 }

@@ -1,4 +1,4 @@
-﻿import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
+﻿import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 import { observable } from "mobx";
 
 class UserStore {
@@ -12,7 +12,6 @@ class UserStore {
     setInitialData() {
         this.getCurrentUser()
             .then((user) => {
-                console.log("user", user);
                 this.currentUser = user
             });
     }
