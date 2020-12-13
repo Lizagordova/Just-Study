@@ -1,12 +1,13 @@
 ﻿import { observable } from "mobx";
-import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
+import { UserTaskViewModel } from "../Typings/viewModels/UserTaskViewModel";
 
 class TaskStore {
     @observable
-    currentUserTasks: UserTaskViewModel[] | undefined;
+    currentUserTasks: UserTaskViewModel[];
 
     constructor() {
         this.setInitialData();
+        this.currentUserTasks = new Array<UserTaskViewModel>(0);
     }
 
     setInitialData() {

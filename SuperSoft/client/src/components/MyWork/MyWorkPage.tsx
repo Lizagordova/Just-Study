@@ -1,10 +1,11 @@
 ﻿import React from "react";
-import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col } from "reactstrap";
+import {Col, Nav, NavItem, NavLink, Row, TabContent, TabPane} from "reactstrap";
 import classnames from "classnames";
-import { MyTasks } from "./MyTasks";
-import { observer } from  "mobx-react";
-import {observable, action, makeObservable} from "mobx";
+import {MyTasks} from "./MyTasks";
+import { observer } from "mobx-react";
+import {action, makeObservable, observable} from "mobx";
 import {IMyWorkProps} from "./IMyWorkProps";
+import {TaskStatus} from "../../Typings/enums/TaskStatus";
 
 @observer
 export class  MyWorkPage extends React.Component<IMyWorkProps> {
@@ -16,13 +17,12 @@ export class  MyWorkPage extends React.Component<IMyWorkProps> {
            activeTab: observable
        })
     }
-    
+
     render() {
-        //let myTasks = this.props.store.taskStore.currentUserTasks;
         return (
-            <div style={{marginTop: 35}} className="container">
+            <div style={{marginTop: 35}} className="container-fluid">
                 <Row>
-                    <Col sm="10">
+                    <Col sm="12">
                         <Nav tabs>
                             <NavItem>
                                 <NavLink
@@ -44,21 +44,21 @@ export class  MyWorkPage extends React.Component<IMyWorkProps> {
                             <TabPane tabId="1">
                                 <Row>
                                     <Col sm="12">
-                                        <MyTasks store={this.props.store} tasksStatus="Текущие"/>
+                                        <MyTasks store={this.props.store} tasksStatus={TaskStatus.Current}/>
                                     </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="2">
                                 <Row>
                                     <Col sm="12">
-                                        <MyTasks store={this.props.store} tasksStatus="Законченные"/>
+                                        <MyTasks store={this.props.store} tasksStatus={TaskStatus.Completed}/>
                                     </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="3">
                                 <Row>
                                     <Col sm="12">
-                                        <MyTasks store={this.props.store} tasksStatus="Прошлые"/>
+                                        <MyTasks store={this.props.store} tasksStatus={TaskStatus.Future}/>
                                     </Col>
                                 </Row>
                             </TabPane>

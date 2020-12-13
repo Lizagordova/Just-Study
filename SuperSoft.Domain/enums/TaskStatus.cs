@@ -2,6 +2,8 @@
 {
 	public enum TaskStatus
 	{
-		
+		Current,
+		Completed,
+		Future
 	}
 }

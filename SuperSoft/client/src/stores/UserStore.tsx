@@ -1,4 +1,4 @@
-﻿import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
+﻿import { UserViewModel } from "../Typings/viewModels/UserViewModel";
 import { observable } from "mobx";
 
 class UserStore {
