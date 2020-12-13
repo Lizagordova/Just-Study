@@ -6,6 +6,6 @@ namespace SuperSoft.Domain.Services
 	public interface IProjectReaderService
 	{
 		IReadOnlyCollection<User> GetProjectUsers(int projectId);
-		IReadOnlyCollection<ProjectUser> GetProjects();
+		IReadOnlyCollection<Project> GetProjects();
 	}
 }

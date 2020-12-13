@@ -1,11 +1,15 @@
 ﻿import { UserViewModel } from "../Typings/viewModels/UserViewModel";
-import { observable } from "mobx";
+import {makeObservable, observable} from "mobx";
 
 class UserStore {
-    @observable
-    currentUser: UserViewModel | undefined;
+    currentUser: UserViewModel;
+    users: UserViewModel[];
 
     constructor() {
+        makeObservable(this, {
+            users: observable,
+            currentUser: observable
+        });
         this.setInitialData();
     }
 
@@ -14,10 +18,19 @@ class UserStore {
             .then((user) => {
                 this.currentUser = user
             });
+        this.getUsers()
+            .then((users) => {
+                this.users = users;
+            });
     }
 
     async getCurrentUser(): Promise<UserViewModel> {
         const response = await fetch("bundled");
+        return await response.json();
+    }
+
+    async getUsers(): Promise<UserViewModel[]> {
+        const response = await fetch("/getusers");
         return await response.json();
     }
 }

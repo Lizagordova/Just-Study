@@ -28,7 +28,9 @@
 		<None Include="client\src\components\MyWork\IMyWorkProps.tsx" />
 		<None Include="client\src\components\MyWork\MyTasks.tsx" />
 		<None Include="client\src\components\MyWork\MyWork.tsx" />
+		<None Include="client\src\components\Projects\AddProject.tsx" />
 		<None Include="client\src\components\Projects\IProjectsProps.tsx" />
+		<None Include="client\src\components\Projects\Projects.tsx" />
 		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />

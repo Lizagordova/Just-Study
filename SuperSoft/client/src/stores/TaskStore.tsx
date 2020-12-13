@@ -1,13 +1,14 @@
-﻿import { observable } from "mobx";
+﻿import { makeObservable, observable } from "mobx";
 import { UserTaskViewModel } from "../Typings/viewModels/UserTaskViewModel";
 
 class TaskStore {
-    @observable
     currentUserTasks: UserTaskViewModel[];
 
     constructor() {
+        makeObservable(this, {
+                currentUserTasks: observable
+        });
         this.setInitialData();
-        this.currentUserTasks = new Array<UserTaskViewModel>(0);
     }
 
     setInitialData() {
