@@ -27,7 +27,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
 
     renderMyTasks(tasks: TaskViewModel[]) {
         return(
-            <Table>
+            <Table bordered style={{backgroundColor: "#C4DFE6", color:"003b46"}}>
                 <thead>
                     <tr>
                         <th>Номер</th>
@@ -37,6 +37,12 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                     </tr>
                 </thead>
                 <tbody>
+                <tr key="1">
+                    <th>id</th>
+                    <th>header</th>
+                    <th>deadlineDate</th>
+                    <th>status</th>
+                </tr>
                     {tasks.map((task) => {
                         return(
                             <tr key={task.id}>

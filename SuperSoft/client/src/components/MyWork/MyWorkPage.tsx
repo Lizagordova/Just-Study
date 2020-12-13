@@ -1,5 +1,6 @@
 ﻿import React from "react";
-import {Col, Nav, NavItem, NavLink, Row, TabContent, TabPane} from "reactstrap";
+import {Col, Nav, NavItem, Row, TabContent, TabPane} from "reactstrap";
+import { NavLink } from "react-router-dom";
 import classnames from "classnames";
 import {MyTasks} from "./MyTasks";
 import { observer } from "mobx-react";
@@ -26,16 +27,23 @@ export class  MyWorkPage extends React.Component<IMyWorkProps> {
                         <Nav tabs>
                             <NavItem>
                                 <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "1"})}
-                                    onClick={(e) => this.toggleTab("1")}>Текущие</NavLink>
+                                    onClick={(e) => this.toggleTab("1")}
+                                    >Текущие</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "2"})}
                                     onClick={(e) => this.toggleTab("2")}>Законченные</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "3"})}
                                     onClick={(e) => this.toggleTab("3")}>Будущие</NavLink>
                             </NavItem>
