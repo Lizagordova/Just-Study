@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 
@@ -24,6 +25,11 @@ namespace SuperSoft.Persistence.Repositories
 		public IReadOnlyCollection<Task> GetTasks(int projectId)
 		{
 			throw new System.NotImplementedException();
+		}
+
+		public Tuple<IReadOnlyCollection<UserTask>, IReadOnlyCollection<ProjectTask>> GetUserTasks(int userId)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

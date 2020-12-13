@@ -18,7 +18,8 @@ class TaskStore {
     }
 
     async getCurrentUserTasks() {
-        return new Array<UserTaskViewModel>();
+        const response = await fetch("getusertasks");
+        return await response.json();
     }
 }
 
