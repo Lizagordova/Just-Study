@@ -9,4 +9,5 @@ export interface IProjectReadModel
 	description: string;
 	startDate: any;
 	deadlineDate: any;
+	responsiblePerson: number;
 }

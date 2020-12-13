@@ -9,4 +9,5 @@ export class ProjectViewModel
 	public description: string;
 	public startDate: any;
 	public deadlineDate: any;
+	public responsiblePerson: number;
 }

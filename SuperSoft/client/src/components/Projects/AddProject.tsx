@@ -2,14 +2,18 @@
 import { IProjectsProps } from "./IProjectsProps";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
-import { Button, Modal, ModalHeader, ModalBody, Input, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from "reactstrap";
+import Calendar from "react-calendar";
 
 @observer
 export class AddProject extends React.Component<IProjectsProps> {
     addProjectWindowOpen: boolean;
-    projectName: string | undefined;
-    description: string | undefined;
+    projectName: string = "";
+    description: string = "";
     responsibleDropdownOpen: boolean;
+    startDate: Date | Date[];
+    deadline: Date | Date[];
+    responsiblePerson: number;
 
     constructor() {
         // @ts-ignore
@@ -46,11 +50,17 @@ export class AddProject extends React.Component<IProjectsProps> {
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-sm-12">
                             <label>Дата начала</label>
-                            <Input onChange={(e) => this.inputProjectName(e)}/>
+                            <Calendar
+                                value={this.startDate}
+                                onChange={(date) => this.inputDate(date, "startDate")}
+                            />
                         </div>
                         <div className="col-lg-6 col-sm-12">
                             <label>Дедлайн</label>
-                            <Input onChange={(e) => this.inputProjectName(e)}/>
+                            <Calendar
+                                value={this.deadline}
+                                onChange={(date) => this.inputDate(date, "deadline")}
+                            />
                         </div>
                     </div>
                     <div className="row justify-content-center">
@@ -61,7 +71,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                                 {users.map((user, index) => {
                                     return(
                                         <>
-                                            {index === 0 && <DropdownItem key={index} header>{user.firstName + " " + user.lastName}</DropdownItem>}
+                                            {index === 0 && <DropdownItem key={index} header onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>}
                                             {index !== 0 && <DropdownItem key={index}>{user.firstName + " " + user.lastName}</DropdownItem>}
                                         </>
                                     );
@@ -70,6 +80,10 @@ export class AddProject extends React.Component<IProjectsProps> {
                         </Dropdown>
                     </div>
                 </ModalBody>
+                <ModalFooter>
+                    <Button
+                    onClick={this.saveProject}>СОХРАНИТЬ</Button>
+                </ModalFooter>
             </Modal>
         )
     }
@@ -102,5 +116,21 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     inputDescription(event: React.FormEvent<HTMLInputElement>) {
         this.description = event.currentTarget.value;
+    }
+
+    inputDate(date: Date | Date[], dateType: string) {
+        if(dateType === "startDate") {
+            this.startDate = date;
+        } else if(dateType === "deadline") {
+            this.deadline = date;
+        }
+    }
+
+    chooseResponsiblePerson(userId: number) {
+        this.responsiblePerson = userId;
+    }
+
+    saveProject() {
+        this.props.store.projectStore.addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson);
     }
 }

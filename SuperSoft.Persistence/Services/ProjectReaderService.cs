@@ -19,7 +19,7 @@ namespace SuperSoft.Persistence.Services
 			throw new System.NotImplementedException();
 		}
 
-		public IReadOnlyCollection<ProjectUser> GetProjects()
+		public IReadOnlyCollection<Project> GetProjects()
 		{
 			throw new System.NotImplementedException();
 		}
