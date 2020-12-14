@@ -21,6 +21,9 @@
 		<Content Include="client\src\styles\common.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+		<None Include="client\src\components\Comments\AddComment.tsx" />
+		<None Include="client\src\components\Comments\Comments.tsx" />
+		<None Include="client\src\components\Comments\ICommentsProps.tsx" />
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />
 		<None Include="client\src\components\Main\MainProps.tsx" />
