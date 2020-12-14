@@ -33,7 +33,11 @@ export class Projects extends React.Component<IProjectsProps> {
                     let responsible = this.getResponsible(project.id);//здесь project.responsibleId
                     return(
                         <tr key={project.id}>
-                            <th>{project.name}</th>
+                            <th>
+                                <a href="" onClick={(e) => {this.props.store.projectStore.setChoosenProject(project)}}>
+                                    {project.name}
+                                </a>
+                            </th>
                             <th>{project.startDate}</th>
                             <th>{project.deadlineDate}</th>
                             <th>{responsible.firstName + responsible.lastName}</th>

@@ -2,7 +2,6 @@
 import RootStore from "../../stores/RootStore";
 
 export interface IAddUserToProjectProps {
-    projectId: number,
     store: RootStore;
 }
 

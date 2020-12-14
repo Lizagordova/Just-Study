@@ -3,10 +3,12 @@ import {makeObservable, observable} from "mobx";
 
 class ProjectStore {
     projects: ProjectViewModel[];
+    choosenProject: ProjectViewModel;
 
     constructor() {
         makeObservable(this, {
-            projects: observable
+            projects: observable,
+            choosenProject: observable
         });
         this.setInitialData();
     }
@@ -15,7 +17,12 @@ class ProjectStore {
         this.getProjects()
             .then((projects) => {
                 this.projects = projects;
+                this.choosenProject = projects[0];
             });
+    }
+
+    setChoosenProject(project: ProjectViewModel): void {
+        this.choosenProject = project;
     }
 
     async getProjects() {
@@ -23,7 +30,7 @@ class ProjectStore {
 
         return await response.json();
     }
-    
+
     async addNewProject(name: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], responsibleId: number) {
         const response = await fetch("/addorupdateproject", {
             method: "POST",

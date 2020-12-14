@@ -10,14 +10,14 @@ export class Project extends React.Component<IProjectsProps> {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-lg-3 col-lg-offset-4">
-                        <AddTask projectId={this.props.projectId}  store={this.props.store} />
+                        <AddTask store={this.props.store} />
                     </div>
                     <div className="col-lg-3 col-lg-offset-7">
-                        <AddUserToProject projectId={this.props.projectId} store={this.props.store} />
+                        <AddUserToProject store={this.props.store} />
                     </div>
                 </div>
                 <div className="row justify-content-center">
-                    <Tasks projectId={this.props.projectId} store={this.props.store}/>
+                    <Tasks store={this.props.store}/>
                 </div>
             </div>
         )

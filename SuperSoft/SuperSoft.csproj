@@ -30,6 +30,7 @@
 		<None Include="client\src\components\MyWork\MyWork.tsx" />
 		<None Include="client\src\components\Projects\AddProject.tsx" />
 		<None Include="client\src\components\Projects\AddUserToProject.tsx" />
+		<None Include="client\src\components\Projects\IProjectProps.tsx" />
 		<None Include="client\src\components\Projects\IProjectsProps.tsx" />
 		<None Include="client\src\components\Projects\Project.tsx" />
 		<None Include="client\src\components\Projects\Projects.tsx" />
