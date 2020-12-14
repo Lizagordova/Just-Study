@@ -1,7 +1,7 @@
 ﻿import React from "react";
-import { ITasksProps } from "./ITasksProps";
+import { IAddTasksProps } from "./IAddTasksProps";
 
-export class AddTask extends React.Component<ITasksProps> {
+export class AddTask extends React.Component<IAddTasksProps> {
     render() {
         return(
             <></>

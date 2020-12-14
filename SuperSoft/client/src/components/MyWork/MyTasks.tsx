@@ -3,7 +3,6 @@ import { IMyTasksProps } from "./IMyTasksProps";
 import { Table } from 'reactstrap';
 import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import { Alert } from "reactstrap";
 
 export class MyTasks extends React.Component<IMyTasksProps> {
     getTaskStatusTranslit(taskStatus: TaskStatus): string {

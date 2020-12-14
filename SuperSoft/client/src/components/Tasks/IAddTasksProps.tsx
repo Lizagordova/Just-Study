@@ -1,6 +1,6 @@
 ﻿import { RootStore } from "../../stores/RootStore";
 
-export interface IProjectsProps {
+export interface IAddTasksProps {
     projectId: number;
     store: RootStore;
 }

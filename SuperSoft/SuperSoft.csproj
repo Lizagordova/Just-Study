@@ -29,11 +29,13 @@
 		<None Include="client\src\components\MyWork\MyTasks.tsx" />
 		<None Include="client\src\components\MyWork\MyWork.tsx" />
 		<None Include="client\src\components\Projects\AddProject.tsx" />
+		<None Include="client\src\components\Projects\AddUserToProject.tsx" />
 		<None Include="client\src\components\Projects\IProjectsProps.tsx" />
 		<None Include="client\src\components\Projects\Project.tsx" />
 		<None Include="client\src\components\Projects\Projects.tsx" />
 		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
 		<None Include="client\src\components\Tasks\AddTask.tsx" />
+		<None Include="client\src\components\Tasks\IAddTasksProps.tsx" />
 		<None Include="client\src\components\Tasks\ITasksProps.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
