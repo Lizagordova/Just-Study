@@ -7,7 +7,6 @@ namespace SuperSoft.Persistence.Services
 	public class CommentEditorService : ICommentEditorService
 	{
 		private readonly ICommentRepository _commentRepository;
-
 		public CommentEditorService(ICommentRepository commentRepository)
 		{
 			_commentRepository = commentRepository;
@@ -15,12 +14,16 @@ namespace SuperSoft.Persistence.Services
 
 		public int AddOrUpdateCommentGroup(int taskId)
 		{
-			throw new System.NotImplementedException();
+			var groupId = _commentRepository.AddOrUpdateCommentGroup(taskId);
+
+			return groupId;
 		}
 
 		public int AddOrUpdateComment(int groupId, Comment comment)
 		{
-			throw new System.NotImplementedException();
+			var commentId = _commentRepository.AddOrUpdateComment(groupId, comment);
+
+			return commentId;
 		}
 	}
 }

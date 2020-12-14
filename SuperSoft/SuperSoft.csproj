@@ -39,6 +39,7 @@
 		<None Include="client\src\components\Tasks\IAddTasksProps.tsx" />
 		<None Include="client\src\components\Tasks\ITasksProps.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />
+		<None Include="client\src\components\Users\Users.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
 		<None Include="client\src\stores\CommentsStore.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />

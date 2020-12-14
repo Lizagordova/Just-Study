@@ -15,7 +15,9 @@ namespace SuperSoft.Persistence.Services
 
 		public CommentGroup GetCommentGroup(int taskId)
 		{
-			throw new System.NotImplementedException();
+			var group = _commentRepository.GetCommentGroup(taskId);
+
+			return group;
 		}
 	}
 }

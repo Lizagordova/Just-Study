@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services;
+using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.ViewModels;
 
@@ -15,7 +16,8 @@ namespace SuperSoft.Controllers
 		public UserController(
 			MapperService mapper,
 			IUserReaderService userReader,
-			IUserEditorService userEditor)
+			IUserEditorService userEditor
+			)
 		{
 			_mapper = mapper;
 			_userReader = userReader;
@@ -34,13 +36,15 @@ namespace SuperSoft.Controllers
 			return new JsonResult(userViewModels);
 		}
 
-		[HttpGet]
-		[Route("bundled")]
-		public ActionResult GetUser()
+		[HttpPost]
+		[Route("/addorupdateuser")]
+		public ActionResult AddOrUpdateUser([FromBody]UserReadModel userReadModel)
 		{
-			var user = new UserViewModel();
-			user.FirstName = "lizonka";
-			return new JsonResult(user);
+			var user = _mapper.Map<UserReadModel, User>(userReadModel);
+			user.Id = _userEditor.AddOrUpdateUser(user);
+			var userViewModel = _mapper.Map<User, UserViewModel>(user);
+
+			return new JsonResult(userViewModel);
 		}
 	}
 }

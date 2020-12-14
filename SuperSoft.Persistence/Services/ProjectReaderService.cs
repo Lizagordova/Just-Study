@@ -21,7 +21,7 @@ namespace SuperSoft.Persistence.Services
 
 		public IReadOnlyCollection<Project> GetProjects()
 		{
-			throw new System.NotImplementedException();
+			return new Project[0];
 		}
 	}
 }
