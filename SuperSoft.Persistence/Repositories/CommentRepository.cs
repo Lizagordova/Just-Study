@@ -27,17 +27,40 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			param.Add("taskId", taskId);
 			var conn = DatabaseHelper.OpenConnection();
-			var commentsUdt = conn.Query<CommentUdt>(GetCommentGroupSp, param, commandType: CommandType.StoredProcedure).ToList();
-			var commentGroup = new CommentGroup()
-			{
-				Id = commentsUdt.FirstOrDefault() == null ? 0 : commentsUdt.FirstOrDefault().GroupId,
-				Comments = commentsUdt.Select(_mapper.Map<CommentUdt, Comment>).ToList(),
-				TaskId = taskId
-			};
+			var data = conn.QueryMultiple(GetCommentGroupSp, param, commandType: CommandType.StoredProcedure);
+			var commentGroup = MapCommentGroup(data, taskId);
 			DatabaseHelper.CloseConnection(conn);
 
 			return commentGroup;
 
+		}
+
+		private CommentGroup MapCommentGroup(SqlMapper.GridReader data, int taskId)
+		{
+			var commentsUdt = data.Read<CommentUdt>().ToList();
+			var usersUdt = data.Read<UserUdt>().ToList();
+			var comments = commentsUdt
+				.Join(usersUdt,
+					c => c.UserId,
+					u => u.Id,
+					MapComment)
+				.ToList();
+			var commentGroup = new CommentGroup()
+			{
+				Id = commentsUdt.FirstOrDefault().GroupId,
+				Comments = comments,
+				TaskId = taskId
+			};
+
+			return commentGroup;
+		}
+
+		private Comment MapComment(CommentUdt commentUdt, UserUdt userUdt)
+		{
+			var comment = _mapper.Map<CommentUdt, Comment>(commentUdt);
+			comment.User = _mapper.Map<UserUdt, User>(userUdt);
+
+			return comment;
 		}
 
 		public int AddOrUpdateCommentGroup(int taskId)
