@@ -16,7 +16,7 @@ namespace SuperSoft.Persistence.Services
 
 		public IReadOnlyCollection<User> GetUsers()
 		{
-			throw new System.NotImplementedException();
+			return _userRepository.GetUsers();
 		}
 	}
 }

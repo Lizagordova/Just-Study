@@ -14,13 +14,17 @@ namespace SuperSoft.Controllers
 	{
 		private readonly MapperService _mapper;
 		private readonly ITaskReaderService _taskReader;
+		private readonly ITaskEditorService _taskEditor;
 
 		public TaskController(
 			MapperService mapper,
-			ITaskReaderService taskReader)
+			ITaskReaderService taskReader,
+			ITaskEditorService taskEditor
+			)
 		{
 			_mapper = mapper;
 			_taskReader = taskReader;
+			_taskEditor = taskEditor;
 		}
 
 		[HttpGet]
@@ -31,6 +35,16 @@ namespace SuperSoft.Controllers
 			var userTaskProjectsViewModels = MapUserTaskProjectViewModels(userTaskProjects.Item1, userTaskProjects.Item2);
 
 			return new JsonResult(userTaskProjectsViewModels);
+		}
+
+		[HttpPost]
+		[Route("/gettasks")]
+		public ActionResult GetTasks([FromBody]ProjectReadModel projectReadModel)
+		{
+			var tasks = _taskReader.GetTasks(projectReadModel.Id);
+			var taskViewModels = tasks.Select(_mapper.Map<Task, TaskViewModel>).ToList();
+
+			return new JsonResult(taskViewModels);
 		}
 
 		private IReadOnlyCollection<UserTaskProjectViewModel> MapUserTaskProjectViewModels(IReadOnlyCollection<UserTask> userTasks, IReadOnlyCollection<ProjectTask>projectTasks)

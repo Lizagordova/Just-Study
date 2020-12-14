@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +10,7 @@ using SuperSoft.Domain.Services;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services;
 using SuperSoft.Persistence.Services.MapperService;
+using MainMapperService = SuperSoft.Services.MapperService;
 
 namespace SuperSoft
 {
@@ -28,6 +28,7 @@ namespace SuperSoft
 		{
 			services.AddControllersWithViews();
 			services.AddMvc();
+			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();
 			services.AddSingleton<ICommentRepository, CommentRepository>();
 			services.AddSingleton<IProjectRepository, ProjectRepository>();

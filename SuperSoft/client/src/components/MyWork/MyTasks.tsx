@@ -1,8 +1,9 @@
 ﻿import React from "react";
-import {IMyTasksProps} from "./IMyTasksProps";
-import {Table} from 'reactstrap';
-import {TaskViewModel} from "../../Typings/viewModels/TaskViewModel";
+import { IMyTasksProps } from "./IMyTasksProps";
+import { Table } from 'reactstrap';
+import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { Alert } from "reactstrap";
 
 export class MyTasks extends React.Component<IMyTasksProps> {
     getTaskStatusTranslit(taskStatus: TaskStatus): string {
@@ -63,7 +64,8 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         return(
             <>
                 <label>{this.getTaskStatusTranslit(this.props.tasksStatus)}</label>
-                {this.renderMyTasks(tasks)}
+                {tasks !== undefined && this.renderMyTasks(tasks)}
+                {tasks === undefined && <div><span>Задач пока нет:)</span></div>}
             </>
         );
     }

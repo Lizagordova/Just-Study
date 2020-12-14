@@ -5,7 +5,7 @@ namespace SuperSoft.ReadModels
 	public class ProjectUserReadModel
 	{
 		public UserReadModel User { get; set; }
-		public TaskReadModel Task { get; set; }
-		public TaskRole Role { get; set; }
+		public ProjectReadModel Project { get; set; }
+		public ProjectRole Role { get; set; }
 	}
 }

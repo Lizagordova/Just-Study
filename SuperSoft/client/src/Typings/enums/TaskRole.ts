@@ -3,5 +3,6 @@
 //     the code is regenerated.
 
 export enum TaskRole { 
-
+	Responsible = 0, 
+	Tester = 1
 }

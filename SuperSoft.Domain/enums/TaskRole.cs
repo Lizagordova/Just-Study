@@ -2,6 +2,7 @@
 {
 	public enum TaskRole
 	{
-		
+		Responsible,
+		Tester
 	}
 }
