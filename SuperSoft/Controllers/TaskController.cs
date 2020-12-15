@@ -31,8 +31,8 @@ namespace SuperSoft.Controllers
 		[Route("/getusertasks")]
 		public ActionResult GetUserTasks([FromBody]UserReadModel userReadModel)
 		{
-			var userTaskProjects = _taskReader.GetUserTasks(userReadModel.Id);
-			var userTaskProjectsViewModels = MapUserTaskProjectViewModels(userTaskProjects.Item1, userTaskProjects.Item2);
+			var userTasks = _taskReader.GetUserTasks(userReadModel.Id);
+			var userTaskProjectsViewModels = userTasks.Select(MapUserUserTaskViewModel).ToList();
 
 			return new JsonResult(userTaskProjectsViewModels);
 		}
@@ -47,26 +47,13 @@ namespace SuperSoft.Controllers
 			return new JsonResult(taskViewModels);
 		}
 
-		private IReadOnlyCollection<UserTaskProjectViewModel> MapUserTaskProjectViewModels(IReadOnlyCollection<UserTask> userTasks, IReadOnlyCollection<ProjectTask>projectTasks)
+		private UserTaskViewModel MapUserUserTaskViewModel(UserTask userTask)
 		{
-			var userTaskProjects = userTasks
-				.Join(projectTasks,
-					ut => ut.Task.Id,
-					p => p.Task.Id,
-					MapUserTaskProjectViewModel)
-				.ToList();
+			var userTaskViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);
+			userTaskViewModel.Task = _mapper.Map<Task, TaskViewModel>(userTask.Task);
+			userTaskViewModel.User = _mapper.Map<User, UserViewModel>(userTask.User);
 
-			return userTaskProjects;
-		}
-
-		private UserTaskProjectViewModel MapUserTaskProjectViewModel(UserTask userTask, ProjectTask projectTask)
-		{
-			var userTaskProject = new UserTaskProjectViewModel();
-			userTaskProject.User = _mapper.Map<User, UserViewModel>(userTask.User);
-			userTaskProject.Project = _mapper.Map<Project, ProjectViewModel>(projectTask.Project);
-			userTaskProject.Task = _mapper.Map<Task, TaskViewModel>(userTask.Task);
-
-			return userTaskProject;
+			return userTaskViewModel;
 		}
 	}
 }

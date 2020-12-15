@@ -7,6 +7,6 @@ namespace SuperSoft.Domain.Services
 	public interface ITaskReaderService
 	{
 		IReadOnlyCollection<Task> GetTasks(int projectId);
-		Tuple<IReadOnlyCollection<UserTask>, IReadOnlyCollection<ProjectTask>> GetUserTasks(int userId);
+		IReadOnlyCollection<UserTask> GetUserTasks(int userId);
 	}
 }

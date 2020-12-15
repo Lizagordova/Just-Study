@@ -17,12 +17,12 @@ namespace SuperSoft.Persistence.Services
 
 		public IReadOnlyCollection<Task> GetTasks(int projectId)
 		{
-			throw new System.NotImplementedException();
+			return _taskRepository.GetTasks(projectId);
 		}
 
-		public Tuple<IReadOnlyCollection<UserTask>, IReadOnlyCollection<ProjectTask>> GetUserTasks(int userId)
+		public IReadOnlyCollection<UserTask> GetUserTasks(int userId)
 		{
-			throw new NotImplementedException();
+			return _taskRepository.GetUserTasks(userId);
 		}
 	}
 }
