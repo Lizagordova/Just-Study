@@ -1,35 +1,122 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Dapper;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
+using SuperSoft.Persistence.Extensions;
+using SuperSoft.Persistence.Helpers;
+using SuperSoft.Persistence.Models;
+using SuperSoft.Persistence.Services.MapperService;
 
 namespace SuperSoft.Persistence.Repositories
 {
 	public class TaskRepository : ITaskRepository
 	{
-		public void AddOrUpdateUserTask(UserTask userTask)
+		private readonly MapperService _mapper;
+		private const string AddOrUpdateUserTaskSp = "TaskRepository_AddOrUpdateUserTask";
+		private const string AddOrUpdateTaskSp = "TaskRepository_AddOrUpdateTask";
+		private const string GetTasksSp = "TaskRepository_GetTasks";
+		private const string GetUserTasksSp = "TaskRepository_GetUserTasks";
+		private const string DeleteTaskSp = "TaskRepository_DeleteTask";
+		public TaskRepository(
+			MapperService mapper)
 		{
-			throw new System.NotImplementedException();
+			_mapper = mapper;
 		}
 
+		public void AddOrUpdateUserTask(UserTask userTask)
+		{
+			var param = GetAddOrUpdateUserTaskParam(userTask);
+			var conn = DatabaseHelper.OpenConnection();
+			conn.Query(AddOrUpdateUserTaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+		
 		public int AddOrUpdateTask(Task task)
 		{
-			throw new System.NotImplementedException();
+			var param = GetAddOrUpdateTaskParam(task);
+			var conn = DatabaseHelper.OpenConnection();
+			var taskId = conn.Query<int>(AddOrUpdateTaskSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+
+			return taskId;
 		}
 
 		public void DeleteTask(int taskId)
 		{
-			throw new System.NotImplementedException();
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			var conn = DatabaseHelper.OpenConnection();
+			conn.Query(DeleteTaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
 		}
 
 		public IReadOnlyCollection<Task> GetTasks(int projectId)
 		{
-			throw new System.NotImplementedException();
+			var param = new DynamicTvpParameters();
+			param.Add("projectId", projectId);
+			var conn = DatabaseHelper.OpenConnection();
+			var tasksUdt = conn.Query<TaskUdt>(GetTasksSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+			var tasks = tasksUdt.Select(_mapper.Map<TaskUdt, Task>).ToList();
+
+			return tasks;
 		}
 
-		public Tuple<IReadOnlyCollection<UserTask>, IReadOnlyCollection<ProjectTask>> GetUserTasks(int userId)
+		public IReadOnlyCollection<UserTask> GetUserTasks(int userId)
 		{
-			throw new NotImplementedException();
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userId);
+			var conn = DatabaseHelper.OpenConnection();
+			var data = conn.QueryMultiple(GetUserTasksSp, param, commandType: CommandType.StoredProcedure);
+			var userTasks = MapUserTasks(data);
+
+			return userTasks;
+		}
+
+		private IReadOnlyCollection<UserTask> MapUserTasks(SqlMapper.GridReader reader)
+		{
+			var tasksUdt = reader.Read<TaskUdt>();
+			var userTasksUdt = reader.Read<UserTaskUdt>();
+			var userTasks = userTasksUdt
+				.Join(tasksUdt,
+					ut => ut.TaskId,
+					t => t.Id,
+					MapUserTask)
+				.ToList();
+
+			return userTasks;
+		}
+
+		private UserTask MapUserTask(UserTaskUdt userTaskUdt, TaskUdt taskUdt)
+		{
+			var userTask = _mapper.Map<UserTaskUdt, UserTask>(userTaskUdt);
+			userTask.Task = _mapper.Map<TaskUdt, Task>(taskUdt);
+
+			return userTask;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateUserTaskParam(UserTask userTask)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("userTask", "UDT_User_Task");
+			var udt = _mapper.Map<UserTask, UserTaskUdt>(userTask);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateTaskParam(Task task)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("task", "UDT_Task");
+			var udt = _mapper.Map<Task, TaskUdt>(task);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
+
+			return param;
 		}
 	}
 }

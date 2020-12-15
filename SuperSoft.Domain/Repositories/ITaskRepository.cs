@@ -10,6 +10,6 @@ namespace SuperSoft.Domain.Repositories
 		int AddOrUpdateTask(Task task);
 		void DeleteTask(int taskId);
 		IReadOnlyCollection<Task> GetTasks(int projectId);
-		Tuple<IReadOnlyCollection<UserTask>, IReadOnlyCollection<ProjectTask>> GetUserTasks(int userId);
+		IReadOnlyCollection<UserTask> GetUserTasks(int userId);
 	}
 }
