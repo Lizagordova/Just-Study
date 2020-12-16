@@ -74,13 +74,13 @@ export class Projects extends React.Component<IProjectsProps> {
                                     <Tab.Pane eventKey={project.id}>
                                         <Project store={this.props.store} />
                                     </Tab.Pane>
-                                )
+                                );
                             })}
                         </Tab.Content>
                     </div>
                 </div>
             </Tab.Container>
-        )
+        );
     }
 
     render() {

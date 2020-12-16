@@ -136,7 +136,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 <Modal.Footer>
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
-                        onClick={this.saveTask}>
+                        onClick={() => this.saveTask()}>
                         СОХРАНИТЬ
                     </Button>
                 </Modal.Footer>
@@ -150,7 +150,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 <div className="col-lg-2 col-lg-offset-10 col-md-4 col-md-offset-8 col-sm-6 col-sm-offet-3 col-xs-12">
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
-                        onClick={this.toggleAddTaskWindow}>Создать задачу</Button>
+                        onClick={() => this.toggleAddTaskWindow()}>Создать задачу</Button>
                 </div>
             </div>
         );

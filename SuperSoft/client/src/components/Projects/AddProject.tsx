@@ -19,7 +19,13 @@ export class AddProject extends React.Component<IProjectsProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            addProjectWindowOpen: observable
+            addProjectWindowOpen: observable,
+            projectName: observable,
+            description: observable,
+            responsibleDropdownOpen: observable,
+            startDate: observable,
+            deadline: observable,
+            responsiblePerson: observable
         });
     }
 
@@ -34,7 +40,7 @@ export class AddProject extends React.Component<IProjectsProps> {
     renderAddProjectWindow() {
         let users = this.props.store.userStore.users;
         return(
-            <Modal isOpen={this.addProjectWindowOpen} toggle={this.toggleAddProjectWindow}>
+            <Modal isOpen={this.addProjectWindowOpen} toggle={() => this.toggleAddProjectWindow()}>
                 <ModalHeader>
                     СОЗДАНИЕ ПРОЕКТА
                 </ModalHeader>
@@ -65,7 +71,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                     </div>
                     <div className="row justify-content-center">
                         <label>Ответственный</label>
-                        <Dropdown isOpen={this.responsibleDropdownOpen} toggle={this.toggleResponsibleDropdown}>
+                        <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
                             <DropdownToggle/>
                             <DropdownMenu>
                                 {users.map((user, index) => {
@@ -82,7 +88,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                    onClick={this.saveProject}>СОХРАНИТЬ</Button>
+                    onClick={() => this.saveProject()}>СОХРАНИТЬ</Button>
                 </ModalFooter>
             </Modal>
         )
@@ -94,7 +100,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                 <div className="col-lg-2 col-lg-offset-10 col-md-4 col-md-offset-8 col-sm-6 col-sm-offet-3 col-xs-12">
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
-                        onClick={this.toggleAddProjectWindow}>Создать проект</Button>
+                        onClick={() => this.toggleAddProjectWindow()}>Создать проект</Button>
                 </div>
             </div>
         );

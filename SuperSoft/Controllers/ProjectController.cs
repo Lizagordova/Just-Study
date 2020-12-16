@@ -26,7 +26,7 @@ namespace SuperSoft.Controllers
 
 		[HttpGet]
 		[Route("/getprojects")]
-		private ActionResult GetProjects()
+		public ActionResult GetProjects()
 		{
 			var projectsUsers = _projectReader.GetProjects();
 			var projectUsersViewModels = projectsUsers
@@ -38,7 +38,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdateproject")]
-		private ActionResult AddOrUpdateProject([FromBody]ProjectReadModel projectReadModel)
+		public ActionResult AddOrUpdateProject([FromBody]ProjectReadModel projectReadModel)
 		{
 			var project = _mapper.Map<ProjectReadModel, Project>(projectReadModel);
 			project.Id = _projectEditor.AddOrUpdateProject(project);

@@ -23,7 +23,7 @@ export class Comments extends React.Component<ICommentsProps> {
     }
 
     render() {
-        let comments = this.props.store.commentStore.currentTaskComments;
+        let comments = this.props.store.commentStore.currentTaskCommentGroup.comments;
         return(
             <>
                 <AddComment store={this.props.store} taskId={this.props.taskId} />

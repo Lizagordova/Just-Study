@@ -30,10 +30,8 @@ class ProjectStore {
     async getProjects() {
         const response = await fetch("/getprojects");
         if(response.status === 200) {
-            console.log("2");
             return await response.json();
         } else {
-            console.log("3");
             return new Array<ProjectViewModel>(0);
         }
     }

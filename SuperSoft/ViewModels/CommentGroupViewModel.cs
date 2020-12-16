@@ -9,6 +9,6 @@ namespace SuperSoft.ViewModels
 	{
 		public int Id { get; set; }
 		public int TaskId { get; set; }
-		public IReadOnlyCollection<CommentViewModel> Comments = Array.Empty<CommentViewModel>();
+		public IReadOnlyCollection<CommentViewModel> Comments { get; set; }
 	}
 }

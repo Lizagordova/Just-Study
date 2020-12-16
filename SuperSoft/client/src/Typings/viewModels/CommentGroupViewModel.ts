@@ -2,8 +2,11 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { CommentViewModel } from './CommentViewModel';
+
 export class CommentGroupViewModel
 {
 	public id: number;
 	public taskId: number;
+	public comments: CommentViewModel[] = [];
 }

@@ -5,8 +5,22 @@ import { AddUserToProject } from "./AddUserToProject";
 import { Tasks } from "../Tasks/Tasks";
 import { ProjectViewModel } from "../../Typings/viewModels/ProjectViewModel";
 import { Card, CardText, CardTitle } from "reactstrap";
+import classnames from "classnames";
+import { MyTasks } from "../MyWork/MyTasks";
+import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { Col, Nav, NavItem, Row, TabContent, TabPane, NavLink } from "reactstrap";
+import {action, makeObservable, observable} from "mobx";
 
 export class Project extends React.Component<IProjectsProps> {
+    activeTab: string = "1";
+    constructor() {
+        // @ts-ignore
+        super();
+        makeObservable(this, {
+            activeTab: observable
+        });
+    }
+
     renderProjectDiagram() {
         return (
             <>Диаграмма. Неважно, что ты не видишь её. Она тебя видит</>
@@ -33,6 +47,64 @@ export class Project extends React.Component<IProjectsProps> {
         );
     }
 
+    renderTasksMenu() {
+        return(
+            <div style={{marginTop: 35}} className="container-fluid">
+                <Row>
+                    <Col sm="12">
+                        <Nav tabs>
+                            <NavItem>
+                                <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
+                                    className={classnames({ active: this.activeTab === "1"})}
+                                    onClick={(e) => this.toggleTab("1")}
+                                >Текущие</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
+                                    className={classnames({ active: this.activeTab === "2"})}
+                                    onClick={(e) => this.toggleTab("2")}>Законченные</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    to="#"
+                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
+                                    className={classnames({ active: this.activeTab === "3"})}
+                                    onClick={(e) => this.toggleTab("3")}>Будущие</NavLink>
+                            </NavItem>
+                        </Nav>
+                        <TabContent activeTab={this.activeTab}>
+                            <TabPane tabId="1">
+                                <Row>
+                                    <Col sm="12">
+                                        <Tasks store={this.props.store} status={TaskStatus.Current}/>
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                            <TabPane tabId="2">
+                                <Row>
+                                    <Col sm="12">
+                                        <Tasks store={this.props.store} status={TaskStatus.Completed}/>
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                            <TabPane tabId="3">
+                                <Row>
+                                    <Col sm="12">
+                                        <Tasks store={this.props.store} status={TaskStatus.Future}/>
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                        </TabContent>
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+
     render() {
         return (
             <>
@@ -52,5 +124,10 @@ export class Project extends React.Component<IProjectsProps> {
             </div>
             </>
         );
+    }
+
+    @action
+    toggleTab(activeTab: string): void {
+        this.activeTab = activeTab;
     }
 }

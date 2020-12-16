@@ -18,11 +18,7 @@ export class  ProjectsPage extends React.Component<IProjectsProps> {
     render() {
         return(
             <div className="container-fluid">
-                <div className="row justify-content-center">
-                    <div className="col-12">
-                        <AddProject store={this.props.store} />
-                    </div>
-                </div>
+                <AddProject store={this.props.store} />
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <Projects store={this.props.store} />

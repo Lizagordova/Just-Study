@@ -44,7 +44,7 @@ export class Tasks extends React.Component<ITasksProps> {
     }
 
     render() {
-        let tasks = this.props.store.taskStore.currentProjectTasks;
+        let tasks = this.props.store.taskStore.currentProjectTasks.filter(t => t.status === this.props.status);
         return(
             <>
                 {this.renderTasks(tasks)}

@@ -18,15 +18,16 @@ class TaskStore {
     }
 
     setInitialData() {
-        this.getCurrentUserTasks()
-            .then((userTasks) => {
-                this.currentUserTasks = userTasks;
-            });
+        this.getCurrentUserTasks();
     }
 
     async getCurrentUserTasks() {
         const response = await fetch("/getusertasks");
-        return await response.json();
+        if(response.status === 200) {
+            this.currentUserTasks = await response.json();
+        } else {
+            this.currentUserTasks = new Array<UserTaskViewModel>(0);
+        }
     }
 
     async getTasks(projectId: number) {
