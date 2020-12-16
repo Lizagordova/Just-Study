@@ -49,5 +49,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/bootstrap": "^5.0.1",
+    "bootstrap": "^4.5.3",
+    "react-bootstrap": "^1.4.0"
+  }
 }

@@ -8,5 +8,6 @@ export interface ICommentReadModel
 {
 	id: number;
 	text: string;
+	groupId: number;
 	user: UserReadModel;
 }

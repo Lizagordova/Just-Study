@@ -8,25 +8,16 @@ import { observer } from "mobx-react";
 
 @observer
 export class  ProjectsPage extends React.Component<IProjectsProps> {
-    choosenProjectOpen: boolean;
-
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            choosenProjectOpen: observable
         });
     }
 
-    renderChoosenProject() {
+    render() {
         return(
-            <Project store={this.props.store} />
-        )
-    }
-
-    renderProjects() {
-        return(
-            <>
+            <div className="container-fluid">
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <AddProject store={this.props.store} />
@@ -37,15 +28,6 @@ export class  ProjectsPage extends React.Component<IProjectsProps> {
                         <Projects store={this.props.store} />
                     </div>
                 </div>
-            </>
-        )
-    }
-
-    render() {
-        return(
-            <div className="container-fluid">
-                {!this.choosenProjectOpen && this.renderProjects()}
-                {this.choosenProjectOpen && this.renderChoosenProject()}
             </div>
         );
     }

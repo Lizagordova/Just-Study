@@ -12,5 +12,6 @@ namespace SuperSoft.Domain.Models
 		public DateTime DeadlineDate { get; set; }
 		public TaskType TaskType { get; set; }
 		public TaskStatus Status { get; set; }
+		public TaskPriority Priority { get; set; }
 	}
 }

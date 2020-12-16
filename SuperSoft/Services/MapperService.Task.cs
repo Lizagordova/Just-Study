@@ -18,6 +18,7 @@ namespace SuperSoft.Services
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
 					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(src => src.DeadlineDate))
 					.ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType))
+					.ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
 			});
 
@@ -30,6 +31,7 @@ namespace SuperSoft.Services
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
 					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(src => src.DeadlineDate))
 					.ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType))
+					.ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
 			});
 
