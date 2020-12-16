@@ -27,5 +27,10 @@ namespace SuperSoft.Persistence.Services
 		{
 			throw new System.NotImplementedException();
 		}
+
+		public int AttachTaskToProject(int taskId, int projectId)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

@@ -4,5 +4,6 @@
 
 export enum TaskRole { 
 	Responsible = 0, 
-	Tester = 1
+	Tester = 1, 
+	Author = 2
 }

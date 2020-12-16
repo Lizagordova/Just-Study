@@ -8,6 +8,7 @@ namespace SuperSoft.ReadModels
 	public class TaskReadModel
 	{
 		public int Id { get; set; }
+		public int ProjectId { get; set; }
 		public string Header { get; set; }
 		public string Description { get; set; }
 		public DateTime StartDate { get; set; }
@@ -15,5 +16,8 @@ namespace SuperSoft.ReadModels
 		public TaskType TaskType { get; set; }
 		public TaskStatus Status { get; set; }
 		public TaskPriority Priority { get; set; }
+		public int Tester { get; set; }
+		public int Responsible { get; set; }
+		public int Author { get; set; }
 	}
 }

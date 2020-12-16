@@ -27,7 +27,7 @@ export class AddProject extends React.Component<IProjectsProps> {
         this.addProjectWindowOpen = !this.addProjectWindowOpen;
     }
 
-    toggleResponsibleDropdownOpen() {
+    toggleResponsibleDropdown() {
         this.responsibleDropdownOpen = !this.responsibleDropdownOpen;
     }
 
@@ -45,7 +45,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                     </div>
                     <div className="row justify-content-center">
                         <label>Описание проекта</label>
-                        <Input onChange={(e) => this.inputDescription(e)}/>
+                        <textarea onChange={(e) => this.inputDescription(e)}/>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-sm-12">
@@ -65,14 +65,14 @@ export class AddProject extends React.Component<IProjectsProps> {
                     </div>
                     <div className="row justify-content-center">
                         <label>Ответственный</label>
-                        <Dropdown isOpen={this.responsibleDropdownOpen} toggle={this.toggleResponsibleDropdownOpen}>
+                        <Dropdown isOpen={this.responsibleDropdownOpen} toggle={this.toggleResponsibleDropdown}>
                             <DropdownToggle/>
                             <DropdownMenu>
                                 {users.map((user, index) => {
                                     return(
                                         <>
                                             {index === 0 && <DropdownItem key={index} header onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>}
-                                            {index !== 0 && <DropdownItem key={index}>{user.firstName + " " + user.lastName}</DropdownItem>}
+                                            {index !== 0 && <DropdownItem key={index} onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>}
                                         </>
                                     );
                                 })}
@@ -97,7 +97,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                         onClick={this.toggleAddProjectWindow}>Создать проект</Button>
                 </div>
             </div>
-        )
+        );
     }
 
     render() {
@@ -111,10 +111,9 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     inputProjectName(event: React.FormEvent<HTMLInputElement>) {
         this.projectName = event.currentTarget.value;
-        console.log("this", this);
     }
 
-    inputDescription(event: React.FormEvent<HTMLInputElement>) {
+    inputDescription(event: React.FormEvent<HTMLTextAreaElement>) {
         this.description = event.currentTarget.value;
     }
 
@@ -131,6 +130,7 @@ export class AddProject extends React.Component<IProjectsProps> {
     }
 
     saveProject() {
-        this.props.store.projectStore.addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson);
+        this.props.store.projectStore
+            .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson);
     }
 }

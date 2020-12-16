@@ -8,10 +8,15 @@ import { TaskStatus } from '../enums/TaskStatus';
 export interface ITaskReadModel
 {
 	id: number;
+	projectId: number;
 	header: string;
 	description: string;
 	startDate: any;
 	deadlineDate: any;
 	taskType: TaskType;
 	status: TaskStatus;
+	priority: number;
+	tester: number;
+	responsible: number;
+	author: number;
 }

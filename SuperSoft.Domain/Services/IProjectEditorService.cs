@@ -7,5 +7,6 @@ namespace SuperSoft.Domain.Services
 		void AttachUserToProject(ProjectUser projectUser);
 		void DeleteProject(int projectId);
 		int AddOrUpdateProject(Project project);
+		int AttachTaskToProject(int taskId, int projectId);
 	}
 }

@@ -14,4 +14,5 @@ export class TaskViewModel
 	public deadlineDate: any;
 	public taskType: TaskType;
 	public status: TaskStatus;
+	public priority: number;
 }

@@ -30,8 +30,7 @@ export class Project extends React.Component<IProjectsProps> {
                     {this.renderProjectDiagram()}
                 </div>
             </div>
-
-        )
+        );
     }
 
     render() {

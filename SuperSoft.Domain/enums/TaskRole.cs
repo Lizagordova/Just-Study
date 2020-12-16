@@ -3,6 +3,7 @@
 	public enum TaskRole
 	{
 		Responsible,
-		Tester
+		Tester,
+		Author
 	}
 }

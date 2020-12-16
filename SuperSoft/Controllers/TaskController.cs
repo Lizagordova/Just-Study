@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
@@ -15,16 +16,19 @@ namespace SuperSoft.Controllers
 		private readonly MapperService _mapper;
 		private readonly ITaskReaderService _taskReader;
 		private readonly ITaskEditorService _taskEditor;
+		private readonly IProjectEditorService _projectEditor;
 
 		public TaskController(
 			MapperService mapper,
 			ITaskReaderService taskReader,
-			ITaskEditorService taskEditor
+			ITaskEditorService taskEditor,
+			IProjectEditorService projectEditor
 			)
 		{
 			_mapper = mapper;
 			_taskReader = taskReader;
 			_taskEditor = taskEditor;
+			_projectEditor = projectEditor;
 		}
 
 		[HttpGet]
@@ -47,6 +51,24 @@ namespace SuperSoft.Controllers
 			return new JsonResult(taskViewModels);
 		}
 
+		[HttpPost]
+		[Route("/addorupdatetask")]
+		public ActionResult AddOrUpdateTask([FromBody]TaskReadModel taskReadModel)
+		{
+			var task = _mapper.Map<TaskReadModel, Task>(taskReadModel);
+			var taskId = _taskEditor.AddOrUpdateTask(task);
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Responsible }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Responsible });
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Tester }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Tester });
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Author }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Author });
+			_projectEditor.AttachTaskToProject(taskId, taskReadModel.ProjectId);
+			task.Id = taskId;
+			var taskViewModel = _mapper.Map<Task, TaskReadModel>(task);
+
+			return new JsonResult(taskViewModel);
+		}
+
+		[HttpPost]
+		[Route("/addorupdate")]
 		private UserTaskViewModel MapUserUserTaskViewModel(UserTask userTask)
 		{
 			var userTaskViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);
