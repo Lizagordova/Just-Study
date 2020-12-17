@@ -15,12 +15,12 @@ namespace SuperSoft.Persistence.Services
 
 		public int AddOrUpdateUser(User user)
 		{
-			throw new System.NotImplementedException();
+			return _userRepository.AddOrUpdateUser(user);
 		}
 
 		public void DeleteUser(int userId)
 		{
-			throw new System.NotImplementedException();
+			_userRepository.DeleteUser(userId);
 		}
 	}
 }

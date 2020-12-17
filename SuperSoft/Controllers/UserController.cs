@@ -46,5 +46,14 @@ namespace SuperSoft.Controllers
 
 			return new JsonResult(userViewModel);
 		}
+
+		[HttpPost]
+		[Route("/deleteuser")]
+		public ActionResult DeleteUser([FromBody]UserReadModel userReadModel)
+		{
+			_userEditor.DeleteUser(userReadModel.Id);
+
+			return new OkResult();
+		}
 	}
 }

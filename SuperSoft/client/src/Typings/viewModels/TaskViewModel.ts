@@ -4,6 +4,7 @@
 
 import { TaskType } from '../enums/TaskType';
 import { TaskStatus } from '../enums/TaskStatus';
+import { TaskPriority } from '../enums/TaskPriority';
 
 export class TaskViewModel
 {
@@ -14,5 +15,5 @@ export class TaskViewModel
 	public deadlineDate: any;
 	public taskType: TaskType;
 	public status: TaskStatus;
-	public priority: number;
+	public priority: TaskPriority;
 }

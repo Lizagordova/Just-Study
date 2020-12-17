@@ -119,7 +119,7 @@ export class Project extends React.Component<IProjectsProps> {
                     </div>
                 </div>
                 <div className="row justify-content-center">
-                    <Tasks store={this.props.store}/>
+                    {this.renderTasksMenu()}
                 </div>
             </div>
             </>

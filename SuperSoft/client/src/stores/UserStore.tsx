@@ -1,5 +1,6 @@
 ﻿import { UserViewModel } from "../Typings/viewModels/UserViewModel";
 import {makeObservable, observable} from "mobx";
+import {UserReadModel} from "../Typings/viewModels/UserReadModel";
 
 class UserStore {
     currentUser: UserViewModel;
@@ -18,10 +19,7 @@ class UserStore {
             .then((user) => {
                 this.currentUser = user
             });
-        this.getUsers()
-            .then((users) => {
-                this.users = users;
-            });
+        this.getUsers();
     }
 
     async getCurrentUser(): Promise<UserViewModel> {
@@ -29,9 +27,29 @@ class UserStore {
         return await response.json();
     }
 
-    async getUsers(): Promise<UserViewModel[]> {
+    async getUsers() {
         const response = await fetch("/getusers");
-        return await response.json();
+        this.users = await response.json();
+    }
+
+    async deleteUser(userId: number) {
+        const response = await fetch("/deleteuser", {
+            method: "POST",
+            body: JSON.stringify({userId: userId})
+        });
+        if(response.status === 200) {
+            this.getUsers();
+        }
+    }
+
+    async addOrUpdateUser(user: UserReadModel) {
+        const response = await fetch("/addorupdateuser", {
+            method: "POST",
+            body: JSON.stringify({id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, password: user.password})
+        });
+        if(response.status === 200) {
+            this.getUsers();
+        }
     }
 }
 

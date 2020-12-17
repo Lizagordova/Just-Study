@@ -4,6 +4,7 @@
 
 import { TaskType } from '../enums/TaskType';
 import { TaskStatus } from '../enums/TaskStatus';
+import { TaskPriority } from '../enums/TaskPriority';
 
 export interface ITaskReadModel
 {
@@ -15,7 +16,7 @@ export interface ITaskReadModel
 	deadlineDate: any;
 	taskType: TaskType;
 	status: TaskStatus;
-	priority: number;
+	priority: TaskPriority;
 	tester: number;
 	responsible: number;
 	author: number;
