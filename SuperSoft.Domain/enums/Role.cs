@@ -2,6 +2,9 @@
 {
 	public enum Role
 	{
-		
+		Developer,
+		Tester,
+		Marketolog,
+		Accounter
 	}
 }

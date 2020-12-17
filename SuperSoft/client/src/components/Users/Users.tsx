@@ -2,7 +2,10 @@
 import { IUsersProps } from "./IUsersProps";
 import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 import { Table } from "reactstrap";
+import { observer } from "mobx-react";
+import { User } from "./User";
 
+@observer
 export class  Users extends React.Component<IUsersProps> {
     renderUsers(users: UserViewModel[]) {
         return(
@@ -18,13 +21,8 @@ export class  Users extends React.Component<IUsersProps> {
                 <tbody>
                     {users.map(user => {
                         return(
-                            <tr>
-                                <th>{user.id}</th>
-                                <th>{user.firstName} {user.lastName}</th>
-                                <th>{user.email}</th>
-                                <th>{user.role}</th>
-                            </tr>
-                        )
+                           <User store={this.props.store} currentUser={user}/>
+                        );
                     })}
                 </tbody>
             </Table>

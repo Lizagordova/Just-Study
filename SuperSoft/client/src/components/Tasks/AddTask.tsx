@@ -44,7 +44,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
     renderResponsibleDropdown() {
         let users = this.props.store.userStore.users;
         return(
-            <Dropdown isOpen={this.responsibleDropdownOpen} toggle={this.toggleResponsibleDropdown}>
+            <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
                 <DropdownToggle />
                 <DropdownMenu>
                     {users.map((user, index) => {
@@ -65,7 +65,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
     renderTesterDropdown() {
         let users = this.props.store.userStore.users;
         return(
-            <Dropdown isOpen={this.testerDropdownOpen} toggle={this.toggleTesterDropdown}>
+            <Dropdown isOpen={this.testerDropdownOpen} toggle={() => this.toggleTesterDropdown()}>
                 <DropdownToggle />
                 <DropdownMenu>
                     {users.map((user, index) => {
@@ -91,7 +91,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 size="lg"
                 centered
                 aria-labelledby="contained-modal-title-vcenter"
-                toggle={this.toggleAddTaskWindow}>
+                toggle={() => this.toggleAddTaskWindow()}>
                 <Modal.Header closeButton>СОЗДАНИЕ ЗАДАЧИ</Modal.Header>
                 <Modal.Body>
                     <div className="row justify-content-center">

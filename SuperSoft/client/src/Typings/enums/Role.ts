@@ -3,5 +3,8 @@
 //     the code is regenerated.
 
 export enum Role { 
-
+	Developer = 0, 
+	Tester = 1, 
+	Marketolog = 2, 
+	Accounter = 3
 }

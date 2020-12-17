@@ -41,9 +41,12 @@
 		<None Include="client\src\components\Tasks\AddTask.tsx" />
 		<None Include="client\src\components\Tasks\IAddTasksProps.tsx" />
 		<None Include="client\src\components\Tasks\ITasksProps.tsx" />
+		<None Include="client\src\components\Users\IUserProps.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />
+		<None Include="client\src\components\Users\User.tsx" />
 		<None Include="client\src\components\Users\Users.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
+		<None Include="client\src\functions\getRoles.tsx" />
 		<None Include="client\src\stores\CommentsStore.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
@@ -62,6 +65,7 @@
 
 	<ItemGroup>
 	  <Folder Include="client\src\components\Authorization" />
+	  <Folder Include="client\src\functions" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
