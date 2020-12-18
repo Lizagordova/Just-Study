@@ -6,7 +6,9 @@ import { Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, But
 import Calendar from "react-calendar";
 import { TaskType } from "../../Typings/enums/TaskType";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { observer } from "mobx-react";
 
+@observer
 export class AddTask extends React.Component<IAddTasksProps> {
     addTaskWindowOpen: boolean;
     responsibleDropdownOpen: boolean;

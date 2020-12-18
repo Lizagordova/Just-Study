@@ -50,6 +50,7 @@ class UserStore {
         if(response.status === 200) {
             this.getUsers();
         }
+        return response.status;
     }
 }
 

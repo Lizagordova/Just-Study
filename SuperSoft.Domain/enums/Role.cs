@@ -2,6 +2,7 @@
 {
 	public enum Role
 	{
+		Administrator,
 		Developer,
 		Tester,
 		Marketolog,

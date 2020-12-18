@@ -27,7 +27,6 @@ export class User extends React.Component<IUserProps> {
     }
 
     renderRoleDropdown() {
-        let rolesEnum = Role;
         return(
             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
                 <DropdownToggle caret>Разработчик</DropdownToggle>
