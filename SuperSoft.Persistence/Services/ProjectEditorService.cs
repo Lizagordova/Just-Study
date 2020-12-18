@@ -15,22 +15,22 @@ namespace SuperSoft.Persistence.Services
 
 		public void AttachUserToProject(ProjectUser projectUser)
 		{
-			throw new System.NotImplementedException();
+			_projectRepository.AttachUserToProject(projectUser);
 		}
 
 		public void DeleteProject(int projectId)
 		{
-			throw new System.NotImplementedException();
+			_projectRepository.DeleteProject(projectId);
 		}
 
 		public int AddOrUpdateProject(Project project)
 		{
-			throw new System.NotImplementedException();
+			return _projectRepository.AddOrUpdateProject(project);
 		}
 
-		public int AttachTaskToProject(int taskId, int projectId)
+		public void AttachTaskToProject(int taskId, int projectId)
 		{
-			throw new System.NotImplementedException();
+			_projectRepository.AttachTaskToProject(taskId, projectId);
 		}
 	}
 }

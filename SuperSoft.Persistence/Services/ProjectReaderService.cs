@@ -21,7 +21,7 @@ namespace SuperSoft.Persistence.Services
 
 		public IReadOnlyCollection<Project> GetProjects()
 		{
-			return new Project[0];
+			return _projectRepository.GetProjects();
 		}
 	}
 }
