@@ -1,5 +1,5 @@
 ﻿import { ProjectViewModel } from "../Typings/viewModels/ProjectViewModel";
-import {makeObservable, observable} from "mobx";
+import { makeObservable, observable } from "mobx";
 
 class ProjectStore {
     projects: ProjectViewModel[];
@@ -37,10 +37,13 @@ class ProjectStore {
         }
     }
 
-    async addNewProject(name: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], responsibleId: number) {
+    async addNewProject(name: string, description: string, startDate: Date, deadlineDate: Date, responsibleId: number) {
         const response = await fetch("/addorupdateproject", {
             method: "POST",
-            body: JSON.stringify({name: name, description: description, startDate: startDate, deadlineDate: deadlineDate, responsiblePerson: responsibleId})
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({name: name, description: description,startDate: startDate, deadlineDate: deadlineDate,responsiblePerson: responsibleId })
         });
         if(response.status === 200) {
             const project = await response.json();

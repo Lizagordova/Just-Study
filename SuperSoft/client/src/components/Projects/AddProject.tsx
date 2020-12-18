@@ -11,8 +11,8 @@ export class AddProject extends React.Component<IProjectsProps> {
     projectName: string = "";
     description: string = "";
     responsibleDropdownOpen: boolean;
-    startDate: Date | Date[];
-    deadline: Date | Date[];
+    startDate: Date;
+    deadline: Date;
     responsiblePerson: number;
 
     constructor() {
@@ -132,7 +132,7 @@ export class AddProject extends React.Component<IProjectsProps> {
         this.description = event.currentTarget.value;
     }
 
-    inputDate(date: Date | Date[], dateType: string) {
+    inputDate(date: Date, dateType: string) {
         if(dateType === "startDate") {
             this.startDate = date;
         } else if(dateType === "deadline") {
@@ -147,5 +147,5 @@ export class AddProject extends React.Component<IProjectsProps> {
     saveProject() {
         this.props.store.projectStore
             .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson);
-    }
+}
 }

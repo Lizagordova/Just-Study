@@ -36,6 +36,9 @@ class UserStore {
     async deleteUser(userId: number) {
         const response = await fetch("/deleteuser", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
             body: JSON.stringify({userId: userId})
         });
         if(response.status === 200) {
@@ -46,6 +49,9 @@ class UserStore {
     async addOrUpdateUser(user: UserReadModel) {
         const response = await fetch("/addorupdateuser", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
             body: JSON.stringify({id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, password: user.password})
         });
         if(response.status === 200) {

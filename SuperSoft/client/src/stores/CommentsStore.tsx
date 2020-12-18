@@ -14,6 +14,9 @@ class CommentsStore {
     async getCurrentTaskComments(taskId: number): Promise<CommentGroupViewModel> {
         const response = await fetch("/getcurrenttaskcommentgroup", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
             body: JSON.stringify({taskId: taskId})
         });
         if(response.status === 200) {
@@ -28,6 +31,9 @@ class CommentsStore {
         user.id = userId;
         const response = await fetch("/addorupdatecomment", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
             body: JSON.stringify({text: text, groupId: this.currentTaskCommentGroup.id, user: user})
         });
         if(response.status === 200) {
