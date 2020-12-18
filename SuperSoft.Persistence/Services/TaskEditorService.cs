@@ -15,17 +15,17 @@ namespace SuperSoft.Persistence.Services
 
 		public void AddOrUpdateUserTask(UserTask userTask)
 		{
-			throw new System.NotImplementedException();
+			_taskRepository.AddOrUpdateUserTask(userTask);
 		}
 
 		public int AddOrUpdateTask(Task task)
 		{
-			throw new System.NotImplementedException();
+			return _taskRepository.AddOrUpdateTask(task);
 		}
 
 		public void DeleteTask(int taskId)
 		{
-			throw new System.NotImplementedException();
+			_taskRepository.DeleteTask(taskId);
 		}
 	}
 }

@@ -25,5 +25,10 @@ namespace SuperSoft.Persistence.Services
 
 			return commentId;
 		}
+
+		public void DeleteComment(int commentId)
+		{
+			_commentRepository.DeleteComment(commentId);
+		}
 	}
 }

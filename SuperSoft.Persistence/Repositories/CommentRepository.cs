@@ -16,6 +16,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetCommentGroupSp = "CommentRepository_GetCommentGroup";
 		private const string AddOrUpdateCommentGroupSp = "CommentRepository_AddOrUpdateCommentGroup";
 		private const string AddOrUpdateCommentSp = "CommentRepository_AddOrUpdateComment";
+		private const string DeleteCommentSp = "CommentRepository_DeleteComment";
 		public CommentRepository(
 			MapperService mapper)
 		{
@@ -81,6 +82,15 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return commentId;
+		}
+
+		public void DeleteComment(int commentId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("commentId", commentId);
+			var conn = DatabaseHelper.OpenConnection();
+			conn.Query(DeleteCommentSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateCommentParam(int groupId, Comment comment)
