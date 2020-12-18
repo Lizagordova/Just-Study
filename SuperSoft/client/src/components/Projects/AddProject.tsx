@@ -2,7 +2,7 @@
 import { IProjectsProps } from "./IProjectsProps";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Label } from "reactstrap";
 import Calendar from "react-calendar";
 
 @observer
@@ -39,6 +39,7 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     renderAddProjectWindow() {
         let users = this.props.store.userStore.users;
+        let user = users[0];
         return(
             <Modal isOpen={this.addProjectWindowOpen} toggle={() => this.toggleAddProjectWindow()}>
                 <ModalHeader>
@@ -46,33 +47,37 @@ export class AddProject extends React.Component<IProjectsProps> {
                 </ModalHeader>
                 <ModalBody>
                     <div className="row justify-content-center">
-                        <label>Название проекта</label>
-                        <Input onChange={(e) => this.inputProjectName(e)}/>
+                        <Label style={{width: "100%"}} align="center">Название проекта</Label>
+                        <Input style={{width: "90%"}} onChange={(e) => this.inputProjectName(e)}/>
                     </div>
-                    <div className="row justify-content-center">
-                        <label>Описание проекта</label>
-                        <textarea onChange={(e) => this.inputDescription(e)}/>
+                    <div className="row justify-content-center" style={{marginTop: "10px"}}>
+                        <Label style={{width: "100%"}} align="center">Описание проекта</Label>
+                        <textarea style={{width: "90%"}} onChange={(e) => this.inputDescription(e)}/>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-sm-12">
-                            <label>Дата начала</label>
-                            <Calendar
-                                value={this.startDate}
-                                onChange={(date) => this.inputDate(date, "startDate")}
-                            />
+                            <Label style={{width: "100%"}} align="center">Дата начала</Label>
+                            <div style={{width: "100%", paddingLeft: "15%"}}>
+                                <Calendar
+                                    value={this.startDate}
+                                    onChange={(date) => this.inputDate(date, "startDate")}
+                                />
+                            </div>
                         </div>
                         <div className="col-lg-6 col-sm-12">
-                            <label>Дедлайн</label>
-                            <Calendar
-                                value={this.deadline}
-                                onChange={(date) => this.inputDate(date, "deadline")}
-                            />
+                            <Label style={{width: "100%"}} align="center">Дедлайн</Label>
+                            <div style={{width: "100%", paddingLeft: "15%"}}>
+                                <Calendar
+                                    value={this.deadline}
+                                    onChange={(date) => this.inputDate(date, "deadline")}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <label>Ответственный</label>
+                        <Label style={{width: "100%"}} align="center">Ответственный</Label>
                         <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                            <DropdownToggle/>
+                            <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                             <DropdownMenu>
                                 {users.map((user, index) => {
                                     return(
@@ -88,7 +93,10 @@ export class AddProject extends React.Component<IProjectsProps> {
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                    onClick={() => this.saveProject()}>СОХРАНИТЬ</Button>
+                        style={{backgroundColor: "#66A5AD", width: "100%"}}
+                        onClick={() => this.saveProject()}>
+                        СОХРАНИТЬ
+                    </Button>
                 </ModalFooter>
             </Modal>
         )
@@ -96,13 +104,14 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     renderButton() {
         return(
-            <div className="row justify-content-center">
-                <div className="col-lg-2 col-lg-offset-10 col-md-4 col-md-offset-8 col-sm-6 col-sm-offet-3 col-xs-12">
+            <>
+                <div className="col-6"/>
+                <div className="col-6">
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
                         onClick={() => this.toggleAddProjectWindow()}>Создать проект</Button>
                 </div>
-            </div>
+            </>
         );
     }
 

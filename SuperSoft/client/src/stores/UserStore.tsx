@@ -11,6 +11,7 @@ class UserStore {
             users: observable,
             currentUser: observable
         });
+        this.users = new Array<UserViewModel>();
         this.setInitialData();
     }
 

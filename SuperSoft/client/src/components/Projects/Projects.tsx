@@ -2,8 +2,8 @@
 import { IProjectsProps } from "./IProjectsProps";
 import { ProjectViewModel } from "../../Typings/viewModels/ProjectViewModel";
 import { Table } from "reactstrap";
-import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
-import { Tab, Nav } from "react-bootstrap";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
+import { Tab, Nav, Alert } from "react-bootstrap";
 import {Project} from "./Project";
 
 export class Projects extends React.Component<IProjectsProps> {
@@ -87,6 +87,9 @@ export class Projects extends React.Component<IProjectsProps> {
         let projects = this.props.store.projectStore.projects;
         return(
             <>
+                {projects.length === 0 && <Alert variant="primary">
+                    <span>Пока нет никаких проектов</span>
+                </Alert>}
                 {this.renderMenu(projects)}
             </>
         )

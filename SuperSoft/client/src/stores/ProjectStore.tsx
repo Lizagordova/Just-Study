@@ -10,6 +10,7 @@ class ProjectStore {
             projects: observable,
             choosenProject: observable
         });
+        this.projects = new Array<ProjectViewModel>();
         this.setInitialData();
     }
 

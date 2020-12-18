@@ -6,6 +6,7 @@ import { MyWorkPage } from "../MyWork/MyWorkPage";
 import { ProjectsPage } from "../Projects/ProjectsPage";
 import { UsersPage } from "../Users/UsersPage";
 import { observer } from  "mobx-react";
+import 'react-calendar/dist/Calendar.css'
 
 @observer
 export class Main extends React.Component<IMainProps> {
