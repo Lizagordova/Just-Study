@@ -35,12 +35,13 @@ class UserStore {
     }
 
     async deleteUser(userId: number) {
+        console.log("userId before delete", userId);
         const response = await fetch("/deleteuser", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({userId: userId})
+            body: JSON.stringify({id: userId})
         });
         if(response.status === 200) {
             this.getUsers();

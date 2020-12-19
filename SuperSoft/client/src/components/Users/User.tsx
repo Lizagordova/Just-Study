@@ -1,10 +1,14 @@
 ﻿import React from "react";
 import { IUserProps } from "./IUserProps";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from "reactstrap";
 import { makeObservable, observable } from "mobx";
 import { Role } from "../../Typings/enums/Role";
-import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
+import { observer } from "mobx-react";
+import {UserReadModel} from "../../Typings/viewModels/UserReadModel";
+import {translateRole} from "../../functions/translater";
 
+@observer
 export class User extends React.Component<IUserProps> {
     roleDropdownOpen: boolean;
     role: Role;
@@ -13,9 +17,13 @@ export class User extends React.Component<IUserProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            roleDropdownOpen: observable
+            roleDropdownOpen: observable,
+            role: observable
         });
-        this.role = Role.Developer;
+    }
+
+    componentDidMount(): void {
+        this.role = this.props.currentUser.role;
     }
 
     toggleRoleDropdown() {
@@ -26,15 +34,16 @@ export class User extends React.Component<IUserProps> {
         this.role = role;
     }
 
-    renderRoleDropdown() {
+    renderRoleDropdown(role: Role) {
         return(
             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
-                <DropdownToggle caret>Разработчик</DropdownToggle>
+                <DropdownToggle caret>{translateRole(role)}</DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem onClick={() => this.chooseUserRole(Role.Developer)}>Разработчик</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseUserRole(Role.Tester)}>Тестировщик</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseUserRole(Role.Accounter)}>Бухгалтер</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseUserRole(Role.Marketolog)}>Маркетолог</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseUserRole(Role.Developer)}>{translateRole(Role.Developer)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseUserRole(Role.Tester)}>{translateRole(Role.Tester)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseUserRole(Role.Administrator)}>{translateRole(Role.Administrator)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseUserRole(Role.Accounter)}>{translateRole(Role.Accounter)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseUserRole(Role.Marketolog)}>{translateRole(Role.Marketolog)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
@@ -46,7 +55,19 @@ export class User extends React.Component<IUserProps> {
                 <th>{user.id}</th>
                 <th>{user.firstName} {user.lastName}</th>
                 <th>{user.email}</th>
-                <th>{this.renderRoleDropdown()}</th>
+                <th>{this.renderRoleDropdown(this.role)}</th>
+                <th>
+                    <div className="row justify-content-center">
+                        <Button color="success" 
+                            className="controlButton"
+                            onClick={() => this.updateUser()}>СОХРАНИТЬ</Button>
+                    </div>
+                    <div className="row justify-content-center">
+                        <Button color="danger"
+                            className="controlButton"
+                            onClick={() => this.deleteUser()}>УДАЛИТЬ</Button>
+                    </div>
+                </th>
             </tr>
         );
     }
@@ -56,5 +77,20 @@ export class User extends React.Component<IUserProps> {
         return(
             <>{this.renderUser(user)}</>
         );
+    }
+
+    updateUser() {
+        let currentUser = this.props.currentUser;
+        let user = new UserReadModel();
+        user.id = currentUser.id;
+        user.role = this.role;
+        user.firstName = currentUser.firstName;
+        user.lastName = currentUser.lastName;
+        user.email = currentUser.email;
+        this.props.store.userStore.addOrUpdateUser(user);
+    }
+
+    deleteUser() {
+        this.props.store.userStore.deleteUser(this.props.currentUser.id);
     }
 }

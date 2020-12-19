@@ -45,8 +45,10 @@ namespace SuperSoft.Persistence.Repositories
 
 		public void DeleteUser(int userId)
 		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userId);
 			var conn = DatabaseHelper.OpenConnection();
-			conn.Query(DeleteUserSp, commandType: CommandType.StoredProcedure);
+			conn.Query(DeleteUserSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
 

@@ -16,6 +16,7 @@ export class  Users extends React.Component<IUsersProps> {
                         <th>Имя Фамилия</th>
                         <th>Email</th>
                         <th>Роль</th>
+                        <th>Управление</th>
                     </tr>
                 </thead>
                 <tbody>
