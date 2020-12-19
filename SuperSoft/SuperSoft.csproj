@@ -21,6 +21,7 @@
 		<Content Include="client\src\styles\common.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Comments\AddComment.tsx" />
 		<None Include="client\src\components\Comments\Comments.tsx" />
 		<None Include="client\src\components\Comments\ICommentsProps.tsx" />
@@ -64,10 +65,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SuperSoft.Persistence\SuperSoft.Persistence.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="client\src\components\Authorization" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,32 +1,34 @@
 ﻿import { UserViewModel } from "../Typings/viewModels/UserViewModel";
-import {makeObservable, observable} from "mobx";
-import {UserReadModel} from "../Typings/viewModels/UserReadModel";
+import { action, makeObservable, observable } from "mobx";
+import { UserReadModel } from "../Typings/viewModels/UserReadModel";
 
 class UserStore {
     currentUser: UserViewModel;
     users: UserViewModel[];
+    authorizationRequired: boolean = true;
 
     constructor() {
         makeObservable(this, {
             users: observable,
-            currentUser: observable
+            currentUser: observable,
+            authorizationRequired: observable
         });
         this.users = new Array<UserViewModel>();
         this.setInitialData();
     }
 
     setInitialData() {
-        this.getCurrentUser()
-            .then((user) => {
-                console.log("user", user);
-                this.currentUser = user;
-            });
+        this.getCurrentUser();
         this.getUsers();
     }
 
-    async getCurrentUser(): Promise<UserViewModel> {
+    async getCurrentUser() {
         const response = await fetch("/getcurrentuser");
-        return await response.json();
+        if(response.status === 200) {
+            this.currentUser = await response.json();
+        } else {
+            this.authorizationRequired = true;
+        }
     }
 
     async getUsers() {
@@ -35,7 +37,6 @@ class UserStore {
     }
 
     async deleteUser(userId: number) {
-        console.log("userId before delete", userId);
         const response = await fetch("/deleteuser", {
             method: "POST",
             headers: {
@@ -60,6 +61,11 @@ class UserStore {
             this.getUsers();
         }
         return response.status;
+    }
+
+    @action
+    authorizationRequire(required: boolean) {
+        this.authorizationRequired = required;
     }
 }
 

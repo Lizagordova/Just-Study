@@ -18,6 +18,8 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetUsersSp = "UserRepository_GetUsers";
 		private const string AddOrUpdateUserSp = "UserRepository_AddOrUpdateUser";
 		private const string DeleteUserSp = "UserRepository_DeleteUser";
+		private const string GetUserInfoSp = "UserRepository_GetUserInfo";
+		private const string AuthorizationSp = "UserRepozitory_Authorization";
 		public UserRepository(MapperService mapper)
 		{
 			_mapper = mapper;
@@ -50,6 +52,29 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			conn.Query(DeleteUserSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
+		}
+
+		public User GetUserInfo(int userId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userId);
+			var conn = DatabaseHelper.OpenConnection();
+			var userUdt = conn.Query<UserUdt>(GetUserInfoSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+			var user = _mapper.Map<UserUdt, User>(userUdt);
+
+			return user;
+		}
+
+		public bool Authorization(string email, string password)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("email", email);
+			param.Add("password", password);
+			var conn = DatabaseHelper.OpenConnection();
+			var exist = conn.Query<bool>(AuthorizationSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+			return exist;
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateUserParam(User user)

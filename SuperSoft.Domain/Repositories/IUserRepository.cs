@@ -8,5 +8,7 @@ namespace SuperSoft.Domain.Repositories
 		IReadOnlyCollection<User> GetUsers();
 		int AddOrUpdateUser(User user);
 		void DeleteUser(int userId);
+		User GetUserInfo(int userId);
+		bool Authorization(string email, string password);
 	}
 }

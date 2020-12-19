@@ -47,8 +47,6 @@ class ProjectStore {
         });
         if(response.status === 200) {
             const project = await response.json();
-            console.log("new Project", project);
-            console.log("this projects", this.projects);
             this.getProjects();
         }
 

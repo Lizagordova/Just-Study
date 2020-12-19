@@ -18,5 +18,15 @@ namespace SuperSoft.Persistence.Services
 		{
 			return _userRepository.GetUsers();
 		}
+
+		public User GetUserInfo(int userId)
+		{
+			return _userRepository.GetUserInfo(userId);
+		}
+
+		public bool Authorization(string email, string password)
+		{
+			return _userRepository.Authorization(email, password);
+		}
 	}
 }
