@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,7 @@ namespace SuperSoft
 		{
 			services.AddControllersWithViews();
 			services.AddMvc();
+			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();
 			services.AddSingleton<ICommentRepository, CommentRepository>();
@@ -67,6 +69,7 @@ namespace SuperSoft
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseSpaStaticFiles();
+			app.UseSession();
 
 			app.UseRouting();
 

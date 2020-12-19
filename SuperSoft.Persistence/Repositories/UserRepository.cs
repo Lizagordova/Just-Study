@@ -20,7 +20,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string DeleteUserSp = "UserRepository_DeleteUser";
 		private const string GetUserInfoSp = "UserRepository_GetUserInfo";
 		private const string AuthorizationSp = "UserRepozitory_Authorization";
-		private const string GetUserInfoWithAuthorizationSp = "UserRepozitory_GetUserInfoWithAuthorization";
+		private const string GetUserInfoWithAuthorizationSp = "UserRepository_GetUserInfoWithAuthorization";
 		public UserRepository(MapperService mapper)
 		{
 			_mapper = mapper;
