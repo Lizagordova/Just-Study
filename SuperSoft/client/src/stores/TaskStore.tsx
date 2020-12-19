@@ -14,6 +14,7 @@ class TaskStore {
             currentUserTasks: observable,
             currentProjectTasks: observable
         });
+        this.currentProjectTasks = new Array<TaskViewModel>();
         this.setInitialData();
     }
 

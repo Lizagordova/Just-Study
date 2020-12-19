@@ -2,23 +2,22 @@
 import { makeObservable, observable } from "mobx";
 
 class ProjectStore {
-    projects: ProjectViewModel[];
-    choosenProject: ProjectViewModel;
+    public projects: ProjectViewModel[];
+    public choosenProject: ProjectViewModel;
 
     constructor() {
         makeObservable(this, {
             projects: observable,
             choosenProject: observable
         });
-        this.projects = new Array<ProjectViewModel>();
+        this.projects = new Array<ProjectViewModel>(0);
+        this.choosenProject = new ProjectViewModel();
         this.setInitialData();
     }
 
     setInitialData() {
-        console.log("1");
         this.getProjects()
             .then((projects) => {
-                console.log("project", projects);
                 this.projects = projects;
                 this.choosenProject = projects[0];
             });
@@ -28,7 +27,7 @@ class ProjectStore {
         this.choosenProject = project;
     }
 
-    async getProjects() {
+    async getProjects(): Promise<ProjectViewModel[]> {
         const response = await fetch("/getprojects");
         if(response.status === 200) {
             return await response.json();
@@ -43,11 +42,13 @@ class ProjectStore {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({name: name, description: description,startDate: startDate, deadlineDate: deadlineDate,responsiblePerson: responsibleId })
+            body: JSON.stringify({ name: name, description: description,startDate: startDate, deadlineDate: deadlineDate, responsiblePerson: responsibleId })
         });
         if(response.status === 200) {
             const project = await response.json();
-            this.projects.push(project);
+            console.log("new Project", project);
+            console.log("this projects", this.projects);
+            this.getProjects();
         }
 
         return response.status;

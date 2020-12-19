@@ -6,19 +6,30 @@ import { Tasks } from "../Tasks/Tasks";
 import { ProjectViewModel } from "../../Typings/viewModels/ProjectViewModel";
 import { Card, CardText, CardTitle } from "reactstrap";
 import classnames from "classnames";
-import { MyTasks } from "../MyWork/MyTasks";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import { Col, Nav, NavItem, Row, TabContent, TabPane, NavLink } from "reactstrap";
-import {action, makeObservable, observable} from "mobx";
+import { Col, Nav, NavItem, Row, TabContent, TabPane, NavLink, Alert } from "reactstrap";
+import { action, makeObservable, observable } from "mobx";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
+import { renderSpinner } from "../../functions/renderSpinner";
+import { observer } from "mobx-react";
 
+@observer
 export class Project extends React.Component<IProjectsProps> {
     activeTab: string = "1";
+    loaded: boolean;
+
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            activeTab: observable
+            activeTab: observable,
+            loaded: observable
         });
+    }
+
+    componentDidMount(): void {
+        this.props.store.taskStore.getTasks(this.props.store.projectStore.choosenProject.id)
+            .then(() => this.loaded = true);
     }
 
     renderProjectDiagram() {
@@ -27,14 +38,35 @@ export class Project extends React.Component<IProjectsProps> {
         );
     }
 
+    getResponsible(responsibleId: number) {
+        let responsible = this.props.store.userStore.users.filter(u => u.id === responsibleId)[0];
+        if(responsible === undefined) {
+            return undefined;
+        } else {
+            return responsible;
+        }
+    }
+
+    renderResponsible(responsible: UserViewModel | undefined) {
+        if(responsible === undefined) {
+            return(
+                <Alert>Руководитель не выбран</Alert>
+            );
+        } else {
+            return(
+                <CardText>Руководитель: <span>{responsible?.firstName} {responsible?.lastName}</span></CardText>
+            )
+        }
+    }
+
     renderProjectInfo(project: ProjectViewModel) {
-        let responsible = this.props.store.userStore.users.filter(u => u.id === project.responsiblePerson)[0];
+        let responsible = this.getResponsible(project.responsiblePerson);
         return (
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <Card>
-                        <CardTitle><strong>{project.name}</strong></CardTitle>
-                        <CardText>Руководитель: {responsible.firstName} {responsible.lastName}</CardText>
+                        <CardTitle>{project.name}</CardTitle>
+                        {this.renderResponsible(responsible)}
                         <CardText>Дата начала: {project.startDate}</CardText>
                         <CardText>Дедлайн: {project.deadlineDate}</CardText>
                         <CardText>Описание: {project.description}</CardText>
@@ -56,7 +88,6 @@ export class Project extends React.Component<IProjectsProps> {
                             <NavItem>
                                 <NavLink
                                     to="#"
-                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "1"})}
                                     onClick={(e) => this.toggleTab("1")}
                                 >Текущие</NavLink>
@@ -64,14 +95,12 @@ export class Project extends React.Component<IProjectsProps> {
                             <NavItem>
                                 <NavLink
                                     to="#"
-                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "2"})}
                                     onClick={(e) => this.toggleTab("2")}>Законченные</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink
                                     to="#"
-                                    activeStyle={{backgroundColor: "#66A5AD", color: "#FFFFFF"}}
                                     className={classnames({ active: this.activeTab === "3"})}
                                     onClick={(e) => this.toggleTab("3")}>Будущие</NavLink>
                             </NavItem>
@@ -119,7 +148,8 @@ export class Project extends React.Component<IProjectsProps> {
                     </div>
                 </div>
                 <div className="row justify-content-center">
-                    {this.renderTasksMenu()}
+                    {this.loaded && this.renderTasksMenu()}
+                    {!this.loaded && renderSpinner()}
                 </div>
             </div>
             </>

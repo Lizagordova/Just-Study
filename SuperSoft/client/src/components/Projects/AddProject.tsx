@@ -11,9 +11,9 @@ export class AddProject extends React.Component<IProjectsProps> {
     projectName: string = "";
     description: string = "";
     responsibleDropdownOpen: boolean;
-    startDate: Date;
-    deadline: Date;
-    responsiblePerson: number;
+    startDate: Date = new Date();
+    deadline: Date = new Date();
+    responsiblePerson: number = 0;
 
     constructor() {
         // @ts-ignore
