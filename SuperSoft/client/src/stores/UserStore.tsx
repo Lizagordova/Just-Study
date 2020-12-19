@@ -26,6 +26,7 @@ class UserStore {
         const response = await fetch("/getcurrentuser");
         if(response.status === 200) {
             this.currentUser = await response.json();
+            this.authorizationRequired = false;
         } else {
             this.authorizationRequired = true;
         }

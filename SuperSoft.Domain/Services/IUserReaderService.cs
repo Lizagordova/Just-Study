@@ -8,5 +8,6 @@ namespace SuperSoft.Domain.Services
 		IReadOnlyCollection<User> GetUsers();
 		User GetUserInfo(int userId);
 		bool Authorization(string email, string password);
+		User GetUserInfoWithAuthorization(string email, string password);
 	}
 }

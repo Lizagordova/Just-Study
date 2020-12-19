@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services;
@@ -32,6 +33,8 @@ namespace SuperSoft.Controllers
 			var authorized = _userReader.Authorization(userReadModel.Email, userReadModel.Password);
 			if (authorized)
 			{
+				var user = _userReader.GetUserInfoWithAuthorization(userReadModel.Email, userReadModel.Password);
+				SetUserData(user);
 				return new OkResult();
 			}
 			else
@@ -87,6 +90,16 @@ namespace SuperSoft.Controllers
 			_userEditor.DeleteUser(userReadModel.Id);
 
 			return new OkResult();
+		}
+
+		private void SetUserData(User user)
+		{
+			HttpContext.Session.SetInt32("userId", user.Id);
+			HttpContext.Session.SetString("authorized", "true");
+			if (!HttpContext.Request.Cookies.ContainsKey("role"))
+			{
+				HttpContext.Response.Cookies.Append("role", user.Role.ToString());
+			}
 		}
 	}
 }

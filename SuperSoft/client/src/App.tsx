@@ -19,7 +19,6 @@ class App extends Component<Props> {
     render() {
        const { store } = this.props;
        let authorizationRequired = this.props.store.userStore.authorizationRequired;
-       console.log("authorizationRequired", authorizationRequired);
        return(
            <div>
                <BrowserRouter>
