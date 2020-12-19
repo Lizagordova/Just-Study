@@ -1,8 +1,7 @@
 ﻿import React from "react";
 import { IAddTasksProps } from "./IAddTasksProps";
-import { makeObservable, observable } from "mobx";
-import { Modal } from "react-bootstrap";
-import { Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from "reactstrap";
+import { action, makeObservable, observable} from "mobx";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from "reactstrap";
 import Calendar from "react-calendar";
 import { TaskType } from "../../Typings/enums/TaskType";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
@@ -31,6 +30,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         });
     }
 
+    @action
     toggleAddTaskWindow() {
         this.addTaskWindowOpen = !this.addTaskWindowOpen;
     }
@@ -45,9 +45,10 @@ export class AddTask extends React.Component<IAddTasksProps> {
     
     renderResponsibleDropdown() {
         let users = this.props.store.userStore.users;
+        let user = users[0];
         return(
             <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                <DropdownToggle />
+                <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
@@ -66,9 +67,10 @@ export class AddTask extends React.Component<IAddTasksProps> {
 
     renderTesterDropdown() {
         let users = this.props.store.userStore.users;
+        let user = users[0];
         return(
             <Dropdown isOpen={this.testerDropdownOpen} toggle={() => this.toggleTesterDropdown()}>
-                <DropdownToggle />
+                <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
@@ -94,54 +96,61 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 centered
                 aria-labelledby="contained-modal-title-vcenter"
                 toggle={() => this.toggleAddTaskWindow()}>
-                <Modal.Header closeButton>СОЗДАНИЕ ЗАДАЧИ</Modal.Header>
-                <Modal.Body>
+                <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                   onClick={() => this.toggleAddTaskWindow()}/>
+                <ModalHeader closeButton>СОЗДАНИЕ ЗАДАЧИ</ModalHeader>
+                <ModalBody>
                     <div className="row justify-content-center">
-                        <Label>Название</Label>
-                        <Input onChange={(e) => this.inputTaskName(e)}/>
+                        <Label style={{width: "100%"}} align="center">Название</Label>
+                        <Input style={{width: "90%"}} onChange={(e) => this.inputTaskName(e)}/>
                     </div>
-                    <div className="row justify-content-center">
-                        <Label>Описание</Label>
-                        <textarea onChange={(e) => this.inputDescription(e)}/>
+                    <div className="row justify-content-center" style={{marginTop: "10px"}}>
+                        <Label style={{width: "100%"}} align="center">Описание</Label>
+                        <textarea style={{width: "90%"}} onChange={(e) => this.inputDescription(e)}/>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-sm-12">
-                            <label>Дата начала</label>
-                            <Calendar
-                                value={this.startDate}
-                                onChange={(date) => this.inputDate(date, "startDate")}
-                            />
+                            <Label style={{width: "100%"}} align="center">Дата начала</Label>
+                            <div style={{width: "100%", paddingLeft: "15%"}}>
+                                <Calendar
+                                    value={this.startDate}
+                                    onChange={(date) => this.inputDate(date, "startDate")}
+                                />
+                            </div>
                         </div>
                         <div className="col-lg-6 col-sm-12">
-                            <label>Дедлайн</label>
-                            <Calendar
-                                value={this.deadline}
-                                onChange={(date) => this.inputDate(date, "deadline")}
-                            />
+                            <Label style={{width: "100%"}} align="center">Дедлайн</Label>
+                            <div style={{width: "100%", paddingLeft: "15%"}}>
+                                <Calendar
+                                    value={this.deadline}
+                                    onChange={(date) => this.inputDate(date, "deadline")}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-4 col-sm-12">
-                            <Label>Ответственный</Label>
+                            <Label style={{width: "100%"}} align="center">Ответственный</Label>
                             {this.renderResponsibleDropdown()}
                         </div>
                         <div className="col-lg-4 col-sm-12">
-                            <Label>Тестировщик</Label>
+                            <Label style={{width: "100%"}} align="center">Тестировщик</Label>
                             {this.renderTesterDropdown()}
                         </div>
                         <div className="col-lg-4 col-sm-12">
-                            <Label>Автор:</Label>
-                            <span>{currentUser.firstName} {currentUser.lastName}</span>
+                            <Label style={{width: "100%"}} align="center">Автор:
+                                <span>{currentUser.firstName} {currentUser.lastName}</span>
+                            </Label>
                         </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
+                </ModalBody>
+                <ModalFooter>
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
                         onClick={() => this.saveTask()}>
                         СОХРАНИТЬ
                     </Button>
-                </Modal.Footer>
+                </ModalFooter>
             </Modal>
         );
     }

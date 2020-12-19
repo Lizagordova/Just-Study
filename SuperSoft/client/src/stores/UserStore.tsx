@@ -18,13 +18,14 @@ class UserStore {
     setInitialData() {
         this.getCurrentUser()
             .then((user) => {
-                this.currentUser = user
+                console.log("user", user);
+                this.currentUser = user;
             });
         this.getUsers();
     }
 
     async getCurrentUser(): Promise<UserViewModel> {
-        const response = await fetch("bundled");
+        const response = await fetch("/getcurrentuser");
         return await response.json();
     }
 

@@ -25,6 +25,16 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
+		[Route("/getcurrentuser")]
+		public ActionResult GetCurrentUser()
+		{
+			var user = new UserViewModel();
+			user.FirstName = "Лиза";
+			user.LastName = "Гордова";
+			return new JsonResult(user);
+		}
+
+		[HttpGet]
 		[Route("/getusers")]
 		public ActionResult GetUsers()
 		{

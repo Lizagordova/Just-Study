@@ -12,6 +12,7 @@ class ProjectStore {
         });
         this.projects = new Array<ProjectViewModel>(0);
         this.choosenProject = new ProjectViewModel();
+        this.choosenProject.id = 0;
         this.setInitialData();
     }
 

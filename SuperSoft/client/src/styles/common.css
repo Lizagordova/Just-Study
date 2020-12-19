@@ -8,3 +8,15 @@
 .nav {
     height: 60px;
 }
+
+@media (max-width: 437px) {
+    .nav {
+        height: 120px;
+    }
+}
+
+.cool-close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

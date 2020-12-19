@@ -9,10 +9,9 @@ import {renderSpinner} from "../../functions/renderSpinner";
 @observer
 export class Projects extends React.Component<IProjectsProps> {
     renderMenu(projects: ProjectViewModel[], choosenProject: ProjectViewModel) {
-        console.log("choosen Project", choosenProject.id);
         // @ts-ignore
         return(
-            <Tab.Container defaultActiveKey={choosenProject.id}>
+            <Tab.Container defaultActiveKey={`${choosenProject.id.toString()}`}>
                 <div className="row justify-content-center">
                     <div className="col-3">
                         <Nav variant="pills" className="flex-column">

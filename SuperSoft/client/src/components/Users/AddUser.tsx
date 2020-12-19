@@ -1,11 +1,12 @@
 ﻿import React from "react";
 import { IUsersProps } from "./IUsersProps";
 import {makeObservable, observable} from "mobx";
-import { Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Input, Label } from "reactstrap";
-import {Alert, Modal} from "react-bootstrap";
+import { Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Alert } from "react-bootstrap";
 import { Role } from "../../Typings/enums/Role";
 import { observer } from "mobx-react";
 import {UserReadModel} from "../../Typings/viewModels/UserReadModel";
+import {translateRole} from "../../functions/translater";
 
 @observer
 export class AddUser extends React.Component<IUsersProps>{
@@ -22,7 +23,8 @@ export class AddUser extends React.Component<IUsersProps>{
         // @ts-ignore
         super();
         makeObservable(this, {
-            addUserWindowOpen: observable
+            addUserWindowOpen: observable,
+            roleDropdownOpen: observable
         });
         this.role = Role.Developer;
     }
@@ -37,20 +39,20 @@ export class AddUser extends React.Component<IUsersProps>{
 
     renderButton() {
         return(
-            <div className="row justify-content-center">
-                <div className="col-lg-2 col-lg-offset-10 col-md-4 col-md-offset-8 col-sm-6 col-sm-offet-3 col-xs-12">
+            <>
+                <div className="col-6">
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
                         onClick={() => this.toggleAddUserWindow()}>Добавить пользователя</Button>
                 </div>
-            </div>
+            </>
         );
     }
 
     renderRoleDropdown() {
         return(
             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
-                <DropdownToggle caret>Разработчик</DropdownToggle>
+                <DropdownToggle caret>{translateRole(this.role)}</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={() => this.chooseRole(Role.Developer)}>Разработчик</DropdownItem>
                     <DropdownItem onClick={() => this.chooseRole(Role.Tester)}>Тестировщик</DropdownItem>
@@ -64,9 +66,12 @@ export class AddUser extends React.Component<IUsersProps>{
     renderAddUserWindow() {
         return(
             <Modal
-                isOpen={this.addUserWindowOpen}>
-                <Modal.Header closeButton>ДОБАВЛЕНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ</Modal.Header>
-                <Modal.Body>
+                isOpen={this.addUserWindowOpen}
+                toggle={() => this.toggleAddUserWindow()}>
+                <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                onClick={() => this.toggleAddUserWindow()}/>
+                <ModalHeader closeButton>ДОБАВЛЕНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ</ModalHeader>
+                <ModalBody>
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-md-6 col-sm-12">
                             <Label>Имя</Label>
@@ -86,14 +91,14 @@ export class AddUser extends React.Component<IUsersProps>{
                             {this.renderRoleDropdown()}
                         </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
+                </ModalBody>
+                <ModalFooter>
                     <Button
                         style={{backgroundColor: "#66A5AD", width: "100%"}}
                         onClick={() => this.saveUser()}>
                         СОХРАНИТЬ
                     </Button>
-                </Modal.Footer>
+                </ModalFooter>
             </Modal>
         )
     }

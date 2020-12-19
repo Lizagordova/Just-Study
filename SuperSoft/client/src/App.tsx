@@ -4,10 +4,10 @@ import { RootStore } from "./stores/RootStore";
 import { Main } from "./components/Main/Main";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-social/bootstrap-social.css';
+import 'font-awesome/css/font-awesome.min.css';
 import './styles/common.css';
 import { BrowserRouter } from "react-router-dom";
-import { observer, Provider } from  "mobx-react";
-import {observable} from "mobx";
+import { observer } from  "mobx-react";
 
 interface Props {
     store: RootStore;

@@ -6,11 +6,11 @@ import {AddUser} from "./AddUser";
 export class  UsersPage extends React.Component<IUsersProps> {
     render() {
         return(
-            <div className="container-fluid">
+            <div className="container" style={{marginTop: "30px"}}>
                 <div className="row justify-content-center">
                     <AddUser store={this.props.store}/>
                 </div>
-                <div className="row justify-content-center">
+                <div className="row justify-content-center" style={{marginTop: "20px"}}>
                     <Users store={this.props.store}/>
                 </div>
             </div>

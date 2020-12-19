@@ -49,6 +49,7 @@
 		<None Include="client\src\components\Users\UsersPage.tsx" />
 		<None Include="client\src\functions\getRoles.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
+		<None Include="client\src\functions\translateRole.tsx" />
 		<None Include="client\src\stores\CommentsStore.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />

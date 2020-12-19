@@ -42,6 +42,8 @@ export class AddProject extends React.Component<IProjectsProps> {
         let user = users[0];
         return(
             <Modal isOpen={this.addProjectWindowOpen} toggle={() => this.toggleAddProjectWindow()}>
+                <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                   onClick={() => this.toggleAddProjectWindow()}/>
                 <ModalHeader>
                     СОЗДАНИЕ ПРОЕКТА
                 </ModalHeader>
