@@ -1,5 +1,6 @@
 ﻿import { ProjectViewModel } from "../Typings/viewModels/ProjectViewModel";
 import { makeObservable, observable } from "mobx";
+import {ProjectRole} from "../Typings/enums/ProjectRole";
 
 class ProjectStore {
     public projects: ProjectViewModel[];
@@ -51,6 +52,16 @@ class ProjectStore {
         }
 
         return response.status;
+    }
+    
+    async attachUserToProject(projectId: number, userId: number, projectRole: ProjectRole) {
+        const response = await fetch("/attachusertoproject", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({userId: userId, role: projectRole, projectId: projectId})
+        });
     }
 }
 

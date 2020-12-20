@@ -46,5 +46,17 @@ namespace SuperSoft.Controllers
 
 			return new JsonResult(projectViewModel);
 		}
+
+		[HttpPost]
+		[Route("/attachusertoproject")]
+		public ActionResult AttachUserToProject([FromBody]ProjectUserReadModel projectUserReadModel)
+		{
+			var projectUser = _mapper.Map<ProjectUserReadModel, ProjectUser>(projectUserReadModel);
+			projectUser.Project = new Project() { Id = projectUserReadModel.ProjectId };
+			projectUser.User = new User() {  Id = projectUserReadModel.UserId};
+			_projectEditor.AttachUserToProject(projectUser);
+
+			return new OkResult();
+		}
 	}
 }

@@ -17,8 +17,10 @@ export class Projects extends React.Component<IProjectsProps> {
                         <Nav variant="pills" className="flex-column">
                             {projects.map((project) => {
                                 return (
-                                    <Nav.Item key={project.id} onClick={() => {this.props.store.projectStore.setChoosenProject(project)}}>
-                                        <Nav.Link eventKey={project.id}>{project.name}</Nav.Link>
+                                    <Nav.Item key={project.id} 
+                                         onClick={() => {this.props.store.projectStore.setChoosenProject(project)}}>
+                                        <Nav.Link eventKey={project.id}
+                                             style={{backgroundColor: "#07575B", color: "#fff"}}>{project.name}</Nav.Link>
                                     </Nav.Item>
                                 );
                             })}

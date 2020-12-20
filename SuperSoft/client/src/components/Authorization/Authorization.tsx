@@ -24,7 +24,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
 
     render() {
         return(
-            <div className="container" style={{backgroundColor:"#66A5AD", marginTop: "25%", color: "#fff", fontSize: "1.5em"}}>
+            <div className="container" style={{backgroundColor:"#66A5AD", marginTop: "5%", color: "#fff", fontSize: "1.5em"}}>
                 {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
                     <Alert color="danger">Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
                 </div> }

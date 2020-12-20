@@ -1,13 +1,12 @@
 ﻿import React from "react";
 import { IMyTasksProps } from "./IMyTasksProps";
-import { Table, Modal, ModalBody } from 'reactstrap';
+import { Table, Modal, ModalBody, Alert } from 'reactstrap';
 import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
 import { TaskPriority } from "../../Typings/enums/TaskPriority";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { Task } from "../Tasks/Task";
-import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 
 @observer
 export class MyTasks extends React.Component<IMyTasksProps> {
@@ -20,18 +19,6 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         makeObservable(this, {
             taskOpen: observable
         });
-    }
-
-    getTaskStatusTranslit(taskStatus: TaskStatus): string {
-        if(taskStatus === TaskStatus.InProgress) {
-            return "Текущие";
-        } else if(taskStatus === TaskStatus.Completed) {
-            return "Законченные";
-        } else if(taskStatus === TaskStatus.Future) {
-            return "Будущие";
-        } else {
-            return "Текущие";
-        }
     }
 
     renderStatusDropdown(status: TaskStatus) {
@@ -56,16 +43,18 @@ export class MyTasks extends React.Component<IMyTasksProps> {
 
     renderMyTasks(tasks: TaskViewModel[]) {
         return(
-            <Table bordered style={{backgroundColor: "#C4DFE6", color:"003b46"}}>
-                <thead>
+            <Table bordered style={{backgroundColor: "#C4DFE6", color:"003b46", marginTop: "2%"}}>
+                {tasks.length === 0 && <Alert color="primary">Задач пока нет!!!</Alert>}
+                {tasks.length !== 0 && <thead>
                     <tr>
                         <th>Номер</th>
                         <th>Задача</th>
                         <th>Дедлайн</th>
                         <th>Статус</th>
+                        <th>Приоритет</th>
                     </tr>
-                </thead>
-                <tbody>
+                </thead>}
+                {tasks.length !== 0 && <tbody>
                     {tasks.map((task) => {
                         return(
                             <tr key={task.id} onClick={() => this.taskOpenToggle(task)}>
@@ -77,9 +66,9 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                             </tr>
                         );
                     })}
-                </tbody>
+                </tbody>}
             </Table>
-        )
+        );
     }
 
     renderTask() {
@@ -98,7 +87,6 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         let tasks = this.filterTasks(this.props.tasksStatus);
         return(
             <>
-                <label>{this.getTaskStatusTranslit(this.props.tasksStatus)}</label>
                 {tasks !== undefined && this.renderMyTasks(tasks)}
                 {tasks === undefined && <div><span>Задач пока нет:)</span></div>}
                 {this.taskOpen && this.renderTask()}

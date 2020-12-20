@@ -17,13 +17,13 @@ export class Main extends React.Component<IMainProps> {
                     <CardHeader>
                         <Nav tabs className="nav">
                               <NavItem>
-                                  <NavLink to="/mywork" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>МОЯ РАБОТА</NavLink>
+                                  <NavLink to="/mywork" exact className="nav-link" style={{fontSize: "1.5em"}} activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>МОЯ РАБОТА</NavLink>
                               </NavItem>
                               <NavItem>
-                                  <NavLink to="/projects" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>ПРОЕКТЫ</NavLink>
+                                  <NavLink to="/projects" exact className="nav-link" style={{fontSize: "1.5em"}} activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>ПРОЕКТЫ</NavLink>
                               </NavItem>
                               <NavItem>
-                                  <NavLink to="/users" exact className="nav-link" activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>ПОЛЬЗОВАТЕЛИ</NavLink>
+                                  <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}} activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>ПОЛЬЗОВАТЕЛИ</NavLink>
                               </NavItem>
                         </Nav>
                     </CardHeader>

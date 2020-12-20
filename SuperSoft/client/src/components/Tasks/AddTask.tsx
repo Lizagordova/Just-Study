@@ -235,12 +235,10 @@ export class AddTask extends React.Component<IAddTasksProps> {
 
     renderButton() {
         return(
-            <div className="row justify-content-center">
-                <div className="col-lg-2 col-lg-offset-10 col-md-4 col-md-offset-8 col-sm-6 col-sm-offet-3 col-xs-12">
-                    <Button
-                        style={{backgroundColor: "#66A5AD", width: "100%"}}
-                        onClick={() => this.toggleAddTaskWindow()}>Создать задачу</Button>
-                </div>
+            <div className="row justify-content-center" style={{marginTop: "5%"}}>
+                <Button
+                    style={{backgroundColor: "#66A5AD", width: "100%"}}
+                    onClick={() => this.toggleAddTaskWindow()}>Создать задачу</Button>
             </div>
         );
     }
@@ -279,6 +277,6 @@ export class AddTask extends React.Component<IAddTasksProps> {
     }
 
     saveTask() {
-        this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester.id, this.responsiblePerson.id, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id,)
+        this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester.id, this.responsiblePerson.id, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id)
     }
 }

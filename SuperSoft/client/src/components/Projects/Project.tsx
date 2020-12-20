@@ -4,7 +4,7 @@ import { AddTask } from "../Tasks/AddTask";
 import { AddUserToProject } from "./AddUserToProject";
 import { Tasks } from "../Tasks/Tasks";
 import { ProjectViewModel } from "../../Typings/viewModels/ProjectViewModel";
-import { Card, CardText, CardTitle } from "reactstrap";
+import { Card, CardText, CardTitle, Label } from "reactstrap";
 import classnames from "classnames";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
 import { Col, Nav, NavItem, Row, TabContent, TabPane, NavLink, Alert } from "reactstrap";
@@ -64,12 +64,12 @@ export class Project extends React.Component<IProjectsProps> {
         return (
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <Card>
-                        <CardTitle>{project.name}</CardTitle>
+                    <Card style={{backgroundColor: "#66A5AD", color: "#fff"}}>
+                        <CardTitle style={{fontSize: "1.3em"}}>{project.name}</CardTitle>
                         {this.renderResponsible(responsible)}
-                        <CardText>Дата начала: {project.startDate}</CardText>
-                        <CardText>Дедлайн: {project.deadlineDate}</CardText>
-                        <CardText>Описание: {project.description}</CardText>
+                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дата начала:</Label> {project.startDate}</CardText>
+                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дедлайн:</Label> {project.deadlineDate}</CardText>
+                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Описание:</Label> {project.description}</CardText>
                     </Card>
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -137,7 +137,7 @@ export class Project extends React.Component<IProjectsProps> {
     render() {
         return (
             <>
-            <div className="container">
+            <div className="container-fluid">
                 {this.renderProjectInfo(this.props.store.projectStore.choosenProject)}
                 <div className="row justify-content-center">
                     <div className="col-lg-3 col-lg-offset-4">

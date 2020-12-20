@@ -16,12 +16,12 @@ export class  ProjectsPage extends React.Component<IProjectsProps> {
 
     render() {
         return(
-            <div className="container" style={{marginTop: "30px"}}>
+            <div className="container-fluid" style={{marginTop: "30px"}}>
                 <div className="row justify-content-center">
                     <AddProject store={this.props.store} />
                 </div>
                 <div className="row justify-content-center" style={{marginTop: "20px"}}>
-                    <div className="col-12">
+                    <div className="col-lg-12 col-sm-12">
                         <Projects store={this.props.store} />
                     </div>
                 </div>

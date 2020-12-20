@@ -4,8 +4,8 @@ namespace SuperSoft.ReadModels
 {
 	public class ProjectUserReadModel
 	{
-		public UserReadModel User { get; set; }
-		public ProjectReadModel Project { get; set; }
+		public int UserId { get; set; }
+		public int ProjectId { get; set; }
 		public ProjectRole Role { get; set; }
 	}
 }

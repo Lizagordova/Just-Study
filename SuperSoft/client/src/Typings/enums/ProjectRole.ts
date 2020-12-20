@@ -3,5 +3,5 @@
 //     the code is regenerated.
 
 export enum ProjectRole { 
-
+	Head = 0
 }

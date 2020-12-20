@@ -23,7 +23,7 @@ export class  MyWorkPage extends React.Component<IMyWorkProps> {
             <div style={{marginTop: 35}} className="container-fluid">
             <Row>
                 <Col sm="12">
-                    <Nav tabs>
+                    <Nav tabs style={{fontSize: "1.4em"}}>
                         <NavItem>
                             <NavLink
                                 to="#"
