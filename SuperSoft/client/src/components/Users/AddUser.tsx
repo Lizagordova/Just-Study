@@ -70,6 +70,8 @@ export class AddUser extends React.Component<IUsersProps>{
                 toggle={() => this.toggleAddUserWindow()}>
                 <i className="fa fa-window-close cool-close-button" aria-hidden="true"
                 onClick={() => this.toggleAddUserWindow()}/>
+                {this.saved && <Alert color="success">Всё успешно сохранилось!</Alert>}
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и пользователь не сохранился!</Alert>}
                 <ModalHeader closeButton>ДОБАВЛЕНИЕ НОВОГО ПОЛЬЗОВАТЕЛЯ</ModalHeader>
                 <ModalBody>
                     <div className="row justify-content-center">
@@ -108,8 +110,6 @@ export class AddUser extends React.Component<IUsersProps>{
             <>
                 {this.addUserWindowOpen && this.renderAddUserWindow()}
                 {!this.addUserWindowOpen && this.renderButton()}
-                {this.saved && <Alert>Всё успешно сохранилось!</Alert>}
-                {this.notSaved && <Alert>Что-то пошло не так и пользователь не сохранился!</Alert>}
             </>
         );
     }
@@ -143,6 +143,7 @@ export class AddUser extends React.Component<IUsersProps>{
                 } else {
                     this.notSaved = false;
                     this.saved = true;
+                    this.addUserWindowOpen = false;
                 }
             });
     }

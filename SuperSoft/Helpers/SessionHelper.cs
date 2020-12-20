@@ -11,7 +11,7 @@ namespace SuperSoft.Helpers
 
 		public static string Authorized(HttpContext context)
 		{
-			return context.Request.Cookies["authorized"];
+			return context.Session.GetString("authorized");
 		}
 
 		public static int GetUserId(HttpContext context)

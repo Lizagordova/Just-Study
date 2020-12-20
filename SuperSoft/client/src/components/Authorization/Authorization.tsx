@@ -71,6 +71,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
         if(response.status === 200) {
             this.props.store.userStore.authorizationRequire(false);
             this.props.store.userStore.wrongCredetianalsToggle(false);
+            this.props.store.userStore.getCurrentUser();
         } else {
             this.props.store.userStore.authorizationRequire(true);
             this.props.store.userStore.wrongCredetianalsToggle(true);
