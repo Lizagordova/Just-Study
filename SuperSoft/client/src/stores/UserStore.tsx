@@ -6,12 +6,14 @@ class UserStore {
     currentUser: UserViewModel;
     users: UserViewModel[];
     authorizationRequired: boolean = true;
+    wrongCredetianals: boolean = false;
 
     constructor() {
         makeObservable(this, {
             users: observable,
             currentUser: observable,
-            authorizationRequired: observable
+            authorizationRequired: observable,
+            wrongCredetianals: observable,
         });
         this.users = new Array<UserViewModel>();
         this.setInitialData();
@@ -67,6 +69,11 @@ class UserStore {
     @action
     authorizationRequire(required: boolean) {
         this.authorizationRequired = required;
+    }
+
+    @action
+    wrongCredetianalsToggle(turn: boolean) {
+        this.wrongCredetianals = turn;
     }
 }
 
