@@ -31,7 +31,10 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(dest => dest.Description))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(dest => dest.StartDate))
 					.ForMember(dest => dest.Priority, opt => opt.MapFrom(dest => dest.Priority))
-					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate));
+					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate))
+					.ForMember(dest => dest.Author, opt => opt.Ignore())
+					.ForMember(dest => dest.Tester, opt => opt.Ignore())
+					.ForMember(dest => dest.Responsible, opt => opt.Ignore());
 			});
 		}
 	}

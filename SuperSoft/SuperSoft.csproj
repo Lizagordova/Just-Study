@@ -30,6 +30,8 @@
 		<None Include="client\src\components\Main\MainProps.tsx" />
 		<None Include="client\src\components\MyWork\IMyTasksProps.tsx" />
 		<None Include="client\src\components\MyWork\IMyWorkProps.tsx" />
+		<None Include="client\src\components\MyWork\ITaskProps.tsx" />
+		<None Include="client\src\components\MyWork\MyTask.tsx" />
 		<None Include="client\src\components\MyWork\MyTasks.tsx" />
 		<None Include="client\src\components\MyWork\MyWork.tsx" />
 		<None Include="client\src\components\Projects\AddProject.tsx" />
@@ -42,6 +44,7 @@
 		<None Include="client\src\components\Tasks\AddTask.tsx" />
 		<None Include="client\src\components\Tasks\IAddTasksProps.tsx" />
 		<None Include="client\src\components\Tasks\ITasksProps.tsx" />
+		<None Include="client\src\components\Tasks\Task.tsx" />
 		<None Include="client\src\components\Users\AddUser.tsx" />
 		<None Include="client\src\components\Users\IUserProps.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />

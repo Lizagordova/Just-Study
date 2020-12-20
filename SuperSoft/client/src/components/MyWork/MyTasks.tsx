@@ -1,10 +1,27 @@
 ﻿import React from "react";
 import { IMyTasksProps } from "./IMyTasksProps";
-import { Table } from 'reactstrap';
+import { Table, Modal, ModalBody } from 'reactstrap';
 import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { TaskPriority } from "../../Typings/enums/TaskPriority";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import { Task } from "../Tasks/Task";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 
+@observer
 export class MyTasks extends React.Component<IMyTasksProps> {
+    taskOpen: boolean;
+    taskToRender: TaskViewModel;
+
+    constructor() {
+        // @ts-ignore
+        super();
+        makeObservable(this, {
+            taskOpen: observable
+        });
+    }
+
     getTaskStatusTranslit(taskStatus: TaskStatus): string {
         if(taskStatus === TaskStatus.Current) {
             return "Текущие";
@@ -15,6 +32,18 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         } else {
             return "Текущие";
         }
+    }
+
+    renderStatusDropdown(status: TaskStatus) {
+        return (
+            <></>
+        );
+    }
+
+    renderPriorityDropdown(priority: TaskPriority) {
+        return (
+            <></>
+        );
     }
 
     filterTasks(taskStatus: TaskStatus): TaskViewModel[] {
@@ -37,24 +66,31 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                     </tr>
                 </thead>
                 <tbody>
-                <tr key="1">
-                    <th>id</th>
-                    <th>header</th>
-                    <th>deadlineDate</th>
-                    <th>status</th>
-                </tr>
                     {tasks.map((task) => {
                         return(
-                            <tr key={task.id}>
+                            <tr key={task.id} onClick={() => this.taskOpenToggle(task)}>
                                 <th>{task.id}</th>
                                 <th>{task.header}</th>
                                 <th>{task.deadlineDate}</th>
-                                <th>{task.status}</th>
+                                <th>{this.renderStatusDropdown(task.status)}</th>
+                                <th>{this.renderPriorityDropdown(task.priority)}</th>
                             </tr>
-                        )
+                        );
                     })}
                 </tbody>
             </Table>
+        )
+    }
+
+    renderTask() {
+        return(
+            <Modal
+                isOpen={this.taskOpen}
+                toggle={() => this.taskOpenToggle()}>
+                <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                   onClick={() => this.taskOpenToggle()}/>
+                <Task store={this.props.store} task={this.taskToRender}/>
+            </Modal>
         )
     }
 
@@ -65,7 +101,13 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                 <label>{this.getTaskStatusTranslit(this.props.tasksStatus)}</label>
                 {tasks !== undefined && this.renderMyTasks(tasks)}
                 {tasks === undefined && <div><span>Задач пока нет:)</span></div>}
+                {this.taskOpen && this.renderTask()}
             </>
         );
+    }
+
+    taskOpenToggle(task: TaskViewModel = new TaskViewModel()) {
+        this.taskOpen = !this.taskOpen;
+        this.taskToRender = task;
     }
 }

@@ -1,4 +1,5 @@
-﻿using SuperSoft.Domain.enums;
+﻿using System;
+using SuperSoft.Domain.enums;
 
 namespace SuperSoft.Domain.Models
 {
@@ -7,5 +8,6 @@ namespace SuperSoft.Domain.Models
 		public User User { get; set; }
 		public Task Task { get; set; }
 		public TaskRole Role { get; set; }
+		public DateTime TimeSpent { get; set; }
 	}
 }

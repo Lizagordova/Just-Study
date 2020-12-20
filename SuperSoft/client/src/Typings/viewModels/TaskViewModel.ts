@@ -16,4 +16,7 @@ export class TaskViewModel
 	public taskType: TaskType;
 	public status: TaskStatus;
 	public priority: TaskPriority;
+	public responsible: number;
+	public tester: number;
+	public author: number;
 }

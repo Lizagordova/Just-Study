@@ -60,15 +60,16 @@ namespace SuperSoft.Controllers
 			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Responsible }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Responsible });
 			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Tester }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Tester });
 			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Author }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Author });
-			_projectEditor.AttachTaskToProject(taskId, taskReadModel.ProjectId);
+			if (taskReadModel.ProjectId != 0)
+			{
+				_projectEditor.AttachTaskToProject(taskId, taskReadModel.ProjectId);
+			}
 			task.Id = taskId;
 			var taskViewModel = _mapper.Map<Task, TaskReadModel>(task);
 
 			return new JsonResult(taskViewModel);
 		}
 
-		[HttpPost]
-		[Route("/addorupdate")]
 		private UserTaskViewModel MapUserUserTaskViewModel(UserTask userTask)
 		{
 			var userTaskViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);

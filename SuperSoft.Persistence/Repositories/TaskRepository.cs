@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Dapper;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Persistence.Extensions;
@@ -79,20 +80,36 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var tasksUdt = reader.Read<TaskUdt>();
 			var userTasksUdt = reader.Read<UserTaskUdt>();
-			var userTasks = userTasksUdt
-				.Join(tasksUdt,
-					ut => ut.TaskId,
-					t => t.Id,
+			var userTasks = tasksUdt
+				.GroupJoin(userTasksUdt,
+					ut => ut.Id,
+					t => t.TaskId,
 					MapUserTask)
 				.ToList();
 
 			return userTasks;
 		}
 
-		private UserTask MapUserTask(UserTaskUdt userTaskUdt, TaskUdt taskUdt)
+		private UserTask MapUserTask(TaskUdt taskUdt, IEnumerable<UserTaskUdt> userTaskUdt)
 		{
-			var userTask = _mapper.Map<UserTaskUdt, UserTask>(userTaskUdt);
+			var userTask = new UserTask();
 			userTask.Task = _mapper.Map<TaskUdt, Task>(taskUdt);
+			foreach (var udt in userTaskUdt)
+			{
+				if (udt.Role == (int)TaskRole.Responsible)
+				{
+					userTask.Task.Responsible = udt.UserId;
+					userTask.TimeSpent = udt.TimeSpent;
+				}
+				else if (udt.Role == (int)TaskRole.Tester)
+				{
+					userTask.Task.Tester = udt.UserId;
+				}
+				else if (udt.Role == (int)TaskRole.Author)
+				{
+					userTask.Task.Author = udt.UserId;
+				}
+			}
 
 			return userTask;
 		}

@@ -44,13 +44,13 @@ class TaskStore {
         }
     }
 
-    async addNewTask(projectId: number, header: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], taskType: TaskType, status: TaskStatus, priority: number, tester: number, responsible: number, author: number) {
+    async addOrUpdateTask(header: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], taskType: TaskType, status: TaskStatus, priority: number, tester: number, responsible: number, author: number, id: number = 0, projectId: number = 0) {
         const response = await fetch("/addorupdatetask", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({projectId: projectId, header: header, description: description, startDate: startDate, deadlineDate: deadlineDate, taskType: taskType, status: status, priority: priority, tester: tester, responsible: responsible, author: author})
+            body: JSON.stringify({id: id, projectId: projectId, header: header, description: description, startDate: startDate, deadlineDate: deadlineDate, taskType: taskType, status: status, priority: priority, tester: tester, responsible: responsible, author: author})
         });
         if(response.status === 200) {
             const task = await response.json();

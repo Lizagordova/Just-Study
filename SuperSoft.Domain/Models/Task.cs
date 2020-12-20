@@ -13,5 +13,8 @@ namespace SuperSoft.Domain.Models
 		public TaskType TaskType { get; set; }
 		public TaskStatus Status { get; set; }
 		public TaskPriority Priority { get; set; }
+		public int Responsible { get; set; }
+		public int Tester { get; set; }
+		public int Author { get; set; }
 	}
 }

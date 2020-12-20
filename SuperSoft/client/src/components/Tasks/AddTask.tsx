@@ -201,6 +201,6 @@ export class AddTask extends React.Component<IAddTasksProps> {
     }
 
     saveTask() {
-        this.props.store.taskStore.addNewTask(this.props.store.projectStore.choosenProject.id, this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester, this.responsiblePerson, this.props.store.userStore.currentUser.id)
+        this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester, this.responsiblePerson, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id,)
     }
 }

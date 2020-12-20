@@ -32,7 +32,10 @@ namespace SuperSoft.Services
 					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(src => src.DeadlineDate))
 					.ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType))
 					.ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority))
-					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+					.ForMember(dest => dest.Tester, opt => opt.MapFrom(src => src.Tester))
+					.ForMember(dest => dest.Responsible, opt => opt.MapFrom(src => src.Responsible))
+					.ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author));
 			});
 
 			AddMapping<ProjectTaskReadModel, ProjectTask>(cfg =>
