@@ -23,7 +23,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
     }
 
     getTaskStatusTranslit(taskStatus: TaskStatus): string {
-        if(taskStatus === TaskStatus.Current) {
+        if(taskStatus === TaskStatus.InProgress) {
             return "Текущие";
         } else if(taskStatus === TaskStatus.Completed) {
             return "Законченные";

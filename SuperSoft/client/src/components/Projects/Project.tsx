@@ -109,7 +109,7 @@ export class Project extends React.Component<IProjectsProps> {
                             <TabPane tabId="1">
                                 <Row>
                                     <Col sm="12">
-                                        <Tasks store={this.props.store} status={TaskStatus.Current}/>
+                                        <Tasks store={this.props.store} status={TaskStatus.InProgress}/>
                                     </Col>
                                 </Row>
                             </TabPane>

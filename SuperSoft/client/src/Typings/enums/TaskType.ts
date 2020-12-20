@@ -3,5 +3,6 @@
 //     the code is regenerated.
 
 export enum TaskType { 
-
+	Bug = 0, 
+	Feature = 1
 }

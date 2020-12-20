@@ -1,33 +1,60 @@
 ﻿import React from "react";
-import { IAddTasksProps } from "./IAddTasksProps";
-import { action, makeObservable, observable} from "mobx";
-import { Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from "reactstrap";
+import {IAddTasksProps} from "./IAddTasksProps";
+import {action, makeObservable, observable} from "mobx";
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from "reactstrap";
 import Calendar from "react-calendar";
-import { TaskType } from "../../Typings/enums/TaskType";
-import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import { observer } from "mobx-react";
+import {TaskType} from "../../Typings/enums/TaskType";
+import {TaskStatus} from "../../Typings/enums/TaskStatus";
+import {observer} from "mobx-react";
+import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
+import {TaskPriority} from "../../Typings/enums/TaskPriority";
+import {translatePriority, translateTaskType} from "../../functions/translater";
 
 @observer
 export class AddTask extends React.Component<IAddTasksProps> {
     addTaskWindowOpen: boolean;
     responsibleDropdownOpen: boolean;
     testerDropdownOpen: boolean;
+    taskTypeDropdownOpen: boolean;
+    priorityDropdownOpen: boolean;
     taskName: string;
     description: string;
     startDate: Date | Date[];
     deadline: Date | Date[];
     priority: number;
-    responsiblePerson: number;
-    tester: number;
-    taskType: TaskType;
+    responsiblePerson: UserViewModel;
+    tester: UserViewModel;
+    taskType: TaskType = TaskType.Feature;
     taskStatus: TaskStatus;
+    taskPriority: TaskPriority = TaskPriority.Average;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            addTaskWindowOpen: observable
+            addTaskWindowOpen: observable,
+            responsibleDropdownOpen: observable,
+            testerDropdownOpen: observable,
+            taskTypeDropdownOpen: observable,
+            priorityDropdownOpen: observable
         });
+    }
+
+    componentDidMount(): void {
+        this.responsiblePerson = this.props.store.userStore.users[0];
+        this.tester = this.props.store.userStore.users[0];
     }
 
     @action
@@ -35,6 +62,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         this.addTaskWindowOpen = !this.addTaskWindowOpen;
     }
 
+    @action
     toggleResponsibleDropdown() {
         this.responsibleDropdownOpen = !this.responsibleDropdownOpen;
     }
@@ -42,21 +70,55 @@ export class AddTask extends React.Component<IAddTasksProps> {
     toggleTesterDropdown() {
         this.testerDropdownOpen = !this.testerDropdownOpen;
     }
-    
+
+    toggleTaskTypeDropdown() {
+        this.taskTypeDropdownOpen = !this.taskTypeDropdownOpen;
+    }
+
+    togglePriorityDropdown() {
+        this.priorityDropdownOpen = !this.priorityDropdownOpen;
+    }
+
+    renderTaskType() {
+        return(
+            <Dropdown 
+                isOpen={this.taskTypeDropdownOpen}
+                toggle={() => this.toggleTaskTypeDropdown()}>
+                <DropdownToggle caret>{translateTaskType(this.taskType)}</DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={() => this.taskType = TaskType.Feature}>Фича</DropdownItem>
+                    <DropdownItem onClick={() => this.taskType = TaskType.Bug}>Баг</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        );
+    }
+
+    renderPriority() {
+        return(
+            <Dropdown
+                isOpen={this.priorityDropdownOpen}
+                toggle={() => this.togglePriorityDropdown()}>
+                <DropdownToggle caret>{translatePriority(this.priority)}</DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={() => this.priority = TaskPriority.Average}>Средняя</DropdownItem>
+                    <DropdownItem onClick={() => this.priority = TaskPriority.High}>Высокая</DropdownItem>
+                    <DropdownItem onClick={() => this.priority = TaskPriority.Low}>Низкая</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        )
+    }
+
     renderResponsibleDropdown() {
         let users = this.props.store.userStore.users;
-        let user = users[0];
+        let responsible = this.responsiblePerson;
         return(
             <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                <DropdownToggle>{responsible !== undefined ? `${responsible.firstName} ${responsible.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
                             <>
-                                {index === 0 && <DropdownItem key={index} header onClick={() => this.choosePerson(user.id, "responsible")}>
-                                    {user.firstName + " " + user.lastName}
-                                </DropdownItem>}
-                                {index !== 0 && <DropdownItem key={index}  onClick={() => this.choosePerson(user.id, "responsible")}>{user.firstName + " " + user.lastName}</DropdownItem>}
+                              {<DropdownItem key={index}  onClick={() => this.choosePerson(user, "responsible")}>{user.firstName + " " + user.lastName}</DropdownItem>}
                             </>
                         );
                     })}
@@ -67,20 +129,17 @@ export class AddTask extends React.Component<IAddTasksProps> {
 
     renderTesterDropdown() {
         let users = this.props.store.userStore.users;
-        let user = users[0];
+        let tester = this.tester;
         return(
             <Dropdown isOpen={this.testerDropdownOpen} toggle={() => this.toggleTesterDropdown()}>
-                <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                <DropdownToggle>{tester !== undefined ? `${tester.firstName} ${tester.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
                             <>
-                                {index === 0 && <DropdownItem key={index} header onClick={() => this.choosePerson(user.id, "tester")}>
-                                    {user.firstName + " " + user.lastName}
-                                </DropdownItem>}
-                                {index !== 0 && <DropdownItem key={index}  onClick={() => this.choosePerson(user.id, "tester")}>{user.firstName + " " + user.lastName}</DropdownItem>}
+                                {<DropdownItem key={index}  onClick={() => this.choosePerson(user, "tester")}>{user.firstName + " " + user.lastName}</DropdownItem>}
                             </>
-                        )
+                        );
                     })}
                 </DropdownMenu>
             </Dropdown>
@@ -91,6 +150,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         let currentUser = this.props.store.userStore.currentUser;
         return(
             <Modal 
+                style={{backgroundColor: "#003b46", color: "#003b46", fontSize: "1.4em"}}
                 isOpen={this.addTaskWindowOpen}
                 size="lg"
                 centered
@@ -101,16 +161,16 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 <ModalHeader closeButton>СОЗДАНИЕ ЗАДАЧИ</ModalHeader>
                 <ModalBody>
                     <div className="row justify-content-center">
-                        <Label style={{width: "100%"}} align="center">Название</Label>
+                        <Label style={{width: "100%"}} align="center">НАЗВАНИЕ</Label>
                         <Input style={{width: "90%"}} onChange={(e) => this.inputTaskName(e)}/>
                     </div>
                     <div className="row justify-content-center" style={{marginTop: "10px"}}>
-                        <Label style={{width: "100%"}} align="center">Описание</Label>
+                        <Label style={{width: "100%"}} align="center">ОПИСАНИЕ</Label>
                         <textarea style={{width: "90%"}} onChange={(e) => this.inputDescription(e)}/>
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-sm-12">
-                            <Label style={{width: "100%"}} align="center">Дата начала</Label>
+                            <Label style={{width: "100%"}} align="center">ДАТА НАЧАЛА</Label>
                             <div style={{width: "100%", paddingLeft: "15%"}}>
                                 <Calendar
                                     value={this.startDate}
@@ -119,7 +179,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
                             </div>
                         </div>
                         <div className="col-lg-6 col-sm-12">
-                            <Label style={{width: "100%"}} align="center">Дедлайн</Label>
+                            <Label style={{width: "100%"}} align="center">ДЕДЛАЙН</Label>
                             <div style={{width: "100%", paddingLeft: "15%"}}>
                                 <Calendar
                                     value={this.deadline}
@@ -129,19 +189,37 @@ export class AddTask extends React.Component<IAddTasksProps> {
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-lg-4 col-sm-12">
-                            <Label style={{width: "100%"}} align="center">Ответственный</Label>
-                            {this.renderResponsibleDropdown()}
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <Label style={{width: "100%"}} align="center">ТЕСТИРОВЩИК</Label>
+                            <div className="row justify-content-center">
+                                {this.renderTesterDropdown()}
+                            </div>
                         </div>
-                        <div className="col-lg-4 col-sm-12">
-                            <Label style={{width: "100%"}} align="center">Тестировщик</Label>
-                            {this.renderTesterDropdown()}
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <Label style={{width: "100%"}} align="center">ОТВЕТСТВЕННЫЙ</Label>
+                            <div className="row justify-content-center">
+                                {this.renderResponsibleDropdown()}
+                            </div>
                         </div>
-                        <div className="col-lg-4 col-sm-12">
-                            <Label style={{width: "100%"}} align="center">Автор:
-                                <span>{currentUser.firstName} {currentUser.lastName}</span>
-                            </Label>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <Label style={{width: "100%"}} align="center">ТИП</Label>
+                            <div className="row justify-content-center">
+                                {this.renderTaskType()}
+                            </div>
                         </div>
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <Label style={{width: "100%"}} align="center">ПРИОРИТЕТ</Label>
+                            <div className="row justify-content-center">
+                                {this.renderPriority()}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <Label style={{width: "100%"}} align="center">Автор:
+                            <span>{currentUser.firstName} {currentUser.lastName}</span>
+                        </Label>
                     </div>
                 </ModalBody>
                 <ModalFooter>
@@ -192,15 +270,15 @@ export class AddTask extends React.Component<IAddTasksProps> {
         }
     }
 
-    choosePerson(userId: number, type: string): void {
+    choosePerson(user: UserViewModel, type: string): void {
         if(type === "responsible") {
-            this.responsiblePerson = userId;
+            this.responsiblePerson = user;
         } else if(type === "tester") {
-            this.tester = userId;
+            this.tester = user;
         }
     }
 
     saveTask() {
-        this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester, this.responsiblePerson, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id,)
+        this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester.id, this.responsiblePerson.id, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id,)
     }
 }

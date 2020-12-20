@@ -1,10 +1,22 @@
 ﻿import React from "react";
-import { IUsersProps } from "./IUsersProps";
+import {IUsersProps} from "./IUsersProps";
 import {makeObservable, observable} from "mobx";
-import { Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { Alert } from "react-bootstrap";
-import { Role } from "../../Typings/enums/Role";
-import { observer } from "mobx-react";
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from "reactstrap";
+import {Alert} from "react-bootstrap";
+import {Role} from "../../Typings/enums/Role";
+import {observer} from "mobx-react";
 import {UserReadModel} from "../../Typings/viewModels/UserReadModel";
 import {translateRole} from "../../functions/translater";
 
@@ -54,10 +66,11 @@ export class AddUser extends React.Component<IUsersProps>{
             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
                 <DropdownToggle caret>{translateRole(this.role)}</DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem onClick={() => this.chooseRole(Role.Developer)}>Разработчик</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseRole(Role.Tester)}>Тестировщик</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseRole(Role.Accounter)}>Бухгалтер</DropdownItem>
-                    <DropdownItem onClick={() => this.chooseRole(Role.Marketolog)}>Маркетолог</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseRole(Role.Developer)}>{translateRole(Role.Developer)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseRole(Role.Administrator)}>{translateRole(Role.Administrator)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseRole(Role.Tester)}>{translateRole(Role.Tester)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseRole(Role.Accounter)}>{translateRole(Role.Accounter)}</DropdownItem>
+                    <DropdownItem onClick={() => this.chooseRole(Role.Marketolog)}>{translateRole(Role.Marketolog)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );

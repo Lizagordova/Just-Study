@@ -51,7 +51,7 @@ export class  MyWorkPage extends React.Component<IMyWorkProps> {
                         <TabPane tabId="1">
                             <Row>
                                 <Col sm="12">
-                                    <MyTasks store={this.props.store} tasksStatus={TaskStatus.Current}/>
+                                    <MyTasks store={this.props.store} tasksStatus={TaskStatus.InProgress}/>
                                 </Col>
                             </Row>
                         </TabPane>

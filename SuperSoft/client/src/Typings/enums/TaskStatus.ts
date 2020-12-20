@@ -3,7 +3,7 @@
 //     the code is regenerated.
 
 export enum TaskStatus { 
-	Current = 0, 
+	InProgress = 0, 
 	Completed = 1, 
 	Future = 2
 }
