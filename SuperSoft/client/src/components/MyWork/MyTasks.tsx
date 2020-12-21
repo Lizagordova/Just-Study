@@ -1,12 +1,16 @@
 ﻿import React from "react";
-import { IMyTasksProps } from "./IMyTasksProps";
-import { Table, Modal, ModalBody, Alert } from 'reactstrap';
-import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
-import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import { TaskPriority } from "../../Typings/enums/TaskPriority";
-import { makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import { Task } from "../Tasks/Task";
+import {IMyTasksProps} from "./IMyTasksProps";
+import {Alert, Modal, Table} from 'reactstrap';
+import {TaskViewModel} from "../../Typings/viewModels/TaskViewModel";
+import {TaskStatus} from "../../Typings/enums/TaskStatus";
+import {TaskPriority} from "../../Typings/enums/TaskPriority";
+import {makeObservable, observable} from "mobx";
+import {observer} from "mobx-react";
+import {Task} from "../Tasks/Task";
+import {UserTaskViewModel} from "../../Typings/viewModels/UserTaskViewModel";
+import {translatePriority, translateTaskRole, translateTaskType} from "../../functions/translater";
+import {TaskRole} from "../../Typings/enums/TaskRole";
+import {TaskType} from "../../Typings/enums/TaskType";
 
 @observer
 export class MyTasks extends React.Component<IMyTasksProps> {
@@ -21,48 +25,35 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         });
     }
 
-    renderStatusDropdown(status: TaskStatus) {
-        return (
-            <></>
-        );
-    }
-
-    renderPriorityDropdown(priority: TaskPriority) {
-        return (
-            <></>
-        );
-    }
-
-    filterTasks(taskStatus: TaskStatus): TaskViewModel[] {
+    filterTasks(taskStatus: TaskStatus): UserTaskViewModel[] {
         return this.props.store.taskStore.currentUserTasks?.
-            filter(ut => ut.task.status === taskStatus)
-            .map(ut => {
-                return ut.task
-            });
+            filter(ut => ut.task.status === taskStatus);
     }
 
-    renderMyTasks(tasks: TaskViewModel[]) {
+    renderMyTasks(userTasks: UserTaskViewModel[]) {
         return(
             <Table bordered style={{backgroundColor: "#C4DFE6", color:"003b46", marginTop: "2%"}}>
-                {tasks.length === 0 && <Alert color="primary">Задач пока нет!!!</Alert>}
-                {tasks.length !== 0 && <thead>
+                {userTasks.length === 0 && <Alert color="primary">Задач пока нет!!!</Alert>}
+                {userTasks.length !== 0 && <thead>
                     <tr>
                         <th>Номер</th>
                         <th>Задача</th>
                         <th>Дедлайн</th>
-                        <th>Статус</th>
                         <th>Приоритет</th>
+                        <th>Роль</th>
+                        <th>Тип</th>
                     </tr>
                 </thead>}
-                {tasks.length !== 0 && <tbody>
-                    {tasks.map((task) => {
+                {userTasks.length !== 0 && <tbody>
+                    {userTasks.map((ut) => {
                         return(
-                            <tr key={task.id} onClick={() => this.taskOpenToggle(task)}>
-                                <th>{task.id}</th>
-                                <th>{task.header}</th>
-                                <th>{task.deadlineDate}</th>
-                                <th>{this.renderStatusDropdown(task.status)}</th>
-                                <th>{this.renderPriorityDropdown(task.priority)}</th>
+                            <tr key={ut.task.id} onClick={() => this.taskOpenToggle(ut.task)}>
+                                <th>{ut.task.id}</th>
+                                <th>{ut.task.header}</th>
+                                <th>{ut.task.deadlineDate}</th>
+                                <th>{translatePriority(ut.task.priority)}</th>
+                                <th>{translateTaskRole(ut.role)}</th>
+                                <th>{translateTaskType(ut.task.taskType)}</th>
                             </tr>
                         );
                     })}

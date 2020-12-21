@@ -1,6 +1,6 @@
 ﻿import React from "react";
-import {IAddTasksProps} from "./IAddTasksProps";
-import {action, makeObservable, observable} from "mobx";
+import { IAddTasksProps } from "./IAddTasksProps";
+import { action, makeObservable, observable } from "mobx";
 import {
     Button,
     Dropdown,
@@ -12,15 +12,16 @@ import {
     Modal,
     ModalBody,
     ModalFooter,
-    ModalHeader
+    ModalHeader,
+    Alert
 } from "reactstrap";
 import Calendar from "react-calendar";
-import {TaskType} from "../../Typings/enums/TaskType";
-import {TaskStatus} from "../../Typings/enums/TaskStatus";
-import {observer} from "mobx-react";
-import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
-import {TaskPriority} from "../../Typings/enums/TaskPriority";
-import {translatePriority, translateTaskType} from "../../functions/translater";
+import { TaskType } from "../../Typings/enums/TaskType";
+import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { observer } from "mobx-react";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
+import { TaskPriority } from "../../Typings/enums/TaskPriority";
+import { translatePriority, translateTaskType } from "../../functions/translater";
 
 @observer
 export class AddTask extends React.Component<IAddTasksProps> {
@@ -33,12 +34,12 @@ export class AddTask extends React.Component<IAddTasksProps> {
     description: string;
     startDate: Date | Date[];
     deadline: Date | Date[];
-    priority: number;
+    priority: TaskPriority = TaskPriority.Average;
     responsiblePerson: UserViewModel;
     tester: UserViewModel;
     taskType: TaskType = TaskType.Feature;
     taskStatus: TaskStatus;
-    taskPriority: TaskPriority = TaskPriority.Average;
+    notSaved: boolean;
 
     constructor() {
         // @ts-ignore
@@ -84,7 +85,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
             <Dropdown 
                 isOpen={this.taskTypeDropdownOpen}
                 toggle={() => this.toggleTaskTypeDropdown()}>
-                <DropdownToggle caret>{translateTaskType(this.taskType)}</DropdownToggle>
+                <DropdownToggle tag="a" className="nav-link" caret>{translateTaskType(this.taskType)}</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={() => this.taskType = TaskType.Feature}>Фича</DropdownItem>
                     <DropdownItem onClick={() => this.taskType = TaskType.Bug}>Баг</DropdownItem>
@@ -98,7 +99,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
             <Dropdown
                 isOpen={this.priorityDropdownOpen}
                 toggle={() => this.togglePriorityDropdown()}>
-                <DropdownToggle caret>{translatePriority(this.priority)}</DropdownToggle>
+                <DropdownToggle tag="a" className="nav-link" caret>{translatePriority(this.priority)}</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={() => this.priority = TaskPriority.Average}>Средняя</DropdownItem>
                     <DropdownItem onClick={() => this.priority = TaskPriority.High}>Высокая</DropdownItem>
@@ -113,7 +114,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         let responsible = this.responsiblePerson;
         return(
             <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                <DropdownToggle>{responsible !== undefined ? `${responsible.firstName} ${responsible.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                <DropdownToggle tag="a" className="nav-link" caret>{responsible !== undefined ? `${responsible.firstName} ${responsible.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
@@ -132,7 +133,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         let tester = this.tester;
         return(
             <Dropdown isOpen={this.testerDropdownOpen} toggle={() => this.toggleTesterDropdown()}>
-                <DropdownToggle>{tester !== undefined ? `${tester.firstName} ${tester.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                <DropdownToggle tag="a" className="nav-link" caret>{tester !== undefined ? `${tester.firstName} ${tester.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                 <DropdownMenu>
                     {users.map((user, index) => {
                         return(
@@ -159,6 +160,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
                 <i className="fa fa-window-close cool-close-button" aria-hidden="true"
                    onClick={() => this.toggleAddTaskWindow()}/>
                 <ModalHeader closeButton>СОЗДАНИЕ ЗАДАЧИ</ModalHeader>
+                {this.notSaved && <Alert color="primary">Что-то пошло не так и задача не сохранилась!!!</Alert>}
                 <ModalBody>
                     <div className="row justify-content-center">
                         <Label style={{width: "100%"}} align="center">НАЗВАНИЕ</Label>
@@ -237,7 +239,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
         return(
             <div className="row justify-content-center" style={{marginTop: "5%"}}>
                 <Button
-                    style={{backgroundColor: "#66A5AD", width: "100%"}}
+                    style={{width: "80%", borderColor: "#66A5AD", color: "#66A5AD", backgroundColor: "#fff"}}
                     onClick={() => this.toggleAddTaskWindow()}>Создать задачу</Button>
             </div>
         );
@@ -278,5 +280,15 @@ export class AddTask extends React.Component<IAddTasksProps> {
 
     saveTask() {
         this.props.store.taskStore.addOrUpdateTask(this.taskName, this.description, this.startDate, this.deadline, this.taskType, this.taskStatus, this.priority, this.tester.id, this.responsiblePerson.id, this.props.store.userStore.currentUser.id, 0, this.props.store.projectStore.choosenProject.id)
+            .then((status) => {
+                if(status === 200) {
+                    this.props.store.taskStore.getTasks(this.props.store.projectStore.choosenProject.id);
+                    this.addTaskWindowOpen = false;
+                    this.notSaved = false;
+                } else {
+                    this.notSaved = true;
+                    this.addTaskWindowOpen = false;
+                }
+            });
     }
 }

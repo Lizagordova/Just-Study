@@ -79,7 +79,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                     <div className="row justify-content-center">
                         <Label style={{width: "100%"}} align="center">Ответственный</Label>
                         <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                            <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                            <DropdownToggle tag="a" className="nav-link" caret>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                             <DropdownMenu>
                                 {users.map((user, index) => {
                                     return(
@@ -110,7 +110,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                 <div className="col-6"/>
                 <div className="col-6">
                     <Button
-                        style={{backgroundColor: "#66A5AD", width: "100%"}}
+                        style={{width: "100%", borderColor: "#66A5AD", color: "#66A5AD", backgroundColor: "#fff"}}
                         onClick={() => this.toggleAddProjectWindow()}>Создать проект</Button>
                 </div>
             </>

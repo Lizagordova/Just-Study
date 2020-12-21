@@ -22,6 +22,7 @@ class ProjectStore {
             .then((projects) => {
                 this.projects = projects;
                 this.choosenProject = projects[0];
+                console.log("projects", projects);
             });
     }
 
@@ -62,6 +63,8 @@ class ProjectStore {
             },
             body: JSON.stringify({userId: userId, role: projectRole, projectId: projectId})
         });
+
+        return response.status;
     }
 }
 

@@ -36,6 +36,15 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Tester, opt => opt.Ignore())
 					.ForMember(dest => dest.Responsible, opt => opt.Ignore());
 			});
+
+			AddMapping<UserTask, UserTaskUdt>(cfg =>
+			{
+				cfg.CreateMap<UserTask, UserTaskUdt>()
+					.ForMember(dest => dest.TaskId, opt => opt.MapFrom(src => src.Task.Id))
+					.ForMember(dest => dest.Role, opt => opt.MapFrom(dest => dest.Role))
+					.ForMember(dest => dest.TimeSpent, opt => opt.MapFrom(dest => dest.TimeSpent))
+					.ForMember(dest => dest.UserId, opt => opt.MapFrom(dest => dest.User.Id));
+			});
 		}
 	}
 }

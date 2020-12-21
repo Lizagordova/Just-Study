@@ -56,16 +56,15 @@ namespace SuperSoft.Controllers
 		public ActionResult AddOrUpdateTask([FromBody]TaskReadModel taskReadModel)
 		{
 			var task = _mapper.Map<TaskReadModel, Task>(taskReadModel);
-			var taskId = _taskEditor.AddOrUpdateTask(task);
-			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Responsible }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Responsible });
-			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Tester }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Tester });
-			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Author }, Task = new Task() { Id = taskReadModel.Id}, Role = TaskRole.Author });
+			task.Id = _taskEditor.AddOrUpdateTask(task);
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Responsible }, Task = new Task() { Id = task.Id}, Role = TaskRole.Responsible });
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Tester }, Task = new Task() { Id = task.Id}, Role = TaskRole.Tester });
+			_taskEditor.AddOrUpdateUserTask(new UserTask() { User = new User() { Id = taskReadModel.Author }, Task = new Task() { Id = task.Id}, Role = TaskRole.Author });
 			if (taskReadModel.ProjectId != 0)
 			{
-				_projectEditor.AttachTaskToProject(taskId, taskReadModel.ProjectId);
+				_projectEditor.AttachTaskToProject(task.Id, taskReadModel.ProjectId);
 			}
-			task.Id = taskId;
-			var taskViewModel = _mapper.Map<Task, TaskReadModel>(task);
+			var taskViewModel = _mapper.Map<Task, TaskViewModel>(task);
 
 			return new JsonResult(taskViewModel);
 		}

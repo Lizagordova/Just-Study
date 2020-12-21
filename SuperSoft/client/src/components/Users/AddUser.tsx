@@ -64,7 +64,7 @@ export class AddUser extends React.Component<IUsersProps>{
     renderRoleDropdown() {
         return(
             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
-                <DropdownToggle caret>{translateRole(this.role)}</DropdownToggle>
+                <DropdownToggle tag="a" className="nav-link" caret>{translateRole(this.role)}</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={() => this.chooseRole(Role.Developer)}>{translateRole(Role.Developer)}</DropdownItem>
                     <DropdownItem onClick={() => this.chooseRole(Role.Administrator)}>{translateRole(Role.Administrator)}</DropdownItem>

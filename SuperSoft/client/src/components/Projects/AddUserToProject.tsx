@@ -2,8 +2,21 @@
 import RootStore from "../../stores/RootStore";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import { Button, Navbar, Nav, NavItem, NavLink, Modal, ModalBody, ModalHeader, ModalFooter, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Alert
+} from "reactstrap";
 import { ProjectRole } from "../../Typings/enums/ProjectRole";
+import { translateProjectRole } from "../../functions/translater";
+import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 
 export interface IAddUserToProjectProps {
     store: RootStore;
@@ -14,8 +27,13 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
     addUserToProjectWindowOpen: boolean;
     roleDropdownOpen: boolean;
     usersDropdownOpen: boolean;
-    choosenUser: number;
-    role: ProjectRole;
+    choosenUser: UserViewModel;
+    role: ProjectRole = ProjectRole.Head;
+    notAttached: boolean;
+
+    componentDidMount(): void {
+        this.choosenUser = this.props.store.userStore.users[0];
+    }
 
     constructor() {
         // @ts-ignore
@@ -41,7 +59,7 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
 
     renderAddUserToProjectWindow() {
         let users = this.props.store.userStore.users;
-        let user = users[0];
+        let choosenUser = this.choosenUser;
         return(
             <Modal
                 style={{backgroundColor: "#003b46", color: "#003b46", fontSize: "1.4em"}}
@@ -49,28 +67,29 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
                 toggle={() => this.toggleWindow()}>
                 <i className="fa fa-window-close cool-close-button" aria-hidden="true"
                    onClick={() => this.toggleWindow()}/>
+                {this.notAttached && <Alert color="primary">Что-то пошло не так и пользователь не прикрепился :(</Alert>}
                 <ModalHeader>ПРИКРЕПЛЕНИЕ ПОЛЬЗОВАТЕЛЯ</ModalHeader>
                 <ModalBody>
                     <div className="row justify-content-center">
-                        <div className="col-lg-6 col-sm-12">
+                        <div className="col-lg-6 col-sm-6">
                             <Dropdown isOpen={this.usersDropdownOpen} toggle={() => this.toggleUserDropdown()}>
-                                <DropdownToggle tag="a" className="nav-link" caret>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                                <DropdownToggle tag="a" className="nav-link" caret>{choosenUser !== undefined ? `${choosenUser.firstName} ${choosenUser.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                                 <DropdownMenu>
                                     {users.map((user, index) => {
                                         return(
                                             <>
-                                                {<DropdownItem key={index} onClick={() => this.choosenUser = user.id}>{user.firstName + " " + user.lastName}</DropdownItem>}
+                                                {<DropdownItem onClick={() => this.choosenUser = user}>{user.firstName + " " + user.lastName}</DropdownItem>}
                                             </>
                                         );
                                     })}
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
-                        <div className="col-lg-6 col-sm-12">
+                        <div className="col-lg-6 col-sm-6">
                             <Dropdown isOpen={this.roleDropdownOpen} toggle={() => this.toggleRoleDropdown()}>
-                                <DropdownToggle>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                                <DropdownToggle tag="a" className="nav-link" caret>{translateProjectRole(this.role)}</DropdownToggle>
                                 <DropdownMenu>
-                                    <DropdownItem onClick={() => console.log("")}>{user.firstName + " " + user.lastName}</DropdownItem>
+                                    <DropdownItem onClick={() => this.role = ProjectRole.Head}>{translateProjectRole(ProjectRole.Head)}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
@@ -92,7 +111,7 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
         return(
             <div className="row justify-content-center" style={{marginTop: "5%"}}>
                 <Button
-                    style={{backgroundColor: "#66A5AD", width: "100%"}}
+                    style={{width: "80%", borderColor: "#66A5AD", color: "#66A5AD", backgroundColor: "#fff"}}
                     onClick={() => this.toggleWindow()}>Прикрепить участников</Button>
             </div>
         );
@@ -108,6 +127,14 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
     }
 
     attach() {
-        this.props.store.projectStore.attachUserToProject(this.props.store.projectStore.choosenProject.id, this.choosenUser, this.role);
+        this.props.store.projectStore.attachUserToProject(this.props.store.projectStore.choosenProject.id, this.choosenUser.id, this.role)
+            .then((status) => {
+                if(status === 200) {
+                    this.addUserToProjectWindowOpen = false;
+                    this.notAttached = false;
+                } else {
+                    this.notAttached = true;
+                }
+            });
     }
 }

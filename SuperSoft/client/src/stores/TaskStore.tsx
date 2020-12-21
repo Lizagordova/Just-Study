@@ -3,6 +3,7 @@ import { UserTaskViewModel } from "../Typings/viewModels/UserTaskViewModel";
 import { TaskViewModel } from "../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../Typings/enums/TaskStatus";
 import { TaskType } from "../Typings/enums/TaskType";
+import {TaskPriority} from "../Typings/enums/TaskPriority";
 
 class TaskStore {
     currentUserTasks: UserTaskViewModel[];
@@ -44,7 +45,7 @@ class TaskStore {
         }
     }
 
-    async addOrUpdateTask(header: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], taskType: TaskType, status: TaskStatus, priority: number, tester: number, responsible: number, author: number, id: number = 0, projectId: number = 0) {
+    async addOrUpdateTask(header: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], taskType: TaskType, status: TaskStatus, priority: TaskPriority, tester: number, responsible: number, author: number, id: number = 0, projectId: number = 0) {
         const response = await fetch("/addorupdatetask", {
             method: "POST",
             headers: {

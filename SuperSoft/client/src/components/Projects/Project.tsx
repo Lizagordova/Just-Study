@@ -140,10 +140,10 @@ export class Project extends React.Component<IProjectsProps> {
             <div className="container-fluid">
                 {this.renderProjectInfo(this.props.store.projectStore.choosenProject)}
                 <div className="row justify-content-center">
-                    <div className="col-lg-3 col-lg-offset-4">
+                    <div className="col-lg-3 col-sm-6">
                         <AddTask store={this.props.store}/>
                     </div>
-                    <div className="col-lg-3 col-lg-offset-7">
+                    <div className="col-lg-3 col-sm-6">
                         <AddUserToProject store={this.props.store}/>
                     </div>
                 </div>

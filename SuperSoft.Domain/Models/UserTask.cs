@@ -8,6 +8,6 @@ namespace SuperSoft.Domain.Models
 		public User User { get; set; }
 		public Task Task { get; set; }
 		public TaskRole Role { get; set; }
-		public DateTime TimeSpent { get; set; }
+		public int TimeSpent { get; set; }
 	}
 }

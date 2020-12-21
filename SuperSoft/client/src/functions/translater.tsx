@@ -1,6 +1,9 @@
 ﻿import {Role} from "../Typings/enums/Role";
 import {TaskType} from "../Typings/enums/TaskType";
 import {TaskPriority} from "../Typings/enums/TaskPriority";
+import {ProjectRole} from "../Typings/enums/ProjectRole";
+import {TaskRole} from "../Typings/enums/TaskRole";
+import {TaskStatus} from "../Typings/enums/TaskStatus";
 
 export function translateRole(role: Role): string {
     if(role === Role.Developer) {
@@ -33,6 +36,24 @@ export function translatePriority(priority: TaskPriority): string {
         return "Средняя";
     } else if(priority === TaskPriority.Low) {
         return "Низкая";
+    }
+    return "";
+}
+
+export function translateProjectRole(role: ProjectRole): string {
+    if(role === ProjectRole.Head) {
+        return "Руководитель";
+    }
+    return "";
+}
+
+export function translateTaskRole(role: TaskRole) : string {
+    if(role === TaskRole.Responsible) {
+        return "Ответственный";
+    } else if(role === TaskRole.Author) {
+        return "Автор";
+    } else if(role === TaskRole.Tester) {
+        return "Тестировщик";
     }
     return "";
 }

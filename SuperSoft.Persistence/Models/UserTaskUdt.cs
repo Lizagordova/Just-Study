@@ -7,6 +7,6 @@ namespace SuperSoft.Persistence.Models
 		public int UserId { get; set; }
 		public int TaskId { get; set; }
 		public int Role { get; set; }
-		public DateTime TimeSpent { get; set; }
+		public int TimeSpent { get; set; }
 	}
 }
