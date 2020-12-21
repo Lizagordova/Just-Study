@@ -110,7 +110,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
     }
 
     renderResponsibleDropdown() {
-        let users = this.props.store.userStore.users;
+        let users = this.props.store.projectStore.choosenProjectUsers;
         let responsible = this.responsiblePerson;
         return(
             <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
@@ -129,7 +129,7 @@ export class AddTask extends React.Component<IAddTasksProps> {
     }
 
     renderTesterDropdown() {
-        let users = this.props.store.userStore.users;
+        let users = this.props.store.projectStore.choosenProjectUsers;
         let tester = this.tester;
         return(
             <Dropdown isOpen={this.testerDropdownOpen} toggle={() => this.toggleTesterDropdown()}>

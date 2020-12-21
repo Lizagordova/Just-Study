@@ -6,6 +6,7 @@ import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 import { makeObservable, observable, toJS } from "mobx";
 import { Task } from "./Task";
 import { observer } from "mobx-react";
+import {translateTaskType} from "../../functions/translater";
 
 @observer
 export class Tasks extends React.Component<ITasksProps> {
@@ -63,7 +64,7 @@ export class Tasks extends React.Component<ITasksProps> {
                             <th>{task.id}</th>
                             <th>{task.header}</th>
                             <th>{task.deadlineDate}</th>
-                            <th>{task.taskType}</th>
+                            <th>{translateTaskType(task.taskType)}</th>
                             <th>{responsible.firstName + " " + responsible.lastName}</th>
                         </tr>
                     );

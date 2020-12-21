@@ -1,21 +1,37 @@
 ﻿import { ProjectViewModel } from "../Typings/viewModels/ProjectViewModel";
 import { makeObservable, observable } from "mobx";
 import {ProjectRole} from "../Typings/enums/ProjectRole";
+import {UserViewModel} from "../Typings/viewModels/UserViewModel";
 
 class ProjectStore {
     public projects: ProjectViewModel[] = new Array<ProjectViewModel>(0);
     public choosenProject: ProjectViewModel = new ProjectViewModel();
+    public choosenProjectUsers: UserViewModel[] = new Array<UserViewModel>(0);
 
     constructor() {
         makeObservable(this, {
             projects: observable,
-            choosenProject: observable
+            choosenProject: observable,
+            choosenProjectUsers: observable
         });
         this.getProjects();
     }
 
     setChoosenProject(project: ProjectViewModel): void {
         this.choosenProject = project;
+    }
+
+    async getProjectUsers(projectId: number) {
+        const response = await fetch("/getprojectusers", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({id: projectId})
+        });
+        if(response.status === 200) {
+            this.choosenProjectUsers = await response.json();
+        }
     }
 
     async getProjects() {

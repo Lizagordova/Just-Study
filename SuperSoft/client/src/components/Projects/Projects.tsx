@@ -64,6 +64,7 @@ export class Projects extends React.Component<IProjectsProps> {
 
     changeData(project: ProjectViewModel) {
         this.props.store.projectStore.setChoosenProject(project);
+        this.props.store.projectStore.getProjectUsers(project.id);
         this.props.store.taskStore.getTasks(project.id)
     }
 }

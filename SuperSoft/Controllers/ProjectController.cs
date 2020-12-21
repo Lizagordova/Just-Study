@@ -24,6 +24,16 @@ namespace SuperSoft.Controllers
 			_projectEditor = projectEditor;
 		}
 
+		[HttpPost]
+		[Route("/getprojectusers")]
+		public ActionResult GetProjectUsers([FromBody]ProjectReadModel projectReadModel)
+		{
+			var users = _projectReader.GetProjectUsers(projectReadModel.Id);
+			var userViewModels = users.Select(_mapper.Map<User, UserViewModel>).ToList();
+
+			return new JsonResult(userViewModels);
+		}
+
 		[HttpGet]
 		[Route("/getprojects")]
 		public ActionResult GetProjects()
