@@ -3,17 +3,14 @@ import { makeObservable, observable } from "mobx";
 import {ProjectRole} from "../Typings/enums/ProjectRole";
 
 class ProjectStore {
-    public projects: ProjectViewModel[];
-    public choosenProject: ProjectViewModel;
+    public projects: ProjectViewModel[] = new Array<ProjectViewModel>(0);
+    public choosenProject: ProjectViewModel = new ProjectViewModel();
 
     constructor() {
         makeObservable(this, {
             projects: observable,
             choosenProject: observable
         });
-        this.projects = new Array<ProjectViewModel>(0);
-        this.choosenProject = new ProjectViewModel();
-        this.choosenProject.id = 0;
         this.setInitialData();
     }
 
@@ -22,7 +19,6 @@ class ProjectStore {
             .then((projects) => {
                 this.projects = projects;
                 this.choosenProject = projects[0];
-                console.log("projects", projects);
             });
     }
 

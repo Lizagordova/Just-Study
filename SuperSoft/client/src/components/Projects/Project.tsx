@@ -28,6 +28,7 @@ export class Project extends React.Component<IProjectsProps> {
     }
 
     componentDidMount(): void {
+        this.props.store.projectStore.getProjects()
         this.props.store.taskStore.getTasks(this.props.store.projectStore.choosenProject.id)
             .then(() => this.loaded = true);
     }

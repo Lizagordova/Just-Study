@@ -27,11 +27,17 @@ export class MyTasks extends React.Component<IMyTasksProps> {
             filter(ut => ut.task.status === taskStatus);
     }
 
+    renderAlert() {
+        return(
+            <Alert color="primary">Задач пока нет!!!</Alert>
+        );
+    }
+
     renderMyTasks(userTasks: UserTaskViewModel[]) {
         return(
-            <Table bordered style={{backgroundColor: "#C4DFE6", color:"003b46", marginTop: "2%"}}>
-                {userTasks.length === 0 && <Alert color="primary">Задач пока нет!!!</Alert>}
-                {userTasks.length !== 0 && <thead>
+            <Table bordered style={{backgroundColor: "#fff", color:"#003B46", marginTop: "2%", fontSize: "1.2em"}}>
+                {userTasks.length === 0 && this.renderAlert()}
+                {userTasks.length !== 0 && <thead style={{color:"fff"}}>
                     <tr>
                         <th>Номер</th>
                         <th>Задача</th>
@@ -76,7 +82,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
         return(
             <>
                 {tasks !== undefined && this.renderMyTasks(tasks)}
-                {tasks === undefined && <div><span>Задач пока нет:)</span></div>}
+                {tasks === undefined && this.renderAlert()}
                 {this.taskOpen && this.renderTask()}
             </>
         );

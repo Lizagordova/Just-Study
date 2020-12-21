@@ -57,3 +57,14 @@ export function translateTaskRole(role: TaskRole) : string {
     }
     return "";
 }
+
+export function translateStatus(status: TaskStatus): string {
+    if(status ===  TaskStatus.InProgress) {
+        return "В прогрессе";
+    } else if(status === TaskStatus.Completed) {
+        return "Завершена";
+    } else if(status === TaskStatus.Future) {
+        return "Еще не начата";
+    }
+    return "";
+} 

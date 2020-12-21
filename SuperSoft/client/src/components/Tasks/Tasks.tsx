@@ -6,11 +6,10 @@ import { TaskRole } from "../../Typings/enums/TaskRole";
 import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 
 export class Tasks extends React.Component<ITasksProps> {
-    getResponsible(taskId: number): UserViewModel {
-        return this.props.store.taskStore.userTasks
-            .filter(ut => ut.task.id === taskId)
-            .filter(ut => ut.role === TaskRole.Responsible)
-            .map(ut => ut.user)[0];
+    getResponsible(responsible: number): UserViewModel {
+        console.log("responsible", responsible)
+        return this.props.store.userStore.users
+            .filter(u => u.id === responsible)[0];
     }
 
     renderTasks(tasks: TaskViewModel[]) {
@@ -27,7 +26,7 @@ export class Tasks extends React.Component<ITasksProps> {
                 </thead>
                 <tbody>
                 {tasks.map((task) => {
-                    let responsible = this.getResponsible(task.id);//вообще здесь лучше дропдаун сделать
+                    let responsible = this.getResponsible(task.responsible);//вообще здесь лучше дропдаун сделать
                     return(
                         <tr key={task.id}>
                             <th>{task.id}</th>

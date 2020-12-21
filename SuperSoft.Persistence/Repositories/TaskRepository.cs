@@ -58,9 +58,9 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			param.Add("projectId", projectId);
 			var conn = DatabaseHelper.OpenConnection();
-			var tasksUdt = conn.Query<TaskUdt>(GetTasksSp, param, commandType: CommandType.StoredProcedure);
+			var data = conn.QueryMultiple(GetTasksSp, param, commandType: CommandType.StoredProcedure);
+			var tasks = MapTasks(data);
 			DatabaseHelper.CloseConnection(conn);
-			var tasks = tasksUdt.Select(_mapper.Map<TaskUdt, Task>).ToList();
 
 			return tasks;
 		}
@@ -72,6 +72,7 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var data = conn.QueryMultiple(GetUserTasksSp, param, commandType: CommandType.StoredProcedure);
 			var userTasks = MapUserTasks(data);
+			DatabaseHelper.CloseConnection(conn);
 
 			return userTasks;
 		}
@@ -88,6 +89,42 @@ namespace SuperSoft.Persistence.Repositories
 				.ToList();
 
 			return userTasks;
+		}
+
+		private IReadOnlyCollection<Task> MapTasks(SqlMapper.GridReader reader)
+		{
+			var tasksUdt = reader.Read<TaskUdt>();
+			var userTasksUdt = reader.Read<UserTaskUdt>();
+			var tasks = tasksUdt
+				.GroupJoin(userTasksUdt,
+					ut => ut.Id,
+					t => t.TaskId,
+					MapTask)
+				.ToList();
+
+			return tasks;
+		}
+		
+		private Task MapTask(TaskUdt taskUdt, IEnumerable<UserTaskUdt> userTaskUdt)
+		{
+			var task = _mapper.Map<TaskUdt, Task>(taskUdt);
+			foreach (var udt in userTaskUdt)
+			{
+				if (udt.Role == (int)TaskRole.Responsible)
+				{
+					task.Responsible = udt.UserId;
+				}
+				else if (udt.Role == (int)TaskRole.Tester)
+				{
+					task.Tester = udt.UserId;
+				}
+				else if (udt.Role == (int)TaskRole.Author)
+				{
+					task.Author = udt.UserId;
+				}
+			}
+
+			return task;
 		}
 
 		private UserTask MapUserTask(TaskUdt taskUdt, IEnumerable<UserTaskUdt> userTaskUdt)
