@@ -1,17 +1,17 @@
-﻿import { makeObservable, observable } from "mobx";
-import { CommentGroupViewModel } from "../Typings/viewModels/CommentGroupViewModel";
-import {UserReadModel} from "../Typings/viewModels/UserReadModel";
+﻿import { CommentGroupViewModel } from "../Typings/viewModels/CommentGroupViewModel";
+import { UserReadModel } from "../Typings/viewModels/UserReadModel";
+import { makeObservable, observable } from "mobx";
 
 class CommentsStore {
-    currentTaskCommentGroup: CommentGroupViewModel;
+    currentCommentGroup: CommentGroupViewModel = new CommentGroupViewModel();
 
     constructor() {
         makeObservable(this, {
-            currentTaskCommentGroup: observable
+            currentCommentGroup: observable
         });
     }
 
-    async getCurrentTaskComments(taskId: number): Promise<CommentGroupViewModel> {
+    async getCurrentTaskComments(taskId: number) {
         const response = await fetch("/getcurrenttaskcommentgroup", {
             method: "POST",
             headers: {
@@ -20,13 +20,15 @@ class CommentsStore {
             body: JSON.stringify({taskId: taskId})
         });
         if(response.status === 200) {
-            return await response.json();
+            console.log("i am here")
+            this.currentCommentGroup = await response.json();
         } else {
-            return new CommentGroupViewModel();
+            this.currentCommentGroup = new CommentGroupViewModel();
         }
     }
 
-    async addComment(text: string, userId: number): Promise<number> {
+    async addComment(text: string, userId: number, groupId: number): Promise<number> {
+        console.log("userId", userId);
         const user = new UserReadModel();
         user.id = userId;
         const response = await fetch("/addorupdatecomment", {
@@ -34,7 +36,7 @@ class CommentsStore {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({text: text, groupId: this.currentTaskCommentGroup.id, user: user})
+            body: JSON.stringify({text: text, groupId: groupId, user: user})
         });
         if(response.status === 200) {
             return await response.json();

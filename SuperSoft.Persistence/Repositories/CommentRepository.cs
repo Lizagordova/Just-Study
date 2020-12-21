@@ -38,6 +38,7 @@ namespace SuperSoft.Persistence.Repositories
 
 		private CommentGroup MapCommentGroup(SqlMapper.GridReader data, int taskId)
 		{
+			var groupId = data.Read<int>().FirstOrDefault();
 			var commentsUdt = data.Read<CommentUdt>().ToList();
 			var usersUdt = data.Read<UserUdt>().ToList();
 			var comments = commentsUdt
@@ -48,7 +49,7 @@ namespace SuperSoft.Persistence.Repositories
 				.ToList();
 			var commentGroup = new CommentGroup()
 			{
-				Id = commentsUdt.FirstOrDefault().GroupId,
+				Id = groupId,
 				Comments = comments,
 				TaskId = taskId
 			};
@@ -70,6 +71,7 @@ namespace SuperSoft.Persistence.Repositories
 			param.Add("taskId", taskId);
 			var conn = DatabaseHelper.OpenConnection();
 			var groupId = conn.Query<int>(AddOrUpdateCommentGroupSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
 
 			return groupId;
 		}

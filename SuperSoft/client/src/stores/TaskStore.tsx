@@ -7,7 +7,7 @@ import {TaskPriority} from "../Typings/enums/TaskPriority";
 
 class TaskStore {
     currentUserTasks: UserTaskViewModel[];
-    currentProjectTasks: TaskViewModel[];
+    currentProjectTasks: TaskViewModel[] = new Array<TaskViewModel>();
     userTasks: UserTaskViewModel[];
 
     constructor() {
@@ -15,7 +15,6 @@ class TaskStore {
             currentUserTasks: observable,
             currentProjectTasks: observable
         });
-        this.currentProjectTasks = new Array<TaskViewModel>();
         this.setInitialData();
     }
 
@@ -26,6 +25,7 @@ class TaskStore {
     async getCurrentUserTasks() {
         const response = await fetch("/getusertasks");
         if(response.status === 200) {
+            console.log("i wan update this one");
             this.currentUserTasks = await response.json();
         } else {
             this.currentUserTasks = new Array<UserTaskViewModel>(0);

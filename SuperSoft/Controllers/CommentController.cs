@@ -40,6 +40,7 @@ namespace SuperSoft.Controllers
 		public ActionResult AddOrUpdateComment([FromBody]CommentReadModel commentReadModel)
 		{
 			var comment = _mapper.Map<CommentReadModel, Comment>(commentReadModel);
+			comment.User = new User() { Id = commentReadModel.User.Id };
 			comment.Id = _commentEditor.AddOrUpdateComment(commentReadModel.GroupId, comment);
 			var commentViewModel = _mapper.Map<Comment, CommentViewModel>(comment);
 
@@ -49,9 +50,17 @@ namespace SuperSoft.Controllers
 		private CommentGroupViewModel MapCommentGroupViewModel(CommentGroup group)
 		{
 			var groupViewModel = _mapper.Map<CommentGroup, CommentGroupViewModel>(group);
-			groupViewModel.Comments = group.Comments.Select(_mapper.Map<Comment, CommentViewModel>).ToList();
+			groupViewModel.Comments = group.Comments.Select(MapCommentViewModel).ToList();
 
 			return groupViewModel;
+		}
+
+		private CommentViewModel MapCommentViewModel(Comment comment)
+		{
+			var commentViewModel = _mapper.Map<Comment, CommentViewModel>(comment);
+			commentViewModel.User = _mapper.Map<User, UserViewModel>(comment.User);
+
+			return commentViewModel;
 		}
 	}
 }

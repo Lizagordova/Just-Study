@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import {ITaskProps} from "../MyWork/ITaskProps";
+import { ITaskProps } from "../MyWork/ITaskProps";
 import {
     Button,
     Dropdown,
@@ -20,6 +20,7 @@ import { translatePriority, translateStatus, translateTaskType } from "../../fun
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import Calendar from "react-calendar";
+import {Comments} from "../Comments/Comments";
 
 @observer
 export class Task extends React.Component<ITaskProps> {
@@ -214,6 +215,7 @@ export class Task extends React.Component<ITaskProps> {
                                 </div>
                             </div>
                     </div>
+                    <Comments taskId={this.props.task.id} store={this.props.store}/>
                 </ModalBody>
                 <ModalFooter>
                     <Button

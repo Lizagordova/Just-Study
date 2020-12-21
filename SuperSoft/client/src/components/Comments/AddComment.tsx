@@ -1,19 +1,23 @@
 ﻿import React from "react";
-import { ICommentsProps } from "./ICommentsProps";
-import { Input, Button } from "reactstrap";
+import { Input, Button, Alert } from "reactstrap";
+import { IAddCommentsProps } from "./IAddCommentsProps";
 
-export class AddComment extends React.Component<ICommentsProps>{
+export class AddComment extends React.Component<IAddCommentsProps>{
     commentText: string;
+    notSaved: boolean;
 
     render() {
         return(
             <>
                 <div className="row justify-content-center">
-                    <Input placeholder="Добавить комментарий" onChange={(e) => { this.inputComment(e) }}/>
-                </div>
-                <div className="row justify-content-center">
-                    <Button style={{width: "100%", backgroundColor: "#07575b"}}
-                    onClick={() => this.addComment()}>Добавить</Button>
+                    <div className="col-9">
+                        <Input placeholder="Добавить комментарий" onChange={(e) => { this.inputComment(e) }}/>
+                    </div>
+                    <div className="col-3">
+                        <Button style={{width: "100%", backgroundColor: "#07575b"}} 
+                             onClick={() => this.addComment()}>Добавить</Button>
+                    </div>
+                    {this.notSaved && <Alert color="danger">Что-то пошло не так и комментарий не сохранился</Alert>}
                 </div>
             </>
         );
@@ -26,8 +30,15 @@ export class AddComment extends React.Component<ICommentsProps>{
     addComment() {
         let commentStore = this.props.store.commentStore;
         let userStore = this.props.store.userStore;
-        commentStore.addComment(this.commentText, userStore.currentUser.id)
-            .then(() => commentStore.getCurrentTaskComments(this.props.taskId)
-                .then(() => this.commentText = ""));
+        commentStore.addComment(this.commentText, userStore.currentUser.id, this.props.groupId)
+            .then((status) => {
+                if (status === 200) {
+                    commentStore.getCurrentTaskComments(this.props.taskId);
+                    this.notSaved = false;
+                } else {
+                    this.notSaved = true;
+                }
+            })
+            .then(() => this.commentText = "");
     }
 }

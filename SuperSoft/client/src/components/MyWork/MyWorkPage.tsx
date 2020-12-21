@@ -10,6 +10,7 @@ import { TaskStatus } from "../../Typings/enums/TaskStatus";
 @observer
 export class  MyWorkPage extends React.Component<IMyWorkProps> {
     activeTab: string = "1";
+
     constructor() {
         // @ts-ignore
         super();

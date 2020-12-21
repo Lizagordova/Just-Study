@@ -74,6 +74,7 @@ namespace SuperSoft.Persistence.Repositories
 			param.Add("password", password);
 			var conn = DatabaseHelper.OpenConnection();
 			var exist = conn.Query<bool>(AuthorizationSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
 
 			return exist;
 		}
@@ -86,6 +87,7 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var userUdt = conn.Query<UserUdt>(GetUserInfoWithAuthorizationSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			var user = _mapper.Map<UserUdt, User>(userUdt);
+			DatabaseHelper.CloseConnection(conn);
 
 			return user;
 		}

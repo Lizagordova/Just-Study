@@ -24,6 +24,7 @@
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Comments\AddComment.tsx" />
 		<None Include="client\src\components\Comments\Comments.tsx" />
+		<None Include="client\src\components\Comments\IAddCommentsProps.tsx" />
 		<None Include="client\src\components\Comments\ICommentsProps.tsx" />
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />

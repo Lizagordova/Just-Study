@@ -1,4 +1,4 @@
-﻿import { action, observable, makeObservable } from "mobx";
+﻿import { observable, makeObservable } from "mobx";
 import UserStore from "./UserStore";
 import ProjectStore from "./ProjectStore";
 import TaskStore from "./TaskStore";
