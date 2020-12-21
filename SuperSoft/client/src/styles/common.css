@@ -9,7 +9,7 @@
     height: 60px;
 }
 
-@media (max-width: 437px) {
+@media (max-width: 600px) {
     .nav {
         height: 120px;
     }

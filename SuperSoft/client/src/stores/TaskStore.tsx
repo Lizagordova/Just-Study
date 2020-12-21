@@ -25,7 +25,6 @@ class TaskStore {
     async getCurrentUserTasks() {
         const response = await fetch("/getusertasks");
         if(response.status === 200) {
-            console.log("i wan update this one");
             this.currentUserTasks = await response.json();
         } else {
             this.currentUserTasks = new Array<UserTaskViewModel>(0);

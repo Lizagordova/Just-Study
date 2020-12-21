@@ -47,6 +47,15 @@ namespace SuperSoft.Controllers
 			return new JsonResult(commentViewModel);
 		}
 
+		[HttpPost]
+		[Route("/deletecomment")]
+		public ActionResult DeleteComment([FromBody]CommentReadModel commentReadModel)
+		{
+			_commentEditor.DeleteComment(commentReadModel.Id);
+
+			return new OkResult();
+		}
+
 		private CommentGroupViewModel MapCommentGroupViewModel(CommentGroup group)
 		{
 			var groupViewModel = _mapper.Map<CommentGroup, CommentGroupViewModel>(group);

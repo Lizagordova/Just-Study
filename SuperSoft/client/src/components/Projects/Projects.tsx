@@ -4,33 +4,39 @@ import { ProjectViewModel } from "../../Typings/viewModels/ProjectViewModel";
 import { Tab, Nav, Alert } from "react-bootstrap";
 import { Project } from "./Project";
 import { observer } from "mobx-react";
-import {renderSpinner} from "../../functions/renderSpinner";
+import { renderSpinner } from "../../functions/renderSpinner";
+import {toJS} from "mobx";
 
 @observer
 export class Projects extends React.Component<IProjectsProps> {
     renderMenu(projects: ProjectViewModel[], choosenProject: ProjectViewModel) {
         // @ts-ignore
         return(
-            <Tab.Container defaultActiveKey={`${choosenProject.id.toString()}`}>
+            <Tab.Container defaultActiveKey={`${choosenProject.id === undefined ? 0 : choosenProject.id.toString()}`}>
                 <div className="row justify-content-center">
-                    <div className="col-3">
-                        <Nav variant="pills" className="flex-column">
-                            {projects.map((project) => {
-                                return (
-                                    <Nav.Item key={project.id} 
-                                         onClick={() => {this.props.store.projectStore.setChoosenProject(project)}}>
-                                        <Nav.Link eventKey={project.id}
-                                             style={{backgroundColor: "#07575B", color: "#fff"}}>{project.name}</Nav.Link>
-                                    </Nav.Item>
-                                );
-                            })}
+                    <div className="col-4">
+                        <Nav variant="pills" className="flex-column" activeKey={`${choosenProject.id === undefined ? 0 : choosenProject.id.toString()}`}>
+                            <div className="container">
+                                {projects.map((project) => {
+                                    return (
+                                        <div className="row">
+                                            <Nav.Item key={project.id}
+                                                 style={{width: "100%"}}
+                                                 onClick={() => {this.changeData(project)}}>
+                                                <Nav.Link eventKey={project.id}>{project.name}</Nav.Link>
+                                            </Nav.Item>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </Nav>
                     </div>
-                    <div className="col-9">
+                    <div className="col-8">
                         <Tab.Content>
                             {projects.map((project) => {
                                 return (
-                                    <Tab.Pane eventKey={project.id} key={project.id}>
+                                    <Tab.Pane eventKey={project.id}
+                                         key={project.id}>
                                         <Project store={this.props.store} />
                                     </Tab.Pane>
                                 );
@@ -54,5 +60,10 @@ export class Projects extends React.Component<IProjectsProps> {
                 {choosenProject === undefined && renderSpinner()}
             </>
         )
+    }
+
+    changeData(project: ProjectViewModel) {
+        this.props.store.projectStore.setChoosenProject(project);
+        this.props.store.taskStore.getTasks(project.id)
     }
 }

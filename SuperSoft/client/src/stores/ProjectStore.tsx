@@ -11,25 +11,19 @@ class ProjectStore {
             projects: observable,
             choosenProject: observable
         });
-        this.setInitialData();
-    }
-
-    setInitialData() {
-        this.getProjects()
-            .then((projects) => {
-                this.projects = projects;
-                this.choosenProject = projects[0];
-            });
+        this.getProjects();
     }
 
     setChoosenProject(project: ProjectViewModel): void {
         this.choosenProject = project;
     }
 
-    async getProjects(): Promise<ProjectViewModel[]> {
+    async getProjects() {
         const response = await fetch("/getprojects");
         if(response.status === 200) {
-            return await response.json();
+            let projects = await response.json();
+            this.projects = projects;
+            this.choosenProject = projects[0];
         } else {
             return new Array<ProjectViewModel>(0);
         }

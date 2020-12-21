@@ -3,7 +3,7 @@ import { IMyTasksProps } from "./IMyTasksProps";
 import { Alert, Modal, Table } from 'reactstrap';
 import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import {makeObservable, observable, toJS} from "mobx";
+import { makeObservable, observable, toJS } from "mobx";
 import { observer } from "mobx-react";
 import { Task } from "../Tasks/Task";
 import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
@@ -78,12 +78,11 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                    onClick={() => this.taskOpenToggle()}/>
                 <Task store={this.props.store} task={this.taskToRender}/>
             </Modal>
-        )
+        );
     }
 
     render() {
         let currentTasks = this.props.store.taskStore.currentUserTasks;
-        console.log("currentTasks", toJS(currentTasks));
         let tasks = this.filterTasks(this.props.tasksStatus, currentTasks);
         return(
             <>

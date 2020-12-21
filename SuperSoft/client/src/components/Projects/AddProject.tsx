@@ -84,8 +84,7 @@ export class AddProject extends React.Component<IProjectsProps> {
                                 {users.map((user, index) => {
                                     return(
                                         <>
-                                            {index === 0 && <DropdownItem key={index} header onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>}
-                                            {index !== 0 && <DropdownItem key={index} onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>}
+                                            <DropdownItem key={index} header onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>
                                         </>
                                     );
                                 })}
@@ -148,6 +147,7 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     saveProject() {
         this.props.store.projectStore
-            .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson);
+            .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson)
+            .then(() => this.addProjectWindowOpen = false);
 }
 }

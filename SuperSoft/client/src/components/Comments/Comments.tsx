@@ -13,14 +13,24 @@ export class Comments extends React.Component<ICommentsProps> {
         this.props.store.commentStore.getCurrentTaskComments(this.props.taskId);
     }
 
+    deleteComment(commentId: number) {
+        this.props.store.commentStore.deleteComment(commentId)
+            .then(() => this.props.store.commentStore.getCurrentTaskComments(this.props.taskId));
+    }
+
+    isAuthor(userId: number): boolean {
+        return this.props.store.userStore.currentUser.id === userId;
+    }
+
     renderComments(comments: CommentViewModel[]) {
-        console.log("comments", toJS(comments));
         return (
             <>
                 {comments.map(comment => {
                     return(
                         <Card sm="12">
                             <div className="row justify-content-center">
+                                {this.isAuthor(comment.user.id) && <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                                   onClick={() => this.deleteComment(comment.id)}/>}
                                 <CardTitle>{comment.user.firstName} {comment.user.lastName}</CardTitle>
                             </div>
                             <div className="row justify-content-center">

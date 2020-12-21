@@ -20,7 +20,6 @@ class CommentsStore {
             body: JSON.stringify({taskId: taskId})
         });
         if(response.status === 200) {
-            console.log("i am here")
             this.currentCommentGroup = await response.json();
         } else {
             this.currentCommentGroup = new CommentGroupViewModel();
@@ -28,7 +27,6 @@ class CommentsStore {
     }
 
     async addComment(text: string, userId: number, groupId: number): Promise<number> {
-        console.log("userId", userId);
         const user = new UserReadModel();
         user.id = userId;
         const response = await fetch("/addorupdatecomment", {
@@ -43,6 +41,17 @@ class CommentsStore {
         } else {
             return 0;
         }
+    }
+
+    async deleteComment(commentId: number) {
+        const response = await fetch("/deletecomment", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({id: commentId})
+        });
+        return response.status;
     }
 }
 
