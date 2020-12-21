@@ -5,6 +5,7 @@ using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
+using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.ViewModels;
@@ -33,9 +34,10 @@ namespace SuperSoft.Controllers
 
 		[HttpGet]
 		[Route("/getusertasks")]
-		public ActionResult GetUserTasks([FromBody]UserReadModel userReadModel)
+		public ActionResult GetUserTasks()
 		{
-			var userTasks = _taskReader.GetUserTasks(userReadModel.Id);
+			var userId = SessionHelper.GetUserId(HttpContext);
+			var userTasks = _taskReader.GetUserTasks(userId);
 			var userTaskProjectsViewModels = userTasks.Select(MapUserUserTaskViewModel).ToList();
 
 			return new JsonResult(userTaskProjectsViewModels);

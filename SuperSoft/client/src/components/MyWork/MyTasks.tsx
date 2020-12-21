@@ -1,16 +1,13 @@
 ﻿import React from "react";
-import {IMyTasksProps} from "./IMyTasksProps";
-import {Alert, Modal, Table} from 'reactstrap';
-import {TaskViewModel} from "../../Typings/viewModels/TaskViewModel";
-import {TaskStatus} from "../../Typings/enums/TaskStatus";
-import {TaskPriority} from "../../Typings/enums/TaskPriority";
-import {makeObservable, observable} from "mobx";
-import {observer} from "mobx-react";
-import {Task} from "../Tasks/Task";
-import {UserTaskViewModel} from "../../Typings/viewModels/UserTaskViewModel";
-import {translatePriority, translateTaskRole, translateTaskType} from "../../functions/translater";
-import {TaskRole} from "../../Typings/enums/TaskRole";
-import {TaskType} from "../../Typings/enums/TaskType";
+import { IMyTasksProps } from "./IMyTasksProps";
+import { Alert, Modal, Table } from 'reactstrap';
+import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
+import { TaskStatus } from "../../Typings/enums/TaskStatus";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import { Task } from "../Tasks/Task";
+import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
+import { translatePriority, translateTaskRole, translateTaskType } from "../../functions/translater";
 
 @observer
 export class MyTasks extends React.Component<IMyTasksProps> {

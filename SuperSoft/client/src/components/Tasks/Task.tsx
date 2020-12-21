@@ -36,7 +36,7 @@ export class Task extends React.Component<ITaskProps> {
     }
 
     renderTask(task: TaskViewModel) {
-        let author = this.props.store.userStore.users.filter(u => u.id === task.id)[0];
+        let author = this.props.store.userStore.users.filter(u => u.id === task.author)[0];
         return(
             <>
                 <ModalHeader>{task.header}</ModalHeader>

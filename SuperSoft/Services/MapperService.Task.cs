@@ -51,6 +51,14 @@ namespace SuperSoft.Services
 					.ForMember(dest => dest.Project, opt => opt.Ignore())
 					.ForMember(dest => dest.Task, opt => opt.Ignore());
 			});
+
+			AddMapping<UserTask, UserTaskViewModel>(cfg =>
+			{
+				cfg.CreateMap<UserTask, UserTaskViewModel>()
+					.ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
+					.ForMember(dest => dest.Task, opt => opt.Ignore())
+					.ForMember(dest => dest.User, opt => opt.Ignore());
+			});
 		}
 	}
 }
