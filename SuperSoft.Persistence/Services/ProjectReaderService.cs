@@ -16,7 +16,7 @@ namespace SuperSoft.Persistence.Services
 
 		public IReadOnlyCollection<User> GetProjectUsers(int projectId)
 		{
-			throw new System.NotImplementedException();
+			return _projectRepository.GetProjectUsers(projectId);
 		}
 
 		public IReadOnlyCollection<Project> GetProjects()

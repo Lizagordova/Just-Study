@@ -3,7 +3,7 @@ import { IMyTasksProps } from "./IMyTasksProps";
 import { Alert, Modal, Table } from 'reactstrap';
 import { TaskViewModel } from "../../Typings/viewModels/TaskViewModel";
 import { TaskStatus } from "../../Typings/enums/TaskStatus";
-import { makeObservable, observable, toJS } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { Task } from "../Tasks/Task";
 import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
