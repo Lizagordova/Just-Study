@@ -26,6 +26,7 @@ export class AddUser extends React.Component<IUsersProps>{
     firstName: string;
     lastName: string;
     email: string;
+    password: string;
     roleDropdownOpen: boolean;
     role: Role;
     notSaved: boolean;
@@ -39,6 +40,10 @@ export class AddUser extends React.Component<IUsersProps>{
             roleDropdownOpen: observable
         });
         this.role = Role.Developer;
+    }
+
+    isAuthor(role: Role) {
+        return role === Role.Administrator;
     }
 
     toggleAddUserWindow() {
@@ -98,11 +103,19 @@ export class AddUser extends React.Component<IUsersProps>{
                         </div>
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <Label>Email</Label>
                             <Input onChange={(e) => this.inputEmail(e)}/>
                         </div>
-                        <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        {this.isAuthor(this.props.store.userStore.currentUser?.role) &&
+                            <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <Label>Password</Label>
+                                <Input onChange={(e) => this.inputPassword(e)}/>
+                            </div>
+                        }
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             {this.renderRoleDropdown()}
                         </div>
                     </div>
@@ -139,6 +152,10 @@ export class AddUser extends React.Component<IUsersProps>{
         this.email = event.currentTarget.value;
     }
 
+    inputPassword(event: React.FormEvent<HTMLInputElement>): void {
+        this.password = event.currentTarget.value;
+    }
+
     chooseRole(role: Role) {
         this.role = role;
     }
@@ -149,6 +166,7 @@ export class AddUser extends React.Component<IUsersProps>{
         user.lastName = this.lastName;
         user.email = this.email;
         user.role = this.role;
+        user.password = this.password;
         this.props.store.userStore.addOrUpdateUser(user)
             .then(status => {
                 if(status !== 200) {

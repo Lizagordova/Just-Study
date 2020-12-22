@@ -130,6 +130,7 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
         this.props.store.projectStore.attachUserToProject(this.props.store.projectStore.choosenProject.id, this.choosenUser.id, this.role)
             .then((status) => {
                 if(status === 200) {
+                    this.props.store.projectStore.getProjectUsers(this.props.store.projectStore.choosenProject.id);
                     this.addUserToProjectWindowOpen = false;
                     this.notAttached = false;
                 } else {
