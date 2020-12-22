@@ -12,6 +12,7 @@ import { action, makeObservable, observable } from "mobx";
 import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 import { renderSpinner } from "../../functions/renderSpinner";
 import { observer } from "mobx-react";
+import Circle from "react-circle";
 
 @observer
 export class Project extends React.Component<IProjectsProps> {
@@ -28,14 +29,18 @@ export class Project extends React.Component<IProjectsProps> {
     }
 
     componentDidMount(): void {
-        this.props.store.projectStore.getProjects()
+        this.props.store.projectStore.getProjects();
         this.props.store.taskStore.getTasks(this.props.store.projectStore.choosenProject.id)
             .then(() => this.loaded = true);
     }
 
     renderProjectDiagram() {
+        let completedPercentage = this.props.store.taskStore.completedPercentage;
         return (
-            <>Диаграмма. Неважно, что ты не видишь её. Она тебя видит</>
+            <Circle
+                size="300"
+                progress={completedPercentage}
+                />
         );
     }
 

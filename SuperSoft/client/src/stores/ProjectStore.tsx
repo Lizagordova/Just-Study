@@ -45,7 +45,7 @@ class ProjectStore {
         }
     }
 
-    async addNewProject(name: string, description: string, startDate: Date, deadlineDate: Date, responsibleId: number) {
+    async addNewProject(name: string, description: string, startDate: Date | Date[], deadlineDate: Date | Date[], responsibleId: number) {
         const response = await fetch("/addorupdateproject", {
             method: "POST",
             headers: {

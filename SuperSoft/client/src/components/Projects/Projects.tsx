@@ -5,7 +5,6 @@ import { Tab, Nav, Alert } from "react-bootstrap";
 import { Project } from "./Project";
 import { observer } from "mobx-react";
 import { renderSpinner } from "../../functions/renderSpinner";
-import {toJS} from "mobx";
 
 @observer
 export class Projects extends React.Component<IProjectsProps> {
