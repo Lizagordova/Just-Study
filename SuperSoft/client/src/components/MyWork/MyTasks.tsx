@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import { Task } from "../Tasks/Task";
 import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
 import { translatePriority, translateTaskRole, translateTaskType } from "../../functions/translater";
+import {formatDate} from "../../functions/formatDate";
 
 @observer
 export class MyTasks extends React.Component<IMyTasksProps> {
@@ -57,7 +58,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                             <tr key={ut.task.id} onClick={() => this.taskOpenToggle(ut.task)}>
                                 <th>{ut.task.id}</th>
                                 <th>{ut.task.header}</th>
-                                <th>{ut.task.deadlineDate}</th>
+                                <th>{formatDate(ut.task.deadlineDate)}</th>
                                 <th>{translatePriority(ut.task.priority)}</th>
                                 <th>{translateTaskRole(ut.role)}</th>
                                 <th>{translateTaskType(ut.task.taskType)}</th>

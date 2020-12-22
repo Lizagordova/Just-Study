@@ -52,6 +52,7 @@
 		<None Include="client\src\components\Users\User.tsx" />
 		<None Include="client\src\components\Users\Users.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
+		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getRoles.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\translateRole.tsx" />

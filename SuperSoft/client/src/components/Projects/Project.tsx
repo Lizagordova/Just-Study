@@ -13,6 +13,7 @@ import { UserViewModel } from "../../Typings/viewModels/UserViewModel";
 import { renderSpinner } from "../../functions/renderSpinner";
 import { observer } from "mobx-react";
 import Circle from "react-circle";
+import { formatDate } from "../../functions/formatDate";
 
 @observer
 export class Project extends React.Component<IProjectsProps> {
@@ -73,8 +74,8 @@ export class Project extends React.Component<IProjectsProps> {
                     <Card style={{backgroundColor: "#66A5AD", color: "#fff"}}>
                         <CardTitle style={{fontSize: "1.3em"}}>{project.name}</CardTitle>
                         {this.renderResponsible(responsible)}
-                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дата начала:</Label> {project.startDate}</CardText>
-                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дедлайн:</Label> {project.deadlineDate}</CardText>
+                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дата начала:</Label> {formatDate(project.startDate)}</CardText>
+                        <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Дедлайн:</Label> {formatDate(project.deadlineDate)}</CardText>
                         <CardText><Label style={{width: "100%", fontSize: "1.2em"}}>Описание:</Label> {project.description}</CardText>
                     </Card>
                 </div>
