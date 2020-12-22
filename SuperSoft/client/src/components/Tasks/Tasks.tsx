@@ -80,7 +80,7 @@ export class Tasks extends React.Component<ITasksProps> {
         return(
             <>
                 {tasks !== undefined && this.renderTasks(tasks)}
-                {tasks === undefined && this.renderAlert()}
+                {(tasks === undefined || tasks.length === 0) && this.renderAlert()}
                 {this.taskOpen && this.renderTask()}
             </>
         )
