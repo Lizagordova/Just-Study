@@ -54,7 +54,6 @@ class ProjectStore {
             body: JSON.stringify({ name: name, description: description,startDate: startDate, deadlineDate: deadlineDate, responsiblePerson: responsibleId })
         });
         if(response.status === 200) {
-            const project = await response.json();
             this.getProjects();
         }
 
