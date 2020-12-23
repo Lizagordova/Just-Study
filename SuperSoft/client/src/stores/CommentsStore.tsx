@@ -36,11 +36,7 @@ class CommentsStore {
             },
             body: JSON.stringify({text: text, groupId: groupId, user: user})
         });
-        if(response.status === 200) {
-            return await response.json();
-        } else {
-            return 0;
-        }
+        return response.status;
     }
 
     async deleteComment(commentId: number) {

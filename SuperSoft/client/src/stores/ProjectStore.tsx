@@ -74,7 +74,6 @@ class ProjectStore {
     }
 
     async deleteProject(projectId: number) {
-        console.log("i want to delete project", projectId);
         const response = await fetch("/deleteproject", {
             method: "POST",
             headers: {

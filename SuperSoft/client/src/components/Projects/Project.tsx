@@ -175,7 +175,6 @@ export class Project extends React.Component<IProjectsProps> {
     }
 
     deleteProject(projectId: number) {
-        console.log("i want to delete...");
         this.props.store.projectStore.deleteProject(projectId)
             .then((status) => {
                 if(status === 200) {

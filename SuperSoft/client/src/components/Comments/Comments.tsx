@@ -4,8 +4,6 @@ import { CommentViewModel } from "../../Typings/viewModels/CommentViewModel";
 import { observer } from "mobx-react";
 import { AddComment } from "./AddComment";
 import { Card, CardText, CardTitle, Label } from "reactstrap";
-import { CommentGroupViewModel } from "../../Typings/viewModels/CommentGroupViewModel";
-import {makeObservable, observable, toJS} from "mobx";
 
 @observer
 export class Comments extends React.Component<ICommentsProps> {
