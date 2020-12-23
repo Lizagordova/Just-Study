@@ -2,6 +2,9 @@
 {
 	public enum ProjectRole
 	{
-		Head
+		Head,
+		Executor,
+		Tester,
+		Developer
 	}
 }

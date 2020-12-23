@@ -8,15 +8,31 @@ import { observer } from "mobx-react";
 import { Task } from "../Tasks/Task";
 import { UserTaskViewModel } from "../../Typings/viewModels/UserTaskViewModel";
 import { translatePriority, translateTaskRole, translateTaskType } from "../../functions/translater";
-import {formatDate} from "../../functions/formatDate";
+import { formatDate } from "../../functions/formatDate";
 
 @observer
 export class MyTasks extends React.Component<IMyTasksProps> {
     taskOpen: boolean;
     taskToRender: TaskViewModel;
+    sortDescendent: boolean = false;
 
     componentDidMount(): void {
         this.props.store.taskStore.getCurrentUserTasks();
+    }
+
+    sort() {
+        this.props.store.taskStore.currentUserTasks.sort();
+        this.sortDescendent = !this.sortDescendent;
+    }
+    renderSortIcon() {
+        return (
+            <>
+                {this.sortDescendent
+                    ? <i className="fa fa-chevron-circle-down" aria-hidden="true" onClick={() => this.sort()}/>
+                    : <i className="fa fa-chevron-circle-up" aria-hidden="true" onClick={() => this.sort()}/>
+                }
+                </>
+        );
     }
 
     constructor() {
@@ -47,7 +63,7 @@ export class MyTasks extends React.Component<IMyTasksProps> {
                         <th>Номер</th>
                         <th>Задача</th>
                         <th>Дедлайн</th>
-                        <th>Приоритет</th>
+                        <th>Приоритет{this.renderSortIcon()}</th>
                         <th>Роль</th>
                         <th>Тип</th>
                     </tr>

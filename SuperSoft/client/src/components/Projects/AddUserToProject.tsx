@@ -90,6 +90,9 @@ export class AddUserToProject extends React.Component<IAddUserToProjectProps> {
                                 <DropdownToggle tag="a" className="nav-link" caret>{translateProjectRole(this.role)}</DropdownToggle>
                                 <DropdownMenu>
                                     <DropdownItem onClick={() => this.role = ProjectRole.Head}>{translateProjectRole(ProjectRole.Head)}</DropdownItem>
+                                    <DropdownItem onClick={() => this.role = ProjectRole.Executor}>{translateProjectRole(ProjectRole.Executor)}</DropdownItem>
+                                    <DropdownItem onClick={() => this.role = ProjectRole.Developer}>{translateProjectRole(ProjectRole.Developer)}</DropdownItem>
+                                    <DropdownItem onClick={() => this.role = ProjectRole.Tester}>{translateProjectRole(ProjectRole.Tester)}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>

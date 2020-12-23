@@ -43,6 +43,12 @@ export function translatePriority(priority: TaskPriority): string {
 export function translateProjectRole(role: ProjectRole): string {
     if(role === ProjectRole.Head) {
         return "Руководитель";
+    } else if(role === ProjectRole.Executor) {
+        return "Исполнитель";
+    } else if(role === ProjectRole.Developer) {
+        return "Разработчик";
+    } else if(role === ProjectRole.Tester) {
+        return "Тестировщик";
     }
     return "";
 }
