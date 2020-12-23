@@ -66,7 +66,7 @@ export class Tasks extends React.Component<ITasksProps> {
                             <th>{task.header}</th>
                             <th>{formatDate(task.deadlineDate)}</th>
                             <th>{translateTaskType(task.taskType)}</th>
-                            <th>{responsible.firstName + " " + responsible.lastName}</th>
+                            <th>{responsible?.firstName + " " + responsible?.lastName}</th>
                         </tr>
                     );
                 })}

@@ -30,11 +30,11 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			param.Add("projectId", projectId);
 			var conn = DatabaseHelper.OpenConnection();
-			var projectUsersUdt = conn.Query<UserUdt>(GetProjectUsersSp, param);
+			var projectUsersUdt = conn.Query<UserUdt>(GetProjectUsersSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
-			var projects = projectUsersUdt.Select(_mapper.Map<UserUdt, User>).ToList();
+			var users = projectUsersUdt.Select(_mapper.Map<UserUdt, User>).ToList();
 
-			return projects;
+			return users;
 		}
 
 		public IReadOnlyCollection<Project> GetProjects()

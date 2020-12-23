@@ -32,8 +32,8 @@ export class AddTask extends React.Component<IAddTasksProps> {
     priorityDropdownOpen: boolean;
     taskName: string;
     description: string;
-    startDate: Date | Date[];
-    deadline: Date | Date[];
+    startDate: Date | Date[] = new Date();
+    deadline: Date | Date[] = new Date();
     priority: TaskPriority = TaskPriority.Average;
     responsiblePerson: UserViewModel;
     tester: UserViewModel;
