@@ -15,7 +15,8 @@ public partial class MapperService : MapperServiceBase
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(dest => dest.Name))
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(dest => dest.Description))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(dest => dest.StartDate))
-					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate));
+					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate))
+					.ForMember(dest => dest.Responsible, opt => opt.MapFrom(dest => dest.ResponsiblePerson));
 			});
 
 			AddMapping<ProjectUdt, Project>(cfg =>
@@ -25,7 +26,8 @@ public partial class MapperService : MapperServiceBase
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(dest => dest.Name))
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(dest => dest.Description))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(dest => dest.StartDate))
-					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate));
+					.ForMember(dest => dest.DeadlineDate, opt => opt.MapFrom(dest => dest.DeadlineDate))
+					.ForMember(dest => dest.ResponsiblePerson, opt => opt.MapFrom(dest => dest.Responsible));
 			});
 
 			AddMapping<ProjectUser, ProjectUserUdt>(cfg =>

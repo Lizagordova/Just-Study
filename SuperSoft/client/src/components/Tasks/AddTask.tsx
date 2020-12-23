@@ -54,8 +54,8 @@ export class AddTask extends React.Component<IAddTasksProps> {
     }
 
     componentDidMount(): void {
-        this.responsiblePerson = this.props.store.userStore.users[0];
-        this.tester = this.props.store.userStore.users[0];
+        this.responsiblePerson = this.props.store.projectStore.choosenProjectUsers[0];
+        this.tester = this.props.store.projectStore.choosenProjectUsers[0];
     }
 
     @action

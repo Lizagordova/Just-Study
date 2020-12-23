@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, Label } from "reactstrap";
 import Calendar from "react-calendar";
+import {UserViewModel} from "../../Typings/viewModels/UserViewModel";
 
 @observer
 export class AddProject extends React.Component<IProjectsProps> {
@@ -13,7 +14,7 @@ export class AddProject extends React.Component<IProjectsProps> {
     responsibleDropdownOpen: boolean;
     startDate: Date | Date[] = new Date();
     deadline: Date | Date[] = new Date();
-    responsiblePerson: number = 0;
+    responsiblePerson: UserViewModel = new UserViewModel();
 
     constructor() {
         // @ts-ignore
@@ -29,6 +30,10 @@ export class AddProject extends React.Component<IProjectsProps> {
         });
     }
 
+    componentDidMount(): void {
+        this.responsiblePerson = this.props.store.userStore.users[0];
+    }
+
     toggleAddProjectWindow() {
         this.addProjectWindowOpen = !this.addProjectWindowOpen;
     }
@@ -39,7 +44,7 @@ export class AddProject extends React.Component<IProjectsProps> {
 
     renderAddProjectWindow() {
         let users = this.props.store.userStore.users;
-        let user = users[0];
+        let responsible = this.responsiblePerson;
         return(
             <Modal isOpen={this.addProjectWindowOpen} toggle={() => this.toggleAddProjectWindow()}>
                 <i className="fa fa-window-close cool-close-button" aria-hidden="true"
@@ -79,12 +84,12 @@ export class AddProject extends React.Component<IProjectsProps> {
                     <div className="row justify-content-center">
                         <Label style={{width: "100%"}} align="center">Ответственный</Label>
                         <Dropdown isOpen={this.responsibleDropdownOpen} toggle={() => this.toggleResponsibleDropdown()}>
-                            <DropdownToggle tag="a" className="nav-link" caret>{user !== undefined ? `${user.firstName} ${user.lastName}` : "Пока нет пользователей"}</DropdownToggle>
+                            <DropdownToggle tag="a" className="nav-link" caret>{responsible !== undefined ? `${responsible.firstName} ${responsible.lastName}` : "Пока нет пользователей"}</DropdownToggle>
                             <DropdownMenu>
                                 {users.map((user, index) => {
                                     return(
                                         <>
-                                            <DropdownItem key={index} header onClick={() => this.chooseResponsiblePerson(user.id)}>{user.firstName + " " + user.lastName}</DropdownItem>
+                                            <DropdownItem key={index} onClick={() => this.chooseResponsiblePerson(user)}>{user.firstName + " " + user.lastName}</DropdownItem>
                                         </>
                                     );
                                 })}
@@ -141,13 +146,13 @@ export class AddProject extends React.Component<IProjectsProps> {
         }
     }
 
-    chooseResponsiblePerson(userId: number) {
-        this.responsiblePerson = userId;
+    chooseResponsiblePerson(user: UserViewModel) {
+        this.responsiblePerson = user;
     }
 
     saveProject() {
         this.props.store.projectStore
-            .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson)
+            .addNewProject(this.projectName, this.description, this.startDate, this.deadline, this.responsiblePerson.id)
             .then(() => this.addProjectWindowOpen = false);
 }
 }
