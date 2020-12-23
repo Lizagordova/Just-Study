@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SuperSoft.Domain.Models;
@@ -92,6 +93,16 @@ namespace SuperSoft.Controllers
 			return new OkResult();
 		}
 
+		[HttpGet]
+		[Route("/exit")]
+		public ActionResult Exit()
+		{
+			HttpContext.Session.Remove("userId");
+			HttpContext.Session.Remove("authorized");
+			HttpContext.Session.Remove("role");
+
+			return new OkResult();
+		}
 		private void SetUserData(User user)
 		{
 			HttpContext.Session.SetInt32("userId", user.Id);

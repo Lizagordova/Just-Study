@@ -1,4 +1,4 @@
-﻿import { observable, makeObservable } from "mobx";
+﻿import {observable, makeObservable, extendObservable} from "mobx";
 import UserStore from "./UserStore";
 import ProjectStore from "./ProjectStore";
 import TaskStore from "./TaskStore";
@@ -21,6 +21,20 @@ export class RootStore {
         this.taskStore = new TaskStore();
         this.projectStore = new ProjectStore();
         this.commentStore = new CommentsStore();
+    }
+
+    reset() {
+        this.exit().then(() => {
+            this.userStore = new UserStore();
+            this.taskStore = new TaskStore();
+            this.projectStore = new ProjectStore();
+            this.commentStore = new CommentsStore();
+        });
+    }
+
+    async exit() {
+        const response = await fetch("/exit");
+        return response.status;
     }
 }
 

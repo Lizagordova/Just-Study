@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { IMainProps } from "./IMainProps";
-import { Card, CardHeader, Nav, NavItem } from "reactstrap";
+import { Card, CardHeader, Nav, NavItem, Button } from "reactstrap";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { MyWorkPage } from "../MyWork/MyWorkPage";
 import { ProjectsPage } from "../Projects/ProjectsPage";
@@ -25,6 +25,11 @@ export class Main extends React.Component<IMainProps> {
                               <NavItem>
                                   <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}} activeStyle={{color: '#ffffff', backgroundColor:'#003B46', textDecoration: 'none'}}>ПОЛЬЗОВАТЕЛИ</NavLink>
                               </NavItem>
+                            <Button
+                                outline color="primary"
+                                onClick={() => this.exit()}>
+                                ВЫЙТИ
+                            </Button>
                         </Nav>
                     </CardHeader>
                 </Card>
@@ -39,5 +44,9 @@ export class Main extends React.Component<IMainProps> {
                 </Switch>
             </>
         );
+    }
+
+    exit() {
+        this.props.store.reset();
     }
 }
