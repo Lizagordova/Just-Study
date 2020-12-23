@@ -68,5 +68,14 @@ namespace SuperSoft.Controllers
 
 			return new OkResult();
 		}
+
+		[HttpPost]
+		[Route("/deleteproject")]
+		public ActionResult DeleteProject([FromBody]ProjectReadModel projectReadModel)
+		{
+			_projectEditor.DeleteProject(projectReadModel.Id);
+
+			return new OkResult();
+		}
 	}
 }

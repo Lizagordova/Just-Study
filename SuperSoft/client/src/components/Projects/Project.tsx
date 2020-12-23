@@ -19,6 +19,7 @@ import { formatDate } from "../../functions/formatDate";
 export class Project extends React.Component<IProjectsProps> {
     activeTab: string = "1";
     loaded: boolean;
+    notDeleted: boolean;
 
     constructor() {
         // @ts-ignore
@@ -69,7 +70,7 @@ export class Project extends React.Component<IProjectsProps> {
     renderProjectInfo(project: ProjectViewModel) {
         let responsible = this.getResponsible(project.responsiblePerson);
         return (
-            <div className="row justify-content-center">
+            <div className="row justify-content-center" style={{marginTop: "35px"}}>
                 <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <Card style={{backgroundColor: "#66A5AD", color: "#fff"}}>
                         <CardTitle style={{fontSize: "1.3em"}}>{project.name}</CardTitle>
@@ -145,6 +146,11 @@ export class Project extends React.Component<IProjectsProps> {
         return (
             <>
             <div className="container-fluid">
+                <div className="row justify-content-center">
+                    {this.notDeleted && <Alert color="danger">Что-то пошло не так и проект не удалился :(</Alert>}
+                    <i className="fa fa-window-close cool-close-button" aria-hidden="true"
+                       onClick={() => this.deleteProject(this.props.store.projectStore.choosenProject.id)}/>
+                </div>
                 {this.renderProjectInfo(this.props.store.projectStore.choosenProject)}
                 <div className="row justify-content-center">
                     <div className="col-lg-3 col-sm-6">
@@ -166,5 +172,18 @@ export class Project extends React.Component<IProjectsProps> {
     @action
     toggleTab(activeTab: string): void {
         this.activeTab = activeTab;
+    }
+
+    deleteProject(projectId: number) {
+        console.log("i want to delete...");
+        this.props.store.projectStore.deleteProject(projectId)
+            .then((status) => {
+                if(status === 200) {
+                    this.props.store.projectStore.getProjects();
+                    this.notDeleted = false;
+                } else {
+                    this.notDeleted = true;
+                }
+            });
     }
 }
