@@ -22,6 +22,9 @@
 		<Content Include="client\src\styles\common.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+		<None Include="client\src\components\Admin\AdminMain.tsx" />
+		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
+		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Main.tsx" />
@@ -33,6 +36,9 @@
 		<None Include="client\src\components\Users\User.tsx" />
 		<None Include="client\src\components\Users\Users.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
+		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
+		<None Include="client\src\components\User\Main\UserMain.tsx" />
+		<None Include="client\src\components\User\UserMain.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getRoles.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
@@ -54,9 +60,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="client\src\components\Admin" />
 	  <Folder Include="client\src\components\Common" />
-	  <Folder Include="client\src\components\User" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

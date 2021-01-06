@@ -1,17 +1,19 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import './App.css';
-import {RootStore} from "./stores/RootStore";
+import { RootStore } from "./stores/RootStore";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-social/bootstrap-social.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './styles/common.css';
-import {BrowserRouter, NavLink} from "react-router-dom";
-import {Authorization} from "./components/Authorization/Authorization";
-import {observer} from "mobx-react";
-import "authorization.css";
-import {Nav, NavItem} from "reactstrap";
-import {Registration} from "./components/Authorization/Registration";
-import {UserRole} from "./Typings/enums/UserRole";
+import { BrowserRouter, NavLink } from "react-router-dom";
+import { Authorization } from "./components/Authorization/Authorization";
+import { observer } from "mobx-react";
+import "./styles/authorization.css";
+import { Nav, NavItem } from "reactstrap";
+import { Registration } from "./components/Authorization/Registration";
+import { UserRole } from "./Typings/enums/UserRole";
+import { AdminMain } from "./components/Admin/Main/AdminMain";
+import { UserMain } from "./components/User/Main/UserMain";
 
 interface Props {
     store: RootStore;
@@ -19,7 +21,7 @@ interface Props {
 
 @observer
 class App extends Component<Props> {
-    renderMain() {
+    renderMain(store: RootStore) {
         let role = this.props.store.userStore.currentUser.role;
         return(
             <>
@@ -29,8 +31,7 @@ class App extends Component<Props> {
         );
     }
 
-    renderMenu() {
-        let store = this.props.store;
+    renderMenu(store: RootStore) {
         return(
             <div className="container-fluid">
                 <div className="row rowAuth justify-content-center">
@@ -64,8 +65,8 @@ class App extends Component<Props> {
            <div>
                <BrowserRouter>
                    <div className="App">
-                       {!authorizationRequired && this.renderMain()}
-                       {authorizationRequired && this.renderMenu()}
+                       {!authorizationRequired && this.renderMain(store)}
+                       {authorizationRequired && this.renderMenu(store)}
                    </div>
                </BrowserRouter>
            </div>
