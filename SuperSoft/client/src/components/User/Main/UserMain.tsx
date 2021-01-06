@@ -13,31 +13,31 @@ export class UserMain extends React.Component<IUserMainProps> {
                     <CardHeader>
                         <Nav tabs className="nav">
                             <NavItem>
-                                <NavLink to="/mywork" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                <NavLink to="/home" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                     activeStyle={{
+                                         color: '#ffffff',
+                                         backgroundColor: '#003B46',
+                                         textDecoration: 'none'
+                                     }}>ГЛАВНАЯ</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to="/mylessons" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
                                              backgroundColor: '#003B46',
                                              textDecoration: 'none'
-                                         }}>КУРСЫ</NavLink>
+                                         }}>МОИ УРОКИ</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/projects" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>ПОЛЬЗОВАТЕЛИ</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
+                                            color: '#ffffff',
                                              backgroundColor: '#003B46',
                                              textDecoration: 'none'
                                          }}>СЛОВАРЬ</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
                                              backgroundColor: '#003B46',
@@ -53,6 +53,15 @@ export class UserMain extends React.Component<IUserMainProps> {
                     </CardHeader>
                 </Card>
                 <Switch>
+                    <Route exact path="/home"
+                           render={(props) => <MyWorkPage store={this.props.store} />} />
+                    <Route exact path="/mylessons"
+                           render={(props) => <ProjectsPage store={this.props.store} />} />
+                    <Route exact path="/dictionary"
+                           render={(props) => <UsersPage store={this.props.store} />} />
+                    <Route exact path="/trainings"
+                           render={(props) => <UsersPage store={this.props.store} />} />
+                    <Redirect to="/mywork" />
                 </Switch>
             </>
         );

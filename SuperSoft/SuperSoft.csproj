@@ -36,6 +36,7 @@
 		<None Include="client\src\components\Users\User.tsx" />
 		<None Include="client\src\components\Users\Users.tsx" />
 		<None Include="client\src\components\Users\UsersPage.tsx" />
+		<None Include="client\src\components\User\Dictionary\DictionaryPage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
 		<None Include="client\src\components\User\UserMain.tsx" />
@@ -44,6 +45,7 @@
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\translateRole.tsx" />
 		<None Include="client\src\stores\CommentsStore.tsx" />
+		<None Include="client\src\stores\DictionaryStore.tsx" />
 		<None Include="client\src\stores\ProjectStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
@@ -60,7 +62,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="client\src\components\Admin\Dictionary" />
+	  <Folder Include="client\src\components\Admin\Home" />
+	  <Folder Include="client\src\components\Admin\Courses" />
+	  <Folder Include="client\src\components\Admin\Trainings" />
 	  <Folder Include="client\src\components\Common" />
+	  <Folder Include="client\src\components\User\Home" />
+	  <Folder Include="client\src\components\User\MyLessons" />
+	  <Folder Include="client\src\components\User\Trainings" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
