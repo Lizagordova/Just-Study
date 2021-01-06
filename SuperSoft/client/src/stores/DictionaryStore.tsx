@@ -21,8 +21,14 @@ class DictionaryStore {
             this.allWords = await response.json();
         }
     }
-    
+
     async getUserDictionary() {
         
     }
+
+    async addOrUpdateWord() {
+        
+    }
 }
+
+export default DictionaryStore;
