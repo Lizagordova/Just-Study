@@ -2,14 +2,15 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-import { Role } from '../enums/Role';
+import { UserRole } from '../enums/UserRole';
 
 export class UserViewModel
 {
 	public id: number;
+	public login: string;
 	public firstName: string;
 	public lastName: string;
-	public email: string;
 	public passwordHash: string;
-	public role: Role;
+	public role: UserRole;
+	public token: string;
 }

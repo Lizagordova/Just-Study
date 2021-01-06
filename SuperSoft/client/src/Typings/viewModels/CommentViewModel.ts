@@ -2,11 +2,10 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-import { UserViewModel } from './UserViewModel';
-
 export class CommentViewModel
 {
 	public id: number;
+	public userId: number;
 	public text: string;
-	public user: UserViewModel;
+	public publishDate: any;
 }

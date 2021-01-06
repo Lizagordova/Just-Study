@@ -2,10 +2,12 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class CommentGroupViewModel
+export class WordViewModel
 {
 	public id: number;
-	public commentedEntityType: string;
-	public commentedEntityId: number;
-	public userId: number;
+	public word: string;
+	public englishMeaning: string;
+	public russianMeaning: string;
+	public partOfSpeech: string;
+	public examples: any[] = [];
 }

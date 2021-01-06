@@ -2,21 +2,14 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-import { TaskType } from '../enums/TaskType';
-import { TaskStatus } from '../enums/TaskStatus';
-import { TaskPriority } from '../enums/TaskPriority';
+import { SubtaskViewModel } from './SubtaskViewModel';
+import { TagViewModel } from './TagViewModel';
 
 export class TaskViewModel
 {
 	public id: number;
-	public header: string;
-	public description: string;
-	public startDate: any;
-	public deadlineDate: any;
-	public taskType: TaskType;
-	public status: TaskStatus;
-	public priority: TaskPriority;
-	public responsible: number;
-	public tester: number;
-	public author: number;
+	public instruction: string;
+	public text: string;
+	public subtasks: SubtaskViewModel[] = [];
+	public tags: TagViewModel[] = [];
 }

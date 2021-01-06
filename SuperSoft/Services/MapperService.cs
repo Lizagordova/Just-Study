@@ -6,10 +6,6 @@ namespace SuperSoft.Services
 	{
 		protected override void CreateMappings()
 		{
-			CreateCommentMappings();
-			CreateProjectMappings();
-			CreateTaskMappings();
-			CreateUserMappings();
 		}
 	}
 }

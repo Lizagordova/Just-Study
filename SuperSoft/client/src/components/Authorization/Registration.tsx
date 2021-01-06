@@ -4,31 +4,46 @@ import { Label, Input, Button, Alert }from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 
-interface IAuthorizationProps {
+interface IRegistrationProps {
     store: RootStore;
 }
 
 @observer
-export class Authorization extends React.Component<IAuthorizationProps> {
+export class Registration extends React.Component<IRegistrationProps> {
     email: string;
     password: string;
+    firstName: string;
+    lastName: string;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             email: observable,
-            password: observable
+            password: observable,
+            firstName: observable,
+            lastName: observable,
         });
     }
 
     render() {
         return(
-            <div className="container-fluid authorizationForm">
-                {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
-                    <Alert color="danger">Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
-                </div> }
+            <div className="col-12 authorizationForm">
                 <div className="row justify-content-center">
+                    <div className="row justify-content-center">
+                        <Label style={{width: "100%"}}>ИМЯ</Label>
+                        <Input
+                            style={{width: "80%"}}
+                            type="password"
+                            onChange={(e) => this.inputFirstName(e)}/>
+                    </div>
+                    <div className="row justify-content-center">
+                        <Label style={{width: "100%"}}>ФАМИЛИЯ</Label>
+                        <Input
+                            style={{width: "80%"}}
+                            type="password"
+                            onChange={(e) => this.inputLastName(e)}/>
+                    </div>
                     <Label style={{width: "100%", marginTop: "10px"}}>EMAIL</Label>
                     <Input
                         style={{width: "80%"}}
@@ -44,8 +59,8 @@ export class Authorization extends React.Component<IAuthorizationProps> {
                 <div className="row justify-content-center">
                     <Button
                         style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
-                        onClick={() => this.authorize()}>
-                        ВОЙТИ
+                        onClick={() => this.register()}>
+                        ЗАРЕГИСТРИРОВАТЬСЯ
                     </Button>
                 </div>
             </div>
@@ -60,21 +75,28 @@ export class Authorization extends React.Component<IAuthorizationProps> {
         this.password = event.currentTarget.value;
     }
 
-    async authorize() {
-        const response = await fetch("/authorization", {
+    inputFirstName(event: React.FormEvent<HTMLInputElement>) {
+        this.firstName = event.currentTarget.value;
+    }
+
+    inputLastName(event: React.FormEvent<HTMLInputElement>) {
+        this.lastName = event.currentTarget.value;
+    }
+
+    async register() {
+        const response = await fetch("/registration", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({email: this.email, password: this.password})
+            body: JSON.stringify({email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName})
         });
         if(response.status === 200) {
-            this.props.store.userStore.authorizationRequire(false);
+            this.props.store.userStore.registrationRequire(false);
             this.props.store.userStore.wrongCredetianalsToggle(false);
             this.props.store.userStore.getCurrentUser();
         } else {
-            this.props.store.userStore.authorizationRequire(true);
-            this.props.store.userStore.wrongCredetianalsToggle(true);
+            
         }
     }
 }

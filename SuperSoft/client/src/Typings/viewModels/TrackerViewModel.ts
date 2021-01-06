@@ -2,10 +2,10 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class CommentGroupViewModel
+import { TrackerByDayViewModel } from './TrackerByDayViewModel';
+
+export class TrackerViewModel
 {
 	public id: number;
-	public commentedEntityType: string;
-	public commentedEntityId: number;
-	public userId: number;
+	public trackersByDay: TrackerByDayViewModel[] = [];
 }

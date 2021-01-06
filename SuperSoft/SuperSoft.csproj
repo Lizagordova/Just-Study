@@ -18,34 +18,15 @@
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
 		<Content Remove="$(SpaRoot)**" />
+		<Content Include="client\src\styles\authorization.css" />
 		<Content Include="client\src\styles\common.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
-		<None Include="client\src\components\Comments\AddComment.tsx" />
-		<None Include="client\src\components\Comments\Comments.tsx" />
-		<None Include="client\src\components\Comments\IAddCommentsProps.tsx" />
-		<None Include="client\src\components\Comments\ICommentsProps.tsx" />
+		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Main.tsx" />
 		<None Include="client\src\components\Main\Main.tsx" />
 		<None Include="client\src\components\Main\MainProps.tsx" />
-		<None Include="client\src\components\MyWork\IMyTasksProps.tsx" />
-		<None Include="client\src\components\MyWork\IMyWorkProps.tsx" />
-		<None Include="client\src\components\MyWork\ITaskProps.tsx" />
-		<None Include="client\src\components\MyWork\MyTask.tsx" />
-		<None Include="client\src\components\MyWork\MyTasks.tsx" />
-		<None Include="client\src\components\MyWork\MyWork.tsx" />
-		<None Include="client\src\components\Projects\AddProject.tsx" />
-		<None Include="client\src\components\Projects\AddUserToProject.tsx" />
-		<None Include="client\src\components\Projects\IProjectProps.tsx" />
-		<None Include="client\src\components\Projects\IProjectsProps.tsx" />
-		<None Include="client\src\components\Projects\Project.tsx" />
-		<None Include="client\src\components\Projects\Projects.tsx" />
-		<None Include="client\src\components\Projects\ProjectsPage.tsx" />
-		<None Include="client\src\components\Tasks\AddTask.tsx" />
-		<None Include="client\src\components\Tasks\IAddTasksProps.tsx" />
-		<None Include="client\src\components\Tasks\ITasksProps.tsx" />
-		<None Include="client\src\components\Tasks\Task.tsx" />
 		<None Include="client\src\components\Users\AddUser.tsx" />
 		<None Include="client\src\components\Users\IUserProps.tsx" />
 		<None Include="client\src\components\Users\IUsersProps.tsx" />
@@ -70,6 +51,12 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\SuperSoft.Persistence\SuperSoft.Persistence.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="client\src\components\Admin" />
+	  <Folder Include="client\src\components\Common" />
+	  <Folder Include="client\src\components\User" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

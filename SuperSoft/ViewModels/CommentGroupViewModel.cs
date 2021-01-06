@@ -8,7 +8,9 @@ namespace SuperSoft.ViewModels
 	public class CommentGroupViewModel
 	{
 		public int Id { get; set; }
-		public int TaskId { get; set; }
-		public IReadOnlyCollection<CommentViewModel> Comments { get; set; }
+		public string CommentedEntityType { get; set; }
+		public int CommentedEntityId { get; set; }
+		public int UserId { get; set; }
+		public IReadOnlyCollection<CommentViewModel> Comments = Array.Empty<CommentViewModel>();
 	}
 }

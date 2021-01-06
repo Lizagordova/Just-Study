@@ -2,10 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class CommentGroupViewModel
+import { Tarif } from '../enums/Tarif';
+
+export class UserCourseViewModel
 {
-	public id: number;
-	public commentedEntityType: string;
-	public commentedEntityId: number;
 	public userId: number;
+	public courseId: number;
+	public tarif: Tarif;
+	public startDate: any;
+	public expireDate: any;
 }

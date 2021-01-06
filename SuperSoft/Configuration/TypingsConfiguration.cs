@@ -14,22 +14,16 @@ namespace SuperSoft.Configuration
 				.AutoOptionalProperties());
 
 			builder
-				.ExportAsEnum<TaskRole>()
+				.ExportAsEnum<Tarif>()
 				.OverrideNamespace("enums");
 			builder
-				.ExportAsEnum<ProjectRole>()
+				.ExportAsEnum<CompletingStatus>()
 				.OverrideNamespace("enums");
 			builder
-				.ExportAsEnum<Role>()
+				.ExportAsEnum<SubtaskType>()
 				.OverrideNamespace("enums");
 			builder
-				.ExportAsEnum<TaskStatus>()
-				.OverrideNamespace("enums");
-			builder
-				.ExportAsEnum<TaskType>()
-				.OverrideNamespace("enums");
-			builder
-				.ExportAsEnum<TaskPriority>()
+				.ExportAsEnum<UserRole>()
 				.OverrideNamespace("enums");
 		}
 	}

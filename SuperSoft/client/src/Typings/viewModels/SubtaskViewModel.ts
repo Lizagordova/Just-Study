@@ -2,10 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class CommentGroupViewModel
+import { SubtaskType } from '../enums/SubtaskType';
+
+export class SubtaskViewModel
 {
 	public id: number;
-	public commentedEntityType: string;
-	public commentedEntityId: number;
-	public userId: number;
+	public text: string;
+	public path: string;
+	public order: number;
+	public subtaskType: SubtaskType;
 }

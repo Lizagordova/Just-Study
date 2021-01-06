@@ -6,10 +6,6 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
-using SuperSoft.Persistence.Repositories;
-using SuperSoft.Persistence.Services;
 using SuperSoft.Persistence.Services.MapperService;
 using MainMapperService = SuperSoft.Services.MapperService;
 
@@ -32,18 +28,6 @@ namespace SuperSoft
 			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();
-			services.AddSingleton<ICommentRepository, CommentRepository>();
-			services.AddSingleton<IProjectRepository, ProjectRepository>();
-			services.AddSingleton<ITaskRepository, TaskRepository>();
-			services.AddSingleton<IUserRepository, UserRepository>();
-			services.AddSingleton<ICommentEditorService, CommentEditorService>();
-			services.AddSingleton<ICommentReaderService, CommentReaderService>();
-			services.AddSingleton<IProjectEditorService, ProjectEditorService>();
-			services.AddSingleton<IProjectReaderService, ProjectReaderService>();
-			services.AddSingleton<ITaskEditorService, TaskEditorService>();
-			services.AddSingleton<ITaskReaderService, TaskReaderService>();
-			services.AddSingleton<IUserEditorService, UserEditorService>();
-			services.AddSingleton<IUserReaderService, UserReaderService>();
 			// In production, the React files will be served from this directory
 			services.AddSpaStaticFiles(configuration => { configuration.RootPath = "client/build"; });
 			services.AddHttpsRedirection(options =>

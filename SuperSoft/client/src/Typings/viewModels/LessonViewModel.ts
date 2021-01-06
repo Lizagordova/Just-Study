@@ -2,10 +2,11 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class CommentGroupViewModel
+export class LessonViewModel
 {
 	public id: number;
-	public commentedEntityType: string;
-	public commentedEntityId: number;
-	public userId: number;
+	public order: number;
+	public description: string;
+	public startDate: any;
+	public expireDate: any;
 }
