@@ -2,12 +2,9 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export interface IProjectReadModel
+export interface ICourseReadModel
 {
 	id: number;
 	name: string;
 	description: string;
-	startDate: any;
-	deadlineDate: any;
-	responsiblePerson: number;
 }

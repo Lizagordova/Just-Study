@@ -2,8 +2,12 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export interface ICommentGroupReadModel
+export interface ILessonReadModel
 {
 	id: number;
-	taskId: number;
+	order: number;
+	courseId: number;
+	description: string;
+	startDate: any;
+	expireDate: any;
 }
