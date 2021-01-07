@@ -22,9 +22,33 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
-		public void AddLogGAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
+		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogDeleteCourseException(ILogger logger, Exception e, int courseId)
+		{
+			var customMessage = $"Не удалось удалить курс с ID={courseId};";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetCoursesForTeacherException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось получить курсы для администратора с userId: {userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetUserCoursesException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось получить курсы для пользователя с userId: {userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetUsersByCourseException(ILogger logger, Exception e, int courseId)
+		{
+			var customMessage = $"Не удалось получить пользователей для курса с courseId: {courseId}.";
 			AddLog(logger, e, customMessage);
 		}
 

@@ -1,15 +1,16 @@
 ﻿import React, { Component } from 'react';
-import CourseStore from "../../../stores/CourseStore";
 import  { Tab, Nav } from "react-bootstrap";
 import { Alert, Button, Col, Row }from "reactstrap";
 import { observer } from "mobx-react";
 import { observable, makeObservable, action } from "mobx";
-import {CourseViewModel} from "../../../Typings/viewModels/CourseViewModel";
-import {renderSpinner} from "../../../functions/renderSpinner";
-import {AddNewCourse} from "./AddNewCourse";
+import { CourseViewModel } from "../../../Typings/viewModels/CourseViewModel";
+import { renderSpinner } from "../../../functions/renderSpinner";
+import { AddNewCourse } from "./AddNewCourse";
+import RootStore from "../../../stores/RootStore";
+import {Course} from "./Course";
 
 class ICoursesPageProps {
-    courseStore: CourseStore;
+    store: RootStore;
 }
 
 @observer
@@ -25,7 +26,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
 
     componentDidMount(): void {
-        this.props.courseStore.getCourses();
+        this.props.store.courseStore.getCoursesForTeacher();
     }
 
     renderCoursesMenu(courses: CourseViewModel[]) {
@@ -57,12 +58,12 @@ class CoursesPage extends Component<ICoursesPageProps> {
                                     </Nav.Item>
                                 );
                             })}
-                            {<AddNewCourse courseStore={this.props.courseStore}/>}
+                            {<AddNewCourse courseStore={this.props.store.courseStore}/>}
                             </div>
                         </Nav>
                     </Col>
                     <Col sm={10}>
-                        <Course />
+                        <Course store={this.props.store}/>
                     </Col>
                 </Row>
             </Tab.Container>
@@ -70,7 +71,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
 
     render() {
-        let courses = this.props.courseStore.courses;
+        let courses = this.props.store.courseStore.coursesForTeacher;
         return (
             <>
                 {courses !== undefined && this.renderCoursesMenu(courses)}
@@ -82,7 +83,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     deleteCourse(courseId: number) {
         let result = window.confirm('Вы уверены, что хотите удалить этот курс?');
         if(result) {
-            this.props.courseStore.deleteCourse(courseId)
+            this.props.store.courseStore.deleteCourse(courseId)
                 .then((status) => {
                     this.notDeleted = status !== 200;
             });
@@ -90,8 +91,8 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
 
     changeCourse(course: CourseViewModel) {
-        this.props.courseStore.setChoosenCourse(course);
-        this.props.courseStore.getUsersByCourse(course.id);
+        this.props.store.courseStore.setChoosenCourse(course);
+        this.props.store.courseStore.getUsersByCourse(course.id);
     }
 }
 

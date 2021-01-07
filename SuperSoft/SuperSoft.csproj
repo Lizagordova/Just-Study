@@ -24,6 +24,7 @@
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<None Include="client\src\components\Admin\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Courses\AddNewCourse.tsx" />
+		<None Include="client\src\components\Admin\Courses\Course.tsx" />
 		<None Include="client\src\components\Admin\Courses\CoursesPage.tsx" />
 		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
@@ -37,6 +38,7 @@
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\DictionaryStore.tsx" />
+		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
 		<None Include="client\stores\CommentStore.tsx" />

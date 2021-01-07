@@ -2,11 +2,13 @@
 import CourseStore from "../../../stores/CourseStore";
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader  } from "reactstrap";
 import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
 
 class IAddNewCourseProps {
     courseStore: CourseStore;
 }
 
+@observer
 export class AddNewCourse extends Component<IAddNewCourseProps> {
     addNewCourse: boolean = true;
     id: number = 0;
