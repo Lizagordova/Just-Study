@@ -52,6 +52,18 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetLessonsByCourseException(ILogger logger, Exception e, int courseId)
+		{
+			var customMessage = $"Не удалось получить уроки для курса с courseId: {courseId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateLessonException(ILogger logger, Exception e, Lesson lesson, int courseId)
+		{
+			var customMessage = $"Не удалось получить добавить урок {lesson.Id} {lesson.Order} {lesson.Description} {courseId}.";
+			AddLog(logger, e, customMessage);
+		}
+		
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

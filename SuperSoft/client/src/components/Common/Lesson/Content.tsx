@@ -1,5 +1,8 @@
 ﻿import React, { Component } from 'react';
 import LessonStore from "../../../stores/LessonStore";
+import {LessonMaterialViewModel} from "../../../Typings/viewModels/LessonMaterialViewModel";
+import {Material} from "./Material";
+import {renderSpinner} from "../../../functions/renderSpinner";
 
 class IContentProps {
     lessonStore: LessonStore;
@@ -7,9 +10,25 @@ class IContentProps {
 }
 
 export class Content extends Component<IContentProps> {
-    render() {
+    renderMaterials(materials: LessonMaterialViewModel[]) {
         return(
-            <></>
+            <>
+                {materials.map((material) => {
+                    return(
+                        <Material key={material.id} material={material} lessonStore={this.props.lessonStore} />
+                    );
+                })}
+            </>
+        );
+    }
+
+    render() {
+        let materials = this.props.lessonStore.materialsByChoosenLesson;
+        return(
+            <>
+                {materials !== undefined && materials.length > 0 && this.renderMaterials(materials)}
+                {(materials === undefined || materials.length === 0) && renderSpinner()}
+            </>
         );
     }
 }
