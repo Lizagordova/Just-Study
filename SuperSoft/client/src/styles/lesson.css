@@ -1,0 +1,26 @@
+﻿.lessonItem {
+    background-color: #1b6ec2;
+    border-color: #ffffff;
+    height:70px;
+    width: 80%;
+    color: #ffffff;
+    border-radius: 5%;
+}
+
+.container, .instruction {
+    text-align: center;
+}
+
+.instruction {
+    color: gray;
+}
+
+.lesson {
+    text-align: center;
+    width: 100%;
+}
+
+.modalButton {
+    width: 150px;
+    height: 150px;
+}

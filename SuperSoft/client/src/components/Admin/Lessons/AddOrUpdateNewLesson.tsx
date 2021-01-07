@@ -41,11 +41,13 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     componentDidMount(): void {
         if(this.props.edit) {
             let lessonToEdit = this.props.lessonToEdit;
-            this.id = lessonToEdit.id;
-            this.order = lessonToEdit.order;
-            this.description = lessonToEdit.description;
-            this.startDate = lessonToEdit.startDate;
-            this.expireDate = lessonToEdit.expireDate;
+            if(lessonToEdit !== undefined) {
+                this.id = lessonToEdit.id;
+                this.order = lessonToEdit.order;
+                this.description = lessonToEdit.description;
+                this.startDate = lessonToEdit.startDate;
+                this.expireDate = lessonToEdit.expireDate;
+            }
             this.addOrUpdateNewLesson = true;
         } else {
             this.order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;

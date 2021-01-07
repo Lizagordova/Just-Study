@@ -20,6 +20,7 @@
 		<Content Remove="$(SpaRoot)**" />
 		<Content Include="client\src\styles\authorization.css" />
 		<Content Include="client\src\styles\common.css" />
+		<Content Include="client\src\styles\lesson.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<None Include="client\src\components\Admin\AdminMain.tsx" />
@@ -27,11 +28,17 @@
 		<None Include="client\src\components\Admin\Courses\Course.tsx" />
 		<None Include="client\src\components\Admin\Courses\CoursesPage.tsx" />
 		<None Include="client\src\components\Admin\Lessons\AddOrUpdateNewLesson.tsx" />
+		<None Include="client\src\components\Admin\Lessons\ContentUpload.tsx" />
+		<None Include="client\src\components\Admin\Lessons\Lesson.tsx" />
+		<None Include="client\src\components\Admin\Lessons\LessonPage.tsx" />
 		<None Include="client\src\components\Admin\Lessons\LessonsMenu.tsx" />
 		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
+		<None Include="client\src\components\Common\Lesson\Content.tsx" />
+		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
+		<None Include="client\src\components\Common\Lesson\Material.tsx" />
 		<None Include="client\src\components\User\Dictionary\DictionaryPage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
@@ -58,7 +65,6 @@
 	  <Folder Include="client\src\components\Admin\Dictionary" />
 	  <Folder Include="client\src\components\Admin\Home" />
 	  <Folder Include="client\src\components\Admin\Trainings" />
-	  <Folder Include="client\src\components\Common" />
 	  <Folder Include="client\src\components\User\Home" />
 	  <Folder Include="client\src\components\User\MyLessons" />
 	  <Folder Include="client\src\components\User\Trainings" />

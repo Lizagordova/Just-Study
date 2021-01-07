@@ -7,6 +7,7 @@ import { Tab, Nav } from "react-bootstrap";
 import { Alert, Button, Col, Collapse, Row } from "reactstrap";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import {AddOrUpdateNewLesson} from "./AddOrUpdateNewLesson";
+import {LessonPage} from "./LessonPage";
 
 class ILessonsMenuProps {
     store: RootStore;
@@ -87,7 +88,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                         </Collapse>
                     </Col>
                     <Col sm={10}>
-                        <LessonPage />
+                        <LessonPage store={this.props.store}/>
                     </Col>
                     {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit}  />}
                 </Row>
