@@ -26,6 +26,8 @@
 		<None Include="client\src\components\Admin\Courses\AddNewCourse.tsx" />
 		<None Include="client\src\components\Admin\Courses\Course.tsx" />
 		<None Include="client\src\components\Admin\Courses\CoursesPage.tsx" />
+		<None Include="client\src\components\Admin\Lessons\AddOrUpdateNewLesson.tsx" />
+		<None Include="client\src\components\Admin\Lessons\LessonsMenu.tsx" />
 		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
@@ -55,7 +57,6 @@
 	<ItemGroup>
 	  <Folder Include="client\src\components\Admin\Dictionary" />
 	  <Folder Include="client\src\components\Admin\Home" />
-	  <Folder Include="client\src\components\Admin\Lessons" />
 	  <Folder Include="client\src\components\Admin\Trainings" />
 	  <Folder Include="client\src\components\Common" />
 	  <Folder Include="client\src\components\User\Home" />
