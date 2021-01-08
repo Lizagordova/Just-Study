@@ -1,6 +1,6 @@
-﻿import { makeObservable, observable } from "mobx";
-import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
-import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
+﻿import {makeObservable, observable} from "mobx";
+import {LessonViewModel} from "../Typings/viewModels/LessonViewModel";
+import {LessonMaterialViewModel} from "../Typings/viewModels/LessonMaterialViewModel";
 
 class LessonStore {
     lessonsByChoosenCourse: LessonViewModel[] = new Array<LessonViewModel>();
@@ -15,6 +15,11 @@ class LessonStore {
         });
     }
 
+    setChoosenLesson(lesson: LessonViewModel) {
+        this.choosenLesson = lesson;
+        this.getMaterialsByLesson(lesson.id);
+    }
+
     async getLessonsByCourse(courseId: number) {
         const response = await fetch("getlessonsbycourse", {
             method: "POST",
@@ -24,13 +29,10 @@ class LessonStore {
             body: JSON.stringify({id: courseId})
         });
         if(response.status === 200) {
-            this.lessonsByChoosenCourse = await response.json();
+            const data = await response.json();
+            this.lessonsByChoosenCourse = data;
+            this.choosenLesson = data[0];
         }
-    }
-
-    setChoosenLesson(lesson: LessonViewModel) {
-        this.choosenLesson = lesson;
-        this.getMaterialsByLesson(lesson.id);
     }
 
     async addOrUpdateLesson(id: number, order: number, courseId: number, description: string, startDate: Date | Date[], expireDate: Date | Date[]): Promise<number> {

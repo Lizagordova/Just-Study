@@ -83,5 +83,102 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/deletelesson")]
+		public ActionResult DeleteLesson([FromBody]LessonReadModel lessonReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_lessonEditor.DeleteLesson(lessonReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteLessonException(_logger, e, lessonReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/getmaterialsbylesson")]
+		public ActionResult GetMaterialsByLesson([FromBody]LessonReadModel lessonReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var materials = _lessonReader.GetMaterialsByLesson(lessonReadModel.Id);
+				var materialsViewModels = materials.Select(_mapper.Map<LessonMaterial, LessonMaterialViewModel>).ToList();
+
+				return new JsonResult(materialsViewModels);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetMaterialsByLessonException(_logger, e, lessonReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/deletematerial")]
+		public ActionResult DeleteMaterial([FromBody]LessonMaterialReadModel lessonMaterial)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_lessonEditor.DeleteMaterial(lessonMaterial.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteMaterialException(_logger, e, lessonMaterial.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/addorupdatematerial")]
+		public ActionResult AddOrUpdateMaterial([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
+			try
+			{
+				_lessonEditor.AddOrUpdateMaterial(lessonMaterial, lessonMaterialReadModel.LessonId);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

@@ -63,7 +63,31 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось получить добавить урок {lesson.Id} {lesson.Order} {lesson.Description} {courseId}.";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogDeleteLessonException(ILogger logger, Exception e, int lessonId)
+		{
+			var customMessage = $"Не удалось удалить урок с {lessonId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetMaterialsByLessonException(ILogger logger, Exception e, int lessonId)
+		{
+			var customMessage = $"Не удалось получить материалы урока {lessonId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogDeleteMaterialException(ILogger logger, Exception e, int materialId)
+		{
+			var customMessage = $"Не удалось удалить материал с ID={materialId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateMaterialException(ILogger logger, Exception e, LessonMaterial lessonMaterial)
+		{
+			var customMessage = $"Не удалось добавить материал {lessonMaterial.Id}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
