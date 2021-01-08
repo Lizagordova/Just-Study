@@ -2,9 +2,12 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export interface ICourseReadModel
+export class LessonReadModel
 {
-	id: number;
-	name: string;
-	description: string;
+	public id: number;
+	public order: number;
+	public courseId: number;
+	public description: string;
+	public startDate: any;
+	public expireDate: any;
 }

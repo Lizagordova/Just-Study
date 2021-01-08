@@ -3,6 +3,10 @@
 //     the code is regenerated.
 
 export enum TaskType { 
-	Bug = 0, 
-	Feature = 1
+	InsertWordsIntoGaps = 0, 
+	FillGaps = 1, 
+	RightVerbForm = 2, 
+	LoadAudio = 3, 
+	DetailedAnswer = 4, 
+	LoadFile = 5
 }

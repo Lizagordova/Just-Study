@@ -2,8 +2,8 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export enum TaskPriority { 
-	High = 0, 
-	Low = 1, 
-	Average = 2
+export class TagReadModel
+{
+	public id: number;
+	public name: string;
 }

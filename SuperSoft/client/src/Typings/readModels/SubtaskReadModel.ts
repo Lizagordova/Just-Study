@@ -2,11 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class LessonMaterialViewModel
+import { SubtaskType } from '../enums/SubtaskType';
+
+export class SubtaskReadModel
 {
 	public id: number;
+	public text: string;
 	public path: string;
-	public url: string;
-	public fileName: string;
-	public fileForReading: number[] = [];
+	public order: number;
+	public subtaskType: SubtaskType;
 }

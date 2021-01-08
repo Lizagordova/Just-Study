@@ -2,7 +2,7 @@
 import LessonStore from "../../../stores/LessonStore";
 import { Alert, Button } from "reactstrap";
 import { observer } from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import { makeObservable, observable } from "mobx";
 
 class IContentProps {
     lessonStore: LessonStore;
@@ -12,12 +12,14 @@ class IContentProps {
 @observer
 export class ContentUpload extends Component<IContentProps> {
     file: File;
+    notLoaded: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            file: observable
+            file: observable,
+            notLoaded: observable,
         });
     }
 
@@ -35,6 +37,7 @@ export class ContentUpload extends Component<IContentProps> {
     render() {
         return(
             <>
+                {this.notLoaded && <Alert color="danger">Не удалось загрузить материал:(</Alert>}
                 <div className="row justify-content-center">
                     <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <input className="fileInput"
@@ -55,6 +58,9 @@ export class ContentUpload extends Component<IContentProps> {
 
     addOrUpdateMaterial(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event.preventDefault();
-        this.props.lessonStore.addOrUpdateMaterial(this.file);
+        this.props.lessonStore.addOrUpdateMaterial(this.file)
+            .then((status) => {
+                this.notLoaded = status !== 200;
+        });
     }
 }

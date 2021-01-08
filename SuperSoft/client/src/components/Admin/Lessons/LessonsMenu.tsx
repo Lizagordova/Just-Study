@@ -44,6 +44,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
 
     lessonToggle(lesson: LessonViewModel) {
         this.props.store.lessonStore.setChoosenLesson(lesson);
+        this.props.store.taskStore.getTasksByLesson(lesson.id);
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
@@ -109,7 +110,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     deleteLesson(lessonId: number) {
         let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
         if(result) {
-            this.props.store.lessonStore.deleteLesson(lessonId)
+            this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)
                 .then((status) => {
                     this.notDeleted = status !== 200;
                     this.deleted = status === 200;

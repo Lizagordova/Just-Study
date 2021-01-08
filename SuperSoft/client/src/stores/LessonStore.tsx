@@ -1,6 +1,6 @@
-﻿import {makeObservable, observable} from "mobx";
-import {LessonViewModel} from "../Typings/viewModels/LessonViewModel";
-import {LessonMaterialViewModel} from "../Typings/viewModels/LessonMaterialViewModel";
+﻿import { makeObservable, observable } from "mobx";
+import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
+import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
 
 class LessonStore {
     lessonsByChoosenCourse: LessonViewModel[] = new Array<LessonViewModel>();

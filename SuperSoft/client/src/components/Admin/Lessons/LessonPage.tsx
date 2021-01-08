@@ -18,6 +18,7 @@ export class LessonPage extends Component<ILessonPageProps> {
     completedHomeworkActive: boolean;
 
     constructor() {
+        // @ts-ignore
         super();
         makeObservable(this, {
             lessonActive: observable,
@@ -77,7 +78,7 @@ export class LessonPage extends Component<ILessonPageProps> {
     toggleMenu(turnOn: string) {
         this.lessonActive = false;
         this.homeworkActive = false;
-        this.completedHomework = false;
+        this.completedHomeworkActive = false;
         if(turnOn === "lesson") {
             this.lessonActive = true;
         } else if (turnOn === "homework") {

@@ -2,8 +2,9 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export enum TaskStatus { 
-	InProgress = 0, 
-	Completed = 1, 
-	Future = 2
+export class LessonMaterialReadModel
+{
+	public id: number;
+	public lessonId: number;
+	public file: any;
 }

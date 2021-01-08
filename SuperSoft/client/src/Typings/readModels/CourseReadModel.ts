@@ -2,10 +2,9 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export enum Role { 
-	Administrator = 0, 
-	Developer = 1, 
-	Tester = 2, 
-	Marketolog = 3, 
-	Accounter = 4
+export class CourseReadModel
+{
+	public id: number;
+	public name: string;
+	public description: string;
 }

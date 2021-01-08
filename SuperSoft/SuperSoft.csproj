@@ -27,6 +27,7 @@
 		<None Include="client\src\components\Admin\Courses\AddNewCourse.tsx" />
 		<None Include="client\src\components\Admin\Courses\Course.tsx" />
 		<None Include="client\src\components\Admin\Courses\CoursesPage.tsx" />
+		<None Include="client\src\components\Admin\Home\HomeworkPage.tsx" />
 		<None Include="client\src\components\Admin\Lessons\AddOrUpdateNewLesson.tsx" />
 		<None Include="client\src\components\Admin\Lessons\ContentUpload.tsx" />
 		<None Include="client\src\components\Admin\Lessons\Lesson.tsx" />
@@ -34,6 +35,9 @@
 		<None Include="client\src\components\Admin\Lessons\LessonsMenu.tsx" />
 		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
+		<None Include="client\src\components\Admin\Tasks\DetailedAnswerUplaodeSubtask.tsx" />
+		<None Include="client\src\components\Admin\Tasks\DetailedAnswerUploadTask.tsx" />
+		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
@@ -43,12 +47,14 @@
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
 		<None Include="client\src\components\User\UserMain.tsx" />
+		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\DictionaryStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
+		<None Include="client\src\stores\TaskStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
 		<None Include="client\stores\CommentStore.tsx" />
 		<None Include="client\stores\ProjectStore.tsx" />
@@ -62,8 +68,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="client\src\components\Admin\CompletedHomework" />
 	  <Folder Include="client\src\components\Admin\Dictionary" />
-	  <Folder Include="client\src\components\Admin\Home" />
+	  <Folder Include="client\src\components\Admin\Homework" />
 	  <Folder Include="client\src\components\Admin\Trainings" />
 	  <Folder Include="client\src\components\User\Home" />
 	  <Folder Include="client\src\components\User\MyLessons" />
