@@ -11,7 +11,13 @@ class IHomeworkPageProps {
 class HomeworkPage extends Component<IHomeworkPageProps> {
     renderTasks(tasks: TaskViewModel[]) {
         return (
-            <></>
+            <>
+                {tasks.map((task) => {
+                    return(
+                        <Task />
+                    );
+                })}
+            </>
         );
     }
 

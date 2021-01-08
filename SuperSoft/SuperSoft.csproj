@@ -37,12 +37,17 @@
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
 		<None Include="client\src\components\Admin\Tasks\DetailedAnswerUplaodeSubtask.tsx" />
 		<None Include="client\src\components\Admin\Tasks\DetailedAnswerUploadTask.tsx" />
+		<None Include="client\src\components\Admin\Tasks\InsertWordsIntoGapsUploadTask.tsx" />
+		<None Include="client\src\components\Admin\Tasks\TaskEdit.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />
+		<None Include="client\src\components\Common\Tasks\DetailedAnswerSubtask.tsx" />
+		<None Include="client\src\components\Common\Tasks\ISubtaskProps.tsx" />
+		<None Include="client\src\components\Common\Tasks\Task.tsx" />
 		<None Include="client\src\components\User\Dictionary\DictionaryPage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />

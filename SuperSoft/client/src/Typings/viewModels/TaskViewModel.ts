@@ -2,6 +2,7 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { TaskType } from '../enums/TaskType';
 import { SubtaskViewModel } from './SubtaskViewModel';
 import { TagViewModel } from './TagViewModel';
 
@@ -10,6 +11,7 @@ export class TaskViewModel
 	public id: number;
 	public instruction: string;
 	public text: string;
+	public taskType: TaskType;
 	public subtasks: SubtaskViewModel[] = [];
 	public tags: TagViewModel[] = [];
 }
