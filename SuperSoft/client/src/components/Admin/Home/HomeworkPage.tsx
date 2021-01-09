@@ -3,6 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import TaskUpload from "../Tasks/TaskUpload";
+import { Task } from "../../Common/Tasks/Task";
 
 class IHomeworkPageProps {
     store: RootStore;
@@ -14,7 +15,7 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
             <>
                 {tasks.map((task) => {
                     return(
-                        <Task />
+                        <Task store={this.props.store} task={task}/>
                     );
                 })}
             </>

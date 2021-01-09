@@ -98,7 +98,7 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
     }
 
     saveTask() {
-        this.props.store.addOrUpdateTask(this.task)
+        this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(status === 200) {
                     this.props.toggle();

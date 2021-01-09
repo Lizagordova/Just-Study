@@ -1,13 +1,14 @@
-﻿import React, {Component} from 'react';
-import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
-import {Alert, Card, CardBody, CardTitle} from 'reactstrap';
-import {UserRole} from "../../../Typings/enums/UserRole";
+﻿import React, { Component } from 'react';
+import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
+import { Alert, Card, CardBody, CardTitle } from 'reactstrap';
+import { UserRole } from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
-import {makeObservable, observable} from "mobx";
-import {observer} from "mobx-react";
-import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
-import {SubtaskType} from "../../../Typings/enums/SubtaskType";
-import {DetailedAnswerSubtask} from "./DetailedAnswerSubtask";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
+import { SubtaskType } from "../../../Typings/enums/SubtaskType";
+import { DetailedAnswerSubtask } from "./DetailedAnswerSubtask";
+import { TaskEdit } from "../../Admin/Tasks/TaskEdit";
 
 class ITaskProps {
     store: RootStore;
@@ -37,7 +38,7 @@ export class Task extends Component<ITaskProps> {
                    onClick={() => this.deleteTask()}
                    className="fa fa-window-close" aria-hidden="true"/>
                 <i style={{marginLeft: '98%', width: '2%'}}
-                    onClick={() => this.editTask()}
+                    onClick={() => this.editTaskToggle()}
                     className="fa fa-edit" aria-hidden="true"/>
             </>
             );
@@ -85,6 +86,7 @@ export class Task extends Component<ITaskProps> {
             <>
                 {this.renderTask(task)}
                 {this.notDeleted &&  <Alert className="alertSaved" color="danger">Что-то пошло не так, задание не удалилось:(</Alert>}
+                {this.editTaskWindowOpen && <TaskEdit task={task} taskStore={this.props.store.taskStore} toggle={this.editTaskToggle}/>}
             </>
         );
     }
@@ -100,7 +102,7 @@ export class Task extends Component<ITaskProps> {
             }
     }
 
-    editTask() {
+    editTaskToggle() {
         this.editTaskWindowOpen = !this.editTaskWindowOpen;
     }
 }
