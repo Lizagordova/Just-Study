@@ -53,9 +53,6 @@ export class Task extends Component<ITaskProps> {
                 <CardBody style={{marginLeft: '5%'}}>
                     {this.renderSubtasks(task.subtasks)}
                 </CardBody>
-                {this.state.addSubtask && <CardBody>
-                    {this.state.addSubtask && <AddSubtask taskType={this.state.task.taskType} addNewSubtask={this.addNewSubtask} toggle={this.addSubtaskToggle} taskId={this.state.task.id}/>}
-                </CardBody>}
             </Card>
         )
     }
