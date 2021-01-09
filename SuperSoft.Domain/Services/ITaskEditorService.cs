@@ -10,5 +10,6 @@ namespace SuperSoft.Domain.Services
 		void DeleteTask(int taskId);
 		void DeleteSubtask(int subtaskId);
 		void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId, int taskId);
+		void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup answerGroup, int userId, int subtaskId);
 	}
 }

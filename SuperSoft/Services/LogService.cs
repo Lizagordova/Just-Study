@@ -141,7 +141,13 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось получить обновить ответ на  подзадание userId={userId}; subtaskId={subtaskId}; userSubtask={userSubtask.Answer}.";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogAddOrUpdateUserSubtaskAnswerGroupException(ILogger logger, Exception e, UserSubtaskAnswerGroup answerGroup, int subtaskId, int userId)
+		{
+			var customMessage = $"Не удалось получить обновить subtaskAnswerGroup userId={userId}; subtaskId={subtaskId}; userSubtask={answerGroup.LastAnswer}; answerGroupId={answerGroup.AnswerGroupId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

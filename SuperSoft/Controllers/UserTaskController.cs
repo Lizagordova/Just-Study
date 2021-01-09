@@ -107,5 +107,30 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/addorupdateusersubtaskanswergroup")]
+		public ActionResult AddOrUpdateUserSubtaskAnswerGroup([FromBody]UserSubtaskAnswerGroupReadModel userSubtaskAnswerGroupReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			var userSubtaskAnswerGroup = _mapper.Map<UserSubtaskAnswerGroupReadModel, UserSubtaskAnswerGroup>(userSubtaskAnswerGroupReadModel);
+			try
+			{
+				_taskEditor.AddOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.UserId, userSubtaskAnswerGroupReadModel.SubtaskId);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateUserSubtaskAnswerGroupException(_logger, e, userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.SubtaskId, userSubtaskAnswerGroupReadModel.UserId);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }
