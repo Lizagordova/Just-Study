@@ -1,25 +1,19 @@
 ﻿import React, { Component } from "react";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
-import { Input, Label } from "reactstrap";
+import { Input, Label, Tooltip } from "reactstrap";
 import { makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
+import { IUploadSubtaskProps } from "./IUploadSubtaskProps";
 
-class IUploadTaskProps {
+class FillGapsUploadSubtask extends Component<IUploadSubtaskProps> {
     subtask: SubtaskReadModel;
-    updateSubtask: any;
-    deleteSubtask: any;
-    order: number;
-}
+    tooltipOpen: boolean;
 
-@observer
-class DetailedAnswerUploadSubtask extends Component<IUploadTaskProps> {
-    subtask: SubtaskReadModel;
-    
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            subtask: observable
+            subtask: observable,
+            tooltipOpen: observable,
         });
     }
 
@@ -27,7 +21,7 @@ class DetailedAnswerUploadSubtask extends Component<IUploadTaskProps> {
         this.subtask = this.props.subtask;
         this.subtask.order = this.props.order;
     }
-    
+
     renderInput() {
         return(
             <div className="row justify-content-center">
@@ -38,6 +32,14 @@ class DetailedAnswerUploadSubtask extends Component<IUploadTaskProps> {
                         onChange={(e) => this.inputOrder(e)}/>
                 </div>
                 <div className="col-10">
+                    <span id="DisabledAutoHideExample">Введите предложение</span>
+                    <Tooltip placement="top" isOpen={this.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={this.tooltipToggle}>
+                        Подсказка
+                        "Поставить слово в нужную форму": запишите в квадратных скобках начальную форму слова, слэш, затем правильную форму слова. "Заполнить пропуски": запишите в квадратных скобках только правильное слово (выражение). "Заполнить пропуски любым текстом без проверки": просто запишите пустые квадратные скобки на месте пропуска (без пробела).
+                        Пример:
+                        1. I [to play/am playing] tennis.
+                        2. This flower is [better] than that.
+                    </Tooltip>
                     <Label className="instruction">
                         Введите текст задания
                     </Label>
@@ -45,9 +47,6 @@ class DetailedAnswerUploadSubtask extends Component<IUploadTaskProps> {
                         className="taskInput"
                         defaultValue={this.subtask.text}
                         onChange={(e) => this.inputText(e)}/>
-                    <Input className="fileInput"
-                         type="file"
-                         onChange={(e) => this.inputFile(e)}/>
                 </div>
             </div>
         );
@@ -85,6 +84,10 @@ class DetailedAnswerUploadSubtask extends Component<IUploadTaskProps> {
         }
         this.updateParentSubtask();
     }
+
+    tooltipToggle() {
+        this.tooltipOpen = !this.tooltipOpen;
+    }
 }
 
-export default DetailedAnswerUploadSubtask;
+export default FillGapsUploadSubtask;

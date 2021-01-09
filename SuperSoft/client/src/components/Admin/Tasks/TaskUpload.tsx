@@ -7,6 +7,7 @@ import { TaskType } from "../../../Typings/enums/TaskType";
 import { observer } from "mobx-react";
 import DetailedAnswerUploadTask from "./DetailedAnswerUploadTask";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
+import FillGapsUploadTask from "./FillGapsUploadTask";
 
 class ITaskUploadProps {
     store: RootStore;
@@ -76,7 +77,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
             );
         } else if(this.taskType === TaskType.FillGaps) {
             return(
-                <FillGapsUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} />
+                <FillGapsUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} task={new TaskReadModel()} toggle={this.toggleTaskUploadWindow}/>
             );
         } else if(this.taskType === TaskType.LoadFile) {
             return(

@@ -4,12 +4,12 @@ import { Alert, Button, ModalBody, ModalFooter, Input } from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
-import DetailedAnswerUploadSubtask from "./DetailedAnswerUploadSubtask";
 import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
 import { IUploadTaskProps } from "./IUploadTaskProps";
+import FillGapsUploadSubtask from "./FllGapsUploadSubtask";
 
 @observer
-class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
+class FillGapsUploadTask extends Component<IUploadTaskProps> {
     task: TaskReadModel = new TaskReadModel();
     notSaved: boolean;
 
@@ -38,12 +38,8 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
         return(
             <>
                 {this.task.subtasks.map((s, i) => {
-                    let order = i;
-                    if(s.order > 0) {
-                        order = s.order;
-                    }
                     return (
-                        <DetailedAnswerUploadSubtask key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} order={order}/>
+                        <FillGapsUploadSubtask key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} order={i}/>
                     );
                 })}
             </>
@@ -73,7 +69,7 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
         return(
             <>
                 <ModalBody>
-                    ЗАДАНИЕ НА ЗАГРУЗКУ ПОЛНОГО ОТВЕТА
+                    ВВЕСТИ СЛОВА В ПРОПУСКИ
                     <div className="container-fluid">
                         {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
                         <div className="row justify-content-center">
@@ -88,8 +84,8 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
                         {this.renderInputForSubtasks()}
                         <div className="row justify-content-center">
                             <Button className="addTask"
-                                  onClick={this.addSubtask}
-                                  outline color="secondary">
+                                    onClick={this.addSubtask}
+                                    outline color="secondary">
                                 <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
                             </Button>
                         </div>
@@ -126,8 +122,8 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
                 } else {
                     this.notSaved = true;
                 }
-        });
+            });
     }
 }
 
-export default DetailedAnswerUploadTask;
+export default FillGapsUploadTask;

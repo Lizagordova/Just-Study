@@ -1,14 +1,14 @@
-﻿import React, { Component } from 'react';
-import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
-import { Alert, Card, CardBody, CardTitle } from 'reactstrap';
-import { UserRole } from "../../../Typings/enums/UserRole";
+﻿import React, {Component} from 'react';
+import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
+import {Alert, Card, CardBody, CardTitle} from 'reactstrap';
+import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
-import { makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
-import { SubtaskType } from "../../../Typings/enums/SubtaskType";
-import { DetailedAnswerSubtask } from "./DetailedAnswerSubtask";
-import { TaskEdit } from "../../Admin/Tasks/TaskEdit";
+import {makeObservable, observable} from "mobx";
+import {observer} from "mobx-react";
+import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
+import {SubtaskType} from "../../../Typings/enums/SubtaskType";
+import {DetailedAnswerSubtask} from "./DetailedAnswerSubtask";
+import {TaskEdit} from "../../Admin/Tasks/TaskEdit";
 
 class ITaskProps {
     store: RootStore;
@@ -73,6 +73,26 @@ export class Task extends Component<ITaskProps> {
         if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
             return(
                 <DetailedAnswerSubtask subtask={subtask} store={this.props.store} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.FillGaps) {
+            return(
+                <FillGapsSubtask subtask={subtask} store={this.props.store}/>
+            );
+        } else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
+            return(
+                <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store}/>
+            );
+        } else if(subtask.subtaskType === SubtaskType.LoadAudio) {
+            return(
+                <LoadAudioSubtask subtask={subtask} store={this.props.store}/>
+            );
+        } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
+            return(
+                <RightVerbFormSubtask subtask={subtask} store={this.props.store}/>
+            );
+        } else if(subtask.subtaskType === SubtaskType.LoadFile) {
+            return(
+                <LoadFileSubtask subtask={subtask} store={this.props.store}/>
             );
         }
     }

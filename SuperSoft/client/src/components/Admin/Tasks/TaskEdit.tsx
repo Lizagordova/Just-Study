@@ -1,10 +1,11 @@
 ﻿import React, {Component} from 'react';
 import TaskStore from "../../../stores/TaskStore";
-import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
-import {Button, Modal, ModalHeader} from "reactstrap";
-import {observer} from "mobx-react";
-import {TaskType} from "../../../Typings/enums/TaskType";
+import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
+import { Button, Modal, ModalHeader } from "reactstrap";
+import { observer } from "mobx-react";
+import { TaskType } from "../../../Typings/enums/TaskType";
 import DetailedAnswerUploadTask from "./DetailedAnswerUploadTask";
+import FillGapsUploadTask from "./FillGapsUploadTask";
 
 class ITaskEditProps {
     taskStore: TaskStore;
@@ -26,6 +27,26 @@ export class TaskEdit extends Component<ITaskEditProps> {
         if(taskType === TaskType.DetailedAnswer) {
             return (
                 <DetailedAnswerUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task} />
+            );
+        } else if(taskType === TaskType.FillGaps) {
+            return(
+                <FillGapsUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
+            );
+        } else if(taskType === TaskType.InsertWordsIntoGaps) {
+            return(
+                <InsertWordsIntoGapsUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
+            );
+        } else if(taskType === TaskType.LoadAudio) {
+            return(
+                <LoadAudioUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
+            );
+        } else if(taskType === TaskType.RightVerbForm) {
+            return(
+                <RightVerbFormUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
+            );
+        } else if(taskType === TaskType.LoadFile) {
+            return(
+                <LoadFileUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
             );
         }
     }
