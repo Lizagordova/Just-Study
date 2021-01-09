@@ -10,6 +10,7 @@ namespace SuperSoft.ReadModels
 		public int Id { get; set; }
 		public string Instruction { get; set; }
 		public string Text { get; set; }
+		public int LessonId { get; set; }
 		public IReadOnlyCollection<SubtaskReadModel> Subtasks { get; set; } = Array.Empty<SubtaskReadModel>();
 		public IReadOnlyCollection<TagReadModel> Tags { get; set; } = Array.Empty<TagReadModel>();
 	}

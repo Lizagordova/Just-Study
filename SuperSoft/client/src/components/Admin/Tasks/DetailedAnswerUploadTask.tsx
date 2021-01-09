@@ -1,11 +1,13 @@
 ﻿import React, { Component } from "react";
 import TaskStore from "../../../stores/TaskStore";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
-import { Alert, Button, ModalBody, ModalFooter } from "reactstrap";
+import { Alert, Button, ModalBody, ModalFooter, Input } from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
-import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
+import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
 import DetailedAnswerUploadSubtask from "./DetailedAnswerUploadSubtask";
+import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 
 class IUploadTaskProps {
     store: TaskStore;
@@ -52,6 +54,25 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
         );
     }
 
+    addTag(tag: TagViewModel) {
+        this.task.tags.push(tag);
+    }
+
+    renderTags() {
+        let tags = this.props.store.tags;
+        return(
+            <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                {tags.map((tag) => {
+                    return(
+                        <option key={tag.id} onClick={() => this.addTag(tag)}>
+                            {tag.name}
+                        </option>
+                    );
+                })}
+            </Input>
+        )
+    }
+
     render() {
         return(
             <>
@@ -75,6 +96,9 @@ class DetailedAnswerUploadTask extends Component<IUploadTaskProps> {
                                   outline color="secondary">
                                 <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
                             </Button>
+                        </div>
+                        <div className="row justify-content-center">
+                            {this.renderTags()}
                         </div>
                     </div>
                 </ModalBody>

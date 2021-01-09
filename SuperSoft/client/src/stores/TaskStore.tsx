@@ -50,7 +50,7 @@ class TaskStore {
     async addOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup: UserSubtaskAnswerGroupReadModel): Promise<number> {
         return 200;
     }
-    
+
     async getUserSubtask(subtaskId: number): Promise<UserSubtaskViewModel> {
         return new UserSubtaskViewModel();
     }

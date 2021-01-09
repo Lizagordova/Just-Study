@@ -88,6 +88,60 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetTasksByChoosenLessonException(ILogger logger, Exception e, int lessonId)
+		{
+			var customMessage = $"Не удалось получить задания для урока с ID= {lessonId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetTagsException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось получить теги.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateTaskException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить задание.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateSubtaskException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить подзадание.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogDeleteTaskException(ILogger logger, Exception e, int taskId)
+		{
+			var customMessage = $"Не удалось удалить задание {taskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogDeleteSubtaskException(ILogger logger, Exception e, int subtaskId)
+		{
+			var customMessage = $"Не удалось удалить подзадание {subtaskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetUserTaskException(ILogger logger, Exception e, int taskId, int userId)
+		{
+			var customMessage = $"Не удалось получить пользовательский ответ на  задание {taskId} {userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetUserSubtaskException(ILogger logger, Exception e, int subtaskId, int userId)
+		{
+			var customMessage = $"Не удалось получить пользовательский ответ на  подзадание {subtaskId} {userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateUserSubtaskException(ILogger logger, Exception e, UserSubtask userSubtask, int subtaskId, int userId)
+		{
+			var customMessage = $"Не удалось получить обновить ответ на  подзадание userId={userId}; subtaskId={subtaskId}; userSubtask={userSubtask.Answer}.";
+			AddLog(logger, e, customMessage);
+		}
+		
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

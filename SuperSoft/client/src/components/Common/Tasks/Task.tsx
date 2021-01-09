@@ -83,7 +83,7 @@ export class Task extends Component<ITaskProps> {
             <>
                 {this.renderTask(task)}
                 {this.notDeleted &&  <Alert className="alertSaved" color="danger">Что-то пошло не так, задание не удалилось:(</Alert>}
-                {this.editTaskWindowOpen && <TaskEdit task={task} taskStore={this.props.store.taskStore} toggle={this.editTaskToggle}/>}
+                {this.editTaskWindowOpen && <TaskEdit task={task} taskStore={this.props.store.taskStore} toggle={this.editTaskToggle} lessonId={this.props.store.lessonStore.choosenLesson.id}/>}
             </>
         );
     }
