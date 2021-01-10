@@ -9,10 +9,13 @@ import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
 import {DetailedAnswerSubtask} from "./DetailedAnswerSubtask";
 import {TaskEdit} from "../../Admin/Tasks/TaskEdit";
+import {FillGapsSubtask} from "./FillGapsSubtask";
+import {LoadAudioSubtask} from "./LoadAudioSubtask";
 
 class ITaskProps {
     store: RootStore;
     task: TaskViewModel;
+    userId: number;
 }
 
 @observer
@@ -70,13 +73,14 @@ export class Task extends Component<ITaskProps> {
     }
 
     renderSubtask(subtask: SubtaskViewModel) {
+        let userId = this.props.userId;
         if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
             return(
-                <DetailedAnswerSubtask subtask={subtask} store={this.props.store} />
+                <DetailedAnswerSubtask subtask={subtask} store={this.props.store} userId={userId}/>
             );
         } else if(subtask.subtaskType === SubtaskType.FillGaps) {
             return(
-                <FillGapsSubtask subtask={subtask} store={this.props.store}/>
+                <FillGapsSubtask subtask={subtask} store={this.props.store} userId={userId}/>
             );
         } else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
             return(
@@ -84,7 +88,7 @@ export class Task extends Component<ITaskProps> {
             );
         } else if(subtask.subtaskType === SubtaskType.LoadAudio) {
             return(
-                <LoadAudioSubtask subtask={subtask} store={this.props.store}/>
+                <LoadAudioSubtask subtask={subtask} store={this.props.store} userId={userId}/>
             );
         } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
             return(

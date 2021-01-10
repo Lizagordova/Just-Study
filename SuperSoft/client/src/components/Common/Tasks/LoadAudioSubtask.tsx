@@ -1,18 +1,20 @@
 ﻿import React, { Component } from 'react';
-import { Alert, Button, CardImg, CardText } from "reactstrap";
+import { Alert, Button, CardImg, CardText, Input } from "reactstrap";
 import { ISubtaskProps } from "./ISubtaskProps";
 import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import { UserSubtaskReadModel } from "../../../Typings/readModels/UserSubtaskReadModel";
+import { UserSubtaskViewModel } from "../../../Typings/viewModels/UserSubtaskViewModel";
 
 @observer
-export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
+export class LoadAudioSubtask extends Component<ISubtaskProps> {
     notSaved: boolean;
-    userAnswer: UserSubtaskReadModel = new UserSubtaskReadModel();
+    userAnswer: UserSubtaskViewModel = new UserSubtaskViewModel();
     saved: boolean;
     notDeleted: boolean;
+    userAnswerReadModel: UserSubtaskReadModel = new UserSubtaskReadModel();
 
     constructor() {
         // @ts-ignore
@@ -26,12 +28,13 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
 
     componentDidMount(): void {
+        this.userAnswerReadModel.userId = this.props.userId;
+        this.userAnswerReadModel.subtaskId = this.props.subtask.id;
         this.props.store.taskStore.getUserSubtask(this.props.subtask.id, this.props.userId)
-            .then((userAnswer) => {
-                this.userAnswer.answer = userAnswer.answer;
-                this.userAnswer.status = userAnswer.status;
-                this.userAnswer.subtaskId = this.props.subtask.id;
-                this.userAnswer.userId = this.props.store.userStore.currentUser.id;
+            .then((userSubtask) => {
+                this.userAnswer = userSubtask;
+                this.userAnswerReadModel.status = userSubtask.status;
+                this.userAnswerReadModel.answer = userSubtask.answer;
         });
     }
 
@@ -64,21 +67,10 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderInputAnswerArea() {
-        return(
-            <div className="col-12">
-                <textarea
-                    value={this.userAnswer.answer}
-                    className="answerInput"
-                    onChange={(e) => this.inputAnswer(e)}/>
-            </div>
-        )
-    }
-
     renderSaveButton() {
         return(
-            <div className="col-lg-offset-10 col-lg-2">
-                <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
+            <div className="col-3">
+                <Button outline color="primary" onClick={() => this.save()}>СОХРАНИТЬ</Button>
             </div>
         );
     }
@@ -93,17 +85,44 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
+    renderUserAnswers() {
+        return(
+            <CardText>
+                {this.userAnswer.answerPaths.map(ans => {
+                    let answerPath = ans.replace('ClientApp/build', '.');
+                    return(
+                        <div className="row justify-content-center">
+                            <audio className="audio" controls>
+                                <source src={answerPath} type="audio/mpeg"/>
+                            </audio>
+                        </div>
+                    );
+                })}
+            </CardText>
+        );
+    }
+
+    renderInputFile() {
+        return(
+            <div className="col-9">
+                <Input className="fileInput"
+                    type="file"
+                    id="loadAudioFile"
+                    onChange={(e) => this.inputAnswer(e)}/>
+            </div>
+        );
+    }
+
     renderSubtask(subtask: SubtaskViewModel) {
         return(
             <>
+                {this.renderControlButton()}
                 {this.renderSubtaskText(subtask)}
                 {this.renderImage(subtask)}
+                {this.renderUserAnswers()}
                 <CardText>
                     <div className="row justify-content-center">
-                        {this.renderControlButton()}
-                        {this.renderInputAnswerArea()}
-                    </div>
-                    <div className="row justify-content-center">
+                        {this.renderInputFile()}
                         {this.renderSaveButton()}
                         {this.renderCautions()}
                     </div>
@@ -120,18 +139,24 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    inputAnswer(event: React.FormEvent<HTMLTextAreaElement>) {
-        this.userAnswer.answer = event.currentTarget.value;
+    inputAnswer(event: React.ChangeEvent<HTMLInputElement>) {
+        // @ts-ignore
+        let file = event.target.files[0];
+        this.userAnswerReadModel.files.push(file);
     }
 
     save() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
+            this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswerReadModel)
                 .then((status) => {
                     this.notSaved = status !== 200;
                     this.saved = status === 200;
-            });
+                });
         }
+    }
+
+    deleteAnswer() {//todo: РЕАЛИЗОВАТЬ
+        
     }
 
     deleteSubtask() {
@@ -139,6 +164,6 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
             .deleteSubtask(this.props.subtask.id, this.props.store.lessonStore.choosenLesson.id)
             .then((status) => {
                 this.notDeleted = status !== 200;
-        });
+            });
     }
 }

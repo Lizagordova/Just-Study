@@ -9,6 +9,6 @@ export class UserSubtaskViewModel
 {
 	public status: CompletingStatus;
 	public answer: string;
-	public answerPath: string;
+	public answerPaths: string[] = [];
 	public userSubtaskAnswerGroups: UserSubtaskAnswerGroupViewModel[] = [];
 }

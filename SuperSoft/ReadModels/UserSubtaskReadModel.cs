@@ -12,6 +12,6 @@ namespace SuperSoft.ReadModels
 		public int TaskId { get; set; }
 		public CompletingStatus Status { get; set; }
 		public string Answer { get; set; }
-		public IFormFile File { get; set; }
+		public IFormFile[] Files { get; set; }
 	}
 }

@@ -4,4 +4,5 @@ import RootStore from "../../../stores/RootStore";
 export class ISubtaskProps {
     subtask: SubtaskViewModel;
     store: RootStore;
+    userId: number;
 }
