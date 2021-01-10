@@ -6,6 +6,7 @@ import {TagViewModel} from "../Typings/viewModels/TagViewModel";
 import {UserSubtaskReadModel} from "../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskAnswerGroupReadModel} from "../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import {UserSubtaskViewModel} from "../Typings/viewModels/UserSubtaskViewModel";
+import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
@@ -51,7 +52,7 @@ class TaskStore {
         return 200;
     }
 
-    async getUserSubtask(subtaskId: number): Promise<UserSubtaskViewModel> {
+    async getUserSubtask(subtaskId: number, userId: number): Promise<UserSubtaskViewModel> {
         return new UserSubtaskViewModel();
     }
 }

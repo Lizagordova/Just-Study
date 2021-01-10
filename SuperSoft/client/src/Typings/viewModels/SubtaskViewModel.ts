@@ -3,6 +3,7 @@
 //     the code is regenerated.
 
 import { SubtaskType } from '../enums/SubtaskType';
+import { SubtaskAnswerGroupViewModel } from './SubtaskAnswerGroupViewModel';
 
 export class SubtaskViewModel
 {
@@ -11,4 +12,5 @@ export class SubtaskViewModel
 	public path: string;
 	public order: number;
 	public subtaskType: SubtaskType;
+	public answerGroups: SubtaskAnswerGroupViewModel[] = [];
 }

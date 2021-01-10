@@ -53,6 +53,7 @@
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />
 		<None Include="client\src\components\Common\Tasks\DetailedAnswerSubtask.tsx" />
+		<None Include="client\src\components\Common\Tasks\FillGapsSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\InsertWordsIntoGapsTask.tsx" />
 		<None Include="client\src\components\Common\Tasks\ISubtaskProps.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />

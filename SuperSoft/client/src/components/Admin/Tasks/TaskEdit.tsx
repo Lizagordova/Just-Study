@@ -4,8 +4,8 @@ import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { Button, Modal, ModalHeader } from "reactstrap";
 import { observer } from "mobx-react";
 import { TaskType } from "../../../Typings/enums/TaskType";
-import DetailedAnswerUploadTask from "./DetailedAnswerUploadTask";
-import FillGapsUploadTask from "./FillGapsUploadTask";
+import TaskUploadWindow from "./TaskUploadWindow";
+import {TaskReadModel} from "../../../Typings/readModels/TaskReadModel";
 
 class ITaskEditProps {
     taskStore: TaskStore;
@@ -23,32 +23,16 @@ export class TaskEdit extends Component<ITaskEditProps> {
     }
 
     renderBody() {
-        let taskType = this.taskToEdit.taskType;
-        if(taskType === TaskType.DetailedAnswer) {
-            return (
-                <DetailedAnswerUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task} />
-            );
-        } else if(taskType === TaskType.FillGaps) {
-            return(
-                <FillGapsUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
-            );
-        } else if(taskType === TaskType.InsertWordsIntoGaps) {
-            return(
-                <InsertWordsIntoGapsUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
-            );
-        } else if(taskType === TaskType.LoadAudio) {
-            return(
-                <LoadAudioUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
-            );
-        } else if(taskType === TaskType.RightVerbForm) {
-            return(
-                <RightVerbFormUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
-            );
-        } else if(taskType === TaskType.LoadFile) {
-            return(
-                <LoadFileUploadTask store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={this.props.task}/>
-            );
-        }
+        let task = this.props.task;
+        let taskReadModel = new TaskReadModel();
+        taskReadModel.instruction = task.instruction;
+        taskReadModel.text = task.text;
+        taskReadModel.taskType = task.taskType;
+        taskReadModel.subtasks = task.subtasks;
+        taskReadModel.tags = task.tags;
+        return(
+            <TaskUploadWindow store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={taskReadModel} />
+        );
     }
 
     render() {

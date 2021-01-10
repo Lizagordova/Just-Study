@@ -3,10 +3,12 @@
 //     the code is regenerated.
 
 import { CompletingStatus } from '../enums/CompletingStatus';
+import { UserSubtaskAnswerGroupViewModel } from './UserSubtaskAnswerGroupViewModel';
 
 export class UserSubtaskViewModel
 {
 	public status: CompletingStatus;
 	public answer: string;
 	public answerPath: string;
+	public userSubtaskAnswerGroups: UserSubtaskAnswerGroupViewModel[] = [];
 }

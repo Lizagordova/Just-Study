@@ -1,11 +1,11 @@
-﻿import React, {Component} from 'react';
-import {Alert, Button, CardImg, CardText} from "reactstrap";
-import {ISubtaskProps} from "./ISubtaskProps";
-import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
-import {makeObservable, observable} from "mobx";
-import {observer} from "mobx-react";
-import {UserRole} from "../../../Typings/enums/UserRole";
-import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
+﻿import React, { Component } from 'react';
+import { Alert, Button, CardImg, CardText } from "reactstrap";
+import { ISubtaskProps } from "./ISubtaskProps";
+import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import { UserRole } from "../../../Typings/enums/UserRole";
+import { UserSubtaskReadModel } from "../../../Typings/readModels/UserSubtaskReadModel";
 
 @observer
 export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
@@ -45,31 +45,67 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         }
     }
 
-    renderSubtask(subtask: SubtaskViewModel) {
+    renderSubtaskText(subtask: SubtaskViewModel) {
         return(
             <>
                 {subtask.text !== null && <CardText>
                     {subtask.text}
                 </CardText>}
+            </>
+        );
+    }
+
+    renderImage(subtask: SubtaskViewModel) {
+        return (
+            <>
                 {subtask.path !== null &&
                 <CardImg src={subtask.path.replace('ClientApp/build', './')} alt="Loading..."/>}
+            </>
+        );
+    }
+
+    renderInputAnswerArea() {
+        return(
+            <div className="col-12">
+                <textarea
+                    value={this.userAnswer.answer}
+                    className="answerInput"
+                    onChange={(e) => this.inputAnswer(e)}/>
+            </div>
+        )
+    }
+
+    renderSaveButton() {
+        return(
+            <div className="col-lg-offset-10 col-lg-2">
+                <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
+            </div>
+        );
+    }
+
+    renderCautions() {
+        return(
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
+                {this.saved && <Alert color="success">Задание успешно сохранилось</Alert>}
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и задание не удалилось</Alert>}
+            </>
+        );
+    }
+
+    renderSubtask(subtask: SubtaskViewModel) {
+        return(
+            <>
+                {this.renderSubtaskText(subtask)}
+                {this.renderImage(subtask)}
                 <CardText>
                     <div className="row justify-content-center">
                         {this.renderControlButton()}
-                        <div className="col-12">
-                            <textarea
-                                value={this.userAnswer.answer}
-                                className="answerInput"
-                                onChange={(e) => this.inputAnswer(e)}/>
-                        </div>
+                        {this.renderInputAnswerArea()}
                     </div>
                     <div className="row justify-content-center">
-                        <div className="col-lg-offset-10 col-lg-2">
-                            <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
-                        </div>
-                        {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
-                        {this.saved && <Alert color="success">Задание успешно сохранилось</Alert>}
-                        {this.notDeleted && <Alert color="danger">Что-то пошло не так и задание не удалилось</Alert>}
+                        {this.renderSaveButton()}
+                        {this.renderCautions()}
                     </div>
                 </CardText>
             </>

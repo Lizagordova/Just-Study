@@ -11,6 +11,6 @@ namespace SuperSoft.ViewModels
 		public string CommentedEntityType { get; set; }
 		public int CommentedEntityId { get; set; }
 		public int UserId { get; set; }
-		public IReadOnlyCollection<CommentViewModel> Comments = Array.Empty<CommentViewModel>();
+		public IReadOnlyCollection<CommentViewModel> Comments { get; set; } = Array.Empty<CommentViewModel>();
 	}
 }

@@ -13,6 +13,7 @@ namespace SuperSoft.ViewModels
 		public string Path { get; set; }
 		public int Order { get; set; }
 		public SubtaskType SubtaskType { get; set; }
-		public IReadOnlyCollection<SubtaskAnswerGroupViewModel> AnswerGroups = Array.Empty<SubtaskAnswerGroupViewModel>();
+
+		public IReadOnlyCollection<SubtaskAnswerGroupViewModel> AnswerGroups { get; set; } = Array.Empty<SubtaskAnswerGroupViewModel>();
 	}
 }
