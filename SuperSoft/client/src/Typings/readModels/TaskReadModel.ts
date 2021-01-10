@@ -2,6 +2,7 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { TaskType } from '../enums/TaskType';
 import { SubtaskReadModel } from './SubtaskReadModel';
 import { TagReadModel } from './TagReadModel';
 
@@ -10,6 +11,8 @@ export class TaskReadModel
 	public id: number;
 	public instruction: string;
 	public text: string;
+	public lessonId: number;
+	public taskType: TaskType;
 	public subtasks: SubtaskReadModel[];
 	public tags: TagReadModel[];
 }

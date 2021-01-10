@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SuperSoft.Configuration.Typings.Attributes;
+using SuperSoft.Domain.enums;
 
 namespace SuperSoft.ReadModels
 {
@@ -11,6 +12,7 @@ namespace SuperSoft.ReadModels
 		public string Instruction { get; set; }
 		public string Text { get; set; }
 		public int LessonId { get; set; }
+		public TaskType TaskType { get; set; }
 		public IReadOnlyCollection<SubtaskReadModel> Subtasks { get; set; } = Array.Empty<SubtaskReadModel>();
 		public IReadOnlyCollection<TagReadModel> Tags { get; set; } = Array.Empty<TagReadModel>();
 	}

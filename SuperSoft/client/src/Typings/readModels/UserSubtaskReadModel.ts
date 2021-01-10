@@ -8,6 +8,7 @@ export class UserSubtaskReadModel
 {
 	public userId: number;
 	public subtaskId: number;
+	public taskId: number;
 	public status: CompletingStatus;
 	public answer: string;
 	public file: any;

@@ -5,9 +5,8 @@ import { makeObservable, observable } from "mobx";
 import { TaskTypeTranslater } from "../../../consts/TaskTypeTranslater";
 import { TaskType } from "../../../Typings/enums/TaskType";
 import { observer } from "mobx-react";
-import DetailedAnswerUploadTask from "./DetailedAnswerUploadTask";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
-import FillGapsUploadTask from "./FillGapsUploadTask";
+import TaskUploadWindow from "./TaskUploadWindow";
 
 class ITaskUploadProps {
     store: RootStore;
@@ -67,31 +66,11 @@ class TaskUpload extends Component<ITaskUploadProps> {
     }
 
     renderTaskUploadWindowByType() {
-        if(this.taskType === TaskType.DetailedAnswer) {
-            return(
-                <DetailedAnswerUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} toggle={this.toggleTaskUploadWindow} task={new TaskReadModel()}/>
-            );
-        } else if(this.taskType === TaskType.InsertWordsIntoGaps) {
-            return(
-                <InsertWordsIntoGapsUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} />
-            );
-        } else if(this.taskType === TaskType.FillGaps) {
-            return(
-                <FillGapsUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} task={new TaskReadModel()} toggle={this.toggleTaskUploadWindow}/>
-            );
-        } else if(this.taskType === TaskType.LoadFile) {
-            return(
-                <LoadFileUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} />
-            );
-        } else if(this.taskType === TaskType.LoadAudio) {
-            return(
-                <LoadAudioUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} />
-            );
-        } else if(this.taskType === TaskType.RightVerbForm) {
-            return(
-                <RightVerbFormUploadTask store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} />
-            );
-        }
+        let task = new TaskReadModel();
+        task.taskType = this.taskType;
+       return(
+           <TaskUploadWindow store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} toggle={this.toggleTaskUploadWindow} task={task} />
+       );
     }
 
     renderButton() {

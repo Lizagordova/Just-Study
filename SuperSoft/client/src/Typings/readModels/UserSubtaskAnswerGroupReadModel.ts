@@ -6,6 +6,7 @@ export class UserSubtaskAnswerGroupReadModel
 {
 	public userId: number;
 	public answerGroupId: number;
+	public subtaskId: number;
 	public status: number;
 	public lastAnswer: string;
 }

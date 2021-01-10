@@ -2,9 +2,8 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-import { UserSubtaskViewModel } from './UserSubtaskViewModel';
-
-export class UserTaskViewModel
+export class UserTaskReadModel
 {
-	public userSubtasks: UserSubtaskViewModel[] = [];
+	public userId: number;
+	public taskId: number;
 }
