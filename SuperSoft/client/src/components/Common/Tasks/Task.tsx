@@ -12,6 +12,7 @@ import {TaskEdit} from "../../Admin/Tasks/TaskEdit";
 import {FillGapsSubtask} from "./FillGapsSubtask";
 import {LoadAudioSubtask} from "./LoadAudioSubtask";
 import {RightVerbFormSubtask} from "./RightVerbFormSubtask";
+import {LoadFileSubtask} from "./LoadFileSubtask";
 
 class ITaskProps {
     store: RootStore;
@@ -128,7 +129,7 @@ export class Task extends Component<ITaskProps> {
             );
         } else if(subtask.subtaskType === SubtaskType.LoadFile) {
             return(
-                <LoadFileSubtask subtask={subtask} store={this.props.store}/>
+                <LoadFileSubtask subtask={subtask} store={this.props.store} userId={userId}/>
             );
         }
     }

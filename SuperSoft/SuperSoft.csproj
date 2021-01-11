@@ -57,6 +57,7 @@
 		<None Include="client\src\components\Common\Tasks\InsertWordsIntoGapsTask.tsx" />
 		<None Include="client\src\components\Common\Tasks\ISubtaskProps.tsx" />
 		<None Include="client\src\components\Common\Tasks\LoadAudioSubtask.tsx" />
+		<None Include="client\src\components\Common\Tasks\LoadFileSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\RightVerbFormSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
 		<None Include="client\src\components\User\Dictionary\DictionaryPage.tsx" />
