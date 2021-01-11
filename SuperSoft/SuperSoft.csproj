@@ -26,6 +26,7 @@
 		<None Include="client\src\components\Admin\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedHomework.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedHomeworkPage.tsx" />
+		<None Include="client\src\components\Admin\CompletedHomework\CompletedTask.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\UserHomework.tsx" />
 		<None Include="client\src\components\Admin\Courses\AddNewCourse.tsx" />
 		<None Include="client\src\components\Admin\Courses\Course.tsx" />

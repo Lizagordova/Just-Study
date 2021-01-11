@@ -4,6 +4,7 @@ import { Button, Card, CardHeader, CardBody, Alert } from "reactstrap";
 import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
+import CompletedHomework from './CompletedHomework';
 
 class IUserHomeworkProps {
     store: RootStore;
@@ -31,13 +32,13 @@ class UserHomework extends Component<IUserHomeworkProps> {
             <>
                 {user !== undefined && <Card>
                     <CardHeader style={{backgroundColor: 'white'}}>
-                        <Accordion.Toggle as={Button} variant="link" eventKey={user.id} onClick={() => this.loadHomeworkToggle()}>
+                        <Accordion.Toggle as={Button} variant="link" eventKey={user.id.toString()} onClick={() => this.loadHomeworkToggle()}>
                             <span>{user.firstName + ' ' + user.lastName}</span>
                         </Accordion.Toggle>
                     </CardHeader>
-                    <Accordion.Collapse eventKey={user.id}>
+                    <Accordion.Collapse eventKey={user.id.toString()}>
                         <CardBody>
-                            {this.loadHomework && <CompletedHomework userId={user.id} tasks={this.props.tasks} />}
+                            {this.loadHomework && <CompletedHomework userId={user.id} store={this.props.store} />}
                         </CardBody>
                     </Accordion.Collapse>
                 </Card>}
