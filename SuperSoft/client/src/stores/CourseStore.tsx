@@ -1,13 +1,12 @@
 ﻿import { CourseViewModel } from "../Typings/viewModels/CourseViewModel";
 import { makeObservable, observable } from "mobx";
 import { UserCourseViewModel } from "../Typings/viewModels/UserCourseViewModel";
-import {ICourseReadModel} from "../Typings/readModels/ICourseReadModel";
 
 class CourseStore {
     coursesForTeacher: CourseViewModel[] = new Array<CourseViewModel>();
     userCourses: UserCourseViewModel[] = new Array<UserCourseViewModel>();
     choosenCourse: CourseViewModel = new CourseViewModel();
-    usersByCourse: UserCourseViewModel = new UserCourseViewModel();
+    usersByCourse: UserCourseViewModel[] = new Array<UserCourseViewModel>();
 
     constructor() {
         makeObservable(this, {

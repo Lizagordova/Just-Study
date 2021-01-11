@@ -6,6 +6,7 @@ class UserStore {
     authorizationRequired: boolean = true;
     registrationRequired: boolean = false;
     wrongCredetianals: boolean = false;
+    users: UserViewModel[] = new Array<UserViewModel>();
 
     constructor() {
         makeObservable(this, {
@@ -19,6 +20,7 @@ class UserStore {
 
     setInitialData() {
         this.getCurrentUser();
+        this.getUsers();
     }
 
     async getCurrentUser() {
@@ -28,6 +30,13 @@ class UserStore {
             this.authorizationRequired = false;
         } else {
             this.authorizationRequired = true;
+        }
+    }
+
+    async getUsers() {
+        const response = await fetch("/getusers");//todo: реализовть
+        if(response.status === 200) {
+            this.users = await response.json();
         }
     }
 

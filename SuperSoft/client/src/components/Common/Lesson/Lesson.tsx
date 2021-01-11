@@ -3,6 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import { Content } from "./Content";
 import { ContentUpload } from "../../Admin/Lessons/ContentUpload";
+import { Label } from "reactstrap";
 
 class ILessonProps {
     store: RootStore;
@@ -22,9 +23,20 @@ export class Lesson extends Component<ILessonProps> {
         }
     }
 
+    renderLessonDescription() {
+        return(
+            <div className="row justify-content-center">
+                <div className="col-lg-12 col-sm-12">
+                    <Label>{this.props.store.lessonStore.choosenLesson.description}</Label>
+                </div>
+            </div>
+        );
+    }
+
     render() {
         return(
             <div className="container-fluid">
+                {this.renderLessonDescription()}
                 <Content lessonStore={this.props.store.lessonStore} courseId={this.props.store.courseStore.choosenCourse.id}/>
                 {this.renderContentUpload()}
             </div>

@@ -5,7 +5,9 @@ import { Card, CardHeader } from "reactstrap";
 import "./lesson.css";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import {Lesson} from "../../Common/Lesson/Lesson";
+import { Lesson } from "../../Common/Lesson/Lesson";
+import HomeworkPage from "../Home/HomeworkPage";
+import { CompletedHomeworkPage } from "../CompletedHomework/CompletedHomeworkPage";
 
 class ILessonPageProps {
     store: RootStore;
@@ -60,8 +62,8 @@ export class LessonPage extends Component<ILessonPageProps> {
                         </Nav>
                     </CardHeader>
                     {this.lessonActive && <Lesson store={this.props.store}/>}
-                    {this.homeworkActive && <Homework />}
-                    {this.completedHomeworkActive && <CompletedHomeworkPage />}
+                    {this.homeworkActive && <HomeworkPage store={this.props.store}/>}
+                    {this.completedHomeworkActive && <CompletedHomeworkPage store={this.props.store}/>}
                 </Card>
             </Tab.Container>
         )
