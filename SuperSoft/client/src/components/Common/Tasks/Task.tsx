@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
-import {Alert, Card, CardBody, CardTitle} from 'reactstrap';
+import {Alert, Card, CardBody, CardTitle, Button} from 'reactstrap';
 import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
 import {makeObservable, observable} from "mobx";
@@ -11,6 +11,7 @@ import {DetailedAnswerSubtask} from "./DetailedAnswerSubtask";
 import {TaskEdit} from "../../Admin/Tasks/TaskEdit";
 import {FillGapsSubtask} from "./FillGapsSubtask";
 import {LoadAudioSubtask} from "./LoadAudioSubtask";
+import {RightVerbFormSubtask} from "./RightVerbFormSubtask";
 
 class ITaskProps {
     store: RootStore;
@@ -22,14 +23,20 @@ class ITaskProps {
 export class Task extends Component<ITaskProps> {
     notDeleted: boolean;
     editTaskWindowOpen: boolean;
+    addSubtask: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             notDeleted: observable,
-            editTaskWindowOpen: observable
+            editTaskWindowOpen: observable,
+            addSubtask: observable,
         });
+    }
+
+    addSubtaskToggle() {
+        this.addSubtask = !this.addSubtask;
     }
 
     renderControlButtons() {
@@ -48,6 +55,29 @@ export class Task extends Component<ITaskProps> {
         }
     }
 
+    renderAddSubtaskButton() {
+        let role = this.props.store.userStore.currentUser.role;
+        if(role === UserRole.Admin) {
+            return(
+                <Button className="addTask"
+                     onClick={() => this.addSubtaskToggle()}
+                     outline color="secondary">
+                    <span className="addTaskText">
+                        {!this.addSubtask ? 'ДОБАВИТЬ ПОДЗАДАНИЕ' : 'ОТМЕНИТЬ'}
+                    </span>
+                </Button>
+            );
+        }
+    }
+
+    renderAddSubtask() {
+        return(
+            <>
+                {this.addSubtask && <AddSubtask taskType={this.task.taskType} addNewSubtask={this.addNewSubtask} toggle={this.addSubtaskToggle} taskId={this.task.id}/>}
+            </>
+        )
+    }
+
     renderTask(task: TaskViewModel) {
         return(
             <Card style={{width: '100%'}}>
@@ -56,6 +86,7 @@ export class Task extends Component<ITaskProps> {
                 <CardBody style={{marginLeft: '5%'}}>
                     {this.renderSubtasks(task.subtasks)}
                 </CardBody>
+                {this.renderAddSubtask()}
             </Card>
         )
     }
@@ -68,6 +99,7 @@ export class Task extends Component<ITaskProps> {
                        <>{this.renderSubtask(subtask)}</>
                    );
                })}
+               {this.renderAddSubtaskButton()}
            </>
        );
     }
@@ -92,7 +124,7 @@ export class Task extends Component<ITaskProps> {
             );
         } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
             return(
-                <RightVerbFormSubtask subtask={subtask} store={this.props.store}/>
+                <RightVerbFormSubtask subtask={subtask} store={this.props.store} userId={userId}/>
             );
         } else if(subtask.subtaskType === SubtaskType.LoadFile) {
             return(
