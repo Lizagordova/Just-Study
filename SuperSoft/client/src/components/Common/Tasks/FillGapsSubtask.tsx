@@ -122,10 +122,6 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    inputAnswer(event: React.FormEvent<HTMLTextAreaElement>) {
-        this.userAnswer.answer = event.currentTarget.value;
-    }
-
     save() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
@@ -194,13 +190,13 @@ class Gap extends Component<IGapProps> {
         let status = this.userAnswerGroup.status;
         return(
             <input placeholder={answers[0].answer}
-                   type="text"
-                   className={status === 4 || status === 3 ? "fillGapInputRight" : status === 2 || status === 1 ? "fillGapInputWrong" : "fillGapInputPrimary"}
-                   disabled={status === 4 || status === 2}
-                   onChange={(e) => this.inputChange(e)}
+                type="text"
+                className={status === 4 || status === 3 ? "fillGapInputRight" : status === 2 || status === 1 ? "fillGapInputWrong" : "fillGapInputPrimary"}
+                disabled={status === 4 || status === 2}
+                onChange={(e) => this.inputChange(e)}
                 /* onBlur={() => this.checkAnswer()}*/
-                   value={this.userAnswerGroup.lastAnswer}
-                   onKeyPress={(e) => this.handleKeyPress(e)}
+                value={this.userAnswerGroup.lastAnswer}
+                onKeyPress={(e) => this.handleKeyPress(e)}
             />
         );
     }

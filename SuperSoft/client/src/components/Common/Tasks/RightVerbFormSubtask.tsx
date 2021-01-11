@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import {Badge, CardText} from "reactstrap";
+import {Badge, CardText, DropdownItem, DropdownMenu, ButtonDropdown, DropdownToggle} from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
 import {makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
@@ -45,17 +45,15 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
-        let regExp = /\[\d+\]/g;
+        let regExp = /\d+/g;
         let text = subtask.text;
         let groupIds = text.match(regExp);
         let partsOfSentence = new Array<string>();
         if (groupIds !== null) {
             for(let i = 0; i < groupIds.length; i++) {
-                groupIds[i] = groupIds[i].replace("[", "").replace("]", "");
                 text = text.replace(groupIds[i], "-").replace("[", "").replace("]", "");
             }
             partsOfSentence = text.split("-");
-            this.setState({answerGroupIds: groupIds, partsOfSentence: partsOfSentence});
         }
         this.answerGroupIds = groupIds;
         this.partsOfSentence = partsOfSentence;
@@ -94,7 +92,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
                     return (
                         <>
                             <span style={{clear: 'both'}}>{p}</span>
-                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])}/>}
+                            {groupIds !== null && i < groupIds.length && <Dropdown answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])}/>}
                         </>
                     )
                 })}
@@ -122,10 +120,6 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    inputAnswer(event: React.FormEvent<HTMLTextAreaElement>) {
-        this.userAnswer.answer = event.currentTarget.value;
-    }
-
     save() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
@@ -141,74 +135,95 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
             .deleteSubtask(this.props.subtask.id, this.props.store.lessonStore.choosenLesson.id)
             .then((status) => {
                 this.notDeleted = status !== 200;
-            });
+        });
     }
 }
 
-class IGapProps {
+class IDropdownProps {
     answerGroup: SubtaskAnswerGroupViewModel;
     userAnswerGroup: UserSubtaskAnswerGroupViewModel;
     store: RootStore;
 }
 
 @observer
-class Gap extends Component<IGapProps> {
+class Dropdown extends Component<IDropdownProps> {
     userAnswerGroup: UserSubtaskAnswerGroupViewModel;
     answerGroup : SubtaskAnswerGroupViewModel;
+    isOpen: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             userAnswerGroup: observable,
-            answerGroup: observable
+            answerGroup: observable,
+            isOpen: observable
         });
         this.userAnswerGroup = this.props.userAnswerGroup;
         this.answerGroup = this.props.answerGroup;
     }
 
-    inputChange(event: React.FormEvent<HTMLInputElement>) {
-        this.userAnswerGroup.lastAnswer = event.currentTarget.value;
+    toggle() {
+        this.isOpen = !this.isOpen;
     }
 
-    handleKeyPress(target: React.KeyboardEvent<HTMLInputElement>) {
-        if(target.charCode === 13) {//todo: возможно, устарело и надо поменять
-            this.checkAnswer();
-        }
-    }
-
-    checkAnswer() {
-        let lastAnswer = this.userAnswerGroup.lastAnswer.toLowerCase().trim();
-        let rightAnswers = this.answerGroup.answers.filter(ans => ans.isRight).filter(ans => ans.answer.toLowerCase());
-        let userRightAnswer = rightAnswers.filter(ans => ans.answer === lastAnswer);
-        if(userRightAnswer === null) {//todo: возможно здесь undefined или length = 0
-            this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
-        } else {
+    click(event: React.MouseEvent<HTMLElement, MouseEvent>) {
+        let id = event.currentTarget.id;
+        let answer = this.answerGroup.answers.find(a => a.id === Number(id));
+        if(answer !== undefined && answer.isRight) {
             this.userAnswerGroup.status = 4;
+        } else {
+            this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
         }
+        this.userAnswerGroup.lastAnswer = id;
         this.addOrUpdateUserAnswerGroup();
     }
 
-    renderInput() {
-        let answers = this.answerGroup.answers;
+    renderDropdownToggle() {
+        let lastAnswerId = this.userAnswerGroup.lastAnswer === undefined ? 0 : this.userAnswerGroup.lastAnswer;
         let status = this.userAnswerGroup.status;
+        let answers = this.answerGroup.answers;
+        if(lastAnswerId !== 0 && answers.findIndex(a => a.id == lastAnswerId) !== -1) {
+            let index =  answers.findIndex(a => a.id == lastAnswerId);
+            return (
+                <DropdownToggle caret outline color={status === 4 || status === 3 ? "success" : status === 2 || status === 1 ? "danger" : "primary"} disabled={status === 4 || status === 2}>
+                    {answers[index].answer}
+                </DropdownToggle>
+            );
+        } else {
+            return (
+                <DropdownToggle caret outline color="primary">
+                    {answers[0] !== undefined && answers[0].answer}
+                </DropdownToggle>
+            );
+        }
+    }
+
+    renderMenu() {
+        let answers = this.answerGroup.answers;
         return(
-            <input placeholder={answers[0].answer}
-                   type="text"
-                   className={status === 4 || status === 3 ? "fillGapInputRight" : status === 2 || status === 1 ? "fillGapInputWrong" : "fillGapInputPrimary"}
-                   disabled={status === 4 || status === 2}
-                   onChange={(e) => this.inputChange(e)}
-                /* onBlur={() => this.checkAnswer()}*/
-                   value={this.userAnswerGroup.lastAnswer}
-                   onKeyPress={(e) => this.handleKeyPress(e)}
-            />
-        );
+            <>
+                <ButtonDropdown isOpen={this.isOpen} toggle={() => this.toggle()}>
+                    {this.renderDropdownToggle()}
+                    <DropdownMenu>
+                        {answers.map((answer) => {
+                            return(
+                                <DropdownItem
+                                    onClick={(e) => this.click(e)}
+                                    id={answer.id.toString()}
+                                >{answer.answer}</DropdownItem>
+                            );
+                        })}
+                    </DropdownMenu>
+                </ButtonDropdown>
+            </>
+        )
     }
 
     render() {
         return(
             <>
-                {this.renderInput()}
+                {this.renderMenu()}
             </>
         );
     }
