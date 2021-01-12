@@ -6,5 +6,6 @@ namespace SuperSoft.Domain.Services
 	{
 		int AddOrUpdateComment(Comment comment, int groupId);
 		int AddOrUpdateCommentGroup(CommentGroup group);
+		void RemoveComment(int commentId);
 	}
 }

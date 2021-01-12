@@ -79,7 +79,7 @@ class CommentGroup extends Component<ICommentGroupProps> {
                         return(
                             // @ts-ignore
                             <li key={comment.id} className="message" align={`${comment.userId === myId ? "right": "left"}`}>
-                                <Comment comment={comment} userStore={this.props.store.userStore} />
+                                <Comment comment={comment} userStore={this.props.store.userStore} saveComment={this.handleSave}/>
                             </li>
                         );
                     })}
@@ -108,9 +108,9 @@ class CommentGroup extends Component<ICommentGroupProps> {
         this.windowOpen = !this.windowOpen;
         this.props.onToggle();
     }
-    
-    handleSave() {
-        this.saveComment()
+
+    handleSave(comment: CommentReadModel = this.getCommentReadModel()) {
+        this.saveComment(comment)
             .then((status) => {
                 if(status === 200) {
                     this.getCommentGroup();
@@ -139,8 +139,7 @@ class CommentGroup extends Component<ICommentGroupProps> {
         return response.status;
     }
 
-    async saveComment(): Promise<number> {
-        let comment = this.getCommentReadModel();
+    async saveComment(comment: CommentReadModel): Promise<number> {
         const response = await fetch(`/addorupdatecomment`, {
             method: 'POST',
             headers: {

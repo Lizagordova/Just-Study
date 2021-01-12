@@ -38,7 +38,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Route("/home/courses/addorupdatecomment")]
+		[Route("/addorupdatecomment")]
 		public ActionResult AddOrUpdateComment([FromBody]CommentGroupReadModel commentGroup)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
@@ -72,8 +72,8 @@ namespace SuperSoft.Controllers
 			return new OkResult();
 		}
 
-		/*[HttpPost]
-		[Route("/home/courses/getcommentgroup")]
+		[HttpPost]
+		[Route("/getcommentgroup")]
 		public ActionResult GetCommentGroup([FromBody]CommentGroupReadModel commentGroup)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
@@ -82,42 +82,16 @@ namespace SuperSoft.Controllers
 				return new BadRequestResult();
 			}
 			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroup);
-			var groupId = _commentRepository.AddOrUpdateCommentGroup(group);
+			var groupId = _commentEditor.AddOrUpdateCommentGroup(group);
 			group.Id = groupId;
 
-			var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(group);
+			var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(group);//todo: я думаю, здесь надо маппер для comments сделать ещё
 
 			return new JsonResult(groupViewModel);
 		}
 
 		[HttpPost]
-		[Route("/home/courses/getcomments")]
-		public ActionResult GetComments([FromBody] CommentGroupReadModel commentGroup)
-		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
-			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroup);
-			List<Comment> comments;
-			try
-			{
-				comments = _commentRepository.GetComments(group);
-			}
-			catch (Exception e)
-			{
-				_logService.AddGetCommentsException(_logger, e, group.Id);
-				return new StatusCodeResult(500);
-			}
-			var commentsViewModel = comments.Select(_mapperService.Map<Comment, CommentViewModel>).ToList();
-			commentsViewModel = commentsViewModel.Join(comments, cw => cw.Id, c => c.Id, MapCommentViewModel).ToList();
-
-			return new JsonResult(commentsViewModel);
-		}
-
-		[HttpPost]
+		[Route("/removecomment")]
 		public ActionResult RemoveComment([FromBody]CommentReadModel commentReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
@@ -125,19 +99,9 @@ namespace SuperSoft.Controllers
 			{
 				return new BadRequestResult();
 			}
-
-			var comment = _mapperService.Map<CommentReadModel, Comment>(commentReadModel);
-			_commentRepository.RemoveComment(comment);
+			_commentEditor.RemoveComment(commentReadModel.Id);
 
 			return new OkResult();
 		}
-
-		private CommentViewModel MapCommentViewModel(CommentViewModel commentViewModel, Comment comment)
-		{
-			var user = _userRepository.GetUser(comment.UserId);
-			commentViewModel.User = _mapperService.Map<User, UserViewModel>(user);
-
-			return commentViewModel;
-		}*/
 	}
 }
