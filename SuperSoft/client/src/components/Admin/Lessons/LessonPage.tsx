@@ -6,7 +6,7 @@ import "./lesson.css";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { Lesson } from "../../Common/Lesson/Lesson";
-import HomeworkPage from "../Home/HomeworkPage";
+import HomeworkPage from "../Homework/HomeworkPage";
 import { CompletedHomeworkPage } from "../CompletedHomework/CompletedHomeworkPage";
 
 class ILessonPageProps {

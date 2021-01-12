@@ -91,7 +91,6 @@
 
 	<ItemGroup>
 	  <Folder Include="client\src\components\Admin\Dictionary" />
-	  <Folder Include="client\src\components\Admin\Homework" />
 	  <Folder Include="client\src\components\Admin\Trainings" />
 	  <Folder Include="client\src\components\User\Home" />
 	  <Folder Include="client\src\components\User\MyLessons" />
