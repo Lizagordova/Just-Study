@@ -46,10 +46,13 @@
 		<None Include="client\src\components\Admin\Tasks\TaskEdit.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
+		<None Include="client\src\components\Admin\Users\UsersPage.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Common\Comments\Comment.tsx" />
 		<None Include="client\src\components\Common\Comments\CommentGroup.tsx" />
+		<None Include="client\src\components\Common\Dictionary\DictionaryPage.tsx" />
+		<None Include="client\src\components\Common\Dictionary\Word.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />
@@ -78,6 +81,7 @@
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
+		<None Include="client\src\stores\WordStore.tsx" />
 		<None Include="client\stores\CommentStore.tsx" />
 		<None Include="client\stores\ProjectStore.tsx" />
 		<None Include="client\stores\RootStore.tsx" />
