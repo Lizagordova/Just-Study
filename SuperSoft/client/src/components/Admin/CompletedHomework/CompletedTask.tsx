@@ -4,6 +4,7 @@ import { Task } from "../../Common/Tasks/Task";
 import { observer } from "mobx-react";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import RootStore from "../../../stores/RootStore";
+import { makeObservable, observable } from "mobx";
 
 class ICompletedTaskProps {
     task: TaskViewModel;
@@ -13,25 +14,24 @@ class ICompletedTaskProps {
 
 @observer
 class CompletedTask extends Component<ICompletedTaskProps> {
+    commentsWindowOpen: boolean;
+
     constructor() {
         // @ts-ignore
         super();
-        this.state = {
-            task: this.props.task,
-            comments: false
-        };
-        this.onToggle = this.onToggle.bind(this);
+        makeObservable(this, {
+            commentsWindowOpen: observable
+        })
     }
 
-    onToggle() {
-        this.setState({comments: false})
+    commentsToggle() {
+        this.commentsWindowOpen = !this.commentsWindowOpen;
     }
 
     renderTask() {
-        let task = this.state.task;
         return (
-            <Task task={task}/>
-        )
+            <Task task={this.props.task} store={this.props.store} userId={this.props.userId}/>
+        );
     }
 
     render() {
@@ -43,11 +43,11 @@ class CompletedTask extends Component<ICompletedTaskProps> {
                 <div className="col-2">
                     <Button
                         outline color="primary"
-                        onClick={() => this.setState({comments: true})}>Комментарии</Button>
-                    {this.state.comments && <CommentGroup commentedEntityType="lessonTask" commentedEntityId={this.state.task.id} userId={store.getState().choosenUser.id} onToggle={this.onToggle}/>}
+                        onClick={() => this.commentsToggle()}>Комментарии</Button>
+                    {this.commentsWindowOpen && <CommentGroup commentedEntityType="lessonTask" commentedEntityId={this.state.task.id} userId={store.getState().choosenUser.id} onToggle={this.onToggle}/>}
                 </div>
             </>
-        )
+        );
     }
 }
 

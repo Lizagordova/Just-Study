@@ -21,10 +21,11 @@ class CompletedHomework  extends Component<ICompletedHomeworkProps> {
                                 <CompletedTask task={task} userId={this.props.userId} store={this.props.store}/>
                             </div>
                             <hr />
-                        </>)
+                        </>
+                    );
                 })}
             </div>
-        )
+        );
     }
 
     render() {

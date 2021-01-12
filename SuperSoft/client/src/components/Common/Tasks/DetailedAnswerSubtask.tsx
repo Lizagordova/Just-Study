@@ -26,13 +26,11 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
 
     componentDidMount(): void {
-        this.props.store.taskStore.getUserSubtask(this.props.subtask.id, this.props.userId)
-            .then((userAnswer) => {
-                this.userAnswer.answer = userAnswer.answer;
-                this.userAnswer.status = userAnswer.status;
-                this.userAnswer.subtaskId = this.props.subtask.id;
-                this.userAnswer.userId = this.props.store.userStore.currentUser.id;
-        });
+        let userSubtask = this.props.userSubtask;
+        this.userAnswer.answer = userSubtask.answer;
+        this.userAnswer.status = userSubtask.status;
+        this.userAnswer.subtaskId = this.props.subtask.id;
+        this.userAnswer.userId = this.props.store.userStore.currentUser.id;
     }
 
     renderControlButton() {

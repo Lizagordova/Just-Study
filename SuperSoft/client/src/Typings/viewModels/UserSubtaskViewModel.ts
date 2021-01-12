@@ -9,6 +9,7 @@ export class UserSubtaskViewModel
 {
 	public status: CompletingStatus;
 	public answer: string;
-	public answerPaths: string[] = [];
+	public subtaskId: number;
+	public answerFiles: string[] = [];
 	public userSubtaskAnswerGroups: UserSubtaskAnswerGroupViewModel[] = [];
 }

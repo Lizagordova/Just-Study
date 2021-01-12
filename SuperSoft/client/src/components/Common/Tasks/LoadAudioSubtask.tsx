@@ -30,12 +30,10 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.userAnswerReadModel.userId = this.props.userId;
         this.userAnswerReadModel.subtaskId = this.props.subtask.id;
-        this.props.store.taskStore.getUserSubtask(this.props.subtask.id, this.props.userId)
-            .then((userSubtask) => {
-                this.userAnswer = userSubtask;
-                this.userAnswerReadModel.status = userSubtask.status;
-                this.userAnswerReadModel.answer = userSubtask.answer;
-        });
+        let userSubtask = this.props.userSubtask;
+        this.userAnswer = userSubtask;
+        this.userAnswerReadModel.status = userSubtask.status;
+        this.userAnswerReadModel.answer = userSubtask.answer;
     }
 
     renderControlButton() {

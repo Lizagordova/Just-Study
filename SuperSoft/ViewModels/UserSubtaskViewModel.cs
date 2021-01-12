@@ -10,6 +10,7 @@ namespace SuperSoft.ViewModels
 	{
 		public CompletingStatus Status { get; set; }
 		public string Answer { get; set; }
+		public int SubtaskId { get; set; }
 		public IReadOnlyCollection<string> AnswerFiles { get; set; } = Array.Empty<string>();
 		public IReadOnlyCollection<UserSubtaskAnswerGroupViewModel> UserSubtaskAnswerGroups { get; set; } = Array.Empty<UserSubtaskAnswerGroupViewModel>();
 	}

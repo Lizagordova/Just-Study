@@ -48,7 +48,7 @@ namespace SuperSoft.Controllers
 				var userTask = _taskReader.GetUserTask(userTaskReadModel.TaskId, userTaskReadModel.UserId);
 				var userTasksViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);
 
-				return new OkResult();
+				return new JsonResult(userTasksViewModel);
 			}
 			catch (Exception e)
 			{

@@ -30,12 +30,10 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.userAnswerReadModel.userId = this.props.userId;
         this.userAnswerReadModel.subtaskId = this.props.subtask.id;
-        this.props.store.taskStore.getUserSubtask(this.props.subtask.id, this.props.userId)
-            .then((userSubtask) => {
-                this.userAnswer = userSubtask;
-                this.userAnswerReadModel.status = userSubtask.status;
-                this.userAnswerReadModel.answer = userSubtask.answer;
-            });
+        let userSubtask = this.props.userSubtask;
+        this.userAnswer = userSubtask;
+        this.userAnswerReadModel.status = userSubtask.status;
+        this.userAnswerReadModel.answer = userSubtask.answer;
     }
 
     renderControlButton() {
@@ -88,7 +86,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     renderUserAnswers() {
         return(
             <CardText>
-                {this.userAnswer.answerPaths.map(ans => {
+                {this.userAnswer.answerFiles.map(ans => {
                     let answerPath = ans.replace('ClientApp/build', '.');
                     return(
                         <div className="row justify-content-center">

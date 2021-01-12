@@ -38,10 +38,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
 
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
-        this.props.store.taskStore.getUserSubtask(this.subtask.id, this.props.store.userStore.currentUser.id)
-            .then((userAnswer) => {
-                this.userAnswerGroups = userAnswer.userSubtaskAnswerGroups;
-            });
+        this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
