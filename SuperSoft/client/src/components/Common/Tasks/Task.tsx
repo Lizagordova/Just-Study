@@ -77,7 +77,7 @@ export class Task extends Component<ITaskProps> {
     renderAddSubtask() {
         return(
             <>
-                {this.addSubtask && <AddSubtask taskType={this.task.taskType} addNewSubtask={this.addNewSubtask} toggle={this.addSubtaskToggle} taskId={this.task.id}/>}
+                {this.addSubtask && <AddSubtask taskType={this.props.task.taskType} addNewSubtask={this.addNewSubtask} toggle={this.addSubtaskToggle} taskId={this.task.id}/>}
             </>
         )
     }

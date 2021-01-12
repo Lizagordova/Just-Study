@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using SuperSoft.Configuration.Typings.Attributes;
 using SuperSoft.Domain.enums;
 
-namespace SuperSoft.ViewModels
+namespace SuperSoft.Domain.Models
 {
-	[ApiViewModel]
-	public class CommentGroupViewModel
+	public class CommentGroup
 	{
 		public int Id { get; set; }
 		public CommentedEntityType CommentedEntityType { get; set; }
 		public int CommentedEntityId { get; set; }
 		public int UserId { get; set; }
-		public IReadOnlyCollection<CommentViewModel> Comments { get; set; } = Array.Empty<CommentViewModel>();
+		public IReadOnlyCollection<Comment> Comments = Array.Empty<Comment>();
 	}
 }

@@ -148,6 +148,18 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddOrUpdateCommentException(ILogger logger, Exception e, Comment comment, int groupId)
+		{
+			var customMessage = $"Не удалось добавить комментарий text:{comment.Text};PublishDate={comment.PublishDate};UserId={comment.UserId};groupId={groupId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateNotificationException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить уведомление.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

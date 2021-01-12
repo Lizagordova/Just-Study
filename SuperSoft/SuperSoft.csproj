@@ -48,6 +48,7 @@
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
+		<None Include="client\src\components\Common\Comments\Comment.tsx" />
 		<None Include="client\src\components\Common\Comments\CommentGroup.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
@@ -70,6 +71,7 @@
 		<None Include="client\src\functions\getTooltip.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
+		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\DictionaryStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />

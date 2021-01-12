@@ -3,12 +3,14 @@ import UserStore from "./UserStore";
 import CourseStore from "./CourseStore";
 import LessonStore from "./LessonStore";
 import TaskStore from "./TaskStore";
+import CommentStore from "./CommentStore";
 
 export class RootStore {
     userStore: UserStore;
     courseStore: CourseStore;
     lessonStore: LessonStore;
     taskStore: TaskStore;
+    commentStore: CommentStore;
 
     constructor() {
         makeObservable(this, {
@@ -16,11 +18,13 @@ export class RootStore {
             courseStore: observable,
             lessonStore: observable,
             taskStore: observable,
+            commentStore: observable
         });
         this.userStore = new UserStore();
         this.courseStore = new CourseStore();
         this.lessonStore = new LessonStore();
         this.taskStore = new TaskStore();
+        this.commentStore = new CommentStore();
     }
 
     reset() {
@@ -30,6 +34,7 @@ export class RootStore {
                 this.courseStore = new CourseStore();
                 this.lessonStore = new LessonStore();
                 this.taskStore = new TaskStore();
+                this.commentStore = new CommentStore();
             });
     }
 
