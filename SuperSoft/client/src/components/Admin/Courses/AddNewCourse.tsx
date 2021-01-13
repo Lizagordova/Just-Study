@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import CourseStore from "../../../stores/CourseStore";
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader  } from "reactstrap";
+import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 

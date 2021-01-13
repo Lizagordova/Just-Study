@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using SuperSoft.Configuration.Typings.Attributes;
 using SuperSoft.Domain.enums;
 
-namespace SuperSoft.ViewModels
+namespace SuperSoft.ReadModels
 {
-	[ApiViewModel]
-	public class WordViewModel
+	[ApiReadModel]
+	public class WordReadModel
 	{
 		public int Id { get; set; }
 		public string Word { get; set; }
 		public string EnglishMeaning { get; set; }
 		public string RussianMeaning { get; set; }
 		public PartOfSpeech PartOfSpeech { get; set; }
-		public IReadOnlyCollection<ExampleViewModel> Examples { get; set; } = Array.Empty<ExampleViewModel>();
+		public IReadOnlyCollection<ExampleReadModel> Examples { get; set; } = Array.Empty<ExampleReadModel>();
 	}
 }

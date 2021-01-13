@@ -3,14 +3,30 @@ import { makeObservable, observable } from "mobx";
 import {UserWordViewModel} from "../Typings/viewModels/UserWordViewModel";
 
 class WordStore {
-    words: WordViewModel[] = new Array<WordViewModel>();
-    userWords: UserWordViewModel[] = new Array<UserWordViewModel>();
+    dictionary: WordViewModel[] = new Array<WordViewModel>();
+    userDictionary: UserWordViewModel[] = new Array<UserWordViewModel>();
 
     constructor() {
         makeObservable(this, {
-            words: observable,
-            userWords: observable,
+            dictionary: observable,
+            userDictionary: observable,
         });
+    }
+
+   async deleteWordFromDictionary(wordId: number): Promise<number> {
+        return 200;
+    }
+    
+    async deleteWordFromUserDictionary(wordId: number, userId: number): Promise<number> {
+        return 200;
+    }
+    
+    async getDictionary() {
+        
+    }
+    
+    async getUserDictionary() {
+        
     }
 }
 

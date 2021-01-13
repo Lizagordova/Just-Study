@@ -23,7 +23,6 @@
 		<Content Include="client\src\styles\lesson.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-		<None Include="client\src\components\Admin\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedHomework.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedHomeworkPage.tsx" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedTask.tsx" />
@@ -31,7 +30,6 @@
 		<None Include="client\src\components\Admin\Courses\AddNewCourse.tsx" />
 		<None Include="client\src\components\Admin\Courses\Course.tsx" />
 		<None Include="client\src\components\Admin\Courses\CoursesPage.tsx" />
-		<None Include="client\src\components\Admin\Home\HomeworkPage.tsx" />
 		<None Include="client\src\components\Admin\Lessons\AddOrUpdateNewLesson.tsx" />
 		<None Include="client\src\components\Admin\Lessons\ContentUpload.tsx" />
 		<None Include="client\src\components\Admin\Lessons\Lesson.tsx" />
@@ -51,6 +49,7 @@
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Common\Comments\Comment.tsx" />
 		<None Include="client\src\components\Common\Comments\CommentGroup.tsx" />
+		<None Include="client\src\components\Common\Dictionary\AddOrUpdateWord.tsx" />
 		<None Include="client\src\components\Common\Dictionary\DictionaryPage.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Word.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />

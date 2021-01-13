@@ -2,23 +2,34 @@
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
 import { Card, CardText } from "reactstrap";
 import { makeObservable, observable } from "mobx";
+import WordStore from "../../../stores/WordStore";
+import UserStore from "../../../stores/UserStore";
+import { UserRole } from "../../../Typings/enums/UserRole";
+import { observer } from "mobx-react";
 
 
 class IWordProps {
     word: WordViewModel;
+    wordStore: WordStore;
+    userStore: UserStore;
 }
 
+@observer
 class Word extends Component<IWordProps> {
     word: WordViewModel;
+    notDeleted: boolean;
+    edit: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            word: observable
-        })
+            word: observable,
+            notDeleted: observable,
+            edit: observable
+        });
     }
-    
+
     renderWord() {
         return(
             <div className="col-lg-2 col-md-9 col-sm-9 col-xs-9">
@@ -51,10 +62,27 @@ class Word extends Component<IWordProps> {
         );
     }
 
+    renderControlButtons() {
+        return(
+            <>
+                <div className="row justify-content-center">
+                    <p onClick={() => this.handleDelete()}>
+                        <i className="fa fa-window-close" aria-hidden="true"/>
+                    </p>
+                </div>
+                <div className="row justify-content-center">
+                    <p onClick={() => this.editToggle()}>
+                        <i className="fa fa-edit" aria-hidden="true"/>
+                    </p>
+                </div>
+            </>
+        );
+    }
+
     renderProgress() {
         
     }
-    
+
     renderWordCard() {
         return(
             <Card className="cardWord" body>
@@ -69,16 +97,7 @@ class Word extends Component<IWordProps> {
                             </div>
                         </div>
                         <div className="col-2">
-                            <div className="row justify-content-center">
-                                <p onClick={() => this.handleDelete()}>
-                                    <i className="fa fa-window-close" aria-hidden="true"/>
-                                </p>
-                            </div>
-                            <div className="row justify-content-center">
-                                <p onClick={() => this.handleEdit()}>
-                                    <i className="fa fa-edit" aria-hidden="true"/>
-                                </p>
-                            </div>
+                            {this.renderControlButtons()}
                         </div>
                     </div>
                 </CardText>
@@ -93,4 +112,32 @@ class Word extends Component<IWordProps> {
             </>
         );
     }
+
+    handleDelete() {
+        let result = window.confirm('Вы уверены, что хотите удалить слово?');
+        if(result) {
+            this.deleteWord()
+                .then((status) => {
+                    this.notDeleted = status !== 200;
+            });
+        }
+    }
+
+    async deleteWord(): Promise<number> {
+        let role = this.props.userStore.currentUser.role;
+        if(role === UserRole.User) {
+            let userId = this.props.userStore.currentUser.id;
+           return this.props.wordStore.deleteWordFromUserDictionary(this.word.id, userId);
+        } else if(role === UserRole.Admin) {
+           return this.props.wordStore.deleteWordFromDictionary(this.word.id);
+        }
+
+        return 401;
+    }
+
+    editToggle() {
+        this.edit = !this.edit;
+    }
 }
+
+export default Word;

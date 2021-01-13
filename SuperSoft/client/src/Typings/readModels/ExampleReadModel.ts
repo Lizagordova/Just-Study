@@ -2,12 +2,8 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-export class WordViewModel
+export class ExampleReadModel
 {
 	public id: number;
-	public word: string;
-	public englishMeaning: string;
-	public russianMeaning: string;
-	public partOfSpeech: number;
-	public examples: any[] = [];
+	public example: string;
 }
