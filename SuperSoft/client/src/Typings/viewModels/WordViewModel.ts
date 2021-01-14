@@ -2,12 +2,14 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { PartOfSpeech } from '../enums/PartOfSpeech';
+
 export class WordViewModel
 {
 	public id: number;
 	public word: string;
 	public englishMeaning: string;
 	public russianMeaning: string;
-	public partOfSpeech: number;
+	public partOfSpeech: PartOfSpeech;
 	public examples: any[] = [];
 }

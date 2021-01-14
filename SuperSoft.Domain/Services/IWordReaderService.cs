@@ -7,7 +7,7 @@ namespace SuperSoft.Domain.Services
 {
 	public interface IWordReaderService
 	{
-		List<Word> GetAllWords();
+		List<Word> GetDictionary();
 		List<UserWord> GetUserDictionary(int userId);
 		List<UserWord> GetAnswersToWordOfADayByUser(int userId);
 		List<UserWord> GetAnswersToWordOfADayByWord(int wordId);

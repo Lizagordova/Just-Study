@@ -31,6 +31,9 @@ namespace SuperSoft.Configuration
 			builder
 				.ExportAsEnum<CommentedEntityType>()
 				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<PartOfSpeech>()
+				.OverrideNamespace("enums");
 		}
 	}
 }

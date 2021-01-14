@@ -37,5 +37,7 @@ namespace SuperSoft.Controllers
 				return new JsonResult(userViewModel);
 			}
 		}
+		
+		//todo: реализовать registation and authorization
 	}
 }

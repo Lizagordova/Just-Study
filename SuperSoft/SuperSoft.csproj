@@ -70,9 +70,9 @@
 		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
-		<None Include="client\src\functions\getTooltip.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
+		<None Include="client\src\functions\transformer.tsx" />
 		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\DictionaryStore.tsx" />

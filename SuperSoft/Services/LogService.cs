@@ -16,12 +16,30 @@ namespace SuperSoft.Services
 			_logRepository = logRepository;
 		}
 
-		public void AddLogGetAllWordsException(ILogger logger, Exception e)
+		public void AddLogGetDictionaryException(ILogger logger, Exception e)
 		{
 			var customMessage = "Не удалось получить словарь";
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetUserDictionaryException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось получить словарь для пользователя с id={userId}";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateWordToDictionaryException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить слово в словарь";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateWordToUserDictionaryException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось добавить слово в словарь пользователя с id={userId}";
+			AddLog(logger, e, customMessage);
+		}
+		
 		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";

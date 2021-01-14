@@ -1,6 +1,7 @@
 ﻿import { WordViewModel } from "../Typings/viewModels/WordViewModel";
 import { makeObservable, observable } from "mobx";
 import {UserWordViewModel} from "../Typings/viewModels/UserWordViewModel";
+import {WordReadModel} from "../Typings/readModels/WordReadModel";
 
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
@@ -16,17 +17,71 @@ class WordStore {
    async deleteWordFromDictionary(wordId: number): Promise<number> {
         return 200;
     }
-    
-    async deleteWordFromUserDictionary(wordId: number, userId: number): Promise<number> {
+
+   async deleteWordFromUserDictionary(wordId: number, userId: number): Promise<number> {
         return 200;
-    }
-    
-    async getDictionary() {
-        
-    }
-    
-    async getUserDictionary() {
-        
+   }
+
+   async getDictionary(): Promise<number> {
+        const response = await fetch("/getdictionary");
+        if(response.status === 200) {
+            this.dictionary = await response.json();
+        }
+
+        return response.status;
+   }
+
+   async getUserDictionary(userId: number): Promise<number> {
+       const response = await fetch("/getuserdictionary", {
+           method: "POST",
+           headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+           body: JSON.stringify({id: userId})
+       });
+       if(response.status === 200) {
+           this.userDictionary = await response.json();
+       }
+
+        return response.status;
+   }
+
+   async addOrUpdateWordToDictionary(word: WordReadModel): Promise<number> {
+       const response = await fetch("/addorupdatewordtodictionary", {
+           method: "POST",
+           headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+           body: JSON.stringify({
+               id: word.id, word: word.word,
+               russianMeaning: word.russianMeaning, englishMeaning: word.englishMeaning, 
+               partOfSpeech: word.partOfSpeech, examples: word.examples
+           })
+       });
+       if(response.status === 200) {
+           this.getDictionary();
+       }
+
+       return response.status;
+   }
+
+    async addOrUpdateWordToUserDictionary(word: WordReadModel, userId: number): Promise<number> {
+        const response = await fetch("/addorupdatewordtodictionary", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                word: word,
+                userId: userId
+            })
+        });
+        if(response.status === 200) {
+            this.getDictionary();
+            this.getUserDictionary(userId);
+        }
+
+        return response.status;
     }
 }
 

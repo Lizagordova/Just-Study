@@ -2,6 +2,7 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { PartOfSpeech } from '../enums/PartOfSpeech';
 import { ExampleReadModel } from './ExampleReadModel';
 
 export class WordReadModel
@@ -10,6 +11,6 @@ export class WordReadModel
 	public word: string;
 	public englishMeaning: string;
 	public russianMeaning: string;
-	public partOfSpeech: number;
+	public partOfSpeech: PartOfSpeech;
 	public examples: ExampleReadModel[];
 }

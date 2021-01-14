@@ -6,7 +6,8 @@ namespace SuperSoft.Domain.Services
 {
 	public interface IWordEditorService
 	{
-		int AddOrUpdateWord(Word word);
+		int AddOrUpdateWordToDictionary(Word word);
+		int AddOrUpdateWordToUserDictionary(Word word, int userId);
 		void AddOrUpdateUserWord(UserWord userWord);
 		void AddOrUpdateUserWords(List<UserWord> userWords);
 		void DeleteWordFromDictionary(int wordId);
