@@ -134,5 +134,53 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+		
+		[HttpPost]
+		[Route("/deletewordfromdictionary")]
+		public ActionResult DeleteWordFromDictionay([FromBody]WordReadModel wordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_wordEditor.DeleteWordFromDictionary(wordReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteWordFromDictionaryException(_logger, e, wordReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/deletewordfromuserdictionary")]
+		public ActionResult DeleteWordFromUserDictionary([FromBody]UserWordReadModel userWordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_wordEditor.DeleteWordFromUserDictionary(userWordReadModel.Word.Id, userWordReadModel.UserId);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteWordFromUserDictionaryException(_logger, e, userWordReadModel.Word.Id, userWordReadModel.UserId);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

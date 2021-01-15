@@ -39,7 +39,19 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось добавить слово в словарь пользователя с id={userId}";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogDeleteWordFromDictionaryException(ILogger logger, Exception e, int wordId)
+		{
+			var customMessage = $"Не удалось удалить слово из словаря с wordId={wordId}";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogDeleteWordFromUserDictionaryException(ILogger logger, Exception e, int wordId, int userId)
+		{
+			var customMessage = $"Не удалось удалить слово из пользовательского словаря с wordId={wordId} и userId={userId}";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";

@@ -15,11 +15,35 @@ class WordStore {
     }
 
    async deleteWordFromDictionary(wordId: number): Promise<number> {
-        return 200;
+       const response = await fetch("/deletewordfromdictionary", {
+           method: "POST",
+           headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+           body: JSON.stringify({id: wordId})
+       });
+       if(response.status === 200) {
+           this.getDictionary();
+       }
+
+       return response.status;
     }
 
    async deleteWordFromUserDictionary(wordId: number, userId: number): Promise<number> {
-        return 200;
+        let word = new WordReadModel();
+        word.id = wordId;
+       const response = await fetch("/deletewordfromuserdictionary", {
+           method: "POST",
+           headers: {
+               'Content-Type': 'application/json;charset=utf-8'
+           },
+           body: JSON.stringify({userId: userId, word: word})
+       });
+       if(response.status === 200) {
+           this.getUserDictionary(userId);
+       }
+
+       return response.status;
    }
 
    async getDictionary(): Promise<number> {
