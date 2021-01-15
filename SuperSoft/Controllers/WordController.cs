@@ -182,5 +182,30 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/addorupdateuserwordprogress")]
+		public ActionResult AddOrUpdateUserWordProgress([FromBody]UserWordReadModel userWordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			var userWord = _mapper.Map<UserWordReadModel, UserWord>(userWordReadModel);
+			try
+			{
+				_wordEditor.AddOrUpdateUserWord(userWord);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateUserWordProgressException(_logger, e);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

@@ -1,9 +1,13 @@
-﻿import React, {Component} from 'react';
+﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
-import {observer} from "mobx-react";
-import {Button} from 'reactstrap';
-import {makeObservable, observable} from "mobx";
-import {UserRole} from "../../../Typings/enums/UserRole";
+import { observer } from "mobx-react";
+import { Button } from 'reactstrap';
+import { makeObservable, observable } from "mobx";
+import { UserRole } from "../../../Typings/enums/UserRole";
+import Word from "./Word";
+import Words from "./Words";
+import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import WordsTrainingPage from "../../User/Dictionary/WordsTrainingPage";
 
 class IDictionaryPageProps {
     store: RootStore;
@@ -21,6 +25,15 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
             addNewWord: observable,
             training: observable,
         });
+    }
+
+    componentDidMount(): void {
+        let role = this.props.store.userStore.currentUser.role;
+        this.props.store.wordStore.getDictionary();
+        if(role === UserRole.User) {
+            let userId = this.props.store.userStore.currentUser.id;
+            this.props.store.wordStore.getUserDictionary(userId);
+        }
     }
 
     addNewWordToggle() {
@@ -56,7 +69,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         return(
             <>
                 {this.addNewWord && <div className="row justify-content-center">
-                    <Word addOrUpdate={true} onAddOrUpdate={this.changingWord} onClose={this.addNewWordToggle}/>
+                    <Word userStore={this.props.store.userStore} userWord={new UserWordViewModel()} wordStore={this.props.store.wordStore}/>
                 </div>}
             </>
         );
@@ -78,11 +91,19 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         }
     }
 
+    renderWordTrainingPage() {
+        return(
+            <>
+                {this.training && <WordsTrainingPage onToggle={this.trainingToggle} wordStore={this.props.store.wordStore}/>}
+            </>
+        );
+    }
+
     renderWords() {
         return(
             <div className="row justify-content-center">
                 <div className="col-12">
-                    <Words onDelete={this.changingWord} onAddOrUpdate={this.changingWord}/>
+                    <Words userStore={this.props.store.userStore} wordStore={this.props.store.wordStore}/>
                 </div>
             </div>
         )
@@ -95,6 +116,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
                     {this.renderSearch()}
                     {this.renderAddNewWordButton()}
                     {this.renderTrainingButton()}
+                    {this.renderWordTrainingPage()}
                 </div>
                 {this.renderAddNewWordWindow()}
                 {this.renderWords()}

@@ -6,17 +6,19 @@ import WordStore from "../../../stores/WordStore";
 import UserStore from "../../../stores/UserStore";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import { observer } from "mobx-react";
+import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
+import AddOrUpdateWord from "./AddOrUpdateWord";
 
 
 class IWordProps {
-    word: WordViewModel;
+    userWord: UserWordViewModel;
     wordStore: WordStore;
     userStore: UserStore;
 }
 
 @observer
 class Word extends Component<IWordProps> {
-    word: WordViewModel;
+    word: WordViewModel = new WordViewModel();
     notDeleted: boolean;
     edit: boolean;
 
@@ -28,6 +30,11 @@ class Word extends Component<IWordProps> {
             notDeleted: observable,
             edit: observable
         });
+        this.setWord();
+    }
+
+    setWord() {
+        this.word = this.props.wordStore.dictionary.filter(w => w.id === this.props.userWord.wordId)[0];
     }
 
     renderWord() {
@@ -108,7 +115,8 @@ class Word extends Component<IWordProps> {
     render() {
         return(
             <>
-                {this.renderWordCard()}
+                {!this.edit && this.renderWordCard()}
+                {this.edit && <AddOrUpdateWord word={this.word} userStore={this.props.userStore} wordStore={this.props.wordStore} addOrUpdateWordToggle={this.editToggle}/>}
             </>
         );
     }

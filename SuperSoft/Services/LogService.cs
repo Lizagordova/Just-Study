@@ -52,6 +52,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddOrUpdateUserWordProgressException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось обновить прогресс слов для юзера.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";

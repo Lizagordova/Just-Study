@@ -1,7 +1,8 @@
 ﻿import { WordViewModel } from "../Typings/viewModels/WordViewModel";
 import { makeObservable, observable } from "mobx";
-import {UserWordViewModel} from "../Typings/viewModels/UserWordViewModel";
-import {WordReadModel} from "../Typings/readModels/WordReadModel";
+import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
+import { WordReadModel } from "../Typings/readModels/WordReadModel";
+import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
 
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
@@ -103,6 +104,27 @@ class WordStore {
         if(response.status === 200) {
             this.getDictionary();
             this.getUserDictionary(userId);
+        }
+
+        return response.status;
+    }
+
+    async addOrUpdateUserWordProgress(userWord: UserWordReadModel) {
+        const response = await fetch("/addorupdateuserwordprogress", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                countOfAttempts: userWord.countOfAttempts,
+                userId: userWord.userId,
+                answer: userWord.answer,
+                status : userWord.status,
+                rightAnswers : userWord.rightAnswers
+            })
+        });
+        if(response.status !== 200) {
+            this.addOrUpdateUserWordProgress(userWord);
         }
 
         return response.status;
