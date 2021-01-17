@@ -94,7 +94,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
     renderWordTrainingPage() {
         return(
             <>
-                {this.training && <WordsTrainingPage onToggle={this.trainingToggle} wordStore={this.props.store.wordStore}/>}
+                {this.training && <WordsTrainingPage onToggle={this.trainingToggle} wordStore={this.props.store.wordStore} userId={this.props.store.userStore.currentUser.id}/>}
             </>
         );
     }

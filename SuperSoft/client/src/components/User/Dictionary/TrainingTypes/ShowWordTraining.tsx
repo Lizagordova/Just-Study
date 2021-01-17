@@ -1,13 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { Button, Card, CardText, CardFooter, CardTitle } from "reactstrap";
-import { WordViewModel } from "../../../../Typings/viewModels/WordViewModel";
+import { ITrainingTypeProps } from "./ITrainingTypeProps";
 
-class IShowTrainingProps {
-    word: WordViewModel;
-    continueShow: any;
-}
-
-class ShowWordTraining extends Component<IShowTrainingProps> {
+class ShowWordTraining extends Component<ITrainingTypeProps> {
     continue() {
         this.props.continueShow();
     }

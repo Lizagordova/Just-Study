@@ -1,18 +1,22 @@
 ﻿import React, {Component} from 'react';
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 import WordStore from "../../../stores/WordStore";
-import {makeObservable, observable} from "mobx";
-import {Button, Card, CardBody, CardFooter, Modal, ModalBody} from "reactstrap";
-import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
-import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
-import {WordTrainingType} from "../../../Typings/enums/WordTrainingType";
-import {Settings} from "./Settings";
+import { makeObservable, observable } from "mobx";
+import { Button, Card, CardBody, CardFooter, Modal, ModalBody } from "reactstrap";
+import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
+import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
+import { WordTrainingType } from "../../../Typings/enums/WordTrainingType";
+import { Settings } from "./Settings";
+import { CompletingStatus } from "../../../Typings/enums/CompletingStatus";
+import EnglishWordRussianMeaningTraining from "./TrainingTypes/EnglishWordRussianMeaningTraining";
+import RussianWordEnglishWordTraining from "./TrainingTypes/RussianWordEnglishWordTraining";
 import ShowWordTraining from "./TrainingTypes/ShowWordTraining";
-import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
+import { UserWordReadModel } from "../../../Typings/readModels/UserWordReadModel";
 
 class IWordsTrainingPageProps {
     onToggle: any;
     wordStore: WordStore;
+    userId: number;
 }
 
 @observer
@@ -28,6 +32,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     showOrder: number;
     countLearntWords: number = 0;
     rightAnswersShouldBe: number = 5;
+    toggleTrain: boolean;
 
     constructor() {
         // @ts-ignore
@@ -43,6 +48,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
             showWords: observable,
             showOrder: observable,
             countLearntWords: observable,
+            toggleTrain: observable
         });
     }
 
@@ -59,7 +65,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     showWordsTraining(showOrder: number) {
         let word = this.getWord(this.userWords[showOrder].wordId);
         return (
-            <ShowWordTraining word={word} continueShow={this.continueShow}/>
+            <ShowWordTraining word={word} continue={this.continueShow} words={new Array<WordViewModel>()}/>
         );
     }
 
@@ -89,12 +95,11 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         );
     }
 
-    renderTraining() {
-        {this.continue && this.train(this.state.update)}
-        if(!this.showWords && this.countLearntWords !== this.userWords.length)
+    renderTraining(toggleTrain: boolean) {
+        if(!this.showWords && this.countLearntWords !== this.userWords.length && !this.settings)
         return (
             <>
-                {this.train}
+                {this.train(toggleTrain)}
             </>
         );
     }
@@ -125,14 +130,14 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
                 <ModalBody>
                     {this.renderSettings()}
                     {this.renderShowWordTraining()}
-                    {this.renderTraining()}
+                    {this.renderTraining(this.toggleTrain)}
                     {this.renderFinish()}
                 </ModalBody>
             </Modal>
         );
     }
 
-    train() {
+    train(toggleTrain: boolean) {
         let wordId = this.chooseWord();
         let words = this.chooseWords(wordId);
         let word = this.props.wordStore.dictionary.filter(w => w.id === wordId)[0];
@@ -192,10 +197,22 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
             }
             userWords[userWordIndex] = userWord;
         }
+        this.toggleTrain = !this.toggleTrain;
     }
 
     handleToggle() {
-        this.props.wordStore.addOrUpdateUserWordProgress();
+        let userWordsReadModels = new Array<UserWordReadModel>();
+        let userWords = this.userWords;
+        for(let i = 0; i < userWords.length; i++ ) {
+            let userWordReadModel = new UserWordReadModel();
+            userWordReadModel.word.id = userWords[i].wordId;
+            userWordReadModel.rightAnswers = userWords[i].rightAnswers;
+            userWordReadModel.countOfAttempts = userWords[i].countOfAttempts;
+            userWordReadModel.status = userWords[i].status;
+            userWordReadModel.answer = userWords[i].answer;
+            userWordsReadModels.push(userWordReadModel)
+        }
+        this.props.wordStore.addOrUpdateUserWordsProgress(userWordsReadModels);
         this.props.onToggle();
     }
 }

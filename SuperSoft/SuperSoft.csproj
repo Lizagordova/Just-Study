@@ -65,6 +65,9 @@
 		<None Include="client\src\components\Common\Tasks\RightVerbFormSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
 		<None Include="client\src\components\User\Dictionary\Settings.tsx" />
+		<None Include="client\src\components\User\Dictionary\TrainingTypes\EnglishWordRussianMeaningTraining.tsx" />
+		<None Include="client\src\components\User\Dictionary\TrainingTypes\ITrainingTypeProps.tsx" />
+		<None Include="client\src\components\User\Dictionary\TrainingTypes\RussianWordEnglishWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\ShowWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\WordsTrainingPage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
@@ -73,6 +76,7 @@
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
+		<None Include="client\src\functions\shuffle.tsx" />
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
 		<None Include="client\src\functions\transformer.tsx" />
 		<None Include="client\src\stores\CommentStore.tsx" />

@@ -7,7 +7,7 @@ namespace SuperSoft.ReadModels
 	public class UserWordReadModel
 	{
 		public int UserId { get; set; }
-		public WordReadModel Word { get; set; }
+		public WordReadModel Word { get; set; } = new WordReadModel();
 		public int CountOfAttempts { get; set; }
 		public int RightAnswers { get; set; }
 		public CompletingStatus Status { get; set; }

@@ -109,22 +109,19 @@ class WordStore {
         return response.status;
     }
 
-    async addOrUpdateUserWordProgress(userWord: UserWordReadModel) {
-        const response = await fetch("/addorupdateuserwordprogress", {
+    
+    async addOrUpdateUserWordsProgress(userWords: UserWordReadModel[]) {
+        const response = await fetch("/addorupdateuserwordsprogress", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                countOfAttempts: userWord.countOfAttempts,
-                userId: userWord.userId,
-                answer: userWord.answer,
-                status : userWord.status,
-                rightAnswers : userWord.rightAnswers
+                userWords: userWords
             })
         });
         if(response.status !== 200) {
-            this.addOrUpdateUserWordProgress(userWord);
+            this.addOrUpdateUserWordsProgress(userWords);
         }
 
         return response.status;
