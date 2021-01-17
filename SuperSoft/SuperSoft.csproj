@@ -64,6 +64,8 @@
 		<None Include="client\src\components\Common\Tasks\LoadFileSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\RightVerbFormSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
+		<None Include="client\src\components\User\Dictionary\Settings.tsx" />
+		<None Include="client\src\components\User\Dictionary\TrainingTypes\ShowWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\WordsTrainingPage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
