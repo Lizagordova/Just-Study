@@ -6,8 +6,9 @@ import { makeObservable, observable } from "mobx";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import Word from "./Word";
 import Words from "./Words";
-import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import WordsTrainingPage from "../../User/Dictionary/WordsTrainingPage";
+import Search from "./Search";
 
 class IDictionaryPageProps {
     store: RootStore;
@@ -47,7 +48,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
     renderSearch() {
         return(
             <div className="col-lg-6 col-md-6 col-sm-12">
-                <Search />
+                <Search wordStore={this.props.store.wordStore} user={this.props.store.userStore.currentUser} />
             </div>
         );
     }

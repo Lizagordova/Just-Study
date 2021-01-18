@@ -51,6 +51,7 @@
 		<None Include="client\src\components\Common\Comments\CommentGroup.tsx" />
 		<None Include="client\src\components\Common\Dictionary\AddOrUpdateWord.tsx" />
 		<None Include="client\src\components\Common\Dictionary\DictionaryPage.tsx" />
+		<None Include="client\src\components\Common\Dictionary\Search.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Word.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Words.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
