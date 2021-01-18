@@ -44,6 +44,7 @@
 		<None Include="client\src\components\Admin\Tasks\TaskEdit.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
+		<None Include="client\src\components\Admin\Trainings\TrainingPage.tsx" />
 		<None Include="client\src\components\Admin\Users\UsersPage.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
@@ -65,6 +66,8 @@
 		<None Include="client\src\components\Common\Tasks\LoadFileSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\RightVerbFormSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
+		<None Include="client\src\components\Common\Training\TrainingContent.tsx" />
+		<None Include="client\src\components\Common\Training\TrainingPage.tsx" />
 		<None Include="client\src\components\User\Dictionary\Settings.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\EnglishWordRussianMeaningTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\ITrainingTypeProps.tsx" />
@@ -86,6 +89,7 @@
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
+		<None Include="client\src\stores\TrainingStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
 		<None Include="client\src\stores\WordStore.tsx" />
 		<None Include="client\stores\CommentStore.tsx" />
@@ -100,8 +104,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="client\src\components\Admin\Dictionary" />
-	  <Folder Include="client\src\components\Admin\Trainings" />
 	  <Folder Include="client\src\components\User\Home" />
 	  <Folder Include="client\src\components\User\MyLessons" />
 	  <Folder Include="client\src\components\User\Trainings" />
