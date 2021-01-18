@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
-import { Card, CardText } from "reactstrap";
+import { Card, CardText, Progress } from "reactstrap";
 import { makeObservable, observable } from "mobx";
 import WordStore from "../../../stores/WordStore";
 import UserStore from "../../../stores/UserStore";
@@ -87,7 +87,9 @@ class Word extends Component<IWordProps> {
     }
 
     renderProgress() {
-        
+        return(
+            <Progress color="success" value={this.props.userWord.rightAnswers / 0.05}>выучено на {this.computeProgress()} %</Progress>
+        )
     }
 
     renderWordCard() {
@@ -107,6 +109,9 @@ class Word extends Component<IWordProps> {
                             {this.renderControlButtons()}
                         </div>
                     </div>
+                </CardText>
+                <CardText style={{marginTop: '25px'}}>
+                    {this.renderProgress()}
                 </CardText>
             </Card>
         );
@@ -145,6 +150,14 @@ class Word extends Component<IWordProps> {
 
     editToggle() {
         this.edit = !this.edit;
+    }
+
+    computeProgress() {
+        let progress = this.props.userWord.rightAnswers / 5 * 100;
+        if(progress > 100) {
+            progress = 100;
+        }
+        return progress;
     }
 }
 
