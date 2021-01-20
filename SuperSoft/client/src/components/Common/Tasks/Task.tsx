@@ -82,11 +82,26 @@ export class Task extends Component<ITaskProps> {
         )
     }
 
+    renderInstruction(task: TaskViewModel) {
+        return(
+            <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.instruction}}/>
+        );
+    }
+
+    renderText(task: TaskViewModel) {
+        if(task.text !== undefined && task.text !== "") {
+            return(
+                <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.text}}/>
+            );
+        }
+    }
+
     renderTask(task: TaskViewModel) {
         return(
             <Card style={{width: '100%'}}>
                 {this.renderControlButtons()}
-                <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.instruction}}/>
+                {this.renderInstruction(task)}
+                {this.renderText(task)}
                 <CardBody style={{marginLeft: '5%'}}>
                     {this.renderSubtasks(task.subtasks)}
                 </CardBody>

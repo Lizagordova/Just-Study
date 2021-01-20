@@ -69,7 +69,7 @@ class TrainingPage extends Component<ITrainingPageProps> {
                         </Nav>
                     </Col>
                     <Col sm={10}>
-                        <TrainingContent taskStore={this.props.taskStore}/>
+                        <TrainingContent taskStore={this.props.taskStore} mainTag={this.mainTag}/>
                     </Col>
                 </Row>
             </Tab.Container>
