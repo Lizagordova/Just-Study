@@ -1,4 +1,4 @@
-﻿import {PartOfSpeech} from "../Typings/enums/PartOfSpeech";
+﻿import { PartOfSpeech } from "../Typings/enums/PartOfSpeech";
 
 export function transformValueToPartOfSpeech(value: string): PartOfSpeech {
     if(value === "Noun") {

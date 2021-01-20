@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
-import {Alert, Card, CardBody, CardTitle, Button} from 'reactstrap';
+import {Alert, Button, Card, CardBody, CardTitle} from 'reactstrap';
 import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
 import {makeObservable, observable} from "mobx";
@@ -15,6 +15,7 @@ import {RightVerbFormSubtask} from "./RightVerbFormSubtask";
 import {LoadFileSubtask} from "./LoadFileSubtask";
 import {UserTaskViewModel} from "../../../Typings/viewModels/UserTaskViewModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
+import AddSubtask from "../../Admin/Tasks/AddSubtask";
 
 class ITaskProps {
     store: RootStore;
@@ -75,11 +76,17 @@ export class Task extends Component<ITaskProps> {
     }
 
     renderAddSubtask() {
-        return(
-            <>
-                {this.addSubtask && <AddSubtask taskType={this.props.task.taskType} addNewSubtask={this.addNewSubtask} toggle={this.addSubtaskToggle} taskId={this.task.id}/>}
-            </>
-        )
+        let role = this.props.store.userStore.currentUser.role;
+        if(role === UserRole.Admin) {
+            let order = this.props.task.subtasks.length;
+            let taskId = this.props.task.id;
+            let taskType = this.props.task.taskType;
+            return(
+                <>
+                    {this.addSubtask && <AddSubtask order={order} taskId={taskId} taskStore={this.props.store.taskStore} taskType={taskType} toggle={this.addSubtaskToggle}/>}
+                </>
+            );
+        }
     }
 
     renderInstruction(task: TaskViewModel) {

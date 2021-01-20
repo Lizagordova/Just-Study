@@ -1,10 +1,10 @@
-﻿import React, {Component} from "react";
-import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
-import {Input, Label, Tooltip} from "reactstrap";
-import {makeObservable, observable} from "mobx";
-import {IUploadSubtaskProps} from "./IUploadSubtaskProps";
-import {SubtaskType} from "../../../Typings/enums/SubtaskType";
-import {getTooltipText} from "../../../functions/getTooltipText";
+﻿import React, { Component } from "react";
+import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
+import { Input, Label, Tooltip } from "reactstrap";
+import { makeObservable, observable } from "mobx";
+import { IUploadSubtaskProps } from "./IUploadSubtaskProps";
+import { SubtaskType } from "../../../Typings/enums/SubtaskType";
+import { getTooltipText } from "../../../functions/getTooltipText";
 
 class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     subtask: SubtaskReadModel;
