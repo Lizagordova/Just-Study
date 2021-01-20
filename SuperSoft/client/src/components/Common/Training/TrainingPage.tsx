@@ -1,12 +1,12 @@
 ﻿import React, { Component } from "react";
 import { makeObservable, observable } from "mobx";
 import { Nav, Tab, Row, Col, Button }  from "react-bootstrap";
-import TaskStore from "../../../stores/TaskStore";
 import { observer } from "mobx-react";
 import TrainingContent from "./TrainingContent";
+import RootStore from "../../../stores/RootStore";
 
 class ITrainingPageProps {
-    taskStore: TaskStore;
+    store: RootStore;
 }
 
 @observer
@@ -69,7 +69,7 @@ class TrainingPage extends Component<ITrainingPageProps> {
                         </Nav>
                     </Col>
                     <Col sm={10}>
-                        <TrainingContent taskStore={this.props.taskStore} mainTag={this.mainTag}/>
+                        <TrainingContent store={this.props.store} mainTag={this.mainTag}/>
                     </Col>
                 </Row>
             </Tab.Container>

@@ -17,22 +17,69 @@ class TaskStore {
         makeObservable(this, {
             tasksByChoosenLesson: observable
         });
+        this.setInitialData();
+    }
+
+    setInitialData() {
+        this.getTags();
     }
 
     async getTags() {
-        
+        const response = await fetch("/gettags");
+        if(response.status === 200) {
+            this.tags = await response.json();
+        }
     }
 
     async getTasksByLesson(lessonId: number) {
-        
+        const response = await fetch("/gettasksbychoosenlesson", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({lessonId: lessonId})
+        });
+        if(response.status === 200) {
+            this.tasksByChoosenLesson = await response.json();
+        }
     }
 
-    async addOrUpdateTask(taskReadModel: TaskReadModel, lessonId: number): Promise<number> {
-        return 200;
+    async addOrUpdateTask(task: TaskReadModel, lessonId: number): Promise<number> {
+        const response = await fetch("/addorupdatetask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({lessonId: lessonId,
+                id: task.id, taskType: task.taskType, 
+                instruction: task.instruction, text: task.text,
+                subtasks: task.subtasks, tags: task.tags
+            })
+        });
+        if(response.status === 200) {
+            this.getTasksByLesson(lessonId);
+        }
+
+        return response.status;
     }
 
-    async addOrUpdateSubtask(subtaskReadModel: SubtaskReadModel): Promise<number> {
-        return 200;
+    async addOrUpdateSubtask(subtask: SubtaskReadModel): Promise<number> {
+        const response = await fetch("/addorupdatesubtask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: subtask.id, taskId: subtask.taskId,
+                subtaskType: subtask.subtaskType, order: subtask.order,
+                text: subtask.text, path: subtask.path /*todo: зачем path нужен???*/
+            })
+        });
+        if(response.status === 200) {
+            this.updateTaskByTaskId(subtask.taskId);
+        }
+
+        return response.status;
     }
 
     async deleteTask(taskId: number, lessonId: number) {
@@ -59,6 +106,10 @@ class TaskStore {
 
     async getTasks(tags: TagReadModel[]): Promise<TaskViewModel[]> {
         return new Array<TaskViewModel>();
+    }
+
+    updateTaskByTaskId(taskId: number) {
+        
     }
 }
 

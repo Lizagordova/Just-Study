@@ -6,10 +6,11 @@ import { makeObservable, observable } from "mobx";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { Task } from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
+import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
 
 class ITrainingContentProps {
     store: RootStore;
-    mainTag: TagViewModel;
+    mainTag: number;
 }
 
 @observer
@@ -87,8 +88,12 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     applyTags() {
+        let mainTag = new TagReadModel();
+        mainTag.id = this.props.mainTag;
+        let choosenTags = this.choosenTags;
+        choosenTags.push(mainTag);
         this.props.store.taskStore
-            .getTasks(this.choosenTags)
+            .getTasks(choosenTags)
             .then((tasks) => {
                 this.relatedTasks = tasks;
             });
