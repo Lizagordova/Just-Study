@@ -185,5 +185,29 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/gettaskbyid")]
+		public ActionResult GetTaskById([FromBody]TaskReadModel taskReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var task = _taskReader.GetTaskById(taskReadModel.Id);
+
+				return new JsonResult(task);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetTaskByIdException(_logger, e, taskReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

@@ -7,4 +7,5 @@ export class ISubtaskProps {
     store: RootStore;
     userId: number;
     userSubtask: UserSubtaskViewModel;
+    taskId: number;
 }

@@ -160,6 +160,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetTaskByIdException(ILogger logger, Exception e, int taskId)
+		{
+			var customMessage = $"Не удалось получить задания по taskId={taskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogGetUserTaskException(ILogger logger, Exception e, int taskId, int userId)
 		{
 			var customMessage = $"Не удалось получить пользовательский ответ на  задание {taskId} {userId}.";

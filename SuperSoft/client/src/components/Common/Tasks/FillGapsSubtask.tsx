@@ -131,7 +131,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
 
     deleteSubtask() {
         this.props.store.taskStore
-            .deleteSubtask(this.props.subtask.id, this.props.store.lessonStore.choosenLesson.id)
+            .deleteSubtask(this.props.subtask.id, this.props.taskId)
             .then((status) => {
                 this.notDeleted = status !== 200;
             });

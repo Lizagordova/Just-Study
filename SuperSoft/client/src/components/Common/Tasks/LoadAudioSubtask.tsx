@@ -86,7 +86,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     renderUserAnswers() {
         return(
             <CardText>
-                {this.userAnswer.answerPaths.map(ans => {
+                {this.userAnswer.answerFiles.map(ans => {
                     let answerPath = ans.replace('ClientApp/build', '.');
                     return(
                         <div className="row justify-content-center">
@@ -159,7 +159,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
 
     deleteSubtask() {
         this.props.store.taskStore
-            .deleteSubtask(this.props.subtask.id, this.props.store.lessonStore.choosenLesson.id)
+            .deleteSubtask(this.props.subtask.id, this.props.taskId)
             .then((status) => {
                 this.notDeleted = status !== 200;
             });

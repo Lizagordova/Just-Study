@@ -10,5 +10,6 @@ namespace SuperSoft.Domain.Services
 		List<UserSubtask> GetUserSubtasks(int taskId, int userId);
 		UserSubtask GetUserSubtask(int subtaskId, int userId);
 		UserTask GetUserTask(int taskId, int userId);
+		Task GetTaskById(int taskId);
 	}
 }

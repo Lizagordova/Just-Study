@@ -83,33 +83,121 @@ class TaskStore {
     }
 
     async deleteTask(taskId: number, lessonId: number) {
-        this.getTasksByLesson(lessonId);
-        return 200;
+        const response = await fetch("/deletetask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: taskId
+            })
+        });
+        if(response.status === 200) {
+            this.getTasksByLesson(lessonId);
+        }
+
+        return response.status;
     }
 
-    async deleteSubtask(subtaskId: number, lessonId: number) {
-        this.getTasksByLesson(lessonId);//todo: здесь, возможно, лучше сделать чтобы подгружалось только задание
-        return 200;
+    async deleteSubtask(subtaskId: number, taskId: number) {
+        const response = await fetch("/deletesubtask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: taskId
+            })
+        });
+        if(response.status === 200) {
+            this.updateTaskByTaskId(taskId);
+        }
+
+        return response.status;
     }
 
     async addOrUpdateUserSubtask(userSubtask: UserSubtaskReadModel): Promise<number> {
-        return 200;
+        const response = await fetch("/addorupdateusersubtask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userSubtask.userId, answer: userSubtask.answer,
+                status: userSubtask.status, subtaskId: userSubtask.subtaskId,
+                taskId: userSubtask.taskId, files: userSubtask.files
+            })
+        });
+
+        return response.status;
     }
 
     async addOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup: UserSubtaskAnswerGroupReadModel): Promise<number> {
-        return 200;
+        const response = await fetch("/addorupdateusersubtaskanswergroup", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userSubtaskAnswerGroup.userId, answerGroupId: userSubtaskAnswerGroup.answerGroupId,
+                subtaskId: userSubtaskAnswerGroup.subtaskId, status: userSubtaskAnswerGroup.status,
+                lastAnswer: userSubtaskAnswerGroup.lastAnswer
+            })
+        });
+        return response.status;
     }
 
     async getUserSubtask(subtaskId: number, userId: number): Promise<UserSubtaskViewModel> {
-        return new UserSubtaskViewModel();
+        let userSubtask =  new UserSubtaskViewModel();
+        const response = await fetch("/getusersubtask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userId, subtaskId: subtaskId
+            })
+        });
+        if(response.status === 200) {
+            userSubtask = await response.json();
+        }
+
+        return userSubtask;
     }
 
     async getTasks(tags: TagReadModel[]): Promise<TaskViewModel[]> {
-        return new Array<TaskViewModel>();
+        let tagIds = tags.map(t => t.id);
+        let tasks = new Array<TaskViewModel>();
+        const response = await fetch("/gettasks", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                tagIds: tagIds
+            })
+        });
+        if(response.status === 200) {
+            tasks = await response.json();
+        }
+
+        return tasks;
     }
 
-    updateTaskByTaskId(taskId: number) {
-        
+    async updateTaskByTaskId(taskId: number) {
+        const response = await fetch("/gettaskbyid", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: taskId
+            })
+        });
+        if(response.status === 200) {
+            let taskIndex = this.tasksByChoosenLesson.findIndex(t => t.id === taskId);
+            this.tasksByChoosenLesson[taskIndex] = await response.json();
+        }
     }
 }
 
