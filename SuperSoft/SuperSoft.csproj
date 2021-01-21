@@ -46,6 +46,7 @@
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
 		<None Include="client\src\components\Admin\Trainings\TrainingPage.tsx" />
 		<None Include="client\src\components\Admin\Users\UsersPage.tsx" />
+		<None Include="client\src\components\Admin\WordsOfADay\WordsOfADay.tsx" />
 		<None Include="client\src\components\Authorization\Authorization.tsx" />
 		<None Include="client\src\components\Authorization\Registration.tsx" />
 		<None Include="client\src\components\Common\Comments\Comment.tsx" />
@@ -68,6 +69,8 @@
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
 		<None Include="client\src\components\Common\Training\TrainingContent.tsx" />
 		<None Include="client\src\components\Common\Training\TrainingPage.tsx" />
+		<None Include="client\src\components\Common\WordsOfADay\AddOrUpdateWordOfADay.tsx" />
+		<None Include="client\src\components\Common\WordsOfADay\WordOfADay.tsx" />
 		<None Include="client\src\components\User\Dictionary\Settings.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\EnglishWordRussianMeaningTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\ITrainingTypeProps.tsx" />

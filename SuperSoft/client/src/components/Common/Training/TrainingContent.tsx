@@ -74,6 +74,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 {this.renderFilters(tags)}
                 {this.renderApplyButton()}
                 {this.renderTasks(this.relatedTasks)}
+                {this.addTask()}
             </>
         )
     }

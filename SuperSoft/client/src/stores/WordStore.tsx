@@ -7,6 +7,7 @@ import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
     userDictionary: UserWordViewModel[] = new Array<UserWordViewModel>();
+    wordOfADay: WordViewModel;
 
     constructor() {
         makeObservable(this, {
@@ -109,7 +110,6 @@ class WordStore {
         return response.status;
     }
 
-    
     async addOrUpdateUserWordsProgress(userWords: UserWordReadModel[]) {
         const response = await fetch("/addorupdateuserwordsprogress", {
             method: "POST",
@@ -125,6 +125,19 @@ class WordStore {
         }
 
         return response.status;
+    }
+
+    async deleteWordOfADay(wordId: number): Promise<number> {
+        return 200;
+    }
+
+    async getWordOfADay(date: Date | Date[], courseId: number): Promise<WordViewModel> {
+        return new WordViewModel();
+    }
+    
+    async addOrUpdateWordOfADay(word: WordReadModel, date: Date, courseId: number): Promise<number> {
+        this.getWordOfADay(date, courseId);//todo: здесь можно возвращать из хранимки само слово с id
+        return 200;
     }
 }
 
