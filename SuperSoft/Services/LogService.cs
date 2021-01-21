@@ -184,6 +184,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetTasksException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось получить задания для тренировок.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateUserSubtaskAnswerGroupException(ILogger logger, Exception e, UserSubtaskAnswerGroup answerGroup, int subtaskId, int userId)
 		{
 			var customMessage = $"Не удалось получить обновить subtaskAnswerGroup userId={userId}; subtaskId={subtaskId}; userSubtask={answerGroup.LastAnswer}; answerGroupId={answerGroup.AnswerGroupId}.";

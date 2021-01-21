@@ -50,8 +50,9 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
-				throw;
+				_logService.AddLogGetTasksException(_logger, e);
+
+				return new StatusCodeResult(500);
 			}
 		}
 	}
