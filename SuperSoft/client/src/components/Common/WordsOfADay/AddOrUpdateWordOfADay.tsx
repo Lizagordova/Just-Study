@@ -1,15 +1,15 @@
 ﻿import React, {Component} from 'react';
-import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
-import {observer} from "mobx-react";
-import {makeObservable} from "mobx";
-import {Button, Input} from "reactstrap";
-import {translatePartOfSpeech} from "../../../functions/translater";
-import {PartOfSpeech} from "../../../Typings/enums/PartOfSpeech";
-import {ExampleReadModel} from "../../../Typings/readModels/ExampleReadModel";
-import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
-import {transformValueToPartOfSpeech} from "../../../functions/transformer";
-import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
-import {UserRole} from "../../../Typings/enums/UserRole";
+import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
+import { observer } from "mobx-react";
+import { makeObservable} from "mobx";
+import { Button, Input } from "reactstrap";
+import { translatePartOfSpeech } from "../../../functions/translater";
+import { PartOfSpeech } from "../../../Typings/enums/PartOfSpeech";
+import { ExampleReadModel } from "../../../Typings/readModels/ExampleReadModel";
+import { WordReadModel } from "../../../Typings/readModels/WordReadModel";
+import { transformValueToPartOfSpeech } from "../../../functions/transformer";
+import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
+import { UserRole } from "../../../Typings/enums/UserRole";
 import WordStore from "../../../stores/WordStore";
 
 class IAddOrUpdateWordOfADayProps {
@@ -39,7 +39,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 className="form-control rounded-0"
                 name="word"
                 value={word.word}
-                onChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChangeFromInput(e)}
             />
         );
     }
@@ -62,7 +62,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 cols={30}
                 rows={1}
                 className="form-control rounded-0 fileInput"
-                onChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChangeFromTextarea(e)}
                 name="russianMeaning"
                 value={word.russianMeaning}
             />
@@ -76,7 +76,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 cols={30}
                 rows={1}
                 className="form-control rounded-0 fileInput"
-                onChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChangeFromTextarea(e)}
                 name="englishMeaning"
                 value={word.englishMeaning}
             />
@@ -90,7 +90,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 cols={30}
                 rows={1}
                 className="form-control rounded-0 fileInput"
-                onChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChangeFromTextarea(e)}
                 name="example">{word.examples[0]}</textarea>
         )
     }
@@ -142,11 +142,26 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         );
     }
 
-    handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    handleChangeFromInput(event: React.ChangeEvent<HTMLInputElement>) {
         let targetName = event.target.name;
         if(targetName === 'word') {
             this.word.word = targetName;
         } else if(targetName === 'russianMeaning') {
+            this.word.russianMeaning = targetName;
+        } else if(targetName === 'englishMeaning') {
+            this.word.englishMeaning = targetName;
+        } else if(targetName === 'example') {
+            //todo: наверно, проверку надо делать
+            if(this.word.examples.length === 0) {
+                this.word.examples.push(new ExampleReadModel());
+            }
+            this.word.examples[0].example= targetName;
+        }
+    }
+
+    handleChangeFromTextarea(event: React.ChangeEvent<HTMLTextAreaElement>) {
+        let targetName = event.target.name;
+        if(targetName === 'russianMeaning') {
             this.word.russianMeaning = targetName;
         } else if(targetName === 'englishMeaning') {
             this.word.englishMeaning = targetName;

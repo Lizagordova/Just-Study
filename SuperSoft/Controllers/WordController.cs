@@ -207,7 +207,7 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
-		
+
 		[HttpPost]
 		[Route("/addorupdateuserwordsprogress")]
 		public ActionResult AddOrUpdateWordProgress([FromBody]UserWordsCollectionReadModel wordTrainingReadModel)
@@ -228,6 +228,29 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogAddOrUpdateUserWordProgressException(_logger, e);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
+		[Route("/deletewordofaday")]
+		public ActionResult DeleteWordOfADay([FromBody]WordReadModel wordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+			try
+			{
+				_wordEditor.DeleteWordOfADay(wordReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteWordOfADayException(_logger, e, wordReadModel.Id);
 
 				return new StatusCodeResult(500);
 			}

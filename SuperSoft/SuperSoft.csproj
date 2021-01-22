@@ -70,6 +70,7 @@
 		<None Include="client\src\components\Common\Training\TrainingContent.tsx" />
 		<None Include="client\src\components\Common\Training\TrainingPage.tsx" />
 		<None Include="client\src\components\Common\WordsOfADay\AddOrUpdateWordOfADay.tsx" />
+		<None Include="client\src\components\Common\WordsOfADay\AnswerToWordOfADay.tsx" />
 		<None Include="client\src\components\Common\WordsOfADay\WordOfADay.tsx" />
 		<None Include="client\src\components\User\Dictionary\Settings.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\EnglishWordRussianMeaningTraining.tsx" />

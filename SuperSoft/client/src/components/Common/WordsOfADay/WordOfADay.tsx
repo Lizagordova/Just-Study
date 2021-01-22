@@ -1,9 +1,15 @@
-﻿import React, { Component } from 'react';
-import { observer } from "mobx-react";
-import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Input, Row } from "reactstrap";
-import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
+﻿import React, {Component} from 'react';
+import {observer} from "mobx-react";
+import {Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row} from "reactstrap";
+import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
 import RootStore from "../../../stores/RootStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable} from "mobx";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import CommentGroup from "../Comments/CommentGroup";
+import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
+import AddOrUpdateWordOfADay from "./AddOrUpdateWordOfADay";
+import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
+import AnswerToWordOfADay from "./AnswerToWordOfADay";
 
 class IWordOfADayProps {
     date: Date;
@@ -13,13 +19,30 @@ class IWordOfADayProps {
 @observer
 class WordOfADay extends Component<IWordOfADayProps> {
     word: WordViewModel;
+    addOrUpdate: boolean;
+    role: UserRole;
+    showComments: boolean;
+    showCautions: boolean = true;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            word: observable
+            word: observable,
+            addOrUpdate: observable,
+            showComments: observable
         });
+        this.role = this.props.store.userStore.currentUser.role;
+    }
+
+    componentDidMount(): void {
+       this.props.store.wordStore
+            .getWordOfADay(this.props.date, this.props.store.courseStore.choosenCourse.id)
+            .then((word) => {
+                this.word = word;
+                this.showCautions = word.word === "";
+                this.addOrUpdate = word.word === "";
+            });
     }
 
     componentDidUpdate(prevProps: Readonly<IWordOfADayProps>, prevState: Readonly<{}>, snapshot?: any): void {
@@ -32,11 +55,21 @@ class WordOfADay extends Component<IWordOfADayProps> {
         }
     }
 
+    renderCautions() {
+        return(
+            <div className="row justify-content-center">
+                <span>
+                На эту дату слово дня отсутствует
+                </span>
+            </div>
+        );
+    }
+
     renderDeleteButton() {
         return(
             <Button className="close"
-                    type="submit"
-                    onClick={(e) => this.handleDelete()}>
+                type="submit"
+                onClick={(e) => this.handleDelete()}>
             </Button>
         );
     }
@@ -56,7 +89,41 @@ class WordOfADay extends Component<IWordOfADayProps> {
             </>
         );
     }
-    
+
+    renderEditButton() {
+        if(this.role === UserRole.Admin) {
+            return(
+                <button
+                    onClick={() => this.toggleAddOrUpdateWord()}>
+                    Отредактировать
+                </button>
+            );
+        }
+    }
+
+    renderAnswerToWordOfADay() {
+        if(this.role === UserRole.User) {
+            let userId = this.props.store.userStore.currentUser.id;
+            return(
+                <AnswerToWordOfADay wordId={this.word.id} userId={userId} wordStore={this.props.store.wordStore}/>
+            );
+        }
+    }
+
+    renderComments() {
+        if (this.role === UserRole.User) {
+            return(
+                <Button
+                    outline color="primary"
+                    onClick={() => this.toggleComments()}>
+                    Комментарии
+                    {this.showComments &&
+                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleEdit} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
+                </Button>
+            );
+        }
+    }
+
     renderWordOfADay(word: WordViewModel) {
         return(
             <>
@@ -68,31 +135,34 @@ class WordOfADay extends Component<IWordOfADayProps> {
                             <CardBody className="text-center">
                                 {this.renderWordDetails(word)}
                             </CardBody>
-                            {this.state.role == '2' && <CardFooter className="text-center">
-                                <button
-                                    onClick={() => this.setState({addOrUpdate: true, render: false})}>Отредактировать
-                                </button>
-                            </CardFooter>}
-                            {this.state.role == '1' && <AnswerToWordOfADay wordId={this.state.id}/>}
+                            <CardFooter className="text-center">
+                                {this.renderEditButton()}
+                            </CardFooter>
+                            {this.renderAnswerToWordOfADay()}
                         </Card>
                     </Col>
                 </Row>
-                {this.state.role == '1' && <Row className="justify-content-center">
-                    <Button
-                        outline color="primary"
-                        onClick={() => this.setState({comments: true})}>
-                        Комментарии
-                        {this.state.comments && <CommentGroup commentedEntityType="wordOfADay" commentedEntityId={this.state.id} userId={this.state.userId} onToggle={this.onCommentToggle}/>}
-                    </Button>
-                </Row>}
+                <Row className="justify-content-center">
+                    {this.renderComments()}
+                </Row>
             </>
-        )
+        );
+    }
+
+    renderAddOrUpdateWordOfADay() {
+        let courseId = this.props.store.courseStore.choosenCourse.id;
+        let currentUser = this.props.store.userStore.currentUser;
+        return (
+            <AddOrUpdateWordOfADay word={this.word} courseId={courseId} currentUser={currentUser} wordStore={this.props.store.wordStore} date={this.props.date} addOrUpdateWordOfADayToggle={this.toggleAddOrUpdateWord} />
+        );
     }
 
     render() {
         return(
             <>
-                {this.renderWordOfADay(this.props.word)}
+                {this.showCautions && this.renderCautions()}
+                {!this.showCautions && !this.addOrUpdate && this.renderWordOfADay(this.word)}
+                {this.addOrUpdate && this.renderAddOrUpdateWordOfADay()}
             </>
         );
     }
@@ -100,13 +170,23 @@ class WordOfADay extends Component<IWordOfADayProps> {
     handleDelete() {
         let result = window.confirm('Вы уверены, что хотите удалить слово дня?');
         if(result) {
-            this.props.wordStore.deleteWordOfADay(this.props.word.id)
-                .then((status) => {
-                    if(status === 200) {
-                        
+            let wordStore = this.props.store.wordStore;
+                wordStore.deleteWordOfADay(this.word.id)
+                    .then((status) => {
+                        if(status === 200) {
+                            this.word = new WordReadModel();
+                            this.addOrUpdate = true;
                     }
             })
         }
+    }
+
+    toggleAddOrUpdateWord() {
+        this.addOrUpdate = !this.addOrUpdate;
+    }
+
+    toggleComments() {
+        this.showComments = !this.showComments;
     }
 }
 

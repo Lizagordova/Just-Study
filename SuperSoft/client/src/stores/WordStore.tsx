@@ -128,7 +128,17 @@ class WordStore {
     }
 
     async deleteWordOfADay(wordId: number): Promise<number> {
-        return 200;
+        const response = await fetch("/addorupdateuserwordsprogress", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: wordId
+            })
+        });
+
+        return response.status;
     }
 
     async getWordOfADay(date: Date | Date[], courseId: number): Promise<WordViewModel> {
@@ -137,6 +147,14 @@ class WordStore {
     
     async addOrUpdateWordOfADay(word: WordReadModel, date: Date, courseId: number): Promise<number> {
         this.getWordOfADay(date, courseId);//todo: здесь можно возвращать из хранимки само слово с id
+        return 200;
+    }
+    
+    async getUserWordsProgress(wordId: number, userId: number): Promise<UserWordViewModel> {
+        return new UserWordViewModel();
+    }
+    
+    async addOrUpdateUserAnswerToWordOfADay(userAnswer: UserWordReadModel): Promise<number> {
         return 200;
     }
 }
