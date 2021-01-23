@@ -10,6 +10,7 @@ import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
 import AddOrUpdateWordOfADay from "./AddOrUpdateWordOfADay";
 import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
 import AnswerToWordOfADay from "./AnswerToWordOfADay";
+import UserAnswers from "../../Admin/WordsOfADay/UserAnswers";
 
 class IWordOfADayProps {
     date: Date | Date[];
@@ -24,6 +25,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     showComments: boolean;
     showCautions: boolean = true;
     itIsNotAllowedToWatchNextWords: boolean;
+    showUserAnswers: boolean;
 
     constructor() {
         // @ts-ignore
@@ -32,7 +34,8 @@ class WordOfADay extends Component<IWordOfADayProps> {
             word: observable,
             addOrUpdate: observable,
             showComments: observable,
-            itIsNotAllowedToWatchNextWords: observable
+            itIsNotAllowedToWatchNextWords: observable,
+            showUserAnswers: observable
         });
         this.role = this.props.store.userStore.currentUser.role;
     }
@@ -143,6 +146,9 @@ class WordOfADay extends Component<IWordOfADayProps> {
                 <Row className="justify-content-center">
                     {this.renderComments()}
                 </Row>
+                <Row className="row justify-content-center">
+                    {this.renderUserAnswersControl()}
+                </Row>
             </>
         );
     }
@@ -153,6 +159,33 @@ class WordOfADay extends Component<IWordOfADayProps> {
         return (
             <AddOrUpdateWordOfADay word={this.word} courseId={courseId} currentUser={currentUser} wordStore={this.props.store.wordStore} date={this.props.date} addOrUpdateWordOfADayToggle={this.toggleAddOrUpdateWord} />
         );
+    }
+
+    renderGetUserAnswersButton() {
+        return(
+            <>
+                {<Button outline color="secondary" onClick={() => this.toggleUserAnswers()}>
+                    ПОЛУЧИТЬ ОТВЕТЫ ПОЛЬЗОВАТЕЛЕЙ
+                </Button>}</>
+        );
+    }
+
+    renderUserAnswers() {
+        return (
+            <UserAnswers store={this.props.store}  wordId={this.word.id}/>
+        );
+    }
+
+    renderUserAnswersControl() {
+        let role = this.props.store.userStore.currentUser.role;
+        if(role === UserRole.Admin) {
+            return(
+                <>
+                    {!this.showUserAnswers && this.renderGetUserAnswersButton()}
+                    {this.showUserAnswers && this.renderUserAnswers()}
+                </>
+            );
+        }
     }
 
     render() {
@@ -194,6 +227,10 @@ class WordOfADay extends Component<IWordOfADayProps> {
             .then((word) => {
                 this.word = word;
             });
+    }
+
+    toggleUserAnswers() {
+        this.showUserAnswers = !this.showUserAnswers;
     }
 }
 

@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
 import { observer } from "mobx-react";
-import { makeObservable} from "mobx";
+import { makeObservable, observable } from "mobx";
 import { Button, Input } from "reactstrap";
 import { translatePartOfSpeech } from "../../../functions/translater";
 import { PartOfSpeech } from "../../../Typings/enums/PartOfSpeech";
@@ -12,14 +12,14 @@ import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import WordStore from "../../../stores/WordStore";
 import {WordOfADayReadModel} from "../../../Typings/readModels/WordOfADayReadModel";
-import {mapWordReadModel} from "../../../functions/mapper";
+import { mapWordReadModel } from "../../../functions/mapper";
 
 class IAddOrUpdateWordOfADayProps {
     word: WordViewModel;
     courseId: number;
     currentUser: UserViewModel;
     wordStore: WordStore;
-    date: Date;
+    date: Date | Date[];
     addOrUpdateWordOfADayToggle: any;
 }
 
@@ -30,8 +30,12 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            
+            word: observable
         })
+    }
+
+    componentDidMount(): void {
+        this.word = this.props.word;
     }
 
     renderWordInput(word: WordViewModel) {

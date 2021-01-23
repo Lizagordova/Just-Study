@@ -307,7 +307,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getuserwordsprogress")]
-		public ActionResult AddOrUpdateWordOfADay([FromBody]UserWordReadModel userWordReadModel)
+		public ActionResult GetUserWordsProgress([FromBody]UserWordReadModel userWordReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role == null)
