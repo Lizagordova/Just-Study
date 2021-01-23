@@ -8,7 +8,6 @@ import {WordOfADayReadModel} from "../Typings/readModels/WordOfADayReadModel";
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
     userDictionary: UserWordViewModel[] = new Array<UserWordViewModel>();
-    wordOfADay: WordViewModel;
 
     constructor() {
         makeObservable(this, {
@@ -175,7 +174,7 @@ class WordStore {
 
         return response.status;
     }
-    
+
     async getUserWordsProgress(wordId: number, userId: number): Promise<UserWordViewModel> {
         let userWord = new UserWordViewModel();
         let word = new WordReadModel();
@@ -196,7 +195,7 @@ class WordStore {
  
         return userWord;
     }
-    
+
     async addOrUpdateUserWordProgress(userWord: UserWordReadModel): Promise<number> {
         const response = await fetch("/addorupdateuserword", {
             method: "POST",
@@ -211,6 +210,24 @@ class WordStore {
         });
 
         return response.status;
+    }
+
+    async getAnswersToWordOfADayByWord(wordId: number): Promise<UserWordViewModel[]> {
+        let userWords = new Array<UserWordViewModel>();
+        const response = await fetch("/getanswerstowordofadaybyword", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+               wordId: wordId
+            })
+        });
+        if(response.status === 200) {
+            userWords = await response.json();
+        }
+
+        return userWords;
     }
 }
 

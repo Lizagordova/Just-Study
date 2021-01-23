@@ -5,19 +5,17 @@ import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
 import {makeObservable, observable} from "mobx";
 import CommentGroup from "../../Common/Comments/CommentGroup";
-import {renderSpinner} from "../../../functions/renderSpinner";
-import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
+import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
 import RootStore from "../../../stores/RootStore";
 
 class IUserAnswerProps {
+    userWord: UserWordViewModel;
     user: UserViewModel;
     store: RootStore;
-    wordId: number;
 }
 
 @observer
 class UserAnswer extends Component<IUserAnswerProps> {
-    answer: UserWordViewModel;
     showComments: boolean;
     answersLoaded: boolean;
 
@@ -25,19 +23,9 @@ class UserAnswer extends Component<IUserAnswerProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            answer: observable,
             showComments: observable,
             answersLoaded: observable
         });
-    }
-
-    componentDidMount(): void {
-        this.props.store.wordStore
-            .getUserWordsProgress(this.props.wordId, this.props.user.id)
-            .then((userWord) => {
-                this.answer = userWord;
-                this.answersLoaded = true;
-            });
     }
 
     renderUserName(user: UserViewModel) {
@@ -56,7 +44,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
                     Комментарии
                 </Button>
                 {this.showComments && 
-                <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.props.wordId} userId={this.props.user.id} onToggle={this.toggleComments} store={this.props.store}/>}
+                <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.props.userWord.wordId} userId={this.props.user.id} onToggle={this.toggleComments} store={this.props.store}/>}
             </>
         );
     }
@@ -82,8 +70,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
                 </Card.Header>
                 <Accordion.Collapse eventKey={this.props.user.id.toString()}>
                     <Card.Body>
-                        {this.answersLoaded && this.renderAnswer(this.answer)}
-                        {!this.answersLoaded && renderSpinner()}
+                        {this.renderAnswer(this.props.userWord)}
                     </Card.Body>
                 </Accordion.Collapse>
             </Card>

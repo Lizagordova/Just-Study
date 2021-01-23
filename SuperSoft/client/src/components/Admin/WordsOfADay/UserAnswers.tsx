@@ -4,6 +4,8 @@ import RootStore from "../../../stores/RootStore";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { Accordion } from "react-bootstrap";
 import UserAnswer from "./UserAnswer";
+import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
+import { makeObservable, observable } from "mobx";
 
 class IUserAnswersProps {
     store: RootStore;
@@ -12,11 +14,23 @@ class IUserAnswersProps {
 
 @observer
 class UserAnswers extends Component<IUserAnswersProps> {
+    userWords: UserWordViewModel[] = new Array<UserWordViewModel>();
+
+    constructor() {
+        //@ts-ignore
+        super();
+        makeObservable(this, {
+            userWords: observable
+        });
+        this.getUserWords();
+    }
+
     renderUsers(users: UserViewModel[]) {
         return(
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
-                    return <UserAnswer user={user} store={this.props.store} wordId={this.props.wordId}/>
+                    let userWord = this.getUserWord(user.id);
+                    return <UserAnswer user={user} store={this.props.store} userWord={userWord}/>
                 })}
             </Accordion>
         );
@@ -38,6 +52,17 @@ class UserAnswers extends Component<IUserAnswersProps> {
             .filter(u => usersByCourse
                 .map(uc => uc.userId)
                 .includes(u.id));
+    }
+
+    getUserWords() {
+        this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId)
+            .then((userWords) => {
+                this.userWords = userWords;
+            });
+    }
+
+    getUserWord(userId: number): UserWordViewModel {
+        return this.userWords.filter(uw => uw.userId === userId)[0];
     }
 }
 
