@@ -88,6 +88,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetAnswersToWordOfADayByWordException(ILogger logger, Exception e, int wordId)
+		{
+			var customMessage = $"Не удалось получить ответы пользователей с wordId={wordId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";

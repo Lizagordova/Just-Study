@@ -331,6 +331,31 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Route("/getanswerstowordofadaybyword")]
+		public ActionResult GetAnswersToWordOfADayByWord([FromBody]WordReadModel wordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.User.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var userWords = _wordReader.GetAnswersToWordOfADayByWord(wordReadModel.Id);
+				var userWordsViewModel = userWords.Select(_mapper.Map<UserWord, UserWordViewModel>).ToList();
+
+				return new JsonResult(userWordsViewModel);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetAnswersToWordOfADayByWordException(_logger, e, wordReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
 		[Route("/addorupdateuserword")]
 		public ActionResult AddOrUpdateUserWord([FromBody]UserWordReadModel userWordReadModel)
 		{
@@ -349,7 +374,7 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				_logService.AddLogGetUserWordProgressException(_logger, e, userWordReadModel.UserId, userWordReadModel.Word.Id);
+				_logService.AddLogAddOrUpdateUserWordException(_logger, e);
 
 				return new StatusCodeResult(500);
 			}

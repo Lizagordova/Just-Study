@@ -220,7 +220,7 @@ class WordStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-               wordId: wordId
+               id: wordId
             })
         });
         if(response.status === 200) {
