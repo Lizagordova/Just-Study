@@ -12,7 +12,7 @@ import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
 import AnswerToWordOfADay from "./AnswerToWordOfADay";
 
 class IWordOfADayProps {
-    date: Date;
+    date: Date | Date[];
     store: RootStore;
 }
 
@@ -23,6 +23,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     role: UserRole;
     showComments: boolean;
     showCautions: boolean = true;
+    itIsNotAllowedToWatchNextWords: boolean;
 
     constructor() {
         // @ts-ignore
@@ -30,7 +31,8 @@ class WordOfADay extends Component<IWordOfADayProps> {
         makeObservable(this, {
             word: observable,
             addOrUpdate: observable,
-            showComments: observable
+            showComments: observable,
+            itIsNotAllowedToWatchNextWords: observable
         });
         this.role = this.props.store.userStore.currentUser.role;
     }
@@ -114,7 +116,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
                     onClick={() => this.toggleComments()}>
                     Комментарии
                     {this.showComments &&
-                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleAddOrUpdateWord} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
+                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleComments} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
                 </Button>
             );
         }

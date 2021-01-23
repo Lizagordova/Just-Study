@@ -4,7 +4,8 @@ import { Card, CardHeader } from "reactstrap";
 import { Nav, Tab } from "react-bootstrap";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import {LessonsMenu} from "../Lessons/LessonsMenu";
+import { LessonsMenu } from "../Lessons/LessonsMenu";
+import WordsOfADay from "../WordsOfADay/WordsOfADay";
 
 class ICourseProps {
     store: RootStore;
@@ -65,7 +66,7 @@ export class Course extends Component<ICourseProps> {
                     </CardHeader>
                 </Card>
                 {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
-                {this.wordsOfADay && <WordsOfADay />}
+                {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
                 {this.participants && <Participants />}
             </Tab.Container>
         )

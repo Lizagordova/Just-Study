@@ -1,26 +1,27 @@
-﻿import React, { Component } from 'react';
-import { observer } from "mobx-react";
+﻿import React, {Component} from 'react';
+import {observer} from "mobx-react";
 import Calendar from "react-calendar";
-import { makeObservable, observable } from "mobx";
-import { Alert, Button } from "reactstrap";
+import {makeObservable, observable} from "mobx";
+import {Button} from "reactstrap";
 import WordOfADay from "../../Common/WordsOfADay/WordOfADay";
-import WordStore from "../../../stores/WordStore";
-import UserStore from "../../../stores/UserStore";
+import RootStore from "../../../stores/RootStore";
+import {UserRole} from "../../../Typings/enums/UserRole";
 
 class IWordsOfADayProps {
-    wordStore: WordStore;
-    userStore: UserStore;
+    store: RootStore
 }
 
 @observer
 class WordsOfADay extends Component<IWordsOfADayProps> {
     choosenDate: Date | Date[];
+    showUserAnswers: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            choosenDate: observable
+            choosenDate: observable,
+            showUserAnswers: observable,
         });
     }
 
@@ -36,20 +37,42 @@ class WordsOfADay extends Component<IWordsOfADayProps> {
     renderWordOfADay() {
         return(
             <>
-                {this.state.itIsNotAllowedToWatchNextWords && <Alert color="primary">Пока нельзя смотреть слова дня на следующие дни:)</Alert>}
-                <WordOfADay date={this.choosenDate}/>
+                <WordOfADay date={this.choosenDate} store={this.props.store}/>
             </>
         );
     }
     
+    renderGetUserAnswersButton() {
+        return(
+            <>
+                {<Button outline color="secondary" onClick={() => this.getUserAnswers()}>
+                    ПОЛУЧИТЬ ОТВЕТЫ ПОЛЬЗОВАТЕЛЕЙ
+                </Button>}</>
+        );
+    }
+
     renderUserAnswers() {
-        let role = this.props
+        return (
+            <UserAnswers wordId={this.state.id}/>
+        );
+    }
+
+    renderUserAnswersControl() {
+        let role = this.props.store.userStore.currentUser.role;
+        if(role === UserRole.Admin) {
+            return(
+                <>
+                    {!this.showUserAnswers && this.renderGetUserAnswersButton()}
+                    {this.showUserAnswers && this.renderUserAnswers()}
+                </>
+            );
+        }
     }
 
     render() {
         return(
             <div className="container-fluid">
-                <div className="row">
+                <div className="row justify-content-center">
                     <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                         {this.renderCalendar()}
                     </div>
@@ -57,13 +80,9 @@ class WordsOfADay extends Component<IWordsOfADayProps> {
                         {this.renderWordOfADay()}
                     </div>
                 </div>
-                {this.state.role == '2' && <div className="row justify-content-center">
-                    {!this.state.userAnswers &&
-                    <Button outline color="secondary" onClick={() => this.getUserAnswers()}>
-                        ПОЛУЧИТЬ ОТВЕТЫ ПОЛЬЗОВАТЕЛЕЙ
-                    </Button>}
-                    {this.state.userAnswers && <UserAnswers wordId={this.state.id}/>}
-                </div>}
+                <div className="row justify-content-center">
+                    {this.renderUserAnswersControl()}
+                </div>
             </div>
         );
     }
@@ -73,4 +92,4 @@ class WordsOfADay extends Component<IWordsOfADayProps> {
     }
 }
 
-export class WordsOfADay;
+export default WordsOfADay;
