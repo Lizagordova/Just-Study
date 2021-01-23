@@ -41,6 +41,9 @@ class CourseStore {
             },
             body: JSON.stringify({id: courseId})
         });
+        if(response.status === 200) {
+            this.usersByCourse = await response.json();
+        }
     }
 
     async addOrUpdateCourse(id: number, name: string, description: string): Promise<number> {
@@ -68,6 +71,21 @@ class CourseStore {
         });
         if(response.status === 200) {
             this.getCoursesForTeacher();
+        }
+
+        return response.status;
+    }
+
+    async AddOrUpdateParticipantsList(participants: number[], courseId: number): Promise<number> {
+        const response = await fetch("/addorupdateparticipantslist", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({participantsIds: participants, id: courseId})
+        });
+        if(response.status === 200) {
+            this.getUsersByCourse(courseId);
         }
 
         return response.status;

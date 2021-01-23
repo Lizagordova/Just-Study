@@ -1,4 +1,6 @@
-﻿using SuperSoft.Configuration.Typings.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using SuperSoft.Configuration.Typings.Attributes;
 
 namespace SuperSoft.ReadModels
 {
@@ -8,5 +10,6 @@ namespace SuperSoft.ReadModels
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
+		public IReadOnlyCollection<int> ParticipantsIds = Array.Empty<int>();
 	}
 }

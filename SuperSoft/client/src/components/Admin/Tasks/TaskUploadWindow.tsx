@@ -97,8 +97,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return(
             <div className="row justify-content-center">
                 <Button className="addTask"
-                        onClick={this.addSubtask}
-                        outline color="secondary">
+                    onClick={() => this.addSubtask()}
+                    outline color="secondary">
                     <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
                 </Button>
             </div>

@@ -6,6 +6,7 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { LessonsMenu } from "../Lessons/LessonsMenu";
 import WordsOfADay from "../WordsOfADay/WordsOfADay";
+import ParticipantsPage from "../Participants/ParticipantsPage";
 
 class ICourseProps {
     store: RootStore;
@@ -67,7 +68,7 @@ export class Course extends Component<ICourseProps> {
                 </Card>
                 {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
                 {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
-                {this.participants && <Participants />}
+                {this.participants && <ParticipantsPage />}
             </Tab.Container>
         )
     }

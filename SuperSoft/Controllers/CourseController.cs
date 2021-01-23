@@ -160,5 +160,29 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/addorupdateparticipantslist")]
+		public ActionResult AddOrUpdateParticipantsList([FromBody]CourseReadModel course)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_courseEditor.AddOrUpdateParticipantsList(course.ParticipantsIds, course.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetUsersByCourseException(_logger, e, course.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }
