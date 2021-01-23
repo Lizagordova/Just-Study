@@ -47,11 +47,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     componentDidUpdate(prevProps: Readonly<IWordOfADayProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.date !== this.props.date) {
-            let courseId = this.props.store.courseStore.choosenCourse.id;
-            this.props.store.wordStore.getWordOfADay(this.props.date, courseId)
-                .then((word) => {
-                    this.word = word;
-            });
+            this.setWordOfADay();
         }
     }
 
@@ -118,7 +114,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
                     onClick={() => this.toggleComments()}>
                     Комментарии
                     {this.showComments &&
-                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleEdit} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
+                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleAddOrUpdateWord} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
                 </Button>
             );
         }
@@ -183,10 +179,19 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     toggleAddOrUpdateWord() {
         this.addOrUpdate = !this.addOrUpdate;
+        this.setWordOfADay();
     }
 
     toggleComments() {
         this.showComments = !this.showComments;
+    }
+
+    setWordOfADay() {
+        let courseId = this.props.store.courseStore.choosenCourse.id;
+        this.props.store.wordStore.getWordOfADay(this.props.date, courseId)
+            .then((word) => {
+                this.word = word;
+            });
     }
 }
 

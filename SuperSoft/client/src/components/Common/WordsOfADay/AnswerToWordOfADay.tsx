@@ -4,7 +4,7 @@ import WordStore from "../../../stores/WordStore";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { UserWordReadModel } from "../../../Typings/readModels/UserWordReadModel";
-import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import { mapToUserAnswerReadModel } from "../../../functions/mapper";
 
 class IAnswerToWordOfADayProps {
     wordId: number;
@@ -31,7 +31,7 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     componentDidMount(): void {
         this.props.wordStore.getUserWordsProgress(this.props.wordId, this.props.userId)
             .then((userAnswer) => {
-                this.userAnswer = this.mapToUserAnswerReadModel(userAnswer);
+                this.userAnswer = mapToUserAnswerReadModel(userAnswer);
                 this.addOrUpdateAnswer = userAnswer.answer === "";
             });
     }
@@ -86,23 +86,13 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     }
 
     handleSave() {
-        this.props.wordStore.addOrUpdateUserAnswerToWordOfADay(this.userAnswer)
+        this.props.wordStore.addOrUpdateUserWordProgress(this.userAnswer)
             .then((status) => {
                 this.notSaved = status !== 200;
             });
     }
 
-    mapToUserAnswerReadModel(userWord: UserWordViewModel): UserWordReadModel {
-        let userAnswer = new UserWordReadModel();
-        userAnswer.answer = userWord.answer;
-        userAnswer.rightAnswers = userWord.rightAnswers;
-        userAnswer.status = userWord.status;
-        userAnswer.countOfAttempts = userWord.countOfAttempts;
-        // userAnswer.word = new WordReadModel(); todo: если это и так работает, то забей
-        userAnswer.word.id = userWord.wordId;
-        userAnswer.userId = userWord.userId;
-        return userAnswer;
-    }
+    
 }
 
 export default AnswerToWordOfADay;

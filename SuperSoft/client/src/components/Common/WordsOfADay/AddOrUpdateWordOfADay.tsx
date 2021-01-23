@@ -11,6 +11,8 @@ import { transformValueToPartOfSpeech } from "../../../functions/transformer";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import WordStore from "../../../stores/WordStore";
+import {WordOfADayReadModel} from "../../../Typings/readModels/WordOfADayReadModel";
+import {mapWordReadModel} from "../../../functions/mapper";
 
 class IAddOrUpdateWordOfADayProps {
     word: WordViewModel;
@@ -181,7 +183,11 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
     handleSave() {
         let role = this.props.currentUser.role;
         if(role === UserRole.Admin) {
-            this.props.wordStore.addOrUpdateWordOfADay(this.word, this.props.date, this.props.courseId)
+            let wordOfADay = new WordOfADayReadModel();
+            wordOfADay.word = mapWordReadModel(this.word);
+            wordOfADay.courseId = this.props.courseId;
+            wordOfADay.date = this.props.date;
+            this.props.wordStore.addOrUpdateWordOfADay(wordOfADay)
                 .then((status) => {
                     this.props.addOrUpdateWordOfADayToggle()
                 })

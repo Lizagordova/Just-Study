@@ -255,5 +255,104 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/getwordofaday")]
+		public ActionResult GetWordOfADay([FromBody]WordOfADayReadModel wordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+			try
+			{
+				_wordReader.GetWordOfADay(wordReadModel.Date, wordReadModel.CourseId);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetWordOfADayException(_logger, e, wordReadModel.Date, wordReadModel.CourseId);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/addorupdatewordofaday")]
+		public ActionResult AddOrUpdateWordOfADay([FromBody]WordOfADayReadModel wordOfADay)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.User.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			var word = _mapper.Map<WordReadModel, Word>(wordOfADay.Word);
+			try
+			{
+				word.Id = _wordEditor.AddOrUpdateWordOfDay(word, wordOfADay.Date, wordOfADay.CourseId);
+				var wordViewModel = _mapper.Map<Word, WordViewModel>(word);
+
+				return new JsonResult(wordViewModel);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateWordOfADayException(_logger, e, wordOfADay.Date, wordOfADay.CourseId);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/getuserwordsprogress")]
+		public ActionResult AddOrUpdateWordOfADay([FromBody]UserWordReadModel userWordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var userWord = _wordReader.GetUserWordProgress(userWordReadModel.UserId, userWordReadModel.Word.Id);
+				var userWordViewModel = _mapper.Map<UserWord, UserWordViewModel>(userWord);
+
+				return new JsonResult(userWordViewModel);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetUserWordProgressException(_logger, e, userWordReadModel.UserId, userWordReadModel.Word.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/addorupdateuserword")]
+		public ActionResult AddOrUpdateUserWord([FromBody]UserWordReadModel userWordReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.User.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			var userWord = _mapper.Map<UserWordReadModel, UserWord>(userWordReadModel);
+			try
+			{
+				_wordEditor.AddOrUpdateUserWord(userWord);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetUserWordProgressException(_logger, e, userWordReadModel.UserId, userWordReadModel.Word.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

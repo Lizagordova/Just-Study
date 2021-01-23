@@ -64,6 +64,30 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetWordOfADayException(ILogger logger, Exception e, DateTime date, int courseId)
+		{
+			var customMessage = $"Не удалось получить слово дня для courseId={courseId} на дату={date}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateWordOfADayException(ILogger logger, Exception e, DateTime date, int courseId)
+		{
+			var customMessage = $"Не удалось добавить или отредактировать слово дня для courseId={courseId} на дату={date}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetUserWordProgressException(ILogger logger, Exception e, int userId, int wordId)
+		{
+			var customMessage = $"Не удалось получить прогресс пользователя по словам для userId={userId} и wordId={wordId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateUserWordException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить или обновить юзерский прогресс.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateCourseException(ILogger logger, Exception e, Course course)
 		{
 			var customMessage = $"Не удалось добавить курс с ID={course.Id}; NAME={course.Name}";

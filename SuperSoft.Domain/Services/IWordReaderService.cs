@@ -11,7 +11,7 @@ namespace SuperSoft.Domain.Services
 		List<UserWord> GetUserDictionary(int userId);
 		List<UserWord> GetAnswersToWordOfADayByUser(int userId);
 		List<UserWord> GetAnswersToWordOfADayByWord(int wordId);
-		Word GetWordOfADay(DateTime date);
-		Task<List<Word>> GetAllWordsAsync();
+		Word GetWordOfADay(DateTime date, int courseId);
+		UserWord GetUserWordProgress(int userId, int wordId);
 	}
 }

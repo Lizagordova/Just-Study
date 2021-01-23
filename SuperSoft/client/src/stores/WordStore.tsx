@@ -3,6 +3,7 @@ import { makeObservable, observable } from "mobx";
 import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
 import { WordReadModel } from "../Typings/readModels/WordReadModel";
 import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
+import {WordOfADayReadModel} from "../Typings/readModels/WordOfADayReadModel";
 
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
@@ -92,7 +93,7 @@ class WordStore {
    }
 
     async addOrUpdateWordToUserDictionary(word: WordReadModel, userId: number): Promise<number> {
-        const response = await fetch("/addorupdatewordtodictionary", {
+        const response = await fetch("/addorupdatewordtouserdictionary", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -128,7 +129,7 @@ class WordStore {
     }
 
     async deleteWordOfADay(wordId: number): Promise<number> {
-        const response = await fetch("/addorupdateuserwordsprogress", {
+        const response = await fetch("/deletewordofaday", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -142,20 +143,74 @@ class WordStore {
     }
 
     async getWordOfADay(date: Date | Date[], courseId: number): Promise<WordViewModel> {
-        return new WordViewModel();
+        let wordOfADay = new WordViewModel();
+        const response = await fetch("/getwordofaday", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                courseId: courseId, date: date
+            })
+        });
+        if(response.status === 200) {
+            wordOfADay = await response.json();
+        }
+
+        return wordOfADay;
     }
-    
-    async addOrUpdateWordOfADay(word: WordReadModel, date: Date, courseId: number): Promise<number> {
-        this.getWordOfADay(date, courseId);//todo: здесь можно возвращать из хранимки само слово с id
-        return 200;
+
+    async addOrUpdateWordOfADay(wordOfADay: WordOfADayReadModel): Promise<number> {
+        const response = await fetch("/addorupdatewordofaday", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                word: wordOfADay.word,
+                courseId: wordOfADay.courseId,
+                date: wordOfADay.date
+            })
+        });
+
+        return response.status;
     }
     
     async getUserWordsProgress(wordId: number, userId: number): Promise<UserWordViewModel> {
-        return new UserWordViewModel();
+        let userWord = new UserWordViewModel();
+        let word = new WordReadModel();
+        word.id = wordId;
+        const response = await fetch("/getuserwordsprogress", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userId,
+                word: word
+            })
+        });
+        if(response.status === 200) {
+            userWord = await response.json();
+        }
+ 
+        return userWord;
     }
     
-    async addOrUpdateUserAnswerToWordOfADay(userAnswer: UserWordReadModel): Promise<number> {
-        return 200;
+    async addOrUpdateUserWordProgress(userWord: UserWordReadModel): Promise<number> {
+        const response = await fetch("/addorupdateuserword", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userWord.userId, word: userWord.word,
+                rightAnswers: userWord.rightAnswers, answer: userWord.answer,
+                countOfAttempts: userWord.countOfAttempts, status: userWord.status
+            })
+        });
+
+        return response.status;
     }
 }
 

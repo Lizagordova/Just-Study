@@ -83,6 +83,7 @@
 		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
+		<None Include="client\src\functions\mapper.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\shuffle.tsx" />
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
