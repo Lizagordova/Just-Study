@@ -37,6 +37,8 @@
 		<None Include="client\src\components\Admin\Lessons\LessonsMenu.tsx" />
 		<None Include="client\src\components\Admin\Main\AdminMain.tsx" />
 		<None Include="client\src\components\Admin\Main\IAdminMainProps.tsx" />
+		<None Include="client\src\components\Admin\Participants\Participant.tsx" />
+		<None Include="client\src\components\Admin\Participants\Participants.tsx" />
 		<None Include="client\src\components\Admin\Participants\ParticipantsPage.tsx" />
 		<None Include="client\src\components\Admin\Tasks\AddSubtask.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadSubtaskProps.tsx" />
@@ -46,6 +48,7 @@
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
 		<None Include="client\src\components\Admin\Trainings\TrainingPage.tsx" />
+		<None Include="client\src\components\Admin\Users\Users.tsx" />
 		<None Include="client\src\components\Admin\Users\UsersPage.tsx" />
 		<None Include="client\src\components\Admin\WordsOfADay\UserAnswer.tsx" />
 		<None Include="client\src\components\Admin\WordsOfADay\UserAnswers.tsx" />

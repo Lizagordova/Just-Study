@@ -5,6 +5,7 @@ import { makeObservable, observable } from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
 import { Button, Alert, Label } from "reactstrap";
+import Participants from "./Participants";
 
 class IParticipantsPageProps {
     courseStore: CourseStore;
@@ -43,20 +44,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
 
     renderCurrentParticipants(participants: UserViewModel[]) {
         return(
-            <>
-                {participants.map(p => {
-                    return(
-                        <div className="row justify-content-center">
-                            <Label>
-                                {p.lastName} {p.firstName}
-                            </Label>
-                            <i style={{marginLeft: '98%', width: '2%'}}
-                               onClick={() => this.deleteParticipant(p)}
-                               className="fa fa-window-close" aria-hidden="true"/>
-                        </div>
-                    );
-                })}
-            </>
+            <Participants participants={participants} deleteParticipant={this.deleteParticipant} courseStore={this.props.courseStore} />
         );
     }
 
@@ -122,7 +110,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
 
     save() {
         let participantsIds = this.participants.map(p => p.id);
-        this.props.courseStore.AddOrUpdateParticipantsList(participantsIds, this.props.courseStore.choosenCourse.id)
+        this.props.courseStore.addOrUpdateParticipantsList(participantsIds, this.props.courseStore.choosenCourse.id)
             .then((status) => {
                 this.saved = status === 200;
                 this.notSaved = status !== 200;

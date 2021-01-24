@@ -6,6 +6,7 @@ import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import CoursesPage from "../Courses/CoursesPage";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
 import TrainingPage from "../../Common/Training/TrainingPage";
+import UsersPage from "../Users/UsersPage";
 
 @observer
 export class AdminMain extends React.Component<IAdminMainProps> {
@@ -58,8 +59,8 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                 <Switch>
                     <Route exact path="/courses"
                            render={(props) => <CoursesPage store={this.props.store} />} />
-                    {/*<Route exact path="/users"
-                           render={(props) => <UsersPage store={this.props.store} />} />*/}
+                    {<Route exact path="/users"
+                           render={(props) => <UsersPage store={this.props.store} />} />}
                     <Route exact path="/dictionary"
                            render={(props) => <DictionaryPage store={this.props.store} />} />
                     {<Route exact path="/trainings"

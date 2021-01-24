@@ -1,4 +1,5 @@
-﻿import { PartOfSpeech } from "../Typings/enums/PartOfSpeech";
+﻿import {PartOfSpeech} from "../Typings/enums/PartOfSpeech";
+import {Tarif} from "../Typings/enums/Tarif";
 
 export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
     if(partOfSpeech === PartOfSpeech.Adjective) {
@@ -9,6 +10,16 @@ export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
         return "Существительное";
     } else if(partOfSpeech === PartOfSpeech.Verb) {
         return "Глагол";
+    }
+
+    return "";
+}
+
+export function translateTarif(tarif: Tarif) {
+    if(tarif === Tarif.Usual) {
+        return "Обычный";
+    } else if(tarif === Tarif.Premium) {
+        return "Премиум";
     }
 
     return "";
