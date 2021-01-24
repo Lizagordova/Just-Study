@@ -3,6 +3,8 @@ import { observer } from  "mobx-react";
 import { Card, CardHeader, Nav, NavItem, Button } from "reactstrap";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { IUserMainProps } from "./IUserMainProps";
+import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
+import TrainingPage from "../../Common/Training/TrainingPage";
 
 @observer
 export class UserMain extends React.Component<IUserMainProps> {
@@ -26,7 +28,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                              color: '#ffffff',
                                              backgroundColor: '#003B46',
                                              textDecoration: 'none'
-                                         }}>МОИ УРОКИ</NavLink>
+                                         }}>МОИ КУРСЫ</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
@@ -54,13 +56,13 @@ export class UserMain extends React.Component<IUserMainProps> {
                 </Card>
                 <Switch>
                     <Route exact path="/home"
-                           render={(props) => <MyWorkPage store={this.props.store} />} />
-                    <Route exact path="/mylessons"
-                           render={(props) => <ProjectsPage store={this.props.store} />} />
+                           render={(props) => <HomePage store={this.props.store} />} />
+                    <Route exact path="/mycourses"
+                           render={(props) => <CoursesPage store={this.props.store} />} />
                     <Route exact path="/dictionary"
-                           render={(props) => <UsersPage store={this.props.store} />} />
+                           render={(props) => <DictionaryPage store={this.props.store} />} />
                     <Route exact path="/trainings"
-                           render={(props) => <UsersPage store={this.props.store} />} />
+                           render={(props) => <TrainingPage store={this.props.store} />} />
                     <Redirect to="/mywork" />
                 </Switch>
             </>
