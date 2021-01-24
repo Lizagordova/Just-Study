@@ -1,10 +1,12 @@
-﻿import React, { Component } from 'react';
-import { Button } from "reactstrap";
-import { Task } from "../../Common/Tasks/Task";
-import { observer } from "mobx-react";
-import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
+﻿import React, {Component} from 'react';
+import {Button} from "reactstrap";
+import {Task} from "../../Common/Tasks/Task";
+import {observer} from "mobx-react";
+import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import RootStore from "../../../stores/RootStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable} from "mobx";
+import CommentGroup from "../../Common/Comments/CommentGroup";
+import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
 
 class ICompletedTaskProps {
     task: TaskViewModel;
@@ -44,7 +46,7 @@ class CompletedTask extends Component<ICompletedTaskProps> {
                     <Button
                         outline color="primary"
                         onClick={() => this.commentsToggle()}>Комментарии</Button>
-                    {this.commentsWindowOpen && <CommentGroup commentedEntityType="lessonTask" commentedEntityId={this.state.task.id} userId={store.getState().choosenUser.id} onToggle={this.onToggle}/>}
+                    {this.commentsWindowOpen && <CommentGroup commentedEntityId={this.props.task.id} commentedEntityType={CommentedEntityType.LessonTask} onToggle={this.commentsToggle} store={this.props.store} userId={this.props.userId}/>}
                 </div>
             </>
         );

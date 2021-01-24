@@ -2,7 +2,7 @@
 import RootStore from "../../../stores/RootStore";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { makeObservable, observable } from "mobx";
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label } from "reactstrap";
+import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Input } from "reactstrap";
 import { observer } from "mobx-react";
 import Calendar from "react-calendar";
 
@@ -37,7 +37,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             saved: observable
         });
     }
-    
+
     componentDidMount(): void {
         if(this.props.edit) {
             let lessonToEdit = this.props.lessonToEdit;
@@ -62,49 +62,98 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         )
     }
 
+    renderLessonDescription() {
+        return(
+            <>
+                <Label className="instruction" style={{width: "100%"}} align="center">
+                    Введите описание урока
+                </Label>
+                <Input
+                    value={this.description}
+                    onChange={(e) => this.inputDescription(e)}/>
+            </>
+        );
+    }
+
+    renderOrderInput() {
+        return(
+            <>
+                <Label style={{width: "100%"}} align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
+                <Input
+                    value={this.order}
+                    onChange={(e) => this.inputOrder(e)}/>
+            </>
+        );
+    }
+
+    renderStartDateInput() {
+        return(
+            <>
+                <Label style={{width: "100%"}} align="center">Выберите дату начала доступа урока</Label>
+                <Calendar
+                    value={this.startDate}
+                    onChange={(date) => this.inputDate(date, "startDate")}
+                />
+            </>
+        );
+    }
+
+    renderEndDateInput() {
+        return(
+            <>
+                <Label style={{width: "100%"}} align="center">Выберите дату окончания доступа урока</Label>
+                <Calendar
+                    value={this.expireDate}
+                    onChange={(date) => this.inputDate(date, "expireDate")}
+                />
+            </>
+        );
+    }
+
+    renderSaveLessonButton() {
+        return (
+            <Button
+                className="saveLessonButton"
+                onClick={() => this.addOrUpdateLesson()}>
+                Сохранить урок
+            </Button>
+        );
+    }
+ 
     renderBody() {
         return(
             <>
                 <ModalBody>
                     {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранилось</Alert>}
                     <div className="row justify-content-center">
-                        <Label className="instruction" style={{width: "100%"}} align="center">
-                            Введите описание урока
-                        </Label>
-                        <input
-                            value={this.description}
-                            onChange={(e) => this.inputDescription(e)}/>
+                        {this.renderLessonDescription()}
                     </div>
                     <div className="row justify-content-center">
-                        <Label style={{width: "100%"}} align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
-                        <input
-                            value={this.order}
-                            onChange={(e) => this.inputOrder(e)}/>
+                        {this.renderOrderInput()}
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-6">
-                            <Label style={{width: "100%"}} align="center">Выберите дату начала доступа урока</Label>
-                            <Calendar
-                                value={this.startDate}
-                                onChange={(date) => this.inputDate(date, "startDate")}
-                            /></div>
+                            {this.renderStartDateInput()}
+                        </div>
                         <div className="col-6">
-                            <Label style={{width: "100%"}} align="center">Выберите дату окончания доступа урока</Label>
-                            <Calendar
-                                value={this.expireDate}
-                                onChange={(date) => this.inputDate(date, "expireDate")}
-                            />
+                            {this.renderEndDateInput()}
                         </div>
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button
-                        className="saveLessonButton"
-                        onClick={() => this.addOrUpdateLesson()}>
-                        Сохранить урок
-                    </Button>
+                    {this.renderSaveLessonButton()}
                 </ModalFooter>
             </>
+        );
+    }
+
+    renderCancelButton() {
+        return(
+            <Button
+                color="primary"
+                onClick={() => this.addOrUpdateNewLessonToggle()}>
+                ОТМЕНИТЬ
+            </Button>
         );
     }
 
@@ -120,9 +169,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                     УРОК
                 </ModalHeader>
                 {this.renderBody()}
-                <Button
-                    color="primary"
-                    onClick={() => this.addOrUpdateNewLessonToggle()}>ОТМЕНИТЬ</Button>
+                {this.renderCancelButton()}
             </Modal>
         );
     }
@@ -133,7 +180,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 {this.addOrUpdateNewLesson && this.renderAddOrUpdateNewLessonWindow()}
                 {!this.addOrUpdateNewLesson && this.renderButton()}
             </>
-        )
+        );
     }
 
     addOrUpdateNewLessonToggle() {

@@ -48,6 +48,8 @@
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
 		<None Include="client\src\components\Admin\Trainings\TrainingPage.tsx" />
+		<None Include="client\src\components\Admin\Users\AddOrUpdateUserWindow.tsx" />
+		<None Include="client\src\components\Admin\Users\User.tsx" />
 		<None Include="client\src\components\Admin\Users\Users.tsx" />
 		<None Include="client\src\components\Admin\Users\UsersPage.tsx" />
 		<None Include="client\src\components\Admin\WordsOfADay\UserAnswer.tsx" />

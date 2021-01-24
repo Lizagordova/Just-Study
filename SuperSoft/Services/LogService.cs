@@ -250,6 +250,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddOrUpdateUserException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить пользователя или обновить его данные";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

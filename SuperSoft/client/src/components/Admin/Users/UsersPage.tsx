@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { observer } from "mobx-react";
 import RootStore from "../../../stores/RootStore";
 import Users from "./Users";
-import { Button } from "reactstrap";
+import AddOrUpdateUserWindow from "./AddOrUpdateUserWindow";
+import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 
 class IUsersPageProps {
     store: RootStore;
@@ -11,24 +12,26 @@ class IUsersPageProps {
 @observer
 class UsersPage extends Component<IUsersPageProps> {
     renderUsers() {
-        return(
-            <Users />
+        return (
+            <Users userStore={this.props.store.userStore} />
         );
     }
 
-    renderAddUserButton() {
-        return(
-            <Button>Добавить пользователя</Button>
+    renderAddUserWindow() {
+        return (
+            <>
+                {<AddOrUpdateUserWindow userStore={this.props.store.userStore} edit={false} userToEdit={new UserViewModel()}/>}
+            </>
         );
     }
 
     render() {
-        return(
+        return (
             <>
-                {this.renderAddUserButton()}
+                {this.renderAddUserWindow()}
                 {this.renderUsers()}
             </>
-        )
+        );
     }
 }
 

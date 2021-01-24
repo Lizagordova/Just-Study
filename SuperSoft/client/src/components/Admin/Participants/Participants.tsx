@@ -16,13 +16,13 @@ class Participants extends Component<IParticipantsProps>{
         return(
             <>
                 <thead>
-                <tr>
-                    <td>ФИО</td>
-                    <td>Тариф</td>
-                    <td>Дата начала</td>
-                    <td>Дата окончания</td>
-                    <td>Роль</td>
-                </tr>
+                    <tr>
+                        <td>ФИО</td>
+                        <td>Тариф</td>
+                        <td>Дата начала</td>
+                        <td>Дата окончания</td>
+                        <td>Роль</td>
+                    </tr>
                 </thead>
                 {participants.map(p => {
                     return(

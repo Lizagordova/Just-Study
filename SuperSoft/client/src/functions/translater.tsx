@@ -1,5 +1,6 @@
 ﻿import {PartOfSpeech} from "../Typings/enums/PartOfSpeech";
 import {Tarif} from "../Typings/enums/Tarif";
+import {UserRole} from "../Typings/enums/UserRole";
 
 export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
     if(partOfSpeech === PartOfSpeech.Adjective) {
@@ -15,11 +16,21 @@ export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
     return "";
 }
 
-export function translateTarif(tarif: Tarif) {
+export function translateTarif(tarif: Tarif): string {
     if(tarif === Tarif.Usual) {
         return "Обычный";
     } else if(tarif === Tarif.Premium) {
         return "Премиум";
+    }
+
+    return "";
+}
+
+export function translateRole(role: UserRole): string {
+    if(role === UserRole.User) {
+        return "Пользователь";
+    } else if(role === UserRole.Admin) {
+        return "Администратор"
     }
 
     return "";
