@@ -105,7 +105,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
                     Добавить:
                 </span>
             </>
-        )
+        );
     }
 
     render() {

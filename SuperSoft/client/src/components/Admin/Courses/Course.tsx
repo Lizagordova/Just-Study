@@ -68,9 +68,9 @@ export class Course extends Component<ICourseProps> {
                 </Card>
                 {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
                 {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
-                {this.participants && <ParticipantsPage />}
+                {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
             </Tab.Container>
-        )
+        );
     }
 
     render() {
