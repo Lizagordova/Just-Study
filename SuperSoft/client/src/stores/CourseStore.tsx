@@ -124,6 +124,10 @@ class CourseStore {
         return response.status;
     }
 
+    async computeUserCourseProgress(userId: number, courseId: number): Promise<number> {//todo: доделать + сделать модельку под прогресс
+        return 200;
+    }
+
     setChoosenCourse(course: CourseViewModel): void {
         this.choosenCourse = course;
     }

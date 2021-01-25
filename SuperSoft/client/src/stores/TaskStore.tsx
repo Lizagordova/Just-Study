@@ -15,7 +15,8 @@ class TaskStore {
 
     constructor() {
         makeObservable(this, {
-            tasksByChoosenLesson: observable
+            tasksByChoosenLesson: observable,
+            tags: observable
         });
         this.setInitialData();
     }

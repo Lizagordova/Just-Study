@@ -262,6 +262,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetTrackerException(ILogger logger, Exception e, int userId, int courseId)
+		{
+			var customMessage = $"Не удалось получить трекер для пользователя с userId={userId} и courseId={courseId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

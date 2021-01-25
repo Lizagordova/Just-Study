@@ -87,9 +87,12 @@
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\ShowWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\WordsTrainingPage.tsx" />
 		<None Include="client\src\components\User\Home\HomePage.tsx" />
+		<None Include="client\src\components\User\Home\OverallProgress.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
 		<None Include="client\src\components\User\MyLessons\MyLessonsPage.tsx" />
+		<None Include="client\src\components\User\Tracker\Tracker.tsx" />
+		<None Include="client\src\components\User\Tracker\Types\NaStarteTracker.tsx" />
 		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
@@ -104,6 +107,7 @@
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
+		<None Include="client\src\stores\TrackerStore.tsx" />
 		<None Include="client\src\stores\TrainingStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
 		<None Include="client\src\stores\WordStore.tsx" />
