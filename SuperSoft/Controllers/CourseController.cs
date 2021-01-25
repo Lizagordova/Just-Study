@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Services;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
+using SuperSoft.ReadModels.Queries;
 using SuperSoft.Services;
 using SuperSoft.ViewModels;
 
@@ -179,7 +181,33 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				_logService.AddLogGetUsersByCourseException(_logger, e, course.Id);
+				_logService.AddLogAddOrUpdateParticipantsListException(_logger, e, course.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/getcoursesinfo")]
+		public ActionResult GetCoursesInfo([FromBody]CoursesInfoQueryReadModel queryReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var query = _mapper.Map<CoursesInfoQueryReadModel, CoursesInfoQuery>(queryReadModel);
+				var courses = _courseReader.GetCourses(query);
+				var courseViewModels = courses.Select(_mapper.Map<Course, CourseViewModel>).ToList();
+
+				return new JsonResult(courseViewModels);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetCoursesInfoException(_logger, e);
 
 				return new StatusCodeResult(500);
 			}

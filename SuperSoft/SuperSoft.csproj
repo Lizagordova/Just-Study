@@ -86,8 +86,10 @@
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\RussianWordEnglishWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\TrainingTypes\ShowWordTraining.tsx" />
 		<None Include="client\src\components\User\Dictionary\WordsTrainingPage.tsx" />
+		<None Include="client\src\components\User\Home\HomePage.tsx" />
 		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
+		<None Include="client\src\components\User\MyLessons\MyLessonsPage.tsx" />
 		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
@@ -117,8 +119,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="client\src\components\User\Home" />
-	  <Folder Include="client\src\components\User\MyLessons" />
 	  <Folder Include="client\src\components\User\Trainings" />
 	  <Folder Include="client\src\Typings\readModels" />
 	</ItemGroup>

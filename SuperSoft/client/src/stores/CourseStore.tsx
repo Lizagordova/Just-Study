@@ -7,6 +7,7 @@ class CourseStore {
     userCourses: UserCourseViewModel[] = new Array<UserCourseViewModel>();
     choosenCourse: CourseViewModel = new CourseViewModel();
     usersByCourse: UserCourseViewModel[] = new Array<UserCourseViewModel>();
+    coursesInfo: CourseViewModel[] = new Array<CourseViewModel>();
 
     constructor() {
         makeObservable(this, {
@@ -26,10 +27,30 @@ class CourseStore {
         }
     }
 
-    async getUserCourses() {
+    async getUserCourses(): Promise<number> {
         const response = await fetch("/getusercourses");
         if(response.status === 200) {
-            this.userCourses = await response.json();
+            let courses = await response.json();
+            this.userCourses = courses;
+        }
+
+        return response.status;
+    }
+
+    async getCoursesInfo(ids: number[]) {
+        const response = await fetch("/getcoursesinfo", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ids: ids})
+        });
+        if(response.status === 200) {
+            let coursesInfo = await response.json();
+            this.coursesInfo = coursesInfo;
+            if(coursesInfo.length > 0) {
+                this.coursesInfo = coursesInfo[0];
+            }
         }
     }
 
