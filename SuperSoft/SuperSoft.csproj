@@ -103,7 +103,6 @@
 		<None Include="client\src\functions\transformer.tsx" />
 		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
-		<None Include="client\src\stores\DictionaryStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
@@ -111,11 +110,6 @@
 		<None Include="client\src\stores\TrainingStore.tsx" />
 		<None Include="client\src\stores\UserStore.tsx" />
 		<None Include="client\src\stores\WordStore.tsx" />
-		<None Include="client\stores\CommentStore.tsx" />
-		<None Include="client\stores\ProjectStore.tsx" />
-		<None Include="client\stores\RootStore.tsx" />
-		<None Include="client\stores\TaskStore.tsx" />
-		<None Include="client\stores\UserStore.tsx" />
 	</ItemGroup>
 
 	<ItemGroup>

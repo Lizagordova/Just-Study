@@ -5,6 +5,9 @@ class ITrackerProps {
 }
 
 class Tracker extends Component<ITrackerProps> {
+    renderTracker() {
+        
+    }
     render() {
         return(
             <></>

@@ -1,5 +1,6 @@
 ﻿import { TrackerViewModel } from "../Typings/viewModels/TrackerViewModel";
 import { makeObservable, observable } from "mobx";
+import { TrackerReadModel } from "../Typings/readModels/TrackerReadModel";
 
 class TrackerStore {
     currentTracker: TrackerViewModel;
@@ -25,9 +26,15 @@ class TrackerStore {
 
         return response.status;
     }
-    
-    async addOrUpdateTracker(userId: number) {
-        
+
+    async addOrUpdateTracker(tracker: TrackerReadModel) {
+        const response = await fetch("/gettracker", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({ id: tracker.id, courseId: tracker.courseId, userId: tracker.userId, trackersByDay: tracker.trackersByDay })
+        });
     }
 }
 
