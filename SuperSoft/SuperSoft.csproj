@@ -88,12 +88,13 @@
 		<None Include="client\src\components\User\Dictionary\WordsTrainingPage.tsx" />
 		<None Include="client\src\components\User\Home\HomePage.tsx" />
 		<None Include="client\src\components\User\Home\OverallProgress.tsx" />
-		<None Include="client\src\components\User\Main\IUserAdminMain.tsx" />
 		<None Include="client\src\components\User\Main\UserMain.tsx" />
+		<None Include="client\src\components\User\MyLessons\Homework.tsx" />
+		<None Include="client\src\components\User\MyLessons\HomeworkTask.tsx" />
+		<None Include="client\src\components\User\MyLessons\LessonPage.tsx" />
 		<None Include="client\src\components\User\MyLessons\MyLessonsPage.tsx" />
 		<None Include="client\src\components\User\Tracker\Tracker.tsx" />
 		<None Include="client\src\components\User\Tracker\Types\NaStarteTracker.tsx" />
-		<None Include="client\src\consts\TaskType.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
 		<None Include="client\src\functions\mapper.tsx" />
@@ -101,6 +102,7 @@
 		<None Include="client\src\functions\shuffle.tsx" />
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
 		<None Include="client\src\functions\transformer.tsx" />
+		<None Include="client\src\NavigationType.tsx" />
 		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />

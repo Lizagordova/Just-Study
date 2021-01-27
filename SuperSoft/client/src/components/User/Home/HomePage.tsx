@@ -12,16 +12,10 @@ class IHomePageProps {
 
 @observer
 class HomePage extends Component<IHomePageProps> {
-    
-    constructor() {
-        // @ts-ignore
-        super();
-    }
-
     renderCautions() {
         return(
             <Alert color="danger">Курс не доступен. Обратитесь к администратору.</Alert>
-        )
+        );
     }
 
     renderHomeContent() {

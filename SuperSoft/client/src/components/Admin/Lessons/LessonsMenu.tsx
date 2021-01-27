@@ -6,8 +6,8 @@ import { makeObservable, observable } from "mobx";
 import { Tab, Nav } from "react-bootstrap";
 import { Alert, Button, Col, Collapse, Row } from "reactstrap";
 import { renderSpinner } from "../../../functions/renderSpinner";
-import {AddOrUpdateNewLesson} from "./AddOrUpdateNewLesson";
-import {LessonPage} from "./LessonPage";
+import { AddOrUpdateNewLesson } from "./AddOrUpdateNewLesson";
+import { LessonPage } from "./LessonPage";
 
 class ILessonsMenuProps {
     store: RootStore;

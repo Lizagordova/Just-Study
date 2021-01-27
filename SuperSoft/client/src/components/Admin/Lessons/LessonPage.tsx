@@ -66,7 +66,7 @@ export class LessonPage extends Component<ILessonPageProps> {
                     {this.completedHomeworkActive && <CompletedHomeworkPage store={this.props.store}/>}
                 </Card>
             </Tab.Container>
-        )
+        );
     }
 
     render() {
