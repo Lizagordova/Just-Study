@@ -32,11 +32,14 @@ export function mapToUserAnswerReadModel(userWord: UserWordViewModel): UserWordR
     return userAnswer;
 }
 
-export function mapToTrackerReadModel(tracker: TrackerViewModel, userId: number, courseId: number): TrackerReadModel {
+export function mapToTrackerReadModel(tracker: TrackerViewModel, userId: number, courseId: number, daysCount: number): TrackerReadModel {
     let trackerReadModel = new TrackerReadModel();
     trackerReadModel.id = tracker.id;
     trackerReadModel.userId = userId;
     trackerReadModel.courseId = courseId;
+    if(tracker.trackersByDay.length === 0) {
+        tracker.trackersByDay = new Array<TrackerByDayViewModel>(daysCount);
+    }
     trackerReadModel.trackersByDay = tracker.trackersByDay.map(t => mapToTrackerByDayReadModel(t));
 
     return trackerReadModel;

@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 import { TrackerReadModel } from "../../../../Typings/readModels/TrackerReadModel";
 import { mapToTrackerReadModel } from "../../../../functions/mapper";
-import {TrackerByDayReadModel} from "../../../../Typings/readModels/TrackerByDayReadModel";
+import { TrackerByDayReadModel } from "../../../../Typings/readModels/TrackerByDayReadModel";
 
 class INaStarteTrackerProps {
     tracker: TrackerViewModel;
@@ -20,14 +20,13 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     days: number[] = new Array<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     tracker: TrackerReadModel = new TrackerReadModel();
 
-    //todo: НАДО ГАРАНТИРОВАТЬ, ЧТО СОЗДАЁТСЯ ТРЕКЕР С 10 ДНЯМИ!
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             tracker: observable
         });
-        this.tracker = mapToTrackerReadModel(this.props.tracker, this.props.userId, this.props.courseId);
+        this.tracker = mapToTrackerReadModel(this.props.tracker, this.props.userId, this.props.courseId, this.days.length);
     }
 
     componentWillUnmount(): void {

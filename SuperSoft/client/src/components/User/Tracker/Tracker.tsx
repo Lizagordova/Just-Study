@@ -3,7 +3,6 @@ import {TrackerViewModel} from "../../../Typings/viewModels/TrackerViewModel";
 import TrackerStore from "../../../stores/TrackerStore";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
-import { Alert } from "reactstrap";
 import {renderSpinner} from "../../../functions/renderSpinner";
 import NaStarteTracker from "./Types/NaStarteTracker";
 
