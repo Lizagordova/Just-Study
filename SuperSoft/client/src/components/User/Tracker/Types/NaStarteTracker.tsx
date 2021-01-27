@@ -11,6 +11,8 @@ import {TrackerByDayReadModel} from "../../../../Typings/readModels/TrackerByDay
 class INaStarteTrackerProps {
     tracker: TrackerViewModel;
     trackerStore: TrackerStore;
+    userId: number;
+    courseId: number;
 }
 
 @observer
@@ -18,19 +20,25 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     days: number[] = new Array<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     tracker: TrackerReadModel = new TrackerReadModel();
 
+    //todo: НАДО ГАРАНТИРОВАТЬ, ЧТО СОЗДАЁТСЯ ТРЕКЕР С 10 ДНЯМИ!
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             tracker: observable
         });
-        this.tracker = mapToTrackerReadModel(this.props.tracker);
+        this.tracker = mapToTrackerReadModel(this.props.tracker, this.props.userId, this.props.courseId);
     }
 
-    renderTracker(tracker: TrackerViewModel) {
+    componentWillUnmount(): void {
+        this.addOrUpdateTracker();
+    }
+
+    renderTracker() {
         return(
             <Table>
                 {this.renderHead()}
+                {this.renderBody()}
             </Table>
         );
     }
@@ -54,26 +62,26 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         return (
             <>
                 <tr>
-                    {this.renderRowOfTrackerByDay("ПРОСМОТР ВЕБИНАРА", "webinarWatch")}
-                    {this.renderRowOfTrackerByDay("ВЫПОЛНЕНИЕ ДОМАШНЕГО ЗАДАНИЯ", "completedHomework")}
-                    {this.renderRowOfTrackerByDay("СЛОВО ДНЯ", "wordOfADay")}
-                    {this.renderRowOfTrackerByDay("СЛОВАРЬ УРОКА", "dictionaryOfLesson")}
-                    {this.renderRowOfTrackerByDay("УЧАСТИЕ В ЧАТЕ", "chatParticipation")}
+                    {this.renderRowOfTrackerByDay(TrackerType.WebinarWatch)}
+                    {this.renderRowOfTrackerByDay(TrackerType.CompletedHomework)}
+                    {this.renderRowOfTrackerByDay(TrackerType.WordOfADay)}
+                    {this.renderRowOfTrackerByDay(TrackerType.DictionaryOfLesson)}
+                    {this.renderRowOfTrackerByDay(TrackerType.ChatParticipation)}
                 </tr>
             </>
         );
     }
 
-    renderRowOfTrackerByDay(header: string, type: string) {
+    renderRowOfTrackerByDay(type: TrackerType) {
         return (
             <>
-                <th>{header}</th>
+                <th>{this.getHeader(type)}</th>
                 {this.days.map((day, i) => {
                     let trackerByDay = this.getTrackerByDay(day);
                     return(
                         <>
-                            <td id={(i + 1).toString()} onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))}>
-                                {trackerByDay.vebinarWatch === true
+                            <td id={day.toString()} onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))}>
+                                {this.isCompleted(trackerByDay, type)
                                 ? <i className="fa fa-check" aria-hidden="true"/> :
                                 <i className="fa fa-times" aria-hidden="true"/>
                             }
@@ -88,7 +96,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     render() {
         return(
             <>
-                {this.renderTracker(this.props.tracker)}
+                {this.renderTracker()}
             </>
         );
     }
@@ -103,13 +111,65 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         return trackerByDay;
     }
 
-    handleChange(type: string, id: number) {
-        
+    handleChange(type: TrackerType, day: number) {
+        let trackerByDay = this.tracker.trackersByDay.filter(t => t.day === day)[0];
+        let index = this.tracker.trackersByDay.indexOf(trackerByDay);
+        if(type === TrackerType.ChatParticipation) {
+            trackerByDay.chatParticipation = !trackerByDay.chatParticipation;
+        } else if(type === TrackerType.CompletedHomework) {
+            trackerByDay.completedHomework = !trackerByDay.completedHomework;
+        } else if(type === TrackerType.DictionaryOfLesson) {
+            trackerByDay.dictionaryOfLesson = !trackerByDay.dictionaryOfLesson;
+        } else if(type === TrackerType.WordOfADay) {
+            trackerByDay.wordOfADay = !trackerByDay.wordOfADay;
+        } else if(type === TrackerType.WebinarWatch) {
+            trackerByDay.vebinarWatch = !trackerByDay.vebinarWatch;
+        }
+        this.tracker.trackersByDay[index] = trackerByDay;
     }
 
-    isCompleted(trackerByDay: TrackerByDayReadModel, type: number, id: number) {
-        
+    isCompleted(trackerByDay: TrackerByDayReadModel, type: TrackerType): boolean {
+        if(type === TrackerType.ChatParticipation) {
+            return trackerByDay.chatParticipation;
+        } else if(type === TrackerType.CompletedHomework) {
+            return trackerByDay.completedHomework;
+        } else if(type === TrackerType.DictionaryOfLesson) {
+            return trackerByDay.dictionaryOfLesson;
+        } else if(type === TrackerType.WordOfADay) {
+            return trackerByDay.wordOfADay;
+        } else if(type === TrackerType.WebinarWatch) {
+            return trackerByDay.vebinarWatch;
+        }
+
+        return false;
+    }
+
+    getHeader(type: TrackerType): string {
+        if(type === TrackerType.ChatParticipation) {
+            return "УЧАСТИЕ В ЧАТЕ";
+        } else if(type === TrackerType.CompletedHomework) {
+            return "ВЫПОЛНЕНИЕ ДОМАШНЕГО ЗАДАНИЯ";
+        } else if(type === TrackerType.DictionaryOfLesson) {
+            return "СЛОВАРЬ УРОКА";
+        } else if(type === TrackerType.WordOfADay) {
+            return "СЛОВО ДНЯ";
+        } else if(type === TrackerType.WebinarWatch) {
+            return "ПРОСМОТР ВЕБИНАРА";
+        }
+        return "";
+    }
+
+    addOrUpdateTracker() {
+        this.props.trackerStore.addOrUpdateTracker(this.tracker);
     }
 }
 
 export default NaStarteTracker;
+
+enum TrackerType {
+    WebinarWatch,
+    CompletedHomework,
+    WordOfADay,
+    DictionaryOfLesson,
+    ChatParticipation
+}

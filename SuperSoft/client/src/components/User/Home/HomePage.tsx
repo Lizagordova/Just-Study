@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { Alert } from "reactstrap";
 import WordsOfADay from "../../Admin/WordsOfADay/WordsOfADay";
 import OverallProgress from "./OverallProgress";
+import Tracker from "../Tracker/Tracker";
 
 class IHomePageProps {
     store: RootStore;
@@ -46,8 +47,10 @@ class HomePage extends Component<IHomePageProps> {
     }
 
     renderTracker() {
+        let courseId = this.props.store.courseStore.choosenCourse.id;
+        let userId = this.props.store.userStore.currentUser.id;
         return(
-            <></>
+            <Tracker courseId={courseId} trackerStore={this.props.store.trackerStore} userId={userId} />
         );
     }
 
