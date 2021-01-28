@@ -67,6 +67,8 @@
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />
+		<None Include="client\src\components\Common\Notifications\Notification.tsx" />
+		<None Include="client\src\components\Common\Notifications\Notifications.tsx" />
 		<None Include="client\src\components\Common\Tasks\DetailedAnswerSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\FillGapsSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\InsertWordsIntoGapsTask.tsx" />
@@ -106,6 +108,7 @@
 		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
+		<None Include="client\src\stores\NotificationStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
 		<None Include="client\src\stores\TrackerStore.tsx" />
@@ -119,7 +122,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="client\src\components\User\Trainings" />
 	  <Folder Include="client\src\Typings\readModels" />
 	</ItemGroup>
 

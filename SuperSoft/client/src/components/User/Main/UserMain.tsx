@@ -9,16 +9,19 @@ import HomePage from "../Home/HomePage";
 import MyLessonsPage from "../MyLessons/MyLessonsPage";
 import { CourseViewModel } from "../../../Typings/viewModels/CourseViewModel";
 import { makeObservable, observable } from "mobx";
+import Notifications from "../../Common/Notifications/Notifications";
 
 @observer
 export class UserMain extends React.Component<IUserMainProps> {
     courseMenuOpen: boolean;
+    notificationsOpen: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            courseMenuOpen: observable
+            courseMenuOpen: observable,
+            notificationsOpen: observable,
         });
     }
 
@@ -31,6 +34,16 @@ export class UserMain extends React.Component<IUserMainProps> {
                     courseStore.getCoursesInfo(userCoursesIds);
                 }
             });
+        let userId = this.props.store.userStore.currentUser.id;
+        this.props.store.notificationStore.getNotifications(userId);
+    }
+
+    renderNotifications() {
+        return(
+            <>
+                {this.notificationsOpen && <Notifications toggle={this.toggleNotifications()} notificationStore={this.props.store.notificationStore} userStore={this.props.store.userStore} />}
+            </>
+        );
     }
 
     render() {
@@ -80,6 +93,9 @@ export class UserMain extends React.Component<IUserMainProps> {
                                              textDecoration: 'none'
                                          }}>ТРЕНИРОВКИ</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <i className="icon-notification" onClick={() => this.toggleNotifications()} />
+                            </NavItem>
                             <Button
                                 outline color="primary"
                                 onClick={() => this.exit()}>
@@ -87,6 +103,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                             </Button>
                         </Nav>
                     </CardHeader>
+                    {this.renderNotifications()}
                 </Card>
                 <Switch>
                     <Route exact path="/home"
@@ -134,5 +151,12 @@ export class UserMain extends React.Component<IUserMainProps> {
 
     toggleCourse(course: CourseViewModel) {
         this.props.store.courseStore.setChoosenCourse(course);
+        this.props.store.lessonStore.getLessonsByCourse(course.id);
+        let choosenLessonId = this.props.store.lessonStore.choosenLesson.id;
+        this.props.store.taskStore.getTasksByLesson(choosenLessonId);
+    }
+
+    toggleNotifications() {
+        this.notificationsOpen = !this.notificationsOpen;
     }
 }
