@@ -129,7 +129,13 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось получить информацию о курсах.";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogAddOrUpdateUserCourseDetails(ILogger logger, Exception e, int courseId, int userId)
+		{
+			var customMessage = $"Не удалось обновить информацию по курсу courseId={courseId} для userId={userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateParticipantsListException(ILogger logger, Exception e, int courseId)
 		{
 			var customMessage = $"Не удалось добавить или обновить лист участников курса с courseId={courseId}.";

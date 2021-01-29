@@ -213,5 +213,30 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/addorupdateusercoursedetails")]
+		public ActionResult AddOrUpdateUserCourseDetails([FromBody]UserCourseReadModel userCourseReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var userCourse = _mapper.Map<UserCourseReadModel, UserCourse>(userCourseReadModel);
+				_courseEditor.AddOrUpdateUserCourse(userCourse);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateUserCourseDetails(_logger, e, userCourseReadModel.CourseId, userCourseReadModel.UserId);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }
