@@ -7,6 +7,7 @@ using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
+using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers
 {
@@ -46,8 +47,9 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tracker = _trackerReader.GetTracker(trackerReadModel.UserId, trackerReadModel.CourseId);
+				var trackerViewModel = _mapper.Map<Tracker, TrackerViewModel>(tracker);
 
-				return new JsonResult(tracker);
+				return new JsonResult(trackerViewModel);
 			}
 			catch (Exception e)
 			{

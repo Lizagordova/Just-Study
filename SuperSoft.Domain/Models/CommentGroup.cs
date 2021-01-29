@@ -10,6 +10,6 @@ namespace SuperSoft.Domain.Models
 		public CommentedEntityType CommentedEntityType { get; set; }
 		public int CommentedEntityId { get; set; }
 		public int UserId { get; set; }
-		public IReadOnlyCollection<Comment> Comments = Array.Empty<Comment>();
+		public IReadOnlyCollection<Comment> Comments { get; set; } = Array.Empty<Comment>();
 	}
 }

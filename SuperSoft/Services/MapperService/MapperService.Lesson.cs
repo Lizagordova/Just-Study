@@ -28,6 +28,24 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate));
 			});
+
+			AddMapping<LessonMaterialReadModel, LessonMaterial>(cfg =>
+			{
+				cfg.CreateMap<LessonMaterialReadModel, LessonMaterial>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Path, opt => opt.Ignore())
+					.ForMember(dest => dest.Url, opt => opt.Ignore());
+			});
+
+			AddMapping<LessonMaterial, LessonMaterialViewModel>(cfg =>
+			{
+				cfg.CreateMap<LessonMaterial, LessonMaterialViewModel>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.Path))
+					.ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Url))
+					.ForMember(dest => dest.FileName, opt => opt.Ignore())
+					.ForMember(dest => dest.FileForReading, opt => opt.Ignore());
+			});
 		}
 	}
 }

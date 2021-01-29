@@ -25,20 +25,24 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
 			});
 
-			AddMapping<UserCourseReadModel, Course>(cfg =>
+			AddMapping<UserCourseReadModel, UserCourse>(cfg =>
 			{
-				cfg.CreateMap<CourseReadModel, Course>()
-					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
+				cfg.CreateMap<UserCourseReadModel, UserCourse>()
+					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+					.ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
+					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
+					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+					.ForMember(dest => dest.Tarif, opt => opt.MapFrom(src => src.Tarif));
 			});
 
-			AddMapping<Course, CourseViewModel>(cfg =>
+			AddMapping<UserCourse, UserCourseViewModel>(cfg =>
 			{
-				cfg.CreateMap<Course, CourseViewModel>()
-					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
+				cfg.CreateMap<UserCourse, UserCourseViewModel>()
+					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+					.ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
+					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
+					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+					.ForMember(dest => dest.Tarif, opt => opt.MapFrom(src => src.Tarif));
 			});
 		}
 	}

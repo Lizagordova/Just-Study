@@ -14,6 +14,8 @@ namespace SuperSoft.Services.MapperService
 			CreateUserMappings();
 			CreateWordMappings();
 			CreateTagMappings();
+			CreateUserTaskMappings();
+			CreateTrackerMappings();
 		}
 	}
 }

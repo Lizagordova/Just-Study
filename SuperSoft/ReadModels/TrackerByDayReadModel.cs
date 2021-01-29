@@ -6,7 +6,7 @@ namespace SuperSoft.ReadModels
 	public class TrackerByDayReadModel
 	{
 		public int Id { get; set; }
-		public bool VebinarWatch { get; set; }
+		public bool WebinarWatch { get; set; }
 		public bool CompletedHomework { get; set; }
 		public bool DictionaryOfLesson { get; set; }
 		public bool WordOfADay { get; set; }
