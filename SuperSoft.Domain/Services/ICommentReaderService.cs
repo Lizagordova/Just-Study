@@ -1,7 +1,9 @@
-﻿namespace SuperSoft.Domain.Services
+﻿using SuperSoft.Domain.Models;
+
+namespace SuperSoft.Domain.Services
 {
 	public interface ICommentReaderService
 	{
-		
+		CommentGroup GetCommentGroup(CommentGroup group);
 	}
 }

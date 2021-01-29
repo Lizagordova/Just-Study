@@ -10,6 +10,7 @@ using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.ReadModels.Queries;
 using SuperSoft.Services;
+using SuperSoft.Services.MapperService;
 using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers

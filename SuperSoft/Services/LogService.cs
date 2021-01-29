@@ -250,6 +250,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetCommentGroupException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось получить группу комментариев.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateNotificationException(ILogger logger, Exception e)
 		{
 			var customMessage = $"Не удалось добавить уведомление.";

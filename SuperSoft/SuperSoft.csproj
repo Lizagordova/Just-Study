@@ -105,7 +105,6 @@
 		<None Include="client\src\functions\subtaskTranspiler.tsx" />
 		<None Include="client\src\functions\transformer.tsx" />
 		<None Include="client\src\NavigationType.tsx" />
-		<None Include="client\src\stores\CommentStore.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\NotificationStore.tsx" />

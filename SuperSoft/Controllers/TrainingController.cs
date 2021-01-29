@@ -6,6 +6,7 @@ using SuperSoft.Domain.Services;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels.Queries;
 using SuperSoft.Services;
+using SuperSoft.Services.MapperService;
 
 namespace SuperSoft.Controllers
 {

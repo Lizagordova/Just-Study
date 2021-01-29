@@ -7,6 +7,7 @@ using SuperSoft.Domain.Services;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
+using SuperSoft.Services.MapperService;
 using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers
@@ -74,20 +75,29 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getcommentgroup")]
-		public ActionResult GetCommentGroup([FromBody]CommentGroupReadModel commentGroup)
+		public ActionResult GetCommentGroup([FromBody]CommentGroupReadModel commentGroupReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if(role == null)
 			{
 				return new BadRequestResult();
 			}
-			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroup);
+			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroupReadModel);
 			var groupId = _commentEditor.AddOrUpdateCommentGroup(group);
 			group.Id = groupId;
+			try
+			{
+				var commentGroup = _commentReader.GetCommentGroup(group);
+				var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(group);//todo: я думаю, здесь надо маппер для comments сделать ещё
 
-			var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(group);//todo: я думаю, здесь надо маппер для comments сделать ещё
+				return new JsonResult(groupViewModel);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetCommentGroupException(_logger, e);
 
-			return new JsonResult(groupViewModel);
+				return new StatusCodeResult(500);
+			}
 		}
 
 		[HttpPost]
