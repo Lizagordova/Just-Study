@@ -46,15 +46,40 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var notifications = _notificationReader.GetNotifications(user.Id);
-				var notificationsViewModels =
-					notifications.Select(_mapper.Map<Notification, NotificationViewModel>).ToList();
+				var notificationsViewModels = notifications.Select(_mapper.Map<Notification, NotificationViewModel>).ToList();
 
 				return new JsonResult(notificationsViewModels);
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
-				throw;
+				_logService.AddLogGetNotificationsException(_logger, e, user.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/addorupdateusernotification")]
+		public ActionResult AddOrUpdateUserNotification([FromBody]UserNotificationReadModel userNotificationReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			var userNotification = _mapper.Map<UserNotificationReadModel, UserNotification>(userNotificationReadModel);
+			try
+			{
+				_notificationEditor.AddOrUpdateUserNotification(userNotification);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateUserNotificationException(_logger, e, userNotificationReadModel.UserId, userNotificationReadModel.NotificationId);
+
+				return new StatusCodeResult(500);
 			}
 		}
 	}

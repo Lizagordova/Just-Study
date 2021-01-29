@@ -35,7 +35,7 @@ class Notifications extends Component<INotificationsProps> {
             <Alert color="primary">Уведомлений пока нет.</Alert>
         );
     }
-        
+
     render() {
         let notifications = this.props.notificationStore.currentNotifications;
         return(

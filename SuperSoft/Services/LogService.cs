@@ -268,6 +268,18 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddOrUpdateUserNotificationException(ILogger logger, Exception e, int userId, int notificationId)
+		{
+			var customMessage = $"Не удалось обновить userNotification с userId={userId} и notificationId={notificationId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogGetNotificationsException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось получить уведомления для userId={userId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

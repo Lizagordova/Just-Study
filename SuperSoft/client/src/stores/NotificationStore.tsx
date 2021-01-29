@@ -12,11 +12,30 @@ class NotificationStore {
     }
 
     async getNotifications(userId: number): Promise<number> {
-        return 200;
+        const response = await fetch("/getnotifications", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({id: userId})
+        });
+        if(response.status === 200) {
+            this.currentNotifications = await response.json();
+        }
+
+        return response.status;
     }
 
     async addOrUpdateUserNotification(userNotification: UserNotificationReadModel): Promise<number> {
-        return 200;
+        const response = await fetch("/addorupdateusernotification", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({userId: userNotification.userId, notificationId: userNotification.notificationId, seen: userNotification.seen})
+        });
+
+        return response.status;
     }
 }
 
