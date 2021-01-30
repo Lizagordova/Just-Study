@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperSoft.Persistence.Services.MapperService;
-using MainMapperService = SuperSoft.Services.MapperService;
+using MainMapperService = SuperSoft.Services.MapperService.MapperService;
 
 namespace SuperSoft
 {

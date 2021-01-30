@@ -295,7 +295,7 @@ namespace SuperSoft.Services
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
-			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error.ToString()});
+			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error});
 		}
 	}
 }

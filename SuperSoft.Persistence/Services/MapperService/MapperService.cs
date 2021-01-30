@@ -6,6 +6,18 @@ namespace SuperSoft.Persistence.Services.MapperService
 	{
 		protected override void CreateMappings()
 		{
+			CreateCommentMappings();
+			CreateCourseMappings();
+			CreateLessonMappings();
+			CreateNotificationMappings();
+			CreateTaskMappings();
+			CreateUserMappings();
+			CreateWordMappings();
+			CreateTagMappings();
+			CreateUserTaskMappings();
+			CreateTrackerMappings();
+			CreateUserMappings();
+			CreateLogMappings();
 		}
 	}
 }

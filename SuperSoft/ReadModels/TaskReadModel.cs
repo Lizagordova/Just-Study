@@ -12,6 +12,7 @@ namespace SuperSoft.ReadModels
 		public string Instruction { get; set; }
 		public string Text { get; set; }
 		public int LessonId { get; set; }
+		public int Order { get; set; }//todo: сейчас никак не заполняется, надо чтобы заполнялось!!!
 		public TaskType TaskType { get; set; }
 		public IReadOnlyCollection<SubtaskReadModel> Subtasks { get; set; } = Array.Empty<SubtaskReadModel>();
 		public IReadOnlyCollection<TagReadModel> Tags { get; set; } = Array.Empty<TagReadModel>();

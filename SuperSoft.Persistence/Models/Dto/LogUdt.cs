@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace SuperSoft.Domain.Models
+namespace SuperSoft.Persistence.Models.Dto
 {
-	public class Log
+	public class LogUdt
 	{
 		public int Id { get; set; }
 		public string Message { get; set; }
