@@ -88,7 +88,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var commentGroup = _commentReader.GetCommentGroup(group);
-				var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(group);//todo: я думаю, здесь надо маппер для comments сделать ещё
+				var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(commentGroup);//todo: я думаю, здесь надо маппер для comments сделать ещё
 
 				return new JsonResult(groupViewModel);
 			}
