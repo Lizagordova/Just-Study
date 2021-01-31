@@ -9,7 +9,6 @@ namespace SuperSoft.Domain.Repositories
 		int AddOrUpdateWordToDictionary(Word word);
 		int AddOrUpdateWordToUserDictionary(Word word, int userId);
 		void AddOrUpdateUserWord(UserWord userWord);
-		void AddOrUpdateUserWords(List<UserWord> userWords);
 		void DeleteWordFromDictionary(int wordId);
 		void DeleteWordFromUserDictionary(int wordId, int userId);
 		int AddOrUpdateWordOfDay(Word word, DateTime date, int courseId);

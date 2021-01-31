@@ -6,12 +6,9 @@ namespace SuperSoft.Domain.Repositories
 {
 	public interface ICommentRepository
 	{
-		List<Word> GetDictionary();
-		List<UserWord> GetUserDictionary(int userId);
-		List<UserWord> GetAnswersToWordOfADayByUser(int userId);
-		List<UserWord> GetAnswersToWordOfADayByWord(int wordId);
-		Word GetWordOfADay(DateTime date, int courseId);
-		UserWord GetUserWordProgress(int userId, int wordId);
+		int AddOrUpdateComment(Comment comment, int groupId);
+		int AddOrUpdateCommentGroup(CommentGroup group);
+		void RemoveComment(int commentId);
 		CommentGroup GetCommentGroup(CommentGroup group);
 	}
 }
