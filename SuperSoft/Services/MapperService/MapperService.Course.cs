@@ -1,6 +1,8 @@
 ﻿using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Services;
 using SuperSoft.ReadModels;
+using SuperSoft.ReadModels.Queries;
 using SuperSoft.ViewModels;
 
 namespace SuperSoft.Services.MapperService
@@ -43,6 +45,12 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
 					.ForMember(dest => dest.Tarif, opt => opt.MapFrom(src => src.Tarif));
+			});
+
+			AddMapping<CoursesInfoQueryReadModel, CoursesInfoQuery>(cfg =>
+			{
+				cfg.CreateMap<CoursesInfoQueryReadModel, CoursesInfoQuery>()
+					.ForMember(dest => dest.CoursesIds, opt => opt.MapFrom(src => src.CoursesIds));
 			});
 		}
 	}

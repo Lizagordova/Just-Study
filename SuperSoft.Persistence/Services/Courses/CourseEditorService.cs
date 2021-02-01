@@ -1,34 +1,42 @@
 ﻿using System.Collections.Generic;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Courses
 {
 	public class CourseEditorService : ICourseEditorService
 	{
+		private readonly ICourseRepository _courseRepository;
+		public CourseEditorService(
+			ICourseRepository courseRepository)
+		{
+			_courseRepository = courseRepository;
+		}
+
 		public int AddOrUpdateCourse(Course course)
 		{
-			throw new System.NotImplementedException();
+			return _courseRepository.AddOrUpdateCourse(course);
 		}
 
 		public void AttachTeacherToCourse(int courseId, int teacherId)
 		{
-			throw new System.NotImplementedException();
+			_courseRepository.AttachTeacherToCourse(courseId, teacherId);
 		}
 
 		public void AddOrUpdateParticipantsList(IReadOnlyCollection<int> participantsIds, int courseId)
 		{
-			throw new System.NotImplementedException();
+			_courseRepository.AddOrUpdateParticipantsList(participantsIds, courseId);
 		}
 
 		public void AddOrUpdateUserCourse(UserCourse userCourse)
 		{
-			throw new System.NotImplementedException();
+			_courseRepository.AddOrUpdateUserCourse(userCourse);
 		}
 
 		public void DeleteCourse(int courseId)
 		{
-			throw new System.NotImplementedException();
+			_courseRepository.DeleteCourse(courseId);
 		}
 	}
 }

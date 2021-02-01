@@ -1,30 +1,39 @@
 ﻿using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Courses
 {
 	public class CourseReaderService : ICourseReaderService
 	{
+		private readonly ICourseRepository _courseRepository;
+
+		public CourseReaderService(
+			ICourseRepository courseRepository)
+		{
+			_courseRepository = courseRepository;
+		}
+
 		public List<Course> GetCoursesForTeacher(int courseId)
 		{
-			throw new System.NotImplementedException();
+			return _courseRepository.GetCoursesForTeacher(courseId);
 		}
 
 		public List<UserCourse> GetUserCourses(int userId)
 		{
-			throw new System.NotImplementedException();
+			return _courseRepository.GetUserCourses(userId);
 		}
 
 		public List<UserCourse> GetUsersByCourse(int courseId)
 		{
-			throw new System.NotImplementedException();
+			return _courseRepository.GetUsersByCourse(courseId);
 		}
 
 		public List<Course> GetCourses(CoursesInfoQuery query)
 		{
-			throw new System.NotImplementedException();
+			return _courseRepository.GetCourses(query);
 		}
 	}
 }
