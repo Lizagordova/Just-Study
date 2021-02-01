@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 
 namespace SuperSoft.Domain.Services
