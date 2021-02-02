@@ -7,6 +7,5 @@ namespace SuperSoft.Domain.Models
 	{
 		public int Id { get; set; }
 		public IReadOnlyCollection<TrackerByDay> TrackersByDay { get; set; } = Array.Empty<TrackerByDay>();
-
 	}
 }

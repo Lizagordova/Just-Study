@@ -25,6 +25,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<TrackerByDay, TrackerByDayUdt>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.TrackerId, opt => opt.Ignore())
 					.ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.Day))
 					.ForMember(dest => dest.ChatParticipation, opt => opt.MapFrom(src => src.ChatParticipation))
 					.ForMember(dest => dest.CompletedHomework, opt => opt.MapFrom(src => src.CompleteHomework))

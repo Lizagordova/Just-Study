@@ -3,6 +3,7 @@
 	public class TrackerByDayUdt
 	{
 		public int Id { get; set; }
+		public int TrackerId { get; set; }
 		public bool WebinarWatch { get; set; }
 		public bool CompletedHomework { get; set; }
 		public bool DictionaryOfLesson { get; set; }
