@@ -12,6 +12,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<UserSubtask, UserSubtaskUdt>()
 					.ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
+					.ForMember(dest => dest.SubtaskId, opt => opt.Ignore())
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
 					.ForMember(dest => dest.AnswerPath, opt => opt.MapFrom(src => src.AnswerPath));
 			});

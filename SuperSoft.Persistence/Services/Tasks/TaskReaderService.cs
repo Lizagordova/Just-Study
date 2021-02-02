@@ -11,11 +11,6 @@ namespace SuperSoft.Persistence.Services.Tasks
 			throw new System.NotImplementedException();
 		}
 
-		public List<Tag> GetTags()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public List<UserSubtask> GetUserSubtasks(int taskId, int userId)
 		{
 			throw new System.NotImplementedException();

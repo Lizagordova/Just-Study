@@ -18,6 +18,7 @@ namespace SuperSoft.Controllers
 		private readonly MapperService _mapper;
 		private readonly ITaskEditorService _taskEditor;
 		private readonly ITaskReaderService _taskReader;
+		private readonly ITagReaderService _tagReader;
 		private readonly ILogger<TaskController> _logger;
 		private readonly LogService _logService;
 
@@ -25,12 +26,14 @@ namespace SuperSoft.Controllers
 			MapperService mapper,
 			ITaskEditorService taskEditor,
 			ITaskReaderService taskReader,
+			ITagReaderService tagReader,
 			ILogger<TaskController> logger,
 			LogService logService)
 		{
 			_mapper = mapper;
 			_taskEditor = taskEditor;
 			_taskReader = taskReader;
+			_tagReader = tagReader;
 			_logger = logger;
 			_logService = logService;
 		}
@@ -72,7 +75,7 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				var tags = _taskReader.GetTags();
+				var tags = _tagReader.GetTags();
 				var tagViewModels = tags.Select(_mapper.Map<Tag, TagViewModel>).ToList();
 
 				return new JsonResult(tagViewModels);
