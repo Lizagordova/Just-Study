@@ -39,54 +39,118 @@ namespace SuperSoft.Persistence.Repositories
 
 			return taskId;
 		}
-		
-		public int AttachTaskToLesson(int taskId, int lessonId)
+
+		public void AttachTaskToLesson(int taskId, int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAttachTaskToLessonParam(taskId, lessonId);
+			conn.Query(AttachTaskToLessonSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
 		}
 
 		public int AddOrUpdateSubtask(Subtask subtask, int taskId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAddOrUpdateSubtaskParam(subtask, taskId);
+			var subtaskId = conn.Query<int>(AddOrUpdateSubtaskSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
+
+			return subtaskId;
 		}
 
 		public void DeleteTask(int taskId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetTaskIdParam(taskId);
+			conn.Query(DeleteTaskSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
 		}
 
 		public void DeleteSubtask(int subtaskId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetSubtaskIdParam(subtaskId);
+			conn.Query(DeleteSubtaskSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
 		}
 
 		public List<Task> GetTasksByChoosenLesson(int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetGetTasksByChoosenLessonParam(lessonId);
+			var response = conn.QueryMultiple(GetTasksByChoosenLessonSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetTaskData(response);
+			var tasks = MapTasks(data);
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
-		}
 
-		public UserSubtask GetUserSubtask(int subtaskId, int userId)
-		{
-			var conn = DatabaseHelper.OpenConnection();
-			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
+			return tasks;
 		}
 
 		public Task GetTaskById(int taskId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
+			var param = GetTaskIdParam(taskId);
+			var response = conn.QueryMultiple(GetTaskByIdSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetTaskData(response);
+			var task = MapTask(data);
 			DatabaseHelper.CloseConnection(conn);
-			throw new System.NotImplementedException();
+
+			return task;
+		}
+
+		private TaskData GetTaskData(SqlMapper.GridReader reader)
+		{
+			var taskData = new TaskData
+			{
+				Tasks = reader.Read<TaskUdt>().ToList(),
+				Subtasks = reader.Read<SubtaskUdt>().ToList(),
+				Tags = reader.Read<TagUdt>().ToList()
+			};
+
+			return taskData;
+		}
+		
+		private Task MapTask(TaskData taskData)
+		{
+			var task = new Task
+			{
+				Subtasks = taskData.Subtasks.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList(),
+				Tags = taskData.Tags.Select(_mapper.Map<TagUdt, Tag>).ToList()
+			};
+
+			return task;
+		}
+
+		private List<Task> MapTasks(TaskData taskData)
+		{
+			var tasks = taskData.Tasks
+				.GroupJoin(
+					taskData.Subtasks,
+					t => t.Id,
+					s => s.TaskId,
+					MapTaskWithSubtasks)
+				.GroupJoin(taskData.Tags,
+					task => task.Id,
+					tag => tag.TaskId,
+					MapTaskWithTags)
+				.ToList();
+
+			return tasks;
+		}
+
+		private Task MapTaskWithSubtasks(TaskUdt taskUdt, IEnumerable<SubtaskUdt> subtaskUdts)
+		{
+			var task = _mapper.Map<TaskUdt, Task>(taskUdt);
+			task.Subtasks = subtaskUdts.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList();
+
+			return task;
+		}
+
+		private Task MapTaskWithTags(Task task, IEnumerable<TagUdt> tagUdts)
+		{
+			task.Tags = tagUdts.Select(_mapper.Map<TagUdt, Tag>).ToList();
+
+			return task;
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateTaskParam(Task task)
@@ -106,6 +170,50 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
-		
+		private DynamicTvpParameters GetAttachTaskToLessonParam(int taskId, int lessonId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			param.Add("lessonId", lessonId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateSubtaskParam(Subtask subtask, int taskId)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("subtask", "UDT_Subtask");
+			var udt = _mapper.Map<Subtask, SubtaskUdt>(subtask);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
+
+			param.Add("taskId", taskId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetTaskIdParam(int taskId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetSubtaskIdParam(int subtaskId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("subtaskId", subtaskId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetGetTasksByChoosenLessonParam(int lessonId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("lessonId", lessonId);
+
+			return param;
+		}
 	}
 }

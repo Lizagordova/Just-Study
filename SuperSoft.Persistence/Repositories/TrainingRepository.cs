@@ -57,7 +57,7 @@ namespace SuperSoft.Persistence.Repositories
 
 			return taskData;
 		}
-		
+
 		private IReadOnlyCollection<Task> MapTaskCollection(TaskData taskData)
 		{
 			var tasks = taskData.Tasks

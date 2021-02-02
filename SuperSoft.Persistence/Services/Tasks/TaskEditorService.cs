@@ -1,43 +1,59 @@
 ﻿using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Tasks
 {
 	public class TaskEditorService : ITaskEditorService
 	{
-		public int AddOrUpdateTask(Task task)
+		private readonly ITaskRepository _taskRepository;
+		private readonly IUserTaskRepository _userTaskRepository;
+
+		public TaskEditorService(
+			ITaskRepository taskRepository,
+			IUserTaskRepository userTaskRepository)
 		{
-			throw new System.NotImplementedException();
+			_taskRepository = taskRepository;
+			_userTaskRepository = userTaskRepository;
 		}
 
-		public int AttachTaskToLesson(int taskId, int lessonId)
+		public int AddOrUpdateTask(Task task)
 		{
-			throw new System.NotImplementedException();
+			var taskId = _taskRepository.AddOrUpdateTask(task);
+
+			return taskId;
+		}
+
+		public void AttachTaskToLesson(int taskId, int lessonId)
+		{
+			_taskRepository.AttachTaskToLesson(taskId, lessonId);
 		}
 
 		public int AddOrUpdateSubtask(Subtask subtask, int taskId)
 		{
-			throw new System.NotImplementedException();
+			var subtaskId = _taskRepository.AddOrUpdateSubtask(subtask, taskId);
+
+			return subtaskId;
 		}
 
 		public void DeleteTask(int taskId)
 		{
-			throw new System.NotImplementedException();
+			_taskRepository.DeleteTask(taskId);
 		}
 
 		public void DeleteSubtask(int subtaskId)
 		{
-			throw new System.NotImplementedException();
+			_taskRepository.DeleteSubtask(subtaskId);
 		}
 
 		public void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId, int taskId)
 		{
-			throw new System.NotImplementedException();
+			_userTaskRepository.AddOrUpdateUserSubtask(userSubtask, userId, subtaskId, taskId);
 		}
 
-		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup answerGroup, int userId, int subtaskId)
+		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup userGroup, int userId, int subtaskId)
 		{
-			throw new System.NotImplementedException();
+			_userTaskRepository.AddOrUpdateUserSubtaskAnswerGroup(userGroup, userId, subtaskId);
 		}
 	}
 }

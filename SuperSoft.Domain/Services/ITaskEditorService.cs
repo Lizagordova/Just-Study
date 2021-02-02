@@ -5,7 +5,7 @@ namespace SuperSoft.Domain.Services
 	public interface ITaskEditorService
 	{
 		int AddOrUpdateTask(Task task);
-		int AttachTaskToLesson(int taskId, int lessonId);
+		void AttachTaskToLesson(int taskId, int lessonId);
 		int AddOrUpdateSubtask(Subtask subtask, int taskId);
 		void DeleteTask(int taskId);
 		void DeleteSubtask(int subtaskId);
