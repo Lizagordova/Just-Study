@@ -1,19 +1,28 @@
 ﻿using System.Collections.Generic;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Notifications
 {
 	public class NotificationEditorService : INotificationEditorService
 	{
+		private readonly INotificationRepository _notificationRepository;
+
+		public NotificationEditorService(
+			INotificationRepository notificationRepository)
+		{
+			_notificationRepository = notificationRepository;
+		}
+
 		public void AddOrUpdateNotification(List<int> userForIds, Notification notification)
 		{
-			throw new System.NotImplementedException();
+			_notificationRepository.AddOrUpdateNotification(userForIds, notification);
 		}
 
 		public void AddOrUpdateUserNotification(UserNotification userNotification)
 		{
-			throw new System.NotImplementedException();
+			_notificationRepository.AddOrUpdateUserNotification(userNotification);
 		}
 	}
 }
