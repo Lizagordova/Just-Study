@@ -1,13 +1,24 @@
 ﻿using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Comments
 {
 	public class CommentReaderService : ICommentReaderService
 	{
-		public CommentGroup GetCommentGroup(CommentGroup @group)
+		private readonly ICommentRepository _commentRepository;
+
+		public CommentReaderService(
+			ICommentRepository commentRepository)
 		{
-			throw new System.NotImplementedException();
+			_commentRepository = commentRepository;
+		}
+
+		public CommentGroup GetCommentGroup(CommentGroup group)
+		{
+			var commentGroup = _commentRepository.GetCommentGroup(group);
+
+			return commentGroup;
 		}
 	}
 }

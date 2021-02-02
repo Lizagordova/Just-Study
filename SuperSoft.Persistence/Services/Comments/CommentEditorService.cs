@@ -1,23 +1,36 @@
 ﻿using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 
 namespace SuperSoft.Persistence.Services.Comments
 {
 	public class CommentEditorService : ICommentEditorService
 	{
-		public int AddOrUpdateComment(Comment comment, int groupId)
+		private readonly ICommentRepository _commentRepository;
+
+		public CommentEditorService(
+			ICommentRepository commentRepository)
 		{
-			throw new System.NotImplementedException();
+			_commentRepository = commentRepository;
 		}
 
-		public int AddOrUpdateCommentGroup(CommentGroup @group)
+		public int AddOrUpdateComment(Comment comment, int groupId)
 		{
-			throw new System.NotImplementedException();
+			var commentId = _commentRepository.AddOrUpdateComment(comment, groupId);
+
+			return commentId;
+		}
+
+		public int AddOrUpdateCommentGroup(CommentGroup group)
+		{
+			var groupId = _commentRepository.AddOrUpdateCommentGroup(group);
+
+			return groupId;
 		}
 
 		public void RemoveComment(int commentId)
 		{
-			throw new System.NotImplementedException();
+			_commentRepository.RemoveComment(commentId);
 		}
 	}
 }
