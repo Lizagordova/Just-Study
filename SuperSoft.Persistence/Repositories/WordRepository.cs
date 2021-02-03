@@ -235,7 +235,7 @@ namespace SuperSoft.Persistence.Repositories
 			var examples = reader.Read<ExampleUdt>();
 			var words = wordsUdt.GroupJoin(examples,
 					word => word.Id,
-					example => example.Id,
+					example => example.WordId,
 					MapWord)
 				.ToList();
 

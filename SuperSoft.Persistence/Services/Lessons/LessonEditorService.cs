@@ -26,7 +26,12 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 		public void DeleteLesson(int lessonId)
 		{
+			var lessonMaterials = _lessonRepository.GetMaterialsByLesson(lessonId);
 			_lessonRepository.DeleteLesson(lessonId);
+			lessonMaterials.ForEach(lm =>
+			{
+				File.Delete(lm.Path);//todo: сделать что-то более усложнённое
+			});
 		}
 
 		public int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId, IFormFile file)

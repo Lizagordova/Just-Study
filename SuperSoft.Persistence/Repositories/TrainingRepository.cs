@@ -66,13 +66,30 @@ namespace SuperSoft.Persistence.Repositories
 					t => t.Id,
 					s => s.TaskId,
 					MapTaskWithSubtasks)
-				.GroupJoin(taskData.Tags,
-					task => task.Id,
+				.GroupJoin(taskData.TagTasks,
+					t => t.Id,
 					tag => tag.TaskId,
 					MapTaskWithTags)
 				.ToList();
+			
+			tasks.ForEach(t =>
+			{
+				t.Tags = t.Tags
+					.GroupJoin(taskData.Tags,
+						tag => tag.Id,
+						t => t.Id,
+						(tag, tCol) => _mapper.Map<TagUdt, Tag>(tCol.FirstOrDefault()))
+					.ToList();
+			});//todo: хз работает эта хуйня или нет
 
 			return tasks;
+		}
+
+		private Task MapTaskWithTags(Task task, IEnumerable<TagTaskUdt> tagTaskUdts)
+		{
+			task.Tags = tagTaskUdts.Select(t => new Tag() {Id = t.TagId}).ToList();
+
+			return task;
 		}
 
 		private Task MapTaskWithSubtasks(TaskUdt taskUdt, IEnumerable<SubtaskUdt> subtaskUdts)

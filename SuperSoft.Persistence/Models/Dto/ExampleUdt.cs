@@ -3,6 +3,7 @@
 	public class ExampleUdt
 	{
 		public int Id { get; set; }
+		public int WordId { get; set; }
 		public int Example{ get; set; }
 	}
 }
