@@ -11,7 +11,6 @@ namespace SuperSoft.Persistence.Services.MapperService
 			CreateLessonMappings();
 			CreateNotificationMappings();
 			CreateTaskMappings();
-			CreateUserMappings();
 			CreateWordMappings();
 			CreateTagMappings();
 			CreateUserTaskMappings();

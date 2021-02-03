@@ -30,7 +30,6 @@ namespace SuperSoft.Persistence.Repositories
 			var param = GetAddOrUpdateUserParam(user);
 			var userId = conn.Query<int>(AddOrUpdateUserSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
-
 			return userId;
 		}
 

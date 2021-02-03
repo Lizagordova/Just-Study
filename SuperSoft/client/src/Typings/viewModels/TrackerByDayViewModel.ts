@@ -5,7 +5,7 @@
 export class TrackerByDayViewModel
 {
 	public id: number;
-	public vebinarWatch: boolean;
+	public webinarWatch: boolean;
 	public completedHomework: boolean;
 	public dictionaryOfLesson: boolean;
 	public wordOfADay: boolean;

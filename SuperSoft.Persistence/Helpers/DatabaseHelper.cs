@@ -7,8 +7,9 @@ namespace SuperSoft.Persistence.Helpers
 	{
 		public static SqlConnection OpenConnection()
 		{
-			var connectionString = ConfigurationManager.ConnectionStrings["SuperSoft"].ConnectionString;
-			var connection = new SqlConnection(connectionString);
+			var connectionString = ConfigurationManager.ConnectionStrings["JustStudy"];
+				var conn = connectionString.ConnectionString;
+			var connection = new SqlConnection(conn);
 			connection.Open();
 
 			return connection;

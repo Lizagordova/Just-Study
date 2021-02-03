@@ -12,6 +12,7 @@ export class TaskReadModel
 	public instruction: string;
 	public text: string;
 	public lessonId: number;
+	public order: number;
 	public taskType: TaskType;
 	public subtasks: SubtaskReadModel[];
 	public tags: TagReadModel[];
