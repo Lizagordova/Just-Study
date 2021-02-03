@@ -97,7 +97,7 @@ namespace SuperSoft.Controllers
 			var userSubtask = _mapper.Map<UserSubtaskReadModel, UserSubtask>(userSubtaskReadModel);
 			try
 			{
-				_taskEditor.AddOrUpdateUserSubtask(userSubtask, userSubtaskReadModel.UserId, userSubtaskReadModel.SubtaskId, userSubtaskReadModel.TaskId);
+				_taskEditor.AddOrUpdateUserSubtask(userSubtask, userSubtaskReadModel.UserId, userSubtaskReadModel.SubtaskId);
 
 				return new OkResult();
 			}
@@ -122,7 +122,7 @@ namespace SuperSoft.Controllers
 			var userSubtaskAnswerGroup = _mapper.Map<UserSubtaskAnswerGroupReadModel, UserSubtaskAnswerGroup>(userSubtaskAnswerGroupReadModel);
 			try
 			{
-				_taskEditor.AddOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.UserId, userSubtaskAnswerGroupReadModel.SubtaskId);
+				_taskEditor.AddOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.UserId);
 
 				return new OkResult();
 			}

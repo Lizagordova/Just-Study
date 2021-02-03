@@ -46,14 +46,14 @@ namespace SuperSoft.Persistence.Services.Tasks
 			_taskRepository.DeleteSubtask(subtaskId);
 		}
 
-		public void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId, int taskId)
+		public void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId)
 		{
-			_userTaskRepository.AddOrUpdateUserSubtask(userSubtask, userId, subtaskId, taskId);
+			_userTaskRepository.AddOrUpdateUserSubtask(userSubtask, userId, subtaskId);
 		}
 
-		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup userGroup, int userId, int subtaskId)
+		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup userGroup, int userId)
 		{
-			_userTaskRepository.AddOrUpdateUserSubtaskAnswerGroup(userGroup, userId, subtaskId);
+			_userTaskRepository.AddOrUpdateUserSubtaskAnswerGroup(userGroup, userId);
 		}
 	}
 }
