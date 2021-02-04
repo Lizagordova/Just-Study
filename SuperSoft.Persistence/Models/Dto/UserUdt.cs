@@ -9,7 +9,7 @@ namespace SuperSoft.Persistence.Models.Dto
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string PasswordHash { get; set; }
-		public UserRole Role { get; set; }
+		public int Role { get; set; }
 		public string Token { get; set; }
 		public string Email { get; set; }
 	}

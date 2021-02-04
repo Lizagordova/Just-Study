@@ -1,6 +1,7 @@
 ﻿using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
+using SuperSoft.Persistence.Helpers;
 
 namespace SuperSoft.Persistence.Services.Users
 {
@@ -16,7 +17,14 @@ namespace SuperSoft.Persistence.Services.Users
 
 		public int AddOrUpdateUser(User user)
 		{
-			return _userRepository.AddOrUpdateUser(user);
+			user.PasswordHash = user.PasswordHash.GetPasswordHash();
+			var userId = _userRepository.AddOrUpdateUser(user);
+			return userId;
+		}
+
+		public void DeleteUser(int userId)
+		{
+			_userRepository.DeleteUser(userId);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using SuperSoft.Domain.Models;
@@ -17,6 +18,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string AddOrUpdateUserSp = "UserRepository_AddOrUpdateUser";
 		private const string GetUserInfoSp = "UserRepository_GetUserInfo";
 		private const string GetUsersSp = "UserRepository_GetUsers";
+		private const string DeleteUserSp = "UserRepository_DeleteUser";
 
 		public UserRepository(
 			MapperService mapper)
@@ -36,8 +38,7 @@ namespace SuperSoft.Persistence.Repositories
 		public User GetUserInfo(int userId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = new DynamicTvpParameters();
-			param.Add("userId", userId);
+			var param = GetUserIdParam(userId);
 			var userUdt = conn.Query<UserUdt>(GetUserInfoSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			var user = _mapper.Map<UserUdt, User>(userUdt);
 			DatabaseHelper.CloseConnection(conn);
@@ -55,6 +56,14 @@ namespace SuperSoft.Persistence.Repositories
 			return users;
 		}
 
+		public void DeleteUser(int userId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetUserIdParam(userId);
+			conn.Query(DeleteUserSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
 		private DynamicTvpParameters GetAddOrUpdateUserParam(User user)
 		{
 			var param = new DynamicTvpParameters();
@@ -62,6 +71,14 @@ namespace SuperSoft.Persistence.Repositories
 			var userUdt = _mapper.Map<User, UserUdt>(user);
 			tvp.AddObjectAsRow(userUdt);
 			param.Add(tvp);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetUserIdParam(int userId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userId);
 
 			return param;
 		}

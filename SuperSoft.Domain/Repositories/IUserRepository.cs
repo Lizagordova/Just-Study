@@ -8,5 +8,6 @@ namespace SuperSoft.Domain.Repositories
 		int AddOrUpdateUser(User user);
 		User GetUserInfo(int userId);
 		List<User> GetUsers();
+		void DeleteUser(int userId);
 	}
 }
