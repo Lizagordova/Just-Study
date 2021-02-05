@@ -6,6 +6,7 @@ using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Persistence.Extensions;
 using SuperSoft.Persistence.Helpers;
+using SuperSoft.Persistence.Models.Data;
 using SuperSoft.Persistence.Models.Dto;
 using SuperSoft.Persistence.Services.MapperService;
 
@@ -77,8 +78,9 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetGetMaterialsByLessonParam(courseId);
-			var lessonUdts = conn.Query<LessonUdt>(GetLessonsByCourseSp, param, commandType: CommandType.StoredProcedure);
-			var lessons = lessonUdts.Select(_mapper.Map<LessonUdt, Lesson>).ToList();
+			var response = conn.QueryMultiple(GetLessonsByCourseSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetLessonData(response);
+			var lessons = MapLessonsList(data);
 			DatabaseHelper.CloseConnection(conn);
 
 			return lessons;
@@ -142,9 +144,9 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("lessonMaterial", "UDT_LessonMaterial");
 			var udt = _mapper.Map<LessonMaterial, LessonMaterialUdt>(lessonMaterial);
+			udt.LessonId = lessonId;
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
-			param.Add("lessonId", lessonId);
 
 			return param;
 		}
@@ -171,6 +173,38 @@ namespace SuperSoft.Persistence.Repositories
 			param.Add("materialId", materialId);
 
 			return param;
+		}
+		
+		private LessonData GetLessonData(SqlMapper.GridReader reader)
+		{
+			var data = new LessonData()
+			{
+				Lessons = reader.Read<LessonUdt>().ToList(),
+				LessonsCourses = reader.Read<LessonCourseUdt>().ToList()
+			};
+
+			return data;
+		}
+
+		private List<Lesson> MapLessonsList(LessonData data)
+		{
+			var lessons = data.Lessons
+				.Join(data.LessonsCourses,
+					l => l.Id,
+					lc => lc.LessonId,
+					MapLesson)
+				.ToList();
+
+			return lessons;
+		}
+
+		private Lesson MapLesson(LessonUdt lessonUdt, LessonCourseUdt lessonCourseUdt)
+		{
+			var lesson = _mapper.Map<LessonCourseUdt, Lesson>(lessonCourseUdt);
+			lesson.Name = lessonUdt.Name;
+			lesson.Description = lessonUdt.Description;
+
+			return lesson;
 		}
 	}
 }
