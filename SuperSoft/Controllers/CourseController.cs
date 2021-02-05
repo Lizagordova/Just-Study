@@ -127,7 +127,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var courses = _courseReader.GetCoursesForTeacher(userId);
-				var courseViewModels = courses.Select(_mapper.Map<Course, CourseReadModel>).ToList();
+				var courseViewModels = courses.Select(_mapper.Map<Course, CourseViewModel>).ToList();
 
 				return new JsonResult(courseViewModels);
 			}
@@ -201,7 +201,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var query = _mapper.Map<CoursesInfoQueryReadModel, CoursesInfoQuery>(queryReadModel);
-				var courses = _courseReader.GetCourses(query);
+				var courses = _courseReader.GetCoursesByQuery(query);
 				var courseViewModels = courses.Select(_mapper.Map<Course, CourseViewModel>).ToList();
 
 				return new JsonResult(courseViewModels);

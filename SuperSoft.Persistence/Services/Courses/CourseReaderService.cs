@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
@@ -16,14 +18,18 @@ namespace SuperSoft.Persistence.Services.Courses
 			_courseRepository = courseRepository;
 		}
 
-		public List<Course> GetCoursesForTeacher(int courseId)
+		public List<Course> GetCoursesForTeacher(int userId)
 		{
-			return _courseRepository.GetCoursesForTeacher(courseId);
+			var teacherCourses = _courseRepository.GetUserCourses(userId, CourseRole.Teacher);
+			var courseIds = teacherCourses.Select(c => c.CourseId).ToList();
+			var courses = _courseRepository.GetCoursesByQuery(new CoursesInfoQuery() { CoursesIds = courseIds });
+
+			return courses;
 		}
 
 		public List<UserCourse> GetUserCourses(int userId)
 		{
-			return _courseRepository.GetUserCourses(userId);
+			return _courseRepository.GetUserCourses(userId, CourseRole.Pupil);
 		}
 
 		public List<UserCourse> GetUsersByCourse(int courseId)
@@ -31,9 +37,9 @@ namespace SuperSoft.Persistence.Services.Courses
 			return _courseRepository.GetUsersByCourse(courseId);
 		}
 
-		public List<Course> GetCourses(CoursesInfoQuery query)
+		public List<Course> GetCoursesByQuery(CoursesInfoQuery query)
 		{
-			return _courseRepository.GetCourses(query);
+			return _courseRepository.GetCoursesByQuery(query);
 		}
 	}
 }

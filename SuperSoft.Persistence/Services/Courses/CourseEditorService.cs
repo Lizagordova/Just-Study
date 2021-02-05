@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
@@ -21,7 +22,13 @@ namespace SuperSoft.Persistence.Services.Courses
 
 		public void AttachTeacherToCourse(int courseId, int teacherId)
 		{
-			_courseRepository.AttachTeacherToCourse(courseId, teacherId);
+			var userCourse = new UserCourse()
+			{
+				UserId = teacherId,
+				CourseId = courseId,
+				CourseRole = CourseRole.Teacher
+			};
+			_courseRepository.AddOrUpdateUserCourse(userCourse);
 		}
 
 		public void AddOrUpdateParticipantsList(IReadOnlyCollection<int> participantsIds, int courseId)

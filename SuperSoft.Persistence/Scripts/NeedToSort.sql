@@ -1,35 +1,3 @@
-CREATE TABLE [Course]
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[Name] NVARCHAR(50),
-	[Description] NVARCHAR(MAX)
-);
-
-CREATE TYPE [UDT_Course] AS TABLE (
-	[Id] INT,
-	[Name] NVARCHAR(50),
-	[Description] NVARCHAR(MAX)
-);
-
-CREATE TABLE [User_Course]
-(
-	[UserId] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
-	[CourseId] INT REFERENCES [Course]([Id]) ON DELETE CASCADE,
-	[Tarif] INT,
-	[StartDate] DATETIME2,
-	[ExpireDate] DATETIME2,
-	CONSTRAINT [PK_User_Course] PRIMARY KEY ([UserId], [CourseId])
-);
-
-CREATE TYPE [UDT_User_Course] AS TABLE
-(
-	[UserId] INT,
-	[CourseId] INT,
-	[Tarif] INT,
-	[StartDate] DATETIME2,
-	[ExpireDate] DATETIME2
-);
-
 CREATE TABLE [Word]
 (
 	[Id] INT PRIMARY KEY IDENTITY,

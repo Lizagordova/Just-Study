@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Persistence.Repositories;

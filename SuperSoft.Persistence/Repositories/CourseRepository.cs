@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Dapper;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
@@ -16,14 +17,12 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private readonly MapperService _mapper;
 		private const string AddOrUpdateCourseSp = "CourseRepository_AddOrUpdateCourse";
-		private const string AttachTeacherToCourseSp = "CourseRepository_AttachTeacherToCourse";
 		private const string AddOrUpdateParticipantsListSp = "CourseRepository_AddOrUpdateParticipantsList";
 		private const string AddOrUpdateUserCourseSp = "CourseRepository_AddOrUpdateUserCourse";
 		private const string DeleteCourseSp = "CourseRepository_DeleteCourse";
-		private const string GetCoursesForTeacherSp = "CourseRepository_GetCoursesForTeacher";
 		private const string GetUserCoursesSp = "CourseRepository_GetUserCourses";
 		private const string GetUsersByCourseSp = "CourseRepository_GetUsersByCourse";
-		private const string GetCoursesSp = "CourseRepository_GetCourses";
+		private const string GetCoursesByQuerySp = "[CourseRepository_GetCoursesByQuery]";
 
 		public CourseRepository(
 			MapperService mapper)
@@ -35,17 +34,17 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetAddOrUpdateCourseParam(course);
-			var courseId = conn.Query(AddOrUpdateCourseSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			var courseId = conn.Query<int>(AddOrUpdateCourseSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
 			return courseId;
 		}
 
-		public void AttachTeacherToCourse(int courseId, int teacherId)
+		public void AddOrUpdateUserCourse(UserCourse userCourse)
 		{
-			var param = GetAttachTeacherToCourseParam(courseId, teacherId);
 			var conn = DatabaseHelper.OpenConnection();
-			conn.Query(AttachTeacherToCourseSp, param, commandType: CommandType.StoredProcedure);
+			var param = GetAddOrUpdateUserCourseParam(userCourse);
+			conn.Query(AddOrUpdateUserCourseSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
 
@@ -57,14 +56,6 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 		}
 
-		public void AddOrUpdateUserCourse(UserCourse userCourse)
-		{
-			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateUserCourseParam(userCourse);
-			conn.Query(AddOrUpdateUserCourseSp, param, commandType: CommandType.StoredProcedure);
-			DatabaseHelper.CloseConnection(conn);
-		}
-
 		public void DeleteCourse(int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
@@ -73,18 +64,7 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 		}
 
-		public List<Course> GetCoursesForTeacher(int courseId)
-		{
-			var conn = DatabaseHelper.OpenConnection();
-			var param = GetCommonCourseParam(courseId);
-			var courseUdts = conn.Query<CourseUdt>(GetCoursesForTeacherSp, param, commandType: CommandType.StoredProcedure);
-			var courses = courseUdts.Select(_mapper.Map<CourseUdt, Course>).ToList();
-			DatabaseHelper.CloseConnection(conn);
-
-			return courses;
-		}
-
-		public List<UserCourse> GetUserCourses(int userId)
+		public List<UserCourse> GetUserCourses(int userId, CourseRole role)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetGetUserCoursesParam(userId);
@@ -106,11 +86,11 @@ namespace SuperSoft.Persistence.Repositories
 			return userCourses;
 		}
 
-		public List<Course> GetCourses(CoursesInfoQuery query)
+		public List<Course> GetCoursesByQuery(CoursesInfoQuery query)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetGetCoursesParam(query);
-			var courseUdts = conn.Query<CourseUdt>(GetCoursesSp, param, commandType: CommandType.StoredProcedure);
+			var courseUdts = conn.Query<CourseUdt>(GetCoursesByQuerySp, param, commandType: CommandType.StoredProcedure);
 			var courses = courseUdts.Select(_mapper.Map<CourseUdt, Course>).ToList();
 			DatabaseHelper.CloseConnection(conn);
 
@@ -140,11 +120,10 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateParticipantsListParam(IReadOnlyCollection<int> participantsIds, int courseId)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("participantsIds", "UDT_Integer");
-			var udt = participantsIds.Select(pId => new IntegerUdt() { Id = pId });
+			var tvp = new TableValuedParameter("participants", "UDT_User_Course");
+			var udt = participantsIds.Select(pId => new UserCourse() { UserId = pId, CourseId = courseId, CourseRole = CourseRole.Pupil });
 			tvp.AddGenericList(udt);
 			param.Add(tvp);
-			param.Add("courseId", courseId);
 
 			return param;
 		}

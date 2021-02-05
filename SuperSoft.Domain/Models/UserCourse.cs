@@ -10,5 +10,6 @@ namespace SuperSoft.Domain.Models
 		public Tarif Tarif { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime ExpireDate { get; set; }
+		public CourseRole CourseRole { get; set; }
 	}
 }
