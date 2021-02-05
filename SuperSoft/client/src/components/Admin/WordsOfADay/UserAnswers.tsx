@@ -55,7 +55,7 @@ class UserAnswers extends Component<IUserAnswersProps> {
     }
 
     getUserWords() {
-        this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId)
+        this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId, this.props.store.courseStore.choosenCourse.id)
             .then((userWords) => {
                 this.userWords = userWords;
             });

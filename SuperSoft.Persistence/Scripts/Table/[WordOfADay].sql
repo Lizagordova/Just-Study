@@ -1,0 +1,7 @@
+﻿CREATE TABLE [WordOfADay]
+(
+	[CourseId] INT REFERENCES [Course]([Id]) ON DELETE CASCADE,
+	[Date] DATETIME2,
+	[WordId] INT REFERENCES [Word]([Id]) ON DELETE CASCADE,
+	CONSTRAINT [PK_Course_Date] PRIMARY KEY ([CourseId], [Date])
+);

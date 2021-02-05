@@ -6,6 +6,6 @@
 		public string Word { get; set; }
 		public string EnglishMeaning { get; set; }
 		public string RussianMeaning { get; set; }
-		public string PartOfSpeech { get; set; }
+		public int PartOfSpeech { get; set; }
 	}
 }

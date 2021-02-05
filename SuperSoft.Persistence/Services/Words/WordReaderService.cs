@@ -26,14 +26,16 @@ namespace SuperSoft.Persistence.Services.Words
 			return _wordRepository.GetUserDictionary(userId);
 		}
 
-		public List<UserWord> GetAnswersToWordOfADayByUser(int userId)
+		public List<UserWord> GetAnswersToWordOfADayByUser(int userId, int courseId)
 		{
-			return _wordRepository.GetAnswersToWordOfADayByUser(userId);
+			var userWords =  _wordRepository.GetAnswersToWordOfADayByUser(userId, courseId);
+
+			return userWords;
 		}
 
-		public List<UserWord> GetAnswersToWordOfADayByWord(int wordId)
+		public List<UserWord> GetAnswersToWordOfADayByWord(int wordId, int courseId)
 		{
-			return _wordRepository.GetAnswersToWordOfADayByWord(wordId);
+			return _wordRepository.GetAnswersToWordOfADayByWord(wordId, courseId);
 		}
 
 		public Word GetWordOfADay(DateTime date, int courseId)

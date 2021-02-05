@@ -13,6 +13,7 @@ namespace SuperSoft.ReadModels
 		public string EnglishMeaning { get; set; }
 		public string RussianMeaning { get; set; }
 		public PartOfSpeech PartOfSpeech { get; set; }
+		public int CourseId { get; set; }
 		public IReadOnlyCollection<ExampleReadModel> Examples { get; set; } = Array.Empty<ExampleReadModel>();
 	}
 }

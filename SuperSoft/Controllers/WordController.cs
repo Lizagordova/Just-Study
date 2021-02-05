@@ -138,7 +138,7 @@ namespace SuperSoft.Controllers
 		
 		[HttpPost]
 		[Route("/deletewordfromdictionary")]
-		public ActionResult DeleteWordFromDictionay([FromBody]WordReadModel wordReadModel)
+		public ActionResult DeleteWordFromDictionary([FromBody]WordReadModel wordReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())
@@ -343,7 +343,7 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				var userWords = _wordReader.GetAnswersToWordOfADayByWord(wordReadModel.Id);
+				var userWords = _wordReader.GetAnswersToWordOfADayByWord(wordReadModel.Id, wordReadModel.CourseId);
 				var userWordsViewModel = userWords.Select(_mapper.Map<UserWord, UserWordViewModel>).ToList();
 
 				return new JsonResult(userWordsViewModel);

@@ -212,7 +212,7 @@ class WordStore {
         return response.status;
     }
 
-    async getAnswersToWordOfADayByWord(wordId: number): Promise<UserWordViewModel[]> {
+    async getAnswersToWordOfADayByWord(wordId: number, courseId: number): Promise<UserWordViewModel[]> {
         let userWords = new Array<UserWordViewModel>();
         const response = await fetch("/getanswerstowordofadaybyword", {
             method: "POST",
@@ -220,7 +220,8 @@ class WordStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-               id: wordId
+               id: wordId,
+                courseId: courseId
             })
         });
         if(response.status === 200) {

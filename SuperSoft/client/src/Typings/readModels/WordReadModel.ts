@@ -12,5 +12,6 @@ export class WordReadModel
 	public englishMeaning: string;
 	public russianMeaning: string;
 	public partOfSpeech: PartOfSpeech;
+	public courseId: number;
 	public examples: ExampleReadModel[];
 }

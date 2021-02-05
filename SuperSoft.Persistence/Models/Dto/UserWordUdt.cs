@@ -8,7 +8,7 @@ namespace SuperSoft.Persistence.Models.Dto
 		public int WordId { get; set; }
 		public int CountOfAttempts { get; set; }
 		public int RightAnswers { get; set; }
-		public CompletingStatus Status { get; set; }
+		public int Status { get; set; }
 		public string Answer { get; set; }
 	}
 }

@@ -63,6 +63,7 @@ namespace SuperSoft
 			services.AddSingleton<ITrainingRepository, TrainingRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
 			services.AddSingleton<IWordRepository, WordRepository>();
+			services.AddSingleton<IUserTaskRepository, UserTaskRepository>();
 		}
 
 		private void AddServices(IServiceCollection services)

@@ -1,0 +1,5 @@
+﻿CREATE TABLE [Example]
+(	
+	[Id] INT PRIMARY KEY IDENTITY,
+	[Example] NVARCHAR(MAX)
+);

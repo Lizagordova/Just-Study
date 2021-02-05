@@ -112,8 +112,7 @@ namespace SuperSoft.Persistence.Repositories
 
 		public List<UserWord> GetUserDictionary(int userId)
 		{
-			var param = new DynamicTvpParameters();
-			param.Add("userId", userId);
+			var param = GetUserParam(userId);
 			var conn = DatabaseHelper.OpenConnection();
 			var userWordsUdt = conn.Query<UserWordUdt>(GetUserDictionarySp, param, commandType: CommandType.StoredProcedure);
 			var userWords = userWordsUdt.Select(_mapper.Map<UserWordUdt, UserWord>).ToList();
@@ -122,11 +121,11 @@ namespace SuperSoft.Persistence.Repositories
 			return userWords;
 		}
 
-		public List<UserWord> GetAnswersToWordOfADayByUser(int userId)
+		public List<UserWord> GetAnswersToWordOfADayByUser(int userId, int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = new DynamicTvpParameters();
-			param.Add("userId", userId);
+			var param = GetUserParam(userId);
+			param.Add("courseId", courseId);
 			var userWordUdts = conn.Query<UserWordUdt>(GetAnswersToWordOfADayByUserSp, param, commandType: CommandType.StoredProcedure);
 			var userWords = userWordUdts.Select(_mapper.Map<UserWordUdt, UserWord>).ToList();
 			DatabaseHelper.CloseConnection(conn);
@@ -134,7 +133,7 @@ namespace SuperSoft.Persistence.Repositories
 			return userWords;
 		}
 
-		public List<UserWord> GetAnswersToWordOfADayByWord(int wordId)
+		public List<UserWord> GetAnswersToWordOfADayByWord(int wordId, int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = new DynamicTvpParameters();
@@ -225,6 +224,14 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			param.Add("userId", userId);
 			param.Add("wordId", wordId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetUserParam(int userId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userId);
 
 			return param;
 		}
