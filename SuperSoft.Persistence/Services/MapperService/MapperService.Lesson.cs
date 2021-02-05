@@ -12,11 +12,18 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<Lesson, LessonUdt>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.CourseId, opt => opt.Ignore())
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+			});
+
+			AddMapping<Lesson, LessonCourseUdt>(cfg =>
+			{
+				cfg.CreateMap<Lesson, LessonCourseUdt>()
+					.ForMember(dest => dest.LessonId, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
-					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate));
+					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
+					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.CourseId, opt => opt.Ignore());
 			});
 
 			AddMapping<LessonUdt, Lesson>(cfg =>
@@ -24,9 +31,10 @@ namespace SuperSoft.Persistence.Services.MapperService
 				cfg.CreateMap<LessonUdt, Lesson>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
-					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
-					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate));
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+					.ForMember(dest => dest.Order, opt => opt.Ignore())
+					.ForMember(dest => dest.StartDate, opt => opt.Ignore())
+					.ForMember(dest => dest.ExpireDate, opt => opt.Ignore());
 			});
 
 			AddMapping<LessonMaterial, LessonMaterialUdt>(cfg =>

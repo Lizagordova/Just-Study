@@ -15,6 +15,7 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private readonly MapperService _mapper;
 		private const string AddOrUpdateLessonSp = "LessonRepository_AddOrUpdateLesson";
+		private const string AddOrUpdateLessonCourseSp = "LessonRepository_AddOrUpdateLessonCourse";
 		private const string DeleteLessonSp = "LessonRepository_DeleteLesson";
 		private const string AddOrUpdateMaterialSp = "LessonRepository_AddOrUpdateMaterial";
 		private const string DeleteMaterialSp = "LessonRepository_DeleteMaterial";
@@ -28,14 +29,22 @@ namespace SuperSoft.Persistence.Repositories
 			_mapper = mapper;
 		}
 
-		public int AddOrUpdateLesson(Lesson lesson, int courseId)
+		public int AddOrUpdateLesson(Lesson lesson)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateLessonParam(lesson, courseId);
+			var param = GetAddOrUpdateLessonParam(lesson);
 			var lessonId = conn.Query<int>(AddOrUpdateLessonSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
 			return lessonId;
+		}
+
+		public void AddOrUpdateLessonCourse(Lesson lesson, int courseId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAddOrUpdateLessonCourseParam(lesson, courseId);
+			var lessonId = conn.Query<int>(AddOrUpdateLessonCourseSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
 		}
 
 		public void DeleteLesson(int lessonId)
@@ -97,14 +106,25 @@ namespace SuperSoft.Persistence.Repositories
 			return lessonMaterial;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateLessonParam(Lesson lesson, int courseId)
+		private DynamicTvpParameters GetAddOrUpdateLessonParam(Lesson lesson)
 		{
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("lesson", "UDT_Lesson");
 			var udt = _mapper.Map<Lesson, LessonUdt>(lesson);
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
-			param.Add("courseId", courseId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateLessonCourseParam(Lesson lesson, int courseId)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("lessonCourse", "UDT_Lesson_Course");
+			var udt = _mapper.Map<Lesson, LessonCourseUdt>(lesson);
+			udt.CourseId = courseId;
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
 
 			return param;
 		}

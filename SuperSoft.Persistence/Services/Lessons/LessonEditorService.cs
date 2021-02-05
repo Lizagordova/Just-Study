@@ -19,7 +19,9 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 		public int AddOrUpdateLesson(Lesson lesson, int courseId)
 		{
-			var lessonId = _lessonRepository.AddOrUpdateLesson(lesson, courseId);
+			var lessonId = _lessonRepository.AddOrUpdateLesson(lesson);
+			lesson.Id = lessonId;
+			_lessonRepository.AddOrUpdateLessonCourse(lesson, courseId);
 
 			return lessonId;
 		}

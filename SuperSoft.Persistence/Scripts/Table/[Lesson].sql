@@ -1,0 +1,6 @@
+﻿CREATE TABLE [Lesson]
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[Name] NVARCHAR(MAX),
+	[Description] NVARCHAR(MAX)
+);

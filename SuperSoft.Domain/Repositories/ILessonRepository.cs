@@ -5,7 +5,8 @@ namespace SuperSoft.Domain.Repositories
 {
 	public interface ILessonRepository
 	{
-		int AddOrUpdateLesson(Lesson lesson, int courseId);
+		int AddOrUpdateLesson(Lesson lesson);
+		void AddOrUpdateLessonCourse(Lesson lesson, int courseId);
 		void DeleteLesson(int lessonId);
 		int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId);
 		void DeleteMaterial(int materialId);
