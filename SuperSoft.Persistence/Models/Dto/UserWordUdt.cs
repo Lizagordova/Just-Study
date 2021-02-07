@@ -1,6 +1,4 @@
-﻿using SuperSoft.Domain.enums;
-
-namespace SuperSoft.Persistence.Models.Dto
+﻿namespace SuperSoft.Persistence.Models.Dto
 {
 	public class UserWordUdt
 	{

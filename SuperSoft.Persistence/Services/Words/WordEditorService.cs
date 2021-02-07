@@ -23,7 +23,10 @@ namespace SuperSoft.Persistence.Services.Words
 
 		public int AddOrUpdateWordToUserDictionary(Word word, int userId)
 		{
-			return _wordRepository.AddOrUpdateWordToUserDictionary(word, userId);
+			var wordId = _wordRepository.AddOrUpdateWordToDictionary(word);
+			_wordRepository.AddOrUpdateUserWord(new UserWord() { WordId = wordId, UserId = userId });
+
+			return wordId;
 		}
 
 		public void AddOrUpdateUserWord(UserWord userWord)
@@ -48,7 +51,10 @@ namespace SuperSoft.Persistence.Services.Words
 
 		public int AddOrUpdateWordOfDay(Word word, DateTime date, int courseId)
 		{
-			return _wordRepository.AddOrUpdateWordOfDay(word, date, courseId);
+			var wordId = _wordRepository.AddOrUpdateWordToDictionary(word);
+			_wordRepository.AddOrUpdateWordOfDay(wordId, date, courseId);
+
+			return wordId;
 		}
 
 		public void DeleteWordOfADay(int wordId)

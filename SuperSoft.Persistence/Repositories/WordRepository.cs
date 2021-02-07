@@ -25,7 +25,6 @@ namespace SuperSoft.Persistence.Repositories
 		private const string DeleteWordFromDictionarySp = "WordRepository_DeleteWordFromDictionary";
 		private const string DeleteWordFromUserDictionarySp = "WordRepository_DeleteWordFromUserDictionary";
 		private const string AddOrUpdateWordToDictionarySp = "WordRepository_AddOrUpdateWordToDictionary";
-		private const string AddOrUpdateWordToUserDictionarySp = "WordRepository_AddOrUpdateWordToUserDictionary";
 		private const string AddOrUpdateUserWordSp = "WordRepository_AddOrUpdateUserWord";
 		private const string AddOrUpdateWordOfDaySp = "WordRepository_AddOrUpdateWordOfDay";
 
@@ -39,16 +38,6 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetAddOrUpdateWordToDictionaryParam(word);
 			var wordId = conn.Query<int>(AddOrUpdateWordToDictionarySp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
-			DatabaseHelper.CloseConnection(conn);
-
-			return wordId;
-		}
-		
-		public int AddOrUpdateWordToUserDictionary(Word word, int userId)
-		{
-			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateWordToUserDictionaryParam(word, userId);
-			var wordId = conn.Query<int>(AddOrUpdateWordToUserDictionarySp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
 			return wordId;
@@ -81,14 +70,12 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 		}
 
-		public int AddOrUpdateWordOfDay(Word word, DateTime date, int courseId)
+		public void AddOrUpdateWordOfDay(int wordId, DateTime date, int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateWordOfDayParam(word, date, courseId);
-			var wordId = conn.Query<int>(AddOrUpdateWordOfDaySp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			var param = GetAddOrUpdateWordOfDayParam(wordId, date, courseId);
+			conn.Query<int>(AddOrUpdateWordOfDaySp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
-
-			return wordId;
 		}
 
 		public void DeleteWordOfADay(int wordId)
@@ -178,17 +165,19 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateWordToUserDictionaryParam(Word word, int userId)
+		private DynamicTvpParameters GetAddOrUpdateWordToUserDictionaryParam(int wordId, int userId)
 		{
-			var param = GetAddOrUpdateWordToDictionaryParam(word);
+			var param = new DynamicTvpParameters();
+			param.Add("wordId", wordId);
 			param.Add("userId", userId);
 
 			return param;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateWordOfDayParam(Word word, DateTime date, int courseId)
+		private DynamicTvpParameters GetAddOrUpdateWordOfDayParam(int wordId, DateTime date, int courseId)
 		{
-			var param = GetAddOrUpdateWordToDictionaryParam(word);
+			var param = new DynamicTvpParameters();
+			param.Add("wordId", wordId);
 			param.Add("date", date);
 			param.Add("courseId", courseId);
 
