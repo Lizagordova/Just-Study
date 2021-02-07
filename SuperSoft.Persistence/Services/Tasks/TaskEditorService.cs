@@ -20,6 +20,7 @@ namespace SuperSoft.Persistence.Services.Tasks
 		public int AddOrUpdateTask(Task task)
 		{
 			var taskId = _taskRepository.AddOrUpdateTask(task);
+			_taskRepository.AddOrUpdateSubtasks(task.Subtasks, taskId);
 
 			return taskId;
 		}

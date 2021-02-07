@@ -16,6 +16,7 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private readonly MapperService _mapper;
 		private const string AddOrUpdateTaskSp = "TaskRepository_AddOrUpdateTask";
+		private const string AddOrUpdateSubtasksSp = "TaskRepository_AddOrUpdateSubtasks";
 		private const string AttachTaskToLessonSp = "TaskRepository_AttachTaskToLesson";
 		private const string AddOrUpdateSubtaskSp = "TaskRepository_AddOrUpdateSubtask";
 		private const string DeleteTaskSp = "TaskRepository_DeleteTask";
@@ -38,6 +39,14 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return taskId;
+		}
+
+		public void AddOrUpdateSubtasks(IReadOnlyCollection<Subtask> subtasks, int taskId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAddOrUpdateSubtasksParam(subtasks, taskId);
+			conn.Query<int>(AddOrUpdateSubtasksSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
 		}
 
 		public void AttachTaskToLesson(int taskId, int lessonId)
@@ -174,16 +183,22 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateTaskParam(Task task)
 		{
 			var param = new DynamicTvpParameters();
-			var taskTvp = new TableValuedParameter("task", "UDT_Task");
-			var taskUdt = _mapper.Map<Task, TaskUdt>(task);
-			taskTvp.AddObjectAsRow(taskUdt);
-			param.Add(taskTvp);
+			var tvp = new TableValuedParameter("task", "UDT_Task");
+			var udt = _mapper.Map<Task, TaskUdt>(task);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
 
-			var subtasksTvp = new TableValuedParameter("subtasks", "UDT_Subtask");
-			var subtasksUdt = task.Subtasks.Select(_mapper.Map<Subtask, SubtaskUdt>).ToList();
-			subtasksTvp.AddObjectAsRow(subtasksUdt);
-			taskTvp.AddObjectAsRow(taskUdt);
-			param.Add(taskTvp);
+			return param;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateSubtasksParam(IReadOnlyCollection<Subtask> subtasks, int taskId)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("subtasks", "UDT_Subtask");
+			var udt = subtasks.Select(_mapper.Map<Subtask, SubtaskUdt>).ToList();
+			udt.ForEach(u => u.TaskId = taskId);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
 
 			return param;
 		}

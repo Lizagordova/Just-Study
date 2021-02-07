@@ -6,6 +6,7 @@ namespace SuperSoft.Domain.Repositories
 	public interface ITaskRepository
 	{
 		int AddOrUpdateTask(Task task);
+		void AddOrUpdateSubtasks(IReadOnlyCollection<Subtask> subtasks, int taskId);
 		void AttachTaskToLesson(int taskId, int lessonId);
 		int AddOrUpdateSubtask(Subtask subtask, int taskId);
 		void DeleteTask(int taskId);
