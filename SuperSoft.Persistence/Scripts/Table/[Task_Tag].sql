@@ -1,0 +1,5 @@
+﻿CREATE TABLE [Task_Tag]
+(
+	[TaskId] INT REFERENCES [Task]([Id]) ON DELETE CASCADE,
+	[TagId] INT REFERENCES [Tag]([Id]) ON DELETE CASCADE
+);

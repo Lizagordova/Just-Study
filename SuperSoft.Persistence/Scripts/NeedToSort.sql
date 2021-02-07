@@ -1,21 +1,7 @@
-CREATE TABLE [Tag]
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[Name] NVARCHAR(MAX)
-);
-
 CREATE TYPE [UDT_Tag] AS TABLE
 (
 	[Id] INT,
 	[Name] NVARCHAR(MAX)
-);
-
-CREATE TABLE [Task] 
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[Instruction] NVARCHAR(MAX),
-	[Text] NVARCHAR(MAX),
-	[Order] INT
 );
 
 CREATE TYPE [UDT_Task] AS TABLE

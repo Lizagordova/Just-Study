@@ -1,0 +1,5 @@
+﻿CREATE TYPE [UDT_Tag] AS TABLE
+(
+	[Id] INT,
+	[Name] NVARCHAR(MAX)
+);

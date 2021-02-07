@@ -13,7 +13,6 @@ namespace SuperSoft.Persistence.Services.MapperService
 				cfg.CreateMap<Task, TaskUdt>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Instruction, opt => opt.MapFrom(src => src.Instruction))
-					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text));
 			});
 
@@ -22,7 +21,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 				cfg.CreateMap<TaskUdt, Task>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Instruction, opt => opt.MapFrom(src => src.Instruction))
-					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Order, opt => opt.Ignore())
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text));
 			});
 		}
