@@ -24,6 +24,27 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Order, opt => opt.Ignore())
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text));
 			});
+
+			AddMapping<Subtask, SubtaskUdt>(cfg =>
+			{
+				cfg.CreateMap<Subtask, SubtaskUdt>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.Path))
+					.ForMember(dest => dest.SubtaskType, opt => opt.MapFrom(src => src.SubtaskType))
+					.ForMember(dest => dest.TaskId, opt => opt.Ignore())
+					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text));
+			});
+
+			AddMapping<SubtaskUdt, Subtask>(cfg =>
+			{
+				cfg.CreateMap<SubtaskUdt, Subtask>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.Path))
+					.ForMember(dest => dest.SubtaskType, opt => opt.MapFrom(src => src.SubtaskType))
+					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text));
+			});
 		}
 	}
 }

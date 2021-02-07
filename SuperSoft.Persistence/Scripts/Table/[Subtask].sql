@@ -1,0 +1,9 @@
+﻿CREATE TABLE [Subtask] 
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[TaskId] INT REFERENCES [Task]([Id]) ON DELETE CASCADE,
+	[Text] NVARCHAR(MAX),
+	[Path] NVARCHAR(MAX),
+	[Order] INT,
+	[SubtaskType] INT
+);

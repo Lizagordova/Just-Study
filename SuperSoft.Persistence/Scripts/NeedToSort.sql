@@ -1,15 +1,3 @@
-CREATE TYPE [UDT_Tag] AS TABLE
-(
-	[Id] INT,
-	[Name] NVARCHAR(MAX)
-);
-
-CREATE TYPE [UDT_Task] AS TABLE
-(
-	[Id] INT,
-	[Instruction] NVARCHAR(MAX),
-	[Text] NVARCHAR(MAX)
-);
 
 CREATE TABLE [Lesson_Task]
 (
@@ -17,29 +5,6 @@ CREATE TABLE [Lesson_Task]
 	[LessonId] INT REFERENCES [Lesson]([Id]) ON DELETE CASCADE,
 	[Order] INT,
 	CONSTRAINT [PK_Task_Lesson] PRIMARY KEY ([TaskId], [LessonId])
-);
-
-CREATE TABLE [Task_Tag]
-(
-	[TagId] INT REFERENCES [Tag]([Id]) ON DELETE CASCADE,
-	[TaskId] INT REFERENCES [Task]([Id]) ON DELETE CASCADE,
-	CONSTRAINT [UQ_Tag_Task] UNIQUE([TagId], [TaskId])
-);
-
-CREATE TYPE [UDT_TaskTag] AS TABLE
-(
-	[TagId] INT,
-	[TaskId] INT
-);
-
-CREATE TABLE [Subtask] 
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[TaskId] INT REFERENCES [Task]([Id]) ON DELETE CASCADE,
-	[Text] NVARCHAR(MAX),
-	[Path] NVARCHAR(MAX),
-	[Order] INT,
-	[SubtaskType] INT
 );
 
 CREATE TYPE [UDT_Subtask] AS TABLE

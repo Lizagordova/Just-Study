@@ -9,6 +9,6 @@ namespace SuperSoft.Persistence.Models.Dto
 		public string Text { get; set; }
 		public string Path { get; set; }
 		public int Order { get; set; }
-		public SubtaskType SubtaskType { get; set; }
+		public int SubtaskType { get; set; }
 	}
 }
