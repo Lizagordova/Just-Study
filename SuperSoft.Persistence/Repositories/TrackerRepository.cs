@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dapper;
 using SuperSoft.Domain.Models;
@@ -16,6 +17,7 @@ namespace SuperSoft.Persistence.Repositories
 		private readonly MapperService _mapper;
 		private const string AddOrUpdateTrackerSp = "TrackerRepository_AddOrUpdateTracker";
 		private const string GetTrackerSp = "TrackerRepository_GetTracker";
+		private const string AddOrUpdateTrackersByDaySp = "TrackerRepository_AddOrUpdateTrackersByDay";
 
 		public TrackerRepository(
 			MapperService mapper)
@@ -28,6 +30,14 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetAddOrUpdateTrackerParam(tracker);
 			conn.Query(AddOrUpdateTrackerSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
+		public void AddOrUpdateTrackersByDay(List<TrackerByDay> trackersByDay, int trackerId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAddOrUpdateTrackersByDayParam(trackersByDay, trackerId);
+			conn.Query(AddOrUpdateTrackersByDaySp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
 
@@ -46,15 +56,22 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateTrackerParam(Tracker tracker)
 		{
 			var param = new DynamicTvpParameters();
-			var trackerTvp = new TableValuedParameter("tracker", "UDT_Tracker");
-			var trackerUdt = _mapper.Map<Tracker, TrackerUdt>(tracker);
-			trackerTvp.AddObjectAsRow(trackerUdt);
-			param.Add(trackerTvp);
+			var tvp = new TableValuedParameter("tracker", "UDT_Tracker");
+			var udt = _mapper.Map<Tracker, TrackerUdt>(tracker);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
 
-			var trackersByDayTvp = new TableValuedParameter("trackersByDay", "UDT_TrackerByDay");
-			var trackersByDayUdt = tracker.TrackersByDay.Select(_mapper.Map<TrackerByDay, TrackerUdt>);
-			trackersByDayTvp.AddObjectAsRow(trackersByDayUdt);
-			param.Add(trackersByDayTvp);
+			return param;
+		}
+
+		private DynamicTvpParameters GetAddOrUpdateTrackersByDayParam(List<TrackerByDay> trackerByDays, int trackerId)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("trackersByDay", "UDT_TrackerByDay");
+			var udt = trackerByDays.Select(_mapper.Map<TrackerByDay, TrackerUdt>);
+			tvp.AddObjectAsRow(udt);
+			param.Add(tvp);
+			param.Add("trackerId", trackerId);
 
 			return param;
 		}
