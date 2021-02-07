@@ -11,7 +11,9 @@ namespace SuperSoft.Persistence.Services.MapperService
 			AddMapping<Tracker, TrackerUdt>(cfg =>
 			{
 				cfg.CreateMap<Tracker, TrackerUdt>()
-					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.CourseId, opt => opt.Ignore())
+					.ForMember(dest => dest.UserId, opt => opt.Ignore());
 			});
 
 			AddMapping<TrackerUdt, Tracker>(cfg =>

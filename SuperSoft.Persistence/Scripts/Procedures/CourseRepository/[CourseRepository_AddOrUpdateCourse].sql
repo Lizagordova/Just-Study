@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[CourseRepository_AddOrUpdateCourse]
+CREATE PROCEDURE [CourseRepository_AddOrUpdateCourse]
 	@course [UDT_Course] READONLY
 AS
 BEGIN

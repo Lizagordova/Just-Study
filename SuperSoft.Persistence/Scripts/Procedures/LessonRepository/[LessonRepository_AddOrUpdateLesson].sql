@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[LessonRepository_AddOrUpdateLesson]
+﻿CREATE PROCEDURE [LessonRepository_AddOrUpdateLesson]
 	@lesson [UDT_Lesson] READONLY
 AS
 BEGIN

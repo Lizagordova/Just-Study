@@ -5,6 +5,6 @@ namespace SuperSoft.Domain.Services
 {
 	public interface ITrackerEditorService
 	{
-		void AddOrUpdateTracker(Tracker tracker);
+		int AddOrUpdateTracker(Tracker tracker);
 	}
 }

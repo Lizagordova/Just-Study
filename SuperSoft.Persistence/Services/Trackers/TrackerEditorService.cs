@@ -14,9 +14,12 @@ namespace SuperSoft.Persistence.Services.Trackers
 			_trackerRepository = trackerRepository;
 		}
 
-		public void AddOrUpdateTracker(Tracker tracker)
+		public int AddOrUpdateTracker(Tracker tracker)
 		{
-			_trackerRepository.AddOrUpdateTracker(tracker);
+			var trackerId = _trackerRepository.AddOrUpdateTracker(tracker);
+			_trackerRepository.AddOrUpdateTrackersByDay(tracker.TrackersByDay, trackerId);
+
+			return trackerId;
 		}
 	}
 }

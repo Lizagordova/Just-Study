@@ -25,15 +25,17 @@ namespace SuperSoft.Persistence.Repositories
 			_mapper = mapper;
 		}
 
-		public void AddOrUpdateTracker(Tracker tracker)
+		public int AddOrUpdateTracker(Tracker tracker)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetAddOrUpdateTrackerParam(tracker);
-			conn.Query(AddOrUpdateTrackerSp, param, commandType: CommandType.StoredProcedure);
+			var trackerId = conn.Query(AddOrUpdateTrackerSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
+
+			return trackerId;
 		}
 
-		public void AddOrUpdateTrackersByDay(List<TrackerByDay> trackersByDay, int trackerId)
+		public void AddOrUpdateTrackersByDay(IReadOnlyCollection<TrackerByDay> trackersByDay, int trackerId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetAddOrUpdateTrackersByDayParam(trackersByDay, trackerId);
@@ -64,11 +66,11 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateTrackersByDayParam(List<TrackerByDay> trackerByDays, int trackerId)
+		private DynamicTvpParameters GetAddOrUpdateTrackersByDayParam(IReadOnlyCollection<TrackerByDay> trackerByDays, int trackerId)
 		{
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("trackersByDay", "UDT_TrackerByDay");
-			var udt = trackerByDays.Select(_mapper.Map<TrackerByDay, TrackerUdt>);
+			var udt = trackerByDays.Select(_mapper.Map<TrackerByDay, TrackerByDayUdt>);
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
 			param.Add("trackerId", trackerId);
