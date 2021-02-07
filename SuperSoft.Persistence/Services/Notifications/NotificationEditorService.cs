@@ -17,7 +17,8 @@ namespace SuperSoft.Persistence.Services.Notifications
 
 		public void AddOrUpdateNotification(List<int> userForIds, Notification notification)
 		{
-			_notificationRepository.AddOrUpdateNotification(userForIds, notification);
+			var notificationId = _notificationRepository.AddOrUpdateNotification(notification);
+			_notificationRepository.AddOrUpdateNotificationForUsers(userForIds, notificationId);
 		}
 
 		public void AddOrUpdateUserNotification(UserNotification userNotification)

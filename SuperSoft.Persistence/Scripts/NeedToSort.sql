@@ -1,39 +1,3 @@
-CREATE TABLE [Lesson]
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[CourseId] INT REFERENCES [Course]([Id]) ON DELETE CASCADE,
-	[Description] NVARCHAR(MAX),
-	[Order] INT,
-	[StartDate] DATETIME2,
-	[ExpireDate] DATETIME2
-);
-
-CREATE TYPE [UDT_Lesson] AS TABLE
-(
-	[Id] INT,
-	[CourseId] INT,
-	[Description] NVARCHAR(MAX),
-	[Order] INT,
-	[StartDate] DATETIME2,
-	[ExpireDate] DATETIME2
-);
-
-CREATE TABLE [LessonMaterial]
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[LessonId] INT REFERENCES [Lesson]([Id]) ON DELETE CASCADE,
-	[Path] NVARCHAR(MAX),
-	[Url] NVARCHAR(MAX)
-);
-
-CREATE TYPE [UDT_LessonMaterial] AS TABLE
-(
-	[Id] INT,
-	[LessonId] INT,
-	[Path] NVARCHAR(MAX),
-	[Url] NVARCHAR(MAX)
-);
-
 CREATE TABLE [Tag]
 (
 	[Id] INT PRIMARY KEY IDENTITY,
@@ -150,36 +114,6 @@ CREATE TYPE [UDT_SubtaskAnswer] AS TABLE
 	[IsRight] BIT,
 	[IsInfinitive] BIT,
 	[Explanation] NVARCHAR(MAX)
-);
-
-CREATE TABLE [Notification]
-(
-	[Id] INT PRIMARY KEY IDENTITY,
-	[CreatedBy] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
-	[Message] NVARCHAR (MAX),
-	[Date] DATETIME2
-);
-
-CREATE TYPE [UDT_Notification] AS TABLE
-(
-	[Id] INT,
-	[CreatedBy] INT,
-	[Message] NVARCHAR(MAX),
-	[Date] DATETIME2
-);
-
-CREATE TABLE [User_Notification]
-(
-	[UserId] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
-	[NotificationId] INT REFERENCES [Notification]([Id]) ON DELETE CASCADE,
-	[Seen] BIT
-);
-
-CREATE TYPE [UDT_User_Notification] AS TABLE
-(
-	[UserId] INT,
-	[NotificationId] INT,
-	[Seen] BIT
 );
 
 CREATE TABLE [User_SubtaskAnswerGroup]

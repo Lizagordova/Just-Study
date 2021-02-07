@@ -1,0 +1,7 @@
+﻿CREATE TABLE [Notification]
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[CreatedBy] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
+	[Message] NVARCHAR (MAX),
+	[Date] DATETIME2
+);

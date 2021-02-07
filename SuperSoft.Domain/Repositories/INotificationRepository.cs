@@ -5,7 +5,8 @@ namespace SuperSoft.Domain.Repositories
 {
 	public interface INotificationRepository
 	{
-		void AddOrUpdateNotification(List<int> userForIds, Notification notification);
+		int AddOrUpdateNotification(Notification notification);
+		void AddOrUpdateNotificationForUsers(List<int> userForIds, int notification);
 		void AddOrUpdateUserNotification(UserNotification userNotification);
 		List<Notification> GetNotifications(int userId);
 	}
