@@ -17,6 +17,7 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private readonly MapperService _mapper;
 		private const string GetCommentGroupSp = "CommentRepository_GetCommentGroup";
+		private const string GetCommentsSp = "CommentRepository_GetComments";
 		private const string AddOrUpdateCommentSp = "CommentRepository_AddOrUpdateComment";
 		private const string AddOrUpdateCommentGroupSp = "CommentRepository_AddOrUpdateCommentGroup";
 		private const string RemoveCommentSp = "CommentRepository_RemoveComment";
@@ -58,12 +59,21 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetCommentGroupParam(group);
-			var response = conn.QueryMultiple(GetCommentGroupSp, param, commandType: CommandType.StoredProcedure);
-			var data = GetCommentGroupData(response);
-			var commentGroup = MapCommentGroup(data);
+			group.Id = conn.Query<int>(GetCommentGroupSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
-			return commentGroup;
+			return group;
+		}
+
+		public List<Comment> GetComments(int groupId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetCommentGroupParam(groupId);
+			var commentsUdt = conn.Query<CommentUdt>(GetCommentsSp, param, commandType: CommandType.StoredProcedure);
+			var comments = commentsUdt.Select(_mapper.Map<CommentUdt, Comment>).ToList();
+			DatabaseHelper.CloseConnection(conn);
+
+			return comments;
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateCommentParam(Comment comment, int groupId)
@@ -71,6 +81,7 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("comment", "UDT_Comment");
 			var udt = _mapper.Map<Comment, CommentUdt>(comment);
+			udt.GroupId = groupId;
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
 
@@ -92,6 +103,14 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("commentId", commentId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetCommentGroupParam(int groupId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("groupId", groupId);
 
 			return param;
 		}

@@ -10,5 +10,6 @@ namespace SuperSoft.Domain.Repositories
 		int AddOrUpdateCommentGroup(CommentGroup group);
 		void RemoveComment(int commentId);
 		CommentGroup GetCommentGroup(CommentGroup group);
+		List<Comment> GetComments(int groupId);
 	}
 }

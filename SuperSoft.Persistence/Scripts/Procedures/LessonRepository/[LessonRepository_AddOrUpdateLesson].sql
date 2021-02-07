@@ -3,7 +3,7 @@
 AS
 BEGIN
 	DECLARE @mergedIds TABLE ([Id] INT);
-		
+
 	MERGE
 	INTO [Lesson] AS [dest]
 	USING @lesson AS [src]

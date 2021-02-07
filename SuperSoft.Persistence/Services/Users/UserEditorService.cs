@@ -24,6 +24,7 @@ namespace SuperSoft.Persistence.Services.Users
 
 		public void DeleteUser(int userId)
 		{
+			//TODO: Надо удалять комменты юзера, потому что это мб потенциальной проблемой
 			_userRepository.DeleteUser(userId);
 		}
 	}

@@ -17,6 +17,7 @@ namespace SuperSoft.Persistence.Services.Comments
 		public CommentGroup GetCommentGroup(CommentGroup group)
 		{
 			var commentGroup = _commentRepository.GetCommentGroup(group);
+			commentGroup.Comments = _commentRepository.GetComments(commentGroup.Id);
 
 			return commentGroup;
 		}
