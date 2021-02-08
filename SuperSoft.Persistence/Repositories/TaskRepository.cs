@@ -16,7 +16,6 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private readonly MapperService _mapper;
 		private const string AddOrUpdateTaskSp = "TaskRepository_AddOrUpdateTask";
-		private const string AddOrUpdateSubtasksSp = "TaskRepository_AddOrUpdateSubtasks";
 		private const string AttachTaskToLessonSp = "TaskRepository_AttachTaskToLesson";
 		private const string AddOrUpdateSubtaskSp = "TaskRepository_AddOrUpdateSubtask";
 		private const string DeleteTaskSp = "TaskRepository_DeleteTask";
@@ -41,18 +40,10 @@ namespace SuperSoft.Persistence.Repositories
 			return taskId;
 		}
 
-		public void AddOrUpdateSubtasks(IReadOnlyCollection<Subtask> subtasks, int taskId)
+		public void AttachTaskToLesson(int taskId, int lessonId, int order)//TODO: проверить тщательно
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateSubtasksParam(subtasks, taskId);
-			conn.Query<int>(AddOrUpdateSubtasksSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
-			DatabaseHelper.CloseConnection(conn);
-		}
-
-		public void AttachTaskToLesson(int taskId, int lessonId)
-		{
-			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAttachTaskToLessonParam(taskId, lessonId);
+			var param = GetAttachTaskToLessonParam(taskId, lessonId, order);
 			conn.Query(AttachTaskToLessonSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
@@ -191,23 +182,12 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateSubtasksParam(IReadOnlyCollection<Subtask> subtasks, int taskId)
-		{
-			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("subtasks", "UDT_Subtask");
-			var udt = subtasks.Select(_mapper.Map<Subtask, SubtaskUdt>).ToList();
-			udt.ForEach(u => u.TaskId = taskId);
-			tvp.AddObjectAsRow(udt);
-			param.Add(tvp);
-
-			return param;
-		}
-
-		private DynamicTvpParameters GetAttachTaskToLessonParam(int taskId, int lessonId)
+		private DynamicTvpParameters GetAttachTaskToLessonParam(int taskId, int lessonId, int order)
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("taskId", taskId);
 			param.Add("lessonId", lessonId);
+			param.Add("order", order);
 
 			return param;
 		}
@@ -217,10 +197,9 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("subtask", "UDT_Subtask");
 			var udt = _mapper.Map<Subtask, SubtaskUdt>(subtask);
+			udt.TaskId = taskId;
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
-
-			param.Add("taskId", taskId);
 
 			return param;
 		}

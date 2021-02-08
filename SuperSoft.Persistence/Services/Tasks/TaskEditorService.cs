@@ -20,14 +20,20 @@ namespace SuperSoft.Persistence.Services.Tasks
 		public int AddOrUpdateTask(Task task)
 		{
 			var taskId = _taskRepository.AddOrUpdateTask(task);
-			_taskRepository.AddOrUpdateSubtasks(task.Subtasks, taskId);
+			var subtasks = task.Subtasks;
+			foreach (var taskSubtask in subtasks)
+			{
+				taskSubtask.Id = _taskRepository.AddOrUpdateSubtask(taskSubtask, taskId);
+			}
+
+			task.Subtasks = subtasks;
 
 			return taskId;
 		}
 
-		public void AttachTaskToLesson(int taskId, int lessonId)
+		public void AttachTaskToLesson(int taskId, int lessonId, int order)
 		{
-			_taskRepository.AttachTaskToLesson(taskId, lessonId);
+			_taskRepository.AttachTaskToLesson(taskId, lessonId, order);
 		}
 
 		public int AddOrUpdateSubtask(Subtask subtask, int taskId)

@@ -1,22 +1,3 @@
-
-CREATE TABLE [Lesson_Task]
-(
-	[TaskId] INT REFERENCES [Task]([Id]) ON DELETE CASCADE,
-	[LessonId] INT REFERENCES [Lesson]([Id]) ON DELETE CASCADE,
-	[Order] INT,
-	CONSTRAINT [PK_Task_Lesson] PRIMARY KEY ([TaskId], [LessonId])
-);
-
-CREATE TYPE [UDT_Subtask] AS TABLE
-(
-	[Id] INT,
-	[TaskId] INT,
-	[Text] NVARCHAR(MAX),
-	[Path] NVARCHAR(MAX),
-	[Order] INT,
-	[SubtaskType] INT
-);
-
 CREATE TABLE [User_Subtask]
 (
 	[UserId] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
