@@ -20,8 +20,4 @@
 	  </Reference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Scripts\Procedures\UserTaskRepository" />
-	</ItemGroup>
-
 </Project>

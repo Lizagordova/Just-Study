@@ -1,0 +1,5 @@
+﻿CREATE TABLE [SubtaskAnswerGroup]
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[SubtaskId] INT REFERENCES [Subtask]([Id]) ON DELETE CASCADE
+);

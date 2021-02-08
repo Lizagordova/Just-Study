@@ -15,11 +15,12 @@ namespace SuperSoft.Persistence.Repositories
 	public class UserTaskRepository : IUserTaskRepository
 	{
 		private readonly MapperService _mapper;
-		private const string AddOrUpdateUserSubtaskSp = "TaskRepository_AddOrUpdateUserSubtask";
-		private const string GetUserSubtasksSp = "TaskRepository_GetUserSubtasks";
-		private const string GetUserSubtaskSp = "TaskRepository_GetUserSubtask";
-		private const string GetUserTaskSp = "TaskRepository_GetUserTask";
-		private const string AddOrUpdateUserSubtaskAnswerGroupSp = "TaskRepository_AddOrUpdateUserSubtaskAnswerGroup";
+		private const string AddOrUpdateUserSubtaskSp = "UserTaskRepository_AddOrUpdateUserSubtask";
+		private const string GetUserSubtasksSp = "UserTaskRepository_GetUserSubtasks";
+		private const string GetUserSubtaskSp = "UserTaskRepository_GetUserSubtask";
+		private const string GetUserTaskSp = "UserTaskRepository_GetUserTask";
+		private const string AddOrUpdateUserSubtaskAnswerGroupSp = "UserTaskRepository_AddOrUpdateUserSubtaskAnswerGroup";
+
 		public UserTaskRepository(
 			MapperService mapper)
 		{
@@ -97,14 +98,14 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateUserSubtaskParam(UserSubtask userSubtask, int userId, int subtaskId)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("userSubtask", "UDT_UserSubtask");
+			var tvp = new TableValuedParameter("userSubtask", "UDT_User_Subtask");
 			var udt = _mapper.Map<UserSubtask, UserSubtaskUdt>(userSubtask);
+			udt.SubtaskId = subtaskId;
+			udt.UserId = userId;
 			udt.SubtaskId = subtaskId;
 			udt.UserId = userId;
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
-			param.Add("userId", userId);
-			param.Add("subtaskId", subtaskId);
 
 			return param;
 		}
@@ -135,6 +136,7 @@ namespace SuperSoft.Persistence.Repositories
 			var data = new UserTaskData
 			{
 				UserSubtasks = reader.Read<UserSubtaskUdt>().ToList(),
+				AnswerGroups = reader.Read<SubtaskAnswerGroupUdt>().ToList(),
 				UserSubtaskGroups = reader.Read<UserSubtaskAnswerGroupUdt>().ToList()
 			};
 
