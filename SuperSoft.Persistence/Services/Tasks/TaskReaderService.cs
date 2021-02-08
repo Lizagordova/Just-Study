@@ -21,6 +21,13 @@ namespace SuperSoft.Persistence.Services.Tasks
 		public List<Task> GetTasksByChoosenLesson(int lessonId)
 		{
 			var tasks = _taskRepository.GetTasksByChoosenLesson(lessonId);
+			tasks.ForEach(task =>
+			{
+				task.Subtasks.ForEach(subtask =>
+					{
+						subtask.AnswerGroups = _taskRepository.GetSubtaskAnswerGroups(subtask.Id);
+					});
+			});
 
 			return tasks;
 		}

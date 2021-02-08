@@ -11,7 +11,7 @@ namespace SuperSoft.Domain.Models
 		public string Text { get; set; }
 		public int Order { get; set; }
 		public TaskType TaskType { get; set; }
-		public IReadOnlyCollection<Subtask> Subtasks { get; set; } = Array.Empty<Subtask>();
-		public IReadOnlyCollection<Tag> Tags { get; set; } = Array.Empty<Tag>();
+		public List<Subtask> Subtasks { get; set; }
+		public List<Tag> Tags { get; set; }
 	}
 }

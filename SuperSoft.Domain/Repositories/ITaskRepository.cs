@@ -12,5 +12,6 @@ namespace SuperSoft.Domain.Repositories
 		void DeleteSubtask(int subtaskId);
 		List<Task> GetTasksByChoosenLesson(int lessonId);
 		Task GetTaskById(int taskId);
+		List<SubtaskAnswerGroup> GetSubtaskAnswerGroups(int subtaskId);
 	}
 }

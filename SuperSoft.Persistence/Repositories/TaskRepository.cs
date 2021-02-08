@@ -22,6 +22,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string DeleteSubtaskSp = "TaskRepository_DeleteSubtask";
 		private const string GetTasksByChoosenLessonSp = "TaskRepository_GetTasksByChoosenLesson";
 		private const string GetTaskByIdSp = "TaskRepository_GetTaskById";
+		private const string GetSubtaskAnswerGroupsSp = "TaskRepository_GetSubtaskAnswerGroups";
 
 		public TaskRepository(
 			MapperService mapper
@@ -98,6 +99,18 @@ namespace SuperSoft.Persistence.Repositories
 			return task;
 		}
 
+		public List<SubtaskAnswerGroup> GetSubtaskAnswerGroups(int subtaskId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetSubtaskIdParam(subtaskId);
+			var response = conn.QueryMultiple(GetSubtaskAnswerGroupsSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetSubtaskData(response);
+			var answerGroups = MapSubtaskAnswerGroups(data);
+			DatabaseHelper.CloseConnection(conn);
+
+			return answerGroups;
+		}
+
 		private TaskData GetTaskData(SqlMapper.GridReader reader)
 		{
 			var taskData = new TaskData
@@ -110,7 +123,38 @@ namespace SuperSoft.Persistence.Repositories
 
 			return taskData;
 		}
-		
+
+		private SubtaskData GetSubtaskData(SqlMapper.GridReader reader)
+		{
+			var subtaskData = new SubtaskData()
+			{
+				AnswerGroups = reader.Read<SubtaskAnswerGroupUdt>().ToList(),
+				Answers = reader.Read<SubtaskAnswerUdt>().ToList()
+			};
+
+			return subtaskData;
+		}
+
+		private List<SubtaskAnswerGroup> MapSubtaskAnswerGroups(SubtaskData data)
+		{
+			var answerGroups = data.AnswerGroups
+				.GroupJoin(data.Answers,
+					group => group.Id,
+					answer => answer.AnswerGroupId,
+					MapAnswerGroup)
+				.ToList();
+
+			return answerGroups;
+		}
+
+		private SubtaskAnswerGroup MapAnswerGroup(SubtaskAnswerGroupUdt groupUdt, IEnumerable<SubtaskAnswerUdt> answerUdts)
+		{
+			var group = _mapper.Map<SubtaskAnswerGroupUdt, SubtaskAnswerGroup>(groupUdt);
+			group.Answers = answerUdts.Select(_mapper.Map<SubtaskAnswerUdt, SubtaskAnswer>).ToList();
+
+			return group;
+		}
+
 		private Task MapTask(TaskData taskData)
 		{
 			var task = new Task
