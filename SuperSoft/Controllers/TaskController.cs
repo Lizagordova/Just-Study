@@ -104,7 +104,7 @@ namespace SuperSoft.Controllers
 				var taskId = _taskEditor.AddOrUpdateTask(task);
 				if (taskReadModel.LessonId != 0)
 				{
-					_taskEditor.AttachTaskToLesson(taskId, taskReadModel.LessonId);
+					_taskEditor.AttachTaskToLesson(taskId, taskReadModel.LessonId, taskReadModel.Order);
 				}
 
 				return new JsonResult(taskId);
