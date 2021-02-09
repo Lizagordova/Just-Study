@@ -1,5 +1,6 @@
 ﻿import React, {Component} from 'react';
-import {Accordion, Button, Card} from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
+import { Button } from "reactstrap";
 import {observer} from "mobx-react";
 import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";

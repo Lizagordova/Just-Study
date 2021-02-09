@@ -122,7 +122,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         } else if(type === TrackerType.WordOfADay) {
             trackerByDay.wordOfADay = !trackerByDay.wordOfADay;
         } else if(type === TrackerType.WebinarWatch) {
-            trackerByDay.vebinarWatch = !trackerByDay.vebinarWatch;
+            trackerByDay.webinarWatch = !trackerByDay.webinarWatch;
         }
         this.tracker.trackersByDay[index] = trackerByDay;
     }
@@ -137,7 +137,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         } else if(type === TrackerType.WordOfADay) {
             return trackerByDay.wordOfADay;
         } else if(type === TrackerType.WebinarWatch) {
-            return trackerByDay.vebinarWatch;
+            return trackerByDay.webinarWatch;
         }
 
         return false;

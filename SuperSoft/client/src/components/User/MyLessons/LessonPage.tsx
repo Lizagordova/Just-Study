@@ -49,8 +49,8 @@ class LessonPage extends Component<ILessonPageProps> {
                             </Nav.Item>
                         </Nav>
                     </CardHeader>
-                    {this.lessonActive && <Lesson store={this.props.store}/>}
-                    {this.homeworkActive && <Homework />}
+                    {this.lessonActive && <Lesson store={this.props.store} />}
+                    {this.homeworkActive && <Homework store={this.props.store} />}
                 </Card>
             </Tab.Container>
         );

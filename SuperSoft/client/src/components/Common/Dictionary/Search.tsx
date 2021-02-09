@@ -1,11 +1,12 @@
-﻿import React, {Component} from 'react';
+﻿import React, { Component } from 'react';
 import WordStore from "../../../stores/WordStore";
-import {observer} from "mobx-react";
-import {Input} from "reactstrap";
-import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
-import {makeObservable, observable} from "mobx";
-import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
-import {UserRole} from "../../../Typings/enums/UserRole";
+import { observer } from "mobx-react";
+import { Input } from "reactstrap";
+import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
+import { makeObservable, observable } from "mobx";
+import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
+import { UserRole } from "../../../Typings/enums/UserRole";
+import { mapToWordReadModel } from "../../../functions/mapper";
 
 class ISearchProps {
     wordStore: WordStore;
@@ -79,7 +80,8 @@ class Search extends Component<ISearchProps> {
 
     addWordToDictionary(word: WordViewModel) {
         if(this.props.user.role === UserRole.User) {
-            this.props.wordStore.addOrUpdateWordToUserDictionary(word, this.props.user.id);
+            let wordReadModel = mapToWordReadModel(word);
+            this.props.wordStore.addOrUpdateWordToUserDictionary(wordReadModel, this.props.user.id);
         }
     }
 }

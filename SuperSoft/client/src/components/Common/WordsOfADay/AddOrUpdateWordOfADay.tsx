@@ -12,7 +12,7 @@ import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import WordStore from "../../../stores/WordStore";
 import {WordOfADayReadModel} from "../../../Typings/readModels/WordOfADayReadModel";
-import { mapWordReadModel } from "../../../functions/mapper";
+import {mapToWordReadModel, mapWordReadModel} from "../../../functions/mapper";
 
 class IAddOrUpdateWordOfADayProps {
     word: WordViewModel;
@@ -35,7 +35,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
     }
 
     componentDidMount(): void {
-        this.word = this.props.word;
+        this.word = mapToWordReadModel(this.props.word);
     }
 
     renderWordInput(word: WordViewModel) {

@@ -3,6 +3,6 @@
 	public class Example
 	{
 		public int Id { get; set; }
-		public int ExampleText { get; set; }
+		public string ExampleText { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SuperSoft.Domain.enums;
 
 namespace SuperSoft.Domain.Models
 {
@@ -9,7 +10,7 @@ namespace SuperSoft.Domain.Models
 		public string WordText { get; set; }
 		public string EnglishMeaning { get; set; }
 		public string RussianMeaning { get; set; }
-		public string PartOfSpeech { get; set; }
+		public PartOfSpeech PartOfSpeech { get; set; }
 		public IReadOnlyCollection<Example> Examples { get; set; } = Array.Empty<Example>();
 	}
 }

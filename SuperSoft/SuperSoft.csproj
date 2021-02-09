@@ -47,7 +47,6 @@
 		<None Include="client\src\components\Admin\Tasks\TaskEdit.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUpload.tsx" />
 		<None Include="client\src\components\Admin\Tasks\TaskUploadWindow.tsx" />
-		<None Include="client\src\components\Admin\Trainings\TrainingPage.tsx" />
 		<None Include="client\src\components\Admin\Users\AddOrUpdateUserWindow.tsx" />
 		<None Include="client\src\components\Admin\Users\User.tsx" />
 		<None Include="client\src\components\Admin\Users\Users.tsx" />

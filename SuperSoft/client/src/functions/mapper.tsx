@@ -6,6 +6,8 @@ import { TrackerViewModel } from "../Typings/viewModels/TrackerViewModel";
 import { TrackerReadModel } from "../Typings/readModels/TrackerReadModel";
 import {TrackerByDayReadModel} from "../Typings/readModels/TrackerByDayReadModel";
 import {TrackerByDayViewModel} from "../Typings/viewModels/TrackerByDayViewModel";
+import {SubtaskViewModel} from "../Typings/viewModels/SubtaskViewModel";
+import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -45,15 +47,38 @@ export function mapToTrackerReadModel(tracker: TrackerViewModel, userId: number,
     return trackerReadModel;
 }
 
-export function mapToTrackerByDayReadModel(trackerByDay: TrackerByDayViewModel): TrackerByDayReadModel{
+export function mapToTrackerByDayReadModel(trackerByDay: TrackerByDayViewModel): TrackerByDayReadModel {
     let trackerByDayReadModel = new TrackerByDayReadModel();
     trackerByDayReadModel.id = trackerByDay.id;
     trackerByDayReadModel.chatParticipation = trackerByDay.chatParticipation;
     trackerByDayReadModel.completedHomework = trackerByDay.completedHomework;
     trackerByDayReadModel.dictionaryOfLesson = trackerByDay.dictionaryOfLesson;
-    trackerByDayReadModel.vebinarWatch = trackerByDay.vebinarWatch;
+    trackerByDayReadModel.webinarWatch = trackerByDay.webinarWatch;
     trackerByDayReadModel.wordOfADay = trackerByDay.wordOfADay;
     trackerByDayReadModel.day = trackerByDay.day;
 
     return trackerByDayReadModel;
+}
+
+export function mapToSubtaskReadModel(subtask: SubtaskViewModel): SubtaskReadModel {
+    let subtaskReadModel = new SubtaskReadModel();
+    subtaskReadModel.id = subtask.id;
+    subtaskReadModel.path = subtask.path;
+    subtaskReadModel.text = subtask.text;
+    subtaskReadModel.order = subtask.order;
+    subtaskReadModel.subtaskType = subtask.subtaskType;
+
+    return subtaskReadModel;
+}
+
+export function mapToWordReadModel(word: WordViewModel): WordReadModel {
+    let wordReadModel = new WordReadModel();
+    wordReadModel.id = word.id;
+    wordReadModel.word = word.word;
+    wordReadModel.russianMeaning = word.russianMeaning;
+    wordReadModel.englishMeaning = word.englishMeaning;
+    wordReadModel.partOfSpeech = word.partOfSpeech;
+    wordReadModel.examples = word.examples;
+
+    return wordReadModel;
 }

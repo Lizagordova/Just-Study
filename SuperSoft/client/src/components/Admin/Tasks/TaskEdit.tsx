@@ -3,9 +3,9 @@ import TaskStore from "../../../stores/TaskStore";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { Button, Modal, ModalHeader } from "reactstrap";
 import { observer } from "mobx-react";
-import { TaskType } from "../../../Typings/enums/TaskType";
 import TaskUploadWindow from "./TaskUploadWindow";
-import {TaskReadModel} from "../../../Typings/readModels/TaskReadModel";
+import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
+import { mapToSubtaskReadModel } from "../../../functions/mapper";
 
 class ITaskEditProps {
     taskStore: TaskStore;
@@ -28,7 +28,7 @@ export class TaskEdit extends Component<ITaskEditProps> {
         taskReadModel.instruction = task.instruction;
         taskReadModel.text = task.text;
         taskReadModel.taskType = task.taskType;
-        taskReadModel.subtasks = task.subtasks;
+        taskReadModel.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
         taskReadModel.tags = task.tags;
         return(
             <TaskUploadWindow store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={taskReadModel} />

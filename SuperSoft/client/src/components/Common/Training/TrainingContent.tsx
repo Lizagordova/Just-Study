@@ -99,6 +99,10 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 this.relatedTasks = tasks;
             });
     }
+
+    addTask() {
+        
+    }
 }
 
 export default TrainingContent;

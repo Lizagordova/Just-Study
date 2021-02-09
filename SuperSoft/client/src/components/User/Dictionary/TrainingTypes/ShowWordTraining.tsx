@@ -4,7 +4,7 @@ import { ITrainingTypeProps } from "./ITrainingTypeProps";
 
 class ShowWordTraining extends Component<ITrainingTypeProps> {
     continue() {
-        this.props.continueShow();
+        this.props.continue();
     }
 
     renderWord() {

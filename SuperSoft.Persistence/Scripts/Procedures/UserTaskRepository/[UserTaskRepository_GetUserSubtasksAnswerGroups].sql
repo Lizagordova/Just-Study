@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UserTaskRepository_GetUserSubtasks]
+﻿CREATE PROCEDURE [dbo].[UserTaskRepository_GetUserSubtasksAnswerGroups]
 	@taskId INT,
 	@userId INT
 AS
@@ -72,25 +72,3 @@ BEGIN
 	SELECT * FROM @groups;
 	SELECT * FROM @userSubtaskAnswerGroups;
 END
-
-CREATE TABLE [User_SubtaskAnswerGroup]
-(
-	[UserId] INT REFERENCES [User]([Id]) ON DELETE CASCADE,
-	[AnswerGroupId] INT,
-	[Status] INT,
-	[LastAnswer] NVARCHAR(MAX)
-);
-
-CREATE TYPE [UDT_UserSubtaskAnswerGroup] AS TABLE
-(
-	[UserId] INT,
-	[AnswerGroupId] INT,
-	[Status] INT,
-	[LastAnswer] NVARCHAR(MAX)
-);
-
-CREATE TYPE [UDT_SubtaskAnswerGroup] AS TABLE
-(
-	[Id] INT,
-	[SubtaskId] INT
-);

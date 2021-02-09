@@ -55,6 +55,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<Example, ExampleUdt>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.WordId, opt => opt.Ignore())
 					.ForMember(dest => dest.Example, opt => opt.MapFrom(src => src.ExampleText));
 			});
 

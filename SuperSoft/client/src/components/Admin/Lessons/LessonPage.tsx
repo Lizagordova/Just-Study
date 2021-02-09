@@ -2,7 +2,7 @@
 import RootStore from "../../../stores/RootStore";
 import { Tab, Nav } from "react-bootstrap";
 import { Card, CardHeader } from "reactstrap";
-import "./lesson.css";
+import "../../../styles/lesson.css";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { Lesson } from "../../Common/Lesson/Lesson";

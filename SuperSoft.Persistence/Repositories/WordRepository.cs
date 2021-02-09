@@ -54,8 +54,7 @@ namespace SuperSoft.Persistence.Repositories
 		public void DeleteWordFromDictionary(int wordId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = new DynamicTvpParameters();
-			param.Add("wordId", wordId);
+			var param = GetWordIdParam(wordId);
 			conn.Query(DeleteWordFromDictionarySp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
@@ -125,6 +124,7 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var param = new DynamicTvpParameters();
 			param.Add("wordId", wordId);
+			param.Add("courseId", courseId);
 			var userWordUdts = conn.Query<UserWordUdt>(GetAnswersToWordOfADayByWordSp, param, commandType: CommandType.StoredProcedure);
 			var userWords = userWordUdts.Select(_mapper.Map<UserWordUdt, UserWord>).ToList();
 			DatabaseHelper.CloseConnection(conn);
@@ -221,6 +221,14 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("userId", userId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetWordIdParam(int wordId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("wordId", wordId);
 
 			return param;
 		}

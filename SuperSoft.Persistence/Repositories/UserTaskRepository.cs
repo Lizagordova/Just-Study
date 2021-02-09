@@ -20,6 +20,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetUserSubtaskSp = "UserTaskRepository_GetUserSubtask";
 		private const string GetUserTaskSp = "UserTaskRepository_GetUserTask";
 		private const string AddOrUpdateUserSubtaskAnswerGroupSp = "UserTaskRepository_AddOrUpdateUserSubtaskAnswerGroup";
+		private const string GetUserSubtasksAnswerGroupsSp = "UserTaskRepository_GetUserSubtasksAnswerGroups";
 
 		public UserTaskRepository(
 			MapperService mapper)
@@ -80,7 +81,14 @@ namespace SuperSoft.Persistence.Repositories
 
 		public UserSubtask GetUserSubtask(int subtaskId, int userId)
 		{
-			throw new System.NotImplementedException();
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetUserSubtaskParam(subtaskId, userId);
+			var response = conn.QueryMultiple(AddOrUpdateUserSubtaskAnswerGroupSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetUserSubtaskData(response);
+			var userSubtask = MapUserSubtask(data);
+			DatabaseHelper.CloseConnection(conn);
+
+			return userSubtask;
 		}
 
 		public UserTask GetUserTask(int taskId, int userId)
@@ -88,6 +96,18 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetUserTaskParam(taskId, userId);
 			var response = conn.QueryMultiple(GetUserTaskSp, param, commandType: CommandType.StoredProcedure);
+			var data = GetUserTaskData(response);
+			var userTask = MapUserTask(data);
+			DatabaseHelper.CloseConnection(conn);
+
+			return userTask;
+		}
+
+		public UserTask GetUserSubtasksAnswerGroups(int taskId, int userId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetUserTaskParam(taskId, userId);
+			var response = conn.QueryMultiple(AddOrUpdateUserSubtaskAnswerGroupSp, param, commandType: CommandType.StoredProcedure);
 			var data = GetUserTaskData(response);
 			var userTask = MapUserTask(data);
 			DatabaseHelper.CloseConnection(conn);
@@ -114,6 +134,15 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("taskId", taskId);
+			param.Add("userId", userId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetUserSubtaskParam(int subtaskId, int userId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("subtaskId", subtaskId);
 			param.Add("userId", userId);
 
 			return param;
@@ -159,6 +188,19 @@ namespace SuperSoft.Persistence.Repositories
 		private UserSubtask MapUserSubtask(UserSubtaskUdt userSubtaskUdt, IEnumerable<UserSubtaskAnswerGroupUdt> userGroups)
 		{
 			var userSubtask = _mapper.Map<UserSubtaskUdt, UserSubtask>(userSubtaskUdt);
+			/*userSubtask.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups
+				.Join(userGroups,
+					s => s,
+					ug => ug.AnswerGroupId,
+					MapUserSubtaskAnswerGroup)
+				.ToList();*/
+
+			return userSubtask;
+		}
+
+		private UserSubtask MapUserSubtask(UserSubtaskData data)
+		{
+			var userSubtask = new UserSubtask();
 			/*userSubtask.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups
 				.Join(userGroups,
 					s => s,

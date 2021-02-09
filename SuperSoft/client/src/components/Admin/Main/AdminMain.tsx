@@ -18,19 +18,23 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                         <Nav tabs className="nav">
                             <NavItem>
                                 <NavLink to="/courses" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>КУРСЫ</NavLink>
+                                    activeStyle={{
+                                        color: '#ffffff',
+                                        backgroundColor: '#003B46',
+                                        textDecoration: 'none'
+                                         }}>
+                                    КУРСЫ
+                                </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>ПОЛЬЗОВАТЕЛИ</NavLink>
+                                    activeStyle={{
+                                        color: '#ffffff',
+                                        backgroundColor: '#003B46',
+                                        textDecoration: 'none'
+                                         }}>
+                                    ПОЛЬЗОВАТЕЛИ
+                                </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
