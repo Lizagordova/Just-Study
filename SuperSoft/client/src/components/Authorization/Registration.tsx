@@ -14,6 +14,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     password: string;
     firstName: string;
     lastName: string;
+    login: string;
 
     constructor() {
         // @ts-ignore
@@ -23,6 +24,7 @@ export class Registration extends React.Component<IRegistrationProps> {
             password: observable,
             firstName: observable,
             lastName: observable,
+            login: observable
         });
     }
 
@@ -30,27 +32,31 @@ export class Registration extends React.Component<IRegistrationProps> {
         return(
             <div className="col-12 authorizationForm">
                 <div className="row justify-content-center">
-                    <div className="row justify-content-center">
-                        <Label style={{width: "100%"}}>ИМЯ</Label>
-                        <Input
-                            style={{width: "80%"}}
-                            type="password"
-                            onChange={(e) => this.inputFirstName(e)}/>
-                    </div>
-                    <div className="row justify-content-center">
-                        <Label style={{width: "100%"}}>ФАМИЛИЯ</Label>
-                        <Input
-                            style={{width: "80%"}}
-                            type="password"
-                            onChange={(e) => this.inputLastName(e)}/>
-                    </div>
-                    <Label style={{width: "100%", marginTop: "10px"}}>EMAIL</Label>
+                    <Label className="formLabel">ИМЯ</Label>
+                    <Input
+                        style={{width: "80%"}}
+                        onChange={(e) => this.inputFirstName(e)}/>
+                </div>
+                <div className="row justify-content-center">
+                    <Label className="formLabel">ФАМИЛИЯ</Label>
+                    <Input
+                        style={{width: "80%"}}
+                        onChange={(e) => this.inputLastName(e)}/>
+                </div>
+                <div className="row justify-content-center">
+                    <Label className="formLabel">ЛОГИН</Label>
+                    <Input
+                        style={{width: "80%"}}
+                        onChange={(e) => this.inputLogin(e)}/>
+                </div>
+                <div className="row justify-content-center">
+                    <Label className="formLabel">Email</Label>
                     <Input
                         style={{width: "80%"}}
                         onChange={(e) => this.inputEmail(e)}/>
                 </div>
                 <div className="row justify-content-center">
-                    <Label style={{width: "100%"}}>ПАРОЛЬ</Label>
+                    <Label className="formLabel">ПАРОЛЬ</Label>
                     <Input
                         style={{width: "80%"}}
                         type="password"
@@ -81,6 +87,10 @@ export class Registration extends React.Component<IRegistrationProps> {
 
     inputLastName(event: React.FormEvent<HTMLInputElement>) {
         this.lastName = event.currentTarget.value;
+    }
+
+    inputLogin(event: React.FormEvent<HTMLInputElement>) {
+        this.login = event.currentTarget.value;
     }
 
     async register() {

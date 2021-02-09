@@ -15,11 +15,13 @@ using SuperSoft.Persistence.Services.Courses;
 using SuperSoft.Persistence.Services.Lessons;
 using SuperSoft.Persistence.Services.MapperService;
 using SuperSoft.Persistence.Services.Notifications;
+using SuperSoft.Persistence.Services.Tags;
 using SuperSoft.Persistence.Services.Tasks;
 using SuperSoft.Persistence.Services.Trackers;
 using SuperSoft.Persistence.Services.Trainings;
 using SuperSoft.Persistence.Services.Users;
 using SuperSoft.Persistence.Services.Words;
+using SuperSoft.Services;
 using MainMapperService = SuperSoft.Services.MapperService.MapperService;
 
 namespace SuperSoft
@@ -36,11 +38,10 @@ namespace SuperSoft
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
 			services.AddControllersWithViews();
 			services.AddMvc();
 			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
-			services.AddSingleton<MainMapperService>();
-			services.AddSingleton<MapperService>();
 			AddRepositories(services);
 			AddServices(services);
 			// In production, the React files will be served from this directory
@@ -58,6 +59,7 @@ namespace SuperSoft
 			services.AddSingleton<ILessonRepository, LessonRepository>();
 			services.AddSingleton<ILogRepository, LogRepository>();
 			services.AddSingleton<INotificationRepository, NotificationRepository>();
+			services.AddSingleton<ITagRepository, TagRepository>();
 			services.AddSingleton<ITaskRepository, TaskRepository>();
 			services.AddSingleton<ITrackerRepository, TrackerRepository>();
 			services.AddSingleton<ITrainingRepository, TrainingRepository>();
@@ -76,6 +78,7 @@ namespace SuperSoft
 			services.AddSingleton<ILessonReaderService, LessonReaderService>();
 			services.AddSingleton<INotificationEditorService, NotificationEditorService>();
 			services.AddSingleton<INotificationReaderService, NotificationReaderService>();
+			services.AddSingleton<ITagReaderService, TagReaderService>();
 			services.AddSingleton<ITaskEditorService, TaskEditorService>();
 			services.AddSingleton<ITaskReaderService, TaskReaderService>();
 			services.AddSingleton<ITrackerEditorService, TrackerEditorService>();
@@ -86,8 +89,11 @@ namespace SuperSoft
 			services.AddSingleton<IUserEditorService, UserEditorService>();
 			services.AddSingleton<IWordEditorService, WordEditorService>();
 			services.AddSingleton<IWordReaderService, WordReaderService>();
+			services.AddSingleton<LogService>();
+			services.AddSingleton<MainMapperService>();
+			services.AddSingleton<MapperService>();
 		}
-
+		
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{

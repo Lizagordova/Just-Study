@@ -19,7 +19,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 					.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-					.ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PasswordHash));
+					.ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
 			});
 
 			AddMapping<User, UserViewModel>(cfg =>

@@ -14,3 +14,9 @@
     margin-bottom: 15px;
     height: 700px;
 }
+
+.formLabel {
+    width: 100%;
+    color: white;
+    margin-top: 10px;
+}

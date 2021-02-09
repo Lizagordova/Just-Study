@@ -11,7 +11,7 @@ export class UserReadModel
 	public firstName: string;
 	public lastName: string;
 	public email: string;
-	public passwordHash: string;
+	public password: string;
 	public role: UserRole;
 	public token: string;
 }
