@@ -1,4 +1,4 @@
-﻿using SuperSoft.Domain.Services;
+﻿using SuperSoft.Domain.Services.Trainings;
 
 namespace SuperSoft.Persistence.Services.Trainings
 {

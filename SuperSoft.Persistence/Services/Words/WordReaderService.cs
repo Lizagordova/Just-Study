@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Words;
 
 namespace SuperSoft.Persistence.Services.Words
 {

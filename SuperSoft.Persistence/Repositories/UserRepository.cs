@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Persistence.Extensions;
 using SuperSoft.Persistence.Helpers;
@@ -19,6 +20,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetUserInfoSp = "UserRepository_GetUserInfo";
 		private const string GetUsersSp = "UserRepository_GetUsers";
 		private const string DeleteUserSp = "UserRepository_DeleteUser";
+		private const string CheckTokenSp = "UserRepository_CheckToken";
 
 		public UserRepository(
 			MapperService mapper)
@@ -35,15 +37,25 @@ namespace SuperSoft.Persistence.Repositories
 			return userId;
 		}
 
-		public User GetUserInfo(int userId)
+		public User GetUserInfo(UserInfoQuery query)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetUserIdParam(userId);
+			var param = GetUserInfoParam(query);
 			var userUdt = conn.Query<UserUdt>(GetUserInfoSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			var user = _mapper.Map<UserUdt, User>(userUdt);
 			DatabaseHelper.CloseConnection(conn);
 
 			return user;
+		}
+
+		public bool CheckToken(string token)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetTokenParam(token);
+			var exists = conn.Query<bool>(CheckTokenSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+
+			return exists;
 		}
 
 		public List<User> GetUsers()
@@ -79,6 +91,26 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("userId", userId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetUserInfoParam(UserInfoQuery query)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", query.UserId);
+			param.Add("email", query.Email);
+			param.Add("login", query.Login);
+			param.Add("passwordHash", query.PasswordHash);
+			param.Add("token", query.Token);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetTokenParam(string token)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("token", token);
 
 			return param;
 		}

@@ -22,7 +22,6 @@ interface Props {
 @observer
 class App extends Component<Props> {
     renderMain(store: RootStore) {
-        console.log("i was here");
         let role = this.props.store.userStore.currentUser.role;
         return(
             <>
@@ -61,7 +60,6 @@ class App extends Component<Props> {
 
     render() {
        const { store } = this.props;
-       console.log("store", store);
        let authorizationRequired = this.props.store.userStore.authorizationRequired || this.props.store.userStore.registrationRequired;
        return(
            <div>

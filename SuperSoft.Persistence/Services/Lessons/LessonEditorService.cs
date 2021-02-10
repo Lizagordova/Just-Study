@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Lessons;
 using SuperSoft.Persistence.Helpers;
 
 namespace SuperSoft.Persistence.Services.Lessons

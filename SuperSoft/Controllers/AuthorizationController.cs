@@ -1,13 +1,15 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Queries;
+using SuperSoft.Domain.Services.Users;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
-using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers
 {
@@ -33,24 +35,6 @@ namespace SuperSoft.Controllers
 			_logService = logService;
 		}
 
-		[HttpGet]
-		[Route("/getcurrentuser")]
-		public ActionResult GetCurrentUser()
-		{
-			if (SessionHelper.Authorized(HttpContext) != "true")
-			{
-				return new StatusCodeResult(401);
-			}
-			else
-			{
-				var userId = SessionHelper.GetUserId(HttpContext);
-				var user = _userReader.GetUserInfo(userId);
-				var userViewModel = _mapper.Map<User, UserViewModel>(user);
-
-				return new JsonResult(userViewModel);
-			}
-		}
-
 		[HttpPost]
 		[Route("/registration")]
 		public ActionResult Registration([FromBody]UserReadModel userReadModel)
@@ -58,7 +42,8 @@ namespace SuperSoft.Controllers
 			var user = _mapper.Map<UserReadModel, User>(userReadModel);
 			try
 			{
-				var userId = _userEditor.AddOrUpdateUser(user);
+				var updatedUser = _userEditor.AddOrUpdateUser(user);
+				SetUserData(user.Role, updatedUser.Token, updatedUser.Id);
 
 				return new OkResult();
 			}
@@ -69,6 +54,56 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
-		//todo: реализовать registation and authorization
+
+		[HttpGet]
+		[Route("/checktoken")]
+		public ActionResult CheckToken()
+		{
+			var token = SessionHelper.GetToken(HttpContext);
+			var exists = _userReader.CheckToken(token);
+			if (exists)
+			{
+				var user = _userReader.GetUserInfo(new UserInfoQuery() { Token = token });
+				SetUserData(user.Role, token, user.Id);
+
+				return new JsonResult(user);
+			}
+
+			return new StatusCodeResult(401);
+		}
+
+		private void SetUserData(UserRole role, string token, int userId)
+		{
+			HttpContext.Session.SetInt32("userId", userId);
+			if (!HttpContext.Request.Cookies.ContainsKey("token"))
+			{
+				HttpContext.Response.Cookies.Append("token", token);
+			}
+
+			if (!HttpContext.Request.Cookies.ContainsKey("role"))
+			{
+				HttpContext.Response.Cookies.Append("role", role.ToString());
+			}
+			HttpContext.Session.SetString("authorized", "true");
+		}
+
+		[HttpPost]
+		[Route("/authorization")]
+		public ActionResult Authorization([FromBody]UserReadModel userReadModel)
+		{
+			var user = _mapper.Map<UserReadModel, User>(userReadModel);
+			try
+			{
+				var userInfo = _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = user.PasswordHash, Email = user.Email, Login = user.Login });
+
+				return userInfo != null ? new OkResult() : new StatusCodeResult(401);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateUserException(_logger, e);
+				
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 
-namespace SuperSoft.Domain.Services
+namespace SuperSoft.Domain.Services.Words
 {
 	public interface IWordEditorService
 	{

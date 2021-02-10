@@ -1,7 +1,7 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
-using SuperSoft.Persistence.Helpers;
+using SuperSoft.Domain.Services.Users;
 
 namespace SuperSoft.Persistence.Services.Users
 {
@@ -15,17 +15,27 @@ namespace SuperSoft.Persistence.Services.Users
 			_userRepository = userRepository;
 		}
 
-		public int AddOrUpdateUser(User user)
+		public User AddOrUpdateUser(User user)
 		{
-			user.PasswordHash = user.PasswordHash.GetPasswordHash();
+			user.PasswordHash = user.PasswordHash;
+			user.Token = !string.IsNullOrEmpty(user.Token) ? GetToken() : user.Token;
 			var userId = _userRepository.AddOrUpdateUser(user);
-			return userId;
+			user.Id = userId;
+
+			return user;
 		}
 
 		public void DeleteUser(int userId)
 		{
 			//TODO: Надо удалять комменты юзера, потому что это мб потенциальной проблемой
 			_userRepository.DeleteUser(userId);
+		}
+
+		private string GetToken()
+		{
+			var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+			return token;
 		}
 	}
 }

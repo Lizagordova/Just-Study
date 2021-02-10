@@ -1,9 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.UserTasks;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
@@ -15,21 +14,21 @@ namespace SuperSoft.Controllers
 	public class UserTaskController : Controller
 	{
 		private readonly MapperService _mapper;
-		private readonly ITaskEditorService _taskEditor;
-		private readonly ITaskReaderService _taskReader;
+		private readonly IUserTaskEditorService _userTaskEditor;
+		private readonly IUserTaskReaderService _userTaskReader;
 		private readonly ILogger<TaskController> _logger;
 		private readonly LogService _logService;
 
 		public UserTaskController(
 			MapperService mapper,
-			ITaskEditorService taskEditor,
-			ITaskReaderService taskReader,
+			IUserTaskEditorService userTaskEditor,
+			IUserTaskReaderService userTaskReader,
 			ILogger<TaskController> logger,
 			LogService logService)
 		{
 			_mapper = mapper;
-			_taskEditor = taskEditor;
-			_taskReader = taskReader;
+			_userTaskEditor = userTaskEditor;
+			_userTaskReader = userTaskReader;
 			_logger = logger;
 			_logService = logService;
 		}
@@ -46,7 +45,7 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				var userTask = _taskReader.GetUserTask(userTaskReadModel.TaskId, userTaskReadModel.UserId);
+				var userTask = _userTaskReader.GetUserTask(userTaskReadModel.TaskId, userTaskReadModel.UserId);
 				var userTasksViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);
 
 				return new JsonResult(userTasksViewModel);
@@ -71,7 +70,7 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				var subtask = _taskReader.GetUserSubtask(userSubtaskReadModel.SubtaskId, userSubtaskReadModel.UserId);
+				var subtask = _userTaskReader.GetUserSubtask(userSubtaskReadModel.SubtaskId, userSubtaskReadModel.UserId);
 				var subtaskViewModel = _mapper.Map<UserSubtask, UserSubtaskViewModel>(subtask);
 
 				return new JsonResult(subtaskViewModel);
@@ -97,7 +96,7 @@ namespace SuperSoft.Controllers
 			var userSubtask = _mapper.Map<UserSubtaskReadModel, UserSubtask>(userSubtaskReadModel);
 			try
 			{
-				_taskEditor.AddOrUpdateUserSubtask(userSubtask, userSubtaskReadModel.UserId, userSubtaskReadModel.SubtaskId);
+				_userTaskEditor.AddOrUpdateUserSubtask(userSubtask, userSubtaskReadModel.UserId, userSubtaskReadModel.SubtaskId);
 
 				return new OkResult();
 			}
@@ -122,7 +121,7 @@ namespace SuperSoft.Controllers
 			var userSubtaskAnswerGroup = _mapper.Map<UserSubtaskAnswerGroupReadModel, UserSubtaskAnswerGroup>(userSubtaskAnswerGroupReadModel);
 			try
 			{
-				_taskEditor.AddOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.UserId);
+				_userTaskEditor.AddOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.UserId);
 
 				return new OkResult();
 			}

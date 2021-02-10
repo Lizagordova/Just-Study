@@ -25,7 +25,7 @@ class UserStore {
     }
 
     async getCurrentUser() {
-        const response = await fetch("/getcurrentuser");
+        const response = await fetch("/checktoken");
         if(response.status === 200) {
             this.currentUser = await response.json();
             this.authorizationRequired = false;

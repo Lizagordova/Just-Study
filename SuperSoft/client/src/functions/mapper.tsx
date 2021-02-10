@@ -8,6 +8,8 @@ import {TrackerByDayReadModel} from "../Typings/readModels/TrackerByDayReadModel
 import {TrackerByDayViewModel} from "../Typings/viewModels/TrackerByDayViewModel";
 import {SubtaskViewModel} from "../Typings/viewModels/SubtaskViewModel";
 import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
+import {UserViewModel} from "../Typings/viewModels/UserViewModel";
+import {UserReadModel} from "../Typings/readModels/UserReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -81,4 +83,18 @@ export function mapToWordReadModel(word: WordViewModel): WordReadModel {
     wordReadModel.examples = word.examples;
 
     return wordReadModel;
+}
+
+export function mapToUserReadModel(user: UserViewModel): UserReadModel {
+    let userReadModel = new UserReadModel();
+    userReadModel.id = user.id;
+    userReadModel.firstName = user.firstName;
+    userReadModel.lastName = user.lastName;
+    userReadModel.login = user.login;
+    userReadModel.email = user.email;
+    userReadModel.password = user.passwordHash;
+    userReadModel.token = user.token;
+    userReadModel.role = user.id;
+
+    return userReadModel;
 }

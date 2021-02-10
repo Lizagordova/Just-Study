@@ -11,15 +11,21 @@ BEGIN
 		SET
 			[dest].[Message] = [src].[Message],
 			[dest].[LogLevel] = [src].[LogLevel],
-			[dest].[CustomMessage] = [src].[CustomMessage]
+			[dest].[CustomMessage] = [src].[CustomMessage],
+			[dest].[Date] = [src].[Date],
+			[dest].[UserId] = [src].[UserId]
 	WHEN NOT MATCHED THEN
 		INSERT (
 			[Message],
 			[LogLevel],
-			[CustomMessage]
+			[CustomMessage],
+			[Date],
+			[UserId]
 		) VALUES (
 			[src].[Message],
 			[src].[LogLevel],
-			[src].[CustomMessage]
+			[src].[CustomMessage],
+			[src].[Date],
+			[src].[UserId]
 		);
 END

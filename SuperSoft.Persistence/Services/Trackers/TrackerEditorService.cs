@@ -1,6 +1,6 @@
 ﻿using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Trackers;
 
 namespace SuperSoft.Persistence.Services.Trackers
 {

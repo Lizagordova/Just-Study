@@ -3,7 +3,7 @@ using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 
-namespace SuperSoft.Domain.Services
+namespace SuperSoft.Domain.Services.Courses
 {
 	public interface ICourseReaderService
 	{

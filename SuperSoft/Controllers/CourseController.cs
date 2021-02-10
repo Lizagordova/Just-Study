@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Courses;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.ReadModels.Queries;

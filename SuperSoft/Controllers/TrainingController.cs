@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Queries;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Trainings;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels.Queries;
 using SuperSoft.Services;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.Models;
 
-namespace SuperSoft.Domain.Services
+namespace SuperSoft.Domain.Services.Lessons
 {
 	public interface ILessonEditorService
 	{

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Words;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;

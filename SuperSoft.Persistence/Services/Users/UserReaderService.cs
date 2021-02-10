@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Users;
 
 namespace SuperSoft.Persistence.Services.Users
 {
@@ -15,14 +16,23 @@ namespace SuperSoft.Persistence.Services.Users
 			_userRepository = userRepository;
 		}
 
-		public User GetUserInfo(int userId)
+		public User GetUserInfo(UserInfoQuery query)
 		{
-			return _userRepository.GetUserInfo(userId);
+			var user = _userRepository.GetUserInfo(query);
+
+			return user;
 		}
 
 		public List<User> GetUsers()
 		{
 			return _userRepository.GetUsers();
+		}
+
+		public bool CheckToken(string token)
+		{
+			var exists = _userRepository.CheckToken(token);
+
+			return exists;
 		}
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
+using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 
 namespace SuperSoft.Services
@@ -295,7 +297,7 @@ namespace SuperSoft.Services
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
-			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error});
+			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error, Date = new DateTime() });
 		}
 	}
 }

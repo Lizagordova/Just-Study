@@ -4,7 +4,7 @@ using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Services.Courses;
 
 namespace SuperSoft.Persistence.Services.Courses
 {

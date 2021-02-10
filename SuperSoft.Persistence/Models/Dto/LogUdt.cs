@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace SuperSoft.Persistence.Models.Dto
 {
@@ -8,5 +9,7 @@ namespace SuperSoft.Persistence.Models.Dto
 		public string Message { get; set; }
 		public int LogLevel { get; set; }
 		public string CustomMessage { get; set; }
+		public DateTime Date { get; set; }
+		public int UserId { get; set; }
 	}
 }

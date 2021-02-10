@@ -1,5 +1,6 @@
 ﻿using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services;
+using SuperSoft.Persistence.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.ViewModels;
 
@@ -19,7 +20,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
 					.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-					.ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
+					.ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password.GetPasswordHash()));
 			});
 
 			AddMapping<User, UserViewModel>(cfg =>

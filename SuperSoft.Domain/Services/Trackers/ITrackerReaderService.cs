@@ -1,6 +1,6 @@
 ﻿using SuperSoft.Domain.Models;
 
-namespace SuperSoft.Domain.Services
+namespace SuperSoft.Domain.Services.Trackers
 {
 	public interface ITrackerReaderService
 	{

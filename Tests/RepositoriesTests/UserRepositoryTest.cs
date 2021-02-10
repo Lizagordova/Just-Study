@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
+using SuperSoft.Domain.Queries;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services.MapperService;
 
@@ -37,7 +38,7 @@ namespace Tests.RepositoriesTests
 		[Test]
 		public void GetUserInfo_Scenario_ExpectedResult()
 		{
-			var user = _userRepository.GetUserInfo(1);
+			var user = _userRepository.GetUserInfo(new UserInfoQuery() { UserId = 1});
 			var result = user != null;
 			Assert.That(result == true);
 		}

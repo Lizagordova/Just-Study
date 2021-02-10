@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
-using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
+using SuperSoft.Domain.Queries;
+using SuperSoft.Domain.Services.Notifications;
+using SuperSoft.Domain.Services.Users;
 
 namespace SuperSoft.Services
 {
@@ -39,7 +40,7 @@ namespace SuperSoft.Services
 			var message = "";
 			if (createdBy != null)
 			{
-				var userCreatedBy = _userReader.GetUserInfo(createdBy.Value);
+				var userCreatedBy = _userReader.GetUserInfo(new UserInfoQuery() { UserId = createdBy.Value });
 				message += $"{userCreatedBy.FirstName} {userCreatedBy.LastName} создал(-а) комментарий к ";
 			}
 			

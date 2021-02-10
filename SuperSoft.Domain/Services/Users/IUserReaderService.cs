@@ -2,14 +2,12 @@
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 
-namespace SuperSoft.Domain.Repositories
+namespace SuperSoft.Domain.Services.Users
 {
-	public interface IUserRepository
+	public interface IUserReaderService
 	{
-		int AddOrUpdateUser(User user);
 		User GetUserInfo(UserInfoQuery query);
-		bool CheckToken(string token);
 		List<User> GetUsers();
-		void DeleteUser(int userId);
+		bool CheckToken(string token);
 	}
 }

@@ -14,6 +14,8 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.LogLevel, opt => opt.MapFrom(src => src.LogLevel))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
+					.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
 					.ForMember(dest => dest.CustomMessage, opt => opt.MapFrom(src => src.CustomMessage));
 			});
 
@@ -23,6 +25,8 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.LogLevel, opt => opt.MapFrom(src => src.LogLevel))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
+					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+					.ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
 					.ForMember(dest => dest.CustomMessage, opt => opt.MapFrom(src => src.CustomMessage));
 			});
 		}

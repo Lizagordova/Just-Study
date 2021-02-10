@@ -18,5 +18,10 @@ namespace SuperSoft.Helpers
 		{
 			return (int) context.Session.GetInt32("userId");
 		}
+
+		public static string GetToken(HttpContext context)
+		{
+			return context.Request.Cookies["token"];
+		}
 	}
 }

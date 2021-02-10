@@ -4,6 +4,7 @@ import { makeObservable, observable } from "mobx";
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input } from "reactstrap";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
+import { mapToUserReadModel } from "../../../functions/mapper";
 
 class IAddOrUpdateUserProps {
     userStore: UserStore;
@@ -190,11 +191,12 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
     }
 
     save() {
-        this.props.userStore.addOrUpdateUser(this.user)
+        let userReadModel = mapToUserReadModel(this.user);
+        this.props.userStore.addOrUpdateUser(userReadModel)
             .then((status) => {
                 this.notSaved = status !== 200;
                 this.addOrUpdateUserOpen = status !== 200;
-            })
+            });
     }
 }
 

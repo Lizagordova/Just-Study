@@ -2,7 +2,7 @@
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 
-namespace SuperSoft.Domain.Services
+namespace SuperSoft.Domain.Services.Trainings
 {
 	public interface ITrainingReaderService
 	{
