@@ -13,8 +13,12 @@ class IHomePageProps {
 @observer
 class HomePage extends Component<IHomePageProps> {
     renderCautions() {
+        let coursesLength = this.props.store.courseStore.userCourses.length;
         return(
-            <Alert color="danger">Курс не доступен. Обратитесь к администратору.</Alert>
+            <>
+                {coursesLength !== 0 && <Alert color="danger">Курс не доступен. Обратитесь к администратору.</Alert>}
+                {coursesLength === 0 && <Alert color="danger">Вы пока ещё не зачислены ни на один курс.</Alert>}
+            </>
         );
     }
 
@@ -61,7 +65,7 @@ class HomePage extends Component<IHomePageProps> {
     choosenCourseIsAvailable(): boolean {
         let courseStore = this.props.store.courseStore;
         let choosenCourseId = courseStore.choosenCourse.id;
-        if(choosenCourseId === 0) {
+        if(choosenCourseId === 0 || choosenCourseId === undefined) {
             return false;
         }
         let userCourse = courseStore.userCourses.filter(uc => uc.courseId === choosenCourseId)[0];

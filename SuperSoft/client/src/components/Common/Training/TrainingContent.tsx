@@ -15,8 +15,8 @@ class ITrainingContentProps {
 
 @observer
 class TrainingContent extends Component<ITrainingContentProps> {
-    choosenTags: TagViewModel[];
-    relatedTasks: TaskViewModel[];
+    choosenTags: TagViewModel[] = new Array<TagViewModel>();
+    relatedTasks: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         // @ts-ignore

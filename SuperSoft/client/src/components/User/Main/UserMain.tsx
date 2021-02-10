@@ -51,15 +51,9 @@ export class UserMain extends React.Component<IUserMainProps> {
             <>
                 <Card>
                     <CardHeader>
-                        {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                         <Nav tabs className="nav">
                             <NavItem>
-                                <NavLink to="/home" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>ГЛАВНАЯ</NavLink>
+                                {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/home" exact className="nav-link" style={{fontSize: "1.5em"}}
@@ -114,7 +108,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                            render={(props) => <DictionaryPage store={this.props.store} />} />
                     <Route exact path="/trainings"
                            render={(props) => <TrainingPage store={this.props.store} />} />
-                    <Redirect to="/mywork" />
+                    <Redirect to="/home" />
                 </Switch>
             </>
         );

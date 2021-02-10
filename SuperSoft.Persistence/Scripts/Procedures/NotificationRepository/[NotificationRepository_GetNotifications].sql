@@ -15,7 +15,7 @@ BEGIN
 	WHERE [UserId] = @userId;
 
 	INSERT
-	INTO [Notification] (
+	INTO @notifications (
 		[Id],
 		[CreatedBy],
 		[Message],
@@ -31,5 +31,7 @@ BEGIN
 		SELECT [Id] 
 		FROM @notificationIdsForUser
 	);
+
+	SELECT * FROM @notificationIdsForUser;
 
 END
