@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UserRepository_GetUserInfo]
+﻿CREATE PROCEDURE [UserRepository_GetUserInfo]
 	@userId INT = NULL,
 	@email NVARCHAR(MAX) = NULL,
 	@login NVARCHAR(MAX) = NULL,
@@ -28,10 +28,10 @@ BEGIN
 		[Email]
 	FROM [User]
 	WHERE (@userId IS NULL OR [Id] = @userId)
-		AND  (@email IS NULL OR [Id] = @email)
-		AND  (@login IS NULL OR [Id] = @login)
-		AND  (@passwordHash IS NULL OR [Id] = @passwordHash)
-		AND  (@token IS NULL OR [Id] = @token);
+		AND  (@email IS NULL OR [Email] = @email)
+		AND  (@login IS NULL OR [Login] = @login)
+		AND  (@passwordHash IS NULL OR [PasswordHash] = @passwordHash)
+		AND  (@token IS NULL OR [Token] = @token);
 
 	SELECT * FROM @user;
 END

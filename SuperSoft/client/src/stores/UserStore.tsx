@@ -31,6 +31,7 @@ class UserStore {
             this.authorizationRequired = false;
         } else {
             this.authorizationRequired = true;
+            this.registrationRequired = false;
         }
     }
 

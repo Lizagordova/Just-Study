@@ -74,11 +74,16 @@ namespace SuperSoft.Controllers
 
 		private void SetUserData(UserRole role, string token, int userId)
 		{
-			HttpContext.Session.SetInt32("userId", userId);
-			if (!HttpContext.Request.Cookies.ContainsKey("token"))
+			HttpContext.Session.SetInt32("userId", userId);HttpContext.Response.Cookies.Append("token", token);
+			/*if (!HttpContext.Request.Cookies.ContainsKey("token"))
 			{
-				HttpContext.Response.Cookies.Append("token", token);
+				
 			}
+			else
+			{
+				HttpContext.Response.Cookies.Delete("token");
+				HttpContext.Response.Cookies.Append("token", token);
+			}*/
 
 			if (!HttpContext.Request.Cookies.ContainsKey("role"))
 			{

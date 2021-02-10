@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[TrackerRepository_GetTracker]
+﻿CREATE PROCEDURE [TrackerRepository_GetTracker]
 	@userId INT,
 	@courseId INT
 AS

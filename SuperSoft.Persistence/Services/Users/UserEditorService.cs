@@ -17,8 +17,7 @@ namespace SuperSoft.Persistence.Services.Users
 
 		public User AddOrUpdateUser(User user)
 		{
-			user.PasswordHash = user.PasswordHash;
-			user.Token = !string.IsNullOrEmpty(user.Token) ? GetToken() : user.Token;
+			user.Token = string.IsNullOrEmpty(user.Token) ? GetToken() : user.Token;
 			var userId = _userRepository.AddOrUpdateUser(user);
 			user.Id = userId;
 

@@ -98,7 +98,10 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetUserInfoParam(UserInfoQuery query)
 		{
 			var param = new DynamicTvpParameters();
-			param.Add("userId", query.UserId);
+			if (query.UserId != 0)
+			{
+				param.Add("userId", query.UserId);
+			}
 			param.Add("email", query.Email);
 			param.Add("login", query.Login);
 			param.Add("passwordHash", query.PasswordHash);

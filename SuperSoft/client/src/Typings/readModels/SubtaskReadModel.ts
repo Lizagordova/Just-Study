@@ -11,5 +11,6 @@ export class SubtaskReadModel
 	public path: string;
 	public order: number;
 	public subtaskType: SubtaskType;
+	public file: any;
 	public taskId: number;
 }

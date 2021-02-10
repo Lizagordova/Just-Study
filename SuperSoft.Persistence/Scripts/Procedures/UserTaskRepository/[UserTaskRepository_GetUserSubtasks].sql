@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[UserTaskRepository_GetUserSubtasks]
+﻿CREATE PROCEDURE [UserTaskRepository_GetUserSubtasks]
 	@taskId INT,
 	@userId INT
 AS

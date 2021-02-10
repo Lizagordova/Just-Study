@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import RootStore from "../../stores/RootStore";
-import { Label, Input, Button, Alert }from "reactstrap";
+import { Label, Input, Button, Alert } from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 
@@ -15,6 +15,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     firstName: string;
     lastName: string;
     login: string;
+    notRegistered: boolean;
 
     constructor() {
         // @ts-ignore
@@ -24,50 +25,106 @@ export class Registration extends React.Component<IRegistrationProps> {
             password: observable,
             firstName: observable,
             lastName: observable,
-            login: observable
+            login: observable,
+            notRegistered: observable,
         });
+    }
+
+    renderFirstNameInput() {
+        return(
+            <>
+                <Label className="formLabel">ИМЯ</Label>
+                <Input
+                    style={{width: "80%"}}
+                    onChange={(e) => this.inputFirstName(e)}/>
+            </>
+        );
+    }
+
+    renderLastNameInput() {
+        return(
+            <>
+                <Label className="formLabel">ФАМИЛИЯ</Label>
+                <Input
+                    style={{width: "80%"}}
+                    onChange={(e) => this.inputLastName(e)}/>
+            </>
+        );
+    }
+
+    renderLoginInput() {
+        return(
+            <>
+                <Label className="formLabel">ЛОГИН</Label>
+                <Input
+                    style={{width: "80%"}}
+                    onChange={(e) => this.inputLogin(e)}/>
+            </>
+        );
+    }
+
+    renderEmailInput() {
+        return(
+            <>
+                <Label className="formLabel">Email</Label>
+                <Input
+                    style={{width: "80%"}}
+                    onChange={(e) => this.inputEmail(e)}/>
+            </>
+        );
+    }
+
+    renderPasswordInput() {
+        return(
+            <>
+                <Label className="formLabel">ПАРОЛЬ</Label>
+                <Input
+                    style={{width: "80%"}}
+                    type="password"
+                    onChange={(e) => this.inputPassword(e)}/>
+            </>
+        );
+    }
+
+    renderRegisterButton() {
+        return(
+            <Button
+                style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
+                onClick={() => this.register()}>
+                ЗАРЕГИСТРИРОВАТЬСЯ
+            </Button>
+        );
+    }
+
+    renderWarnings() {
+        return(
+            <>
+            {this.notRegistered && <Alert color="danger">Что-то пошло не так и не удалось зарегистрироваться :(</Alert>}
+            </>
+        );
     }
 
     render() {
         return(
             <div className="col-12 authorizationForm">
+                {this.renderWarnings()}
                 <div className="row justify-content-center">
-                    <Label className="formLabel">ИМЯ</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        onChange={(e) => this.inputFirstName(e)}/>
+                    {this.renderFirstNameInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Label className="formLabel">ФАМИЛИЯ</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        onChange={(e) => this.inputLastName(e)}/>
+                    {this.renderLastNameInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Label className="formLabel">ЛОГИН</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        onChange={(e) => this.inputLogin(e)}/>
+                    {this.renderLoginInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Label className="formLabel">Email</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        onChange={(e) => this.inputEmail(e)}/>
+                    {this.renderEmailInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Label className="formLabel">ПАРОЛЬ</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        type="password"
-                        onChange={(e) => this.inputPassword(e)}/>
+                    {this.renderPasswordInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Button
-                        style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
-                        onClick={() => this.register()}>
-                        ЗАРЕГИСТРИРОВАТЬСЯ
-                    </Button>
+                    {this.renderRegisterButton()}
                 </div>
             </div>
         );
@@ -99,12 +156,14 @@ export class Registration extends React.Component<IRegistrationProps> {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName})
+            body: JSON.stringify({login: this.login, email: this.email, password: this.password, firstName: this.firstName, lastName: this.lastName})
         });
         if(response.status === 200) {
-            this.props.store.userStore.registrationRequire(false);
-            this.props.store.userStore.wrongCredetianalsToggle(false);
-            this.props.store.userStore.getCurrentUser();
+            this.props.store.userStore.getCurrentUser()
+                .then(() => {
+                    this.props.store.userStore.registrationRequire(false);
+                    this.props.store.userStore.wrongCredetianalsToggle(false);
+                });
         } else {
             
         }
