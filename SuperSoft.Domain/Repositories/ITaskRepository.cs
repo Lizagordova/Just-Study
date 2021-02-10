@@ -13,5 +13,6 @@ namespace SuperSoft.Domain.Repositories
 		List<Task> GetTasksByChoosenLesson(int lessonId);
 		Task GetTaskById(int taskId);
 		List<SubtaskAnswerGroup> GetSubtaskAnswerGroups(int subtaskId);
+		int AddOrUpdateAnswerGroup(int subtaskId, SubtaskAnswerGroup answerGroup);
 	}
 }

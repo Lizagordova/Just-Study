@@ -23,6 +23,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetTasksByChoosenLessonSp = "TaskRepository_GetTasksByChoosenLesson";
 		private const string GetTaskByIdSp = "TaskRepository_GetTaskById";
 		private const string GetSubtaskAnswerGroupsSp = "TaskRepository_GetSubtaskAnswerGroups";
+		private const string AddOrUpdateAnswerGroupSp = "TaskRepository_AddOrUpdateAnswerGroup";
 
 		public TaskRepository(
 			MapperService mapper
@@ -111,6 +112,27 @@ namespace SuperSoft.Persistence.Repositories
 			return answerGroups;
 		}
 
+		public int AddOrUpdateAnswerGroup(int subtaskId, SubtaskAnswerGroup answerGroup)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAnswerGroupParam(subtaskId, answerGroup);
+			var groupId = conn.Query<int>(AddOrUpdateAnswerGroupSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+
+			return groupId;
+		}
+
+		private DynamicTvpParameters GetAnswerGroupParam(int subtaskId, SubtaskAnswerGroup answerGroup)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("subtaskId", subtaskId);
+			var tvp = new TableValuedParameter("subtaskAnswers", "UDT_SubtaskAnswer");
+			var udt = answerGroup.Answers.Select(_mapper.Map<SubtaskAnswer, SubtaskAnswerUdt>).ToList();
+			tvp.AddGenericList(udt);
+			param.Add(tvp);
+
+			return param;
+		}
 		private TaskData GetTaskData(SqlMapper.GridReader reader)
 		{
 			var taskData = new TaskData

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.enums;
 
 namespace SuperSoft.Domain.Models
@@ -12,5 +13,6 @@ namespace SuperSoft.Domain.Models
 		public int Order { get; set; }
 		public SubtaskType SubtaskType { get; set; }
 		public IReadOnlyCollection<SubtaskAnswerGroup> AnswerGroups = Array.Empty<SubtaskAnswerGroup>();
+		public IFormFile File { get; set; }
 	}
 }

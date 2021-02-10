@@ -40,6 +40,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.Path))
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 					.ForMember(dest => dest.SubtaskType, opt => opt.MapFrom(src => src.SubtaskType))
+					.ForMember(dest => dest.File,opt => opt.MapFrom(src => src.File))
 					.ForMember(dest => dest.AnswerGroups, opt => opt.Ignore());
 			});
 

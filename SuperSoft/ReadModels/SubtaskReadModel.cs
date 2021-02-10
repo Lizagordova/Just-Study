@@ -1,4 +1,5 @@
-﻿using SuperSoft.Configuration.Typings.Attributes;
+﻿using Microsoft.AspNetCore.Http;
+using SuperSoft.Configuration.Typings.Attributes;
 using SuperSoft.Domain.enums;
 
 namespace SuperSoft.ReadModels
@@ -11,6 +12,7 @@ namespace SuperSoft.ReadModels
 		public string Path { get; set; }
 		public int Order { get; set; }
 		public SubtaskType SubtaskType { get; set; }
+		public IFormFile File { get; set; }
 		public int TaskId { get; set; }
 	}
 }

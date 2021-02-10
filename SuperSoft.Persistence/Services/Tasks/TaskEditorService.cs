@@ -1,20 +1,20 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System.Text.RegularExpressions;
+using SuperSoft.Domain.enums;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Tasks;
+using SuperSoft.Persistence.Helpers;
 
 namespace SuperSoft.Persistence.Services.Tasks
 {
 	public class TaskEditorService : ITaskEditorService
 	{
 		private readonly ITaskRepository _taskRepository;
-		private readonly IUserTaskRepository _userTaskRepository;
 
 		public TaskEditorService(
-			ITaskRepository taskRepository,
-			IUserTaskRepository userTaskRepository)
+			ITaskRepository taskRepository)
 		{
 			_taskRepository = taskRepository;
-			_userTaskRepository = userTaskRepository;
 		}
 
 		public int AddOrUpdateTask(Task task)
@@ -23,12 +23,45 @@ namespace SuperSoft.Persistence.Services.Tasks
 			var subtasks = task.Subtasks;
 			foreach (var taskSubtask in subtasks)
 			{
-				taskSubtask.Id = _taskRepository.AddOrUpdateSubtask(taskSubtask, taskId);
+				var subtask = PreHandleSubtask(taskSubtask, taskId);
+				var subtaskId = _taskRepository.AddOrUpdateSubtask(subtask, taskId);
+				subtask.Id = subtaskId;
+				taskSubtask.Id = subtaskId;
 			}
 
 			task.Subtasks = subtasks;
 
 			return taskId;
+		}
+
+		private Subtask PreHandleSubtask(Subtask subtask, int taskId)
+		{
+			var subtaskType = subtask.SubtaskType;
+			if (subtaskType == SubtaskType.FillGaps || subtaskType == SubtaskType.RightVerbForm || subtaskType == SubtaskType.InsertWordsIntoGaps)
+			{
+				AddOrUpdateAnswerGroups(subtask);
+			}
+
+			if (subtaskType == SubtaskType.DetailedAnswer || subtaskType == SubtaskType.LoadAudio || subtaskType == SubtaskType.LoadFile)
+			{
+				var bytes = FileHelper.GetBytes(subtask.File);
+				var path = GetPath(taskId, subtask.File.FileName);
+				FileHelper.SaveContent(bytes, path);
+				subtask.Path = path;
+			}
+			return subtask;
+		}
+
+		
+		private void AddOrUpdateAnswerGroups(Subtask subtask)
+		{
+			var groups = SubtaskParserHelper.GetAnswerGroupsMatchCollection(subtask.Text, subtask.SubtaskType);
+			foreach (Match group in groups)
+			{
+				var answerGroup = SubtaskParserHelper.GetAnswerGroup(group.Value, subtask.SubtaskType);
+				var groupId = _taskRepository.AddOrUpdateAnswerGroup(subtask.Id, answerGroup);//todo: довольно опасная штука, особенно если 2 раза добавлять
+				subtask.Text = subtask.Text.Replace(group.Value, $@"[{groupId}]");
+			}
 		}
 
 		public void AttachTaskToLesson(int taskId, int lessonId, int order)
@@ -53,14 +86,20 @@ namespace SuperSoft.Persistence.Services.Tasks
 			_taskRepository.DeleteSubtask(subtaskId);
 		}
 
-		public void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId)
+		private string GetPath(int taskId, string fileName)
 		{
-			_userTaskRepository.AddOrUpdateUserSubtask(userSubtask, userId, subtaskId);
-		}
+			var path = "";
+			if (fileName.Contains("jpg") || fileName.Contains("jpeg") || fileName.Contains("png"))
+			{
+				path = PathHelper.GetTaskImagePath(taskId);
+			}
+			else
+			{
+				path = PathHelper.GetTaskPath(taskId);
+			}
+			path = $"{path}/{fileName}";
 
-		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup userGroup, int userId)
-		{
-			_userTaskRepository.AddOrUpdateUserSubtaskAnswerGroup(userGroup, userId);
+			return path;
 		}
 	}
 }

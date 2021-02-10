@@ -32,27 +32,6 @@ namespace SuperSoft.Persistence.Services.Tasks
 			return tasks;
 		}
 
-		public List<UserSubtask> GetUserSubtasks(int taskId, int userId)
-		{
-			var userSubtasks = _userTaskRepository.GetUserSubtasks(taskId, userId);
-
-			return userSubtasks;
-		}
-
-		public UserSubtask GetUserSubtask(int subtaskId, int userId)
-		{
-			var userSubtask = _userTaskRepository.GetUserSubtask(subtaskId, userId);
-
-			return userSubtask;
-		}
-
-		public UserTask GetUserTask(int taskId, int userId)
-		{
-			var userTask = _userTaskRepository.GetUserTask(taskId, userId);
-
-			return userTask;
-		}
-
 		public Task GetTaskById(int taskId)
 		{
 			var task = _taskRepository.GetTaskById(taskId);

@@ -38,9 +38,9 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 		public int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId, IFormFile file)
 		{
-			var bytes = GetBytes(file);
+			var bytes = FileHelper.GetBytes(file);
 			var path = GetPath(lessonId, file.FileName);
-			SaveContent(bytes, path);
+			FileHelper.SaveContent(bytes, path);
 			lessonMaterial.Path = path;
 			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
 
@@ -58,31 +58,17 @@ namespace SuperSoft.Persistence.Services.Lessons
 			_lessonRepository.DeleteMaterial(materialId);
 		}
 
-		private byte[] GetBytes(IFormFile file)
-		{
-			byte[] fileBytes;
-			using (var memoryStream = new MemoryStream())
-			{
-				file.CopyTo(memoryStream);
-				fileBytes = memoryStream.ToArray();
-			}
-
-			return fileBytes;
-		}
-
-		private void SaveContent(byte[] fileBytes, string path)
-		{
-			System.IO.File.WriteAllBytes(path, fileBytes);
-		}
-
 		private string GetPath(int lessonId, string fileName)
 		{
-			var path = PathHelper.GetLessonMaterialPath(lessonId);
-			if (!Directory.Exists(path))
+			var path = "";
+			if (fileName.Contains("jpg") || fileName.Contains("jpeg") || fileName.Contains("png"))
 			{
-				Directory.CreateDirectory(path);
+				path = PathHelper.GetLessonImagePath(lessonId);
 			}
-
+			else
+			{
+				path = PathHelper.GetLessonMaterialPath(lessonId);
+			}
 			path = $"{path}/{fileName}";
 
 			return path;

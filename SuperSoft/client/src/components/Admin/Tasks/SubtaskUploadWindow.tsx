@@ -101,7 +101,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
 
     inputFile(event: React.ChangeEvent<HTMLInputElement>) {
         // @ts-ignore
-        let file = event.target.files[0];
+        this.subtask.files.push(event.target.files[0]);
         this.updateParentSubtask();
     }
 

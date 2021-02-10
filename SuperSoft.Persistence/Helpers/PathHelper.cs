@@ -11,6 +11,41 @@ namespace SuperSoft.Persistence.Helpers
 			path = $"{path}/{lessonId}";
 			CreateDirectory(path);
 			path = $"{path}/materials";
+			CreateDirectory(path);
+
+			return path;
+		}
+
+		public static string GetTaskPath(int taskId)
+		{
+			var path = "ClientApp/build/tasks";
+			CreateDirectory(path);
+			path = $"{path}/{taskId}";
+			CreateDirectory(path);
+
+			return path;
+		}
+
+		public static string GetTaskImagePath(int taskId)
+		{
+			var path = "ClientApp/build/images";
+			CreateDirectory(path);
+			path =$"{path}/tasks";
+			CreateDirectory(path);
+			path = $"{path}/{taskId}";
+			CreateDirectory(path);
+
+			return path;
+		}
+
+		public static string GetLessonImagePath(int lessonId)
+		{
+			var path = "ClientApp/build/images";
+			CreateDirectory(path);
+			path =$"{path}/lessons";
+			CreateDirectory(path);
+			path = $"{path}/{lessonId}";
+			CreateDirectory(path);
 
 			return path;
 		}
