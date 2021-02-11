@@ -106,6 +106,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     changeCourse(course: CourseViewModel) {
         this.props.store.courseStore.setChoosenCourse(course);
         this.props.store.courseStore.getUsersByCourse(course.id);
+        this.props.store.lessonStore.getLessonsByCourse(course.id);
     }
 }
 

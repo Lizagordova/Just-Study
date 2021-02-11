@@ -37,6 +37,17 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.ExpireDate, opt => opt.Ignore());
 			});
 
+			AddMapping<LessonCourseUdt, Lesson>(cfg =>
+			{
+				cfg.CreateMap<LessonCourseUdt, Lesson>()
+					.ForMember(dest => dest.Id, opt => opt.Ignore())
+					.ForMember(dest => dest.Description, opt => opt.Ignore())
+					.ForMember(dest => dest.Name, opt => opt.Ignore())
+					.ForMember(dest => dest.Order, opt => opt.Ignore())
+					.ForMember(dest => dest.StartDate, opt => opt.Ignore())
+					.ForMember(dest => dest.ExpireDate, opt => opt.Ignore());
+			});
+
 			AddMapping<LessonMaterial, LessonMaterialUdt>(cfg =>
 			{
 				cfg.CreateMap<LessonMaterial, LessonMaterialUdt>()

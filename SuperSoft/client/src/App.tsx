@@ -4,6 +4,7 @@ import { RootStore } from "./stores/RootStore";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-social/bootstrap-social.css';
 import 'font-awesome/css/font-awesome.min.css';
+import 'react-calendar/dist/Calendar.css';
 import './styles/common.css';
 import { BrowserRouter, NavLink } from "react-router-dom";
 import { Authorization } from "./components/Authorization/Authorization";

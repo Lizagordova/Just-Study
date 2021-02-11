@@ -22,6 +22,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     expireDate: Date | Date[] = new Date();
     notSaved: boolean = false;
     saved: boolean = false;
+    name: string = "";
 
     constructor() {
         // @ts-ignore
@@ -34,7 +35,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             startDate: observable,
             expireDate: observable,
             notSaved: observable,
-            saved: observable
+            saved: observable,
+            name: observable,
         });
     }
 
@@ -47,6 +49,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 this.description = lessonToEdit.description;
                 this.startDate = lessonToEdit.startDate;
                 this.expireDate = lessonToEdit.expireDate;
+                this.name = lessonToEdit.name;
             }
             this.addOrUpdateNewLesson = true;
         } else {
@@ -72,6 +75,20 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                     style={{width: "70%"}}
                     value={this.description}
                     onChange={(e) => this.inputDescription(e)}/>
+            </>
+        );
+    }
+
+    renderNameDescription() {
+        return(
+            <>
+                <Label className="inputLabel" align="center">
+                    Введите название урока
+                </Label>
+                <Input
+                    style={{width: "70%"}}
+                    value={this.name}
+                    onChange={(e) => this.inputName(e)}/>
             </>
         );
     }
@@ -115,7 +132,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderSaveLessonButton() {
         return (
             <Button
-                className="saveLessonButton"
+                outline color="success"
+                style={{width: "80%", marginBottom: "10px"}}
                 onClick={() => this.addOrUpdateLesson()}>
                 Сохранить урок
             </Button>
@@ -127,6 +145,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             <>
                 <ModalBody>
                     {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранилось</Alert>}
+                    <div className="row justify-content-center">
+                        {this.renderNameDescription()}
+                    </div>
                     <div className="row justify-content-center">
                         {this.renderLessonDescription()}
                     </div>
@@ -142,9 +163,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                         </div>
                     </div>
                 </ModalBody>
-                <ModalFooter>
+                <div className="row justify-content-center">
                     {this.renderSaveLessonButton()}
-                </ModalFooter>
+                </div>
             </>
         );
     }
@@ -167,6 +188,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 isOpen={this.addOrUpdateNewLesson}
                 toggle={() => this.addOrUpdateNewLessonToggle()}
             >
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.addOrUpdateNewLessonToggle()}
+                   className="fa fa-window-close" aria-hidden="true"/>
             <div className="row justify-content-center">
                 УРОК
             </div>
@@ -205,6 +229,10 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     inputOrder(event: React.FormEvent<HTMLInputElement>) {
         this.order = Number(event.currentTarget.value);
+    }
+
+    inputName(event: React.FormEvent<HTMLInputElement>) {
+        this.name = event.currentTarget.value;
     }
 
     inputDate(date: Date | Date[], dateType: string) {

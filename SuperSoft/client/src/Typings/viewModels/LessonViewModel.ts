@@ -6,6 +6,7 @@ export class LessonViewModel
 {
 	public id: number;
 	public order: number;
+	public name: string;
 	public description: string;
 	public startDate: any;
 	public expireDate: any;

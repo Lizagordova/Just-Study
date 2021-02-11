@@ -14,8 +14,8 @@ class IParticipantsPageProps {
 
 @observer
 class ParticipantsPage extends Component<IParticipantsPageProps> {
-    participants: UserViewModel[];
-    restUsers: UserViewModel[];
+    participants: UserViewModel[] = new Array<UserViewModel>();
+    restUsers: UserViewModel[] = new Array<UserViewModel>();
     saved: boolean;
     notSaved: boolean;
 

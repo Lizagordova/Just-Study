@@ -15,6 +15,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
 					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate));
 			});
@@ -25,6 +26,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
 					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
 					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate));
 			});

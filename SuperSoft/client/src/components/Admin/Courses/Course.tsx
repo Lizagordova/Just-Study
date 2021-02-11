@@ -82,9 +82,11 @@ export class Course extends Component<ICourseProps> {
     }
 
     render() {
+        let courseChoosen = this.props.store.courseStore.choosenCourse.id !== undefined;
         return(
             <>
-                {this.renderCourseMenu()}
+                {courseChoosen && this.renderCourseMenu()}
+                {!courseChoosen && <Alert>Выберите курс</Alert>}
             </>
         );
     }

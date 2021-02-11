@@ -7,6 +7,7 @@ export class LessonReadModel
 	public id: number;
 	public order: number;
 	public courseId: number;
+	public name: string;
 	public description: string;
 	public startDate: any;
 	public expireDate: any;

@@ -211,6 +211,7 @@ namespace SuperSoft.Persistence.Repositories
 			var lesson = _mapper.Map<LessonCourseUdt, Lesson>(lessonCourseUdt);
 			lesson.Name = lessonUdt.Name;
 			lesson.Description = lessonUdt.Description;
+			lesson.Id = lessonUdt.Id;
 
 			return lesson;
 		}
