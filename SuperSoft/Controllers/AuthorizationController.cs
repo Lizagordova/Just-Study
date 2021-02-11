@@ -72,26 +72,6 @@ namespace SuperSoft.Controllers
 			return new StatusCodeResult(401);
 		}
 
-		private void SetUserData(UserRole role, string token, int userId)
-		{
-			HttpContext.Session.SetInt32("userId", userId);HttpContext.Response.Cookies.Append("token", token);
-			/*if (!HttpContext.Request.Cookies.ContainsKey("token"))
-			{
-				
-			}
-			else
-			{
-				HttpContext.Response.Cookies.Delete("token");
-				HttpContext.Response.Cookies.Append("token", token);
-			}*/
-
-			if (!HttpContext.Request.Cookies.ContainsKey("role"))
-			{
-				HttpContext.Response.Cookies.Append("role", role.ToString());
-			}
-			HttpContext.Session.SetString("authorized", "true");
-		}
-
 		[HttpPost]
 		[Route("/authorization")]
 		public ActionResult Authorization([FromBody]UserReadModel userReadModel)
@@ -100,15 +80,35 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var userInfo = _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = user.PasswordHash, Email = user.Email, Login = user.Login });
-
+				SetUserData(userInfo.Role, userInfo.Token, userInfo.Id);
 				return userInfo != null ? new OkResult() : new StatusCodeResult(401);
 			}
 			catch (Exception e)
 			{
-				_logService.AddLogAddOrUpdateUserException(_logger, e);
-				
+				_logService.AddLogAuthorizationProblemException(_logger, e, userReadModel.Login);
+
 				return new StatusCodeResult(500);
 			}
+		}
+
+		[HttpGet]//todo: разобраться потом, как HttpDelete делать fetch-ом
+		[Route("/exit")]
+		public ActionResult Exit()
+		{
+			HttpContext.Response.Cookies.Delete("token");
+			HttpContext.Response.Cookies.Delete("userId");
+			HttpContext.Response.Cookies.Delete("role");
+			HttpContext.Response.Cookies.Delete("authorization");
+
+			return new OkResult();
+		}
+
+		private void SetUserData(UserRole role, string token, int userId)
+		{
+			HttpContext.Session.SetInt32("userId", userId);
+			HttpContext.Response.Cookies.Append("token", token);
+			HttpContext.Response.Cookies.Append("role", role.ToString());
+			HttpContext.Session.SetString("authorized", "true");
 		}
 	}
 }

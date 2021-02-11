@@ -276,6 +276,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAuthorizationProblemException(ILogger logger, Exception e, string login)
+		{
+			var customMessage = $"Не удалось авторизоваться польователю c логином={login}";
+			AddLog(logger, e, customMessage);
+		}
+		
 		public void AddLogGetTrackerException(ILogger logger, Exception e, int userId, int courseId)
 		{
 			var customMessage = $"Не удалось получить трекер для пользователя с userId={userId} и courseId={courseId}.";
@@ -297,7 +303,7 @@ namespace SuperSoft.Services
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
-			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error, Date = new DateTime() });
+			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error, Date = DateTime.Now });
 		}
 	}
 }

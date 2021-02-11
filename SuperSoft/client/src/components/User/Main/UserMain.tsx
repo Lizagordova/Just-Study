@@ -114,8 +114,11 @@ export class UserMain extends React.Component<IUserMainProps> {
         );
     }
 
-    exit() {
-        this.props.store.reset();
+    async exit() {
+        const response = await fetch("/exit");
+        if(response.status === 200) {
+            this.props.store.reset();
+        }
     }
 
     renderCoursesToggler(courses: CourseViewModel[]) {

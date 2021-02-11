@@ -10,50 +10,80 @@ interface IAuthorizationProps {
 
 @observer
 export class Authorization extends React.Component<IAuthorizationProps> {
-    email: string;
+    login: string;
     password: string;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            email: observable,
+            login: observable,
             password: observable
         });
+    }
+
+    renderWarnings() {
+        return(
+            <>
+                {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
+                    <Alert color="danger">Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
+                </div> }
+            </>
+        );
+    }
+
+    renderLoginInput() {
+        return (
+            <>
+                <Label className="formLabel">ЛОГИН</Label>
+                <Input
+                    style={{width: "80%"}}
+                    onChange={(e) => this.inputLogin(e)}/>
+            </>
+        );
+    }
+
+    renderPasswordInput() {
+        return (
+            <>
+                <Label style={{width: "100%"}}>ПАРОЛЬ</Label>
+                <Input
+                    style={{width: "80%"}}
+                    type="password"
+                    onChange={(e) => this.inputPassword(e)}/>
+            </>
+        );
+    }
+
+    renderEnterButton() {
+        return(
+            <Button
+                style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
+                onClick={() => this.authorize()}>
+                ВОЙТИ
+            </Button>
+        );
     }
 
     render() {
         return(
             <div className="container-fluid authorizationForm">
-                {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
-                    <Alert color="danger">Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
-                </div> }
+                {this.renderWarnings()}
                 <div className="row justify-content-center">
-                    <Label style={{width: "100%", marginTop: "10px"}}>EMAIL</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        onChange={(e) => this.inputEmail(e)}/>
+                    {this.renderLoginInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Label style={{width: "100%"}}>ПАРОЛЬ</Label>
-                    <Input
-                        style={{width: "80%"}}
-                        type="password"
-                        onChange={(e) => this.inputPassword(e)}/>
+                    {this.renderPasswordInput()}
                 </div>
                 <div className="row justify-content-center">
-                    <Button
-                        style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
-                        onClick={() => this.authorize()}>
-                        ВОЙТИ
-                    </Button>
+                    {this.renderEnterButton()}
                 </div>
             </div>
         );
     }
 
-    inputEmail(event: React.FormEvent<HTMLInputElement>) {
-        this.email = event.currentTarget.value;
+    inputLogin(event: React.FormEvent<HTMLInputElement>) {
+        this.login = event.currentTarget.value;
     }
 
     inputPassword(event: React.FormEvent<HTMLInputElement>) {
@@ -66,12 +96,14 @@ export class Authorization extends React.Component<IAuthorizationProps> {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({email: this.email, password: this.password})
+            body: JSON.stringify({login: this.login, password: this.password})
         });
         if(response.status === 200) {
-            this.props.store.userStore.authorizationRequire(false);
-            this.props.store.userStore.wrongCredetianalsToggle(false);
-            this.props.store.userStore.getCurrentUser();
+            this.props.store.userStore.getCurrentUser()
+                .then(() => {
+                    this.props.store.userStore.authorizationRequire(false);
+                    this.props.store.userStore.wrongCredetianalsToggle(false);
+                });
         } else {
             this.props.store.userStore.authorizationRequire(true);
             this.props.store.userStore.wrongCredetianalsToggle(true);

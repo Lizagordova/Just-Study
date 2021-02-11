@@ -21,8 +21,9 @@ namespace Tests.RepositoriesTests
 		{
 			var course = new Course()
 			{
-				Name = "Na Starte",
-				Description = "На старте такой прекрасный курс"
+				Id = 3,
+				Name = "NaStarte",
+				Description = "На старте такой прекрасный курс!"
 			};
 			var courseId = _courseRepository.AddOrUpdateCourse(course);
 			var result = courseId != 0;
@@ -38,6 +39,13 @@ namespace Tests.RepositoriesTests
 			var result = courseId == course.Id;
 			Console.WriteLine(courseId);
 			Assert.That(result);
+		}
+
+		[Test]
+		public void DeleteCourse_Scenario_ExpectedResult()
+		{
+			_courseRepository.DeleteCourse(1);
+			_courseRepository.DeleteCourse(2);
 		}
 	}
 }

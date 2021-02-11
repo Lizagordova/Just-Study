@@ -10,7 +10,7 @@ class IAddNewCourseProps {
 
 @observer
 export class AddNewCourse extends Component<IAddNewCourseProps> {
-    addNewCourse: boolean = true;
+    addNewCourse: boolean = false;
     id: number = 0;
     name: string = "";
     description: string = "";
