@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import CourseStore from "../../../stores/CourseStore";
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Input } from "reactstrap";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 
@@ -15,7 +15,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     name: string = "";
     description: string = "";
     notSaved: boolean = false;
-    saved: boolean = true;
+    saved: boolean = false;
 
     constructor() {
         // @ts-ignore
@@ -37,7 +37,38 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                     Добавить курс
                 </Button>
             </>
-        )
+        );
+    }
+
+    renderCourseNameInput() {
+        return(
+            <>
+                <Label>
+                    Введите название курса
+                </Label>
+                <Input
+                    onChange={(e) => this.inputName(e)}/>
+            </>
+        );
+    }
+
+    renderDescriptionInput() {
+        return(
+            <>
+                <Label>Введите описание курса</Label>
+                <Input onChange={(e) => this.inputDescription(e)}/>
+            </>
+        );
+    }
+
+    renderSaveButton() {
+        return(
+            <Button
+                className="saveLessonButton"
+                onClick={() => this.addCourse()}>
+                Сохранить курс
+            </Button>
+        );
     }
 
     renderBody() {
@@ -47,25 +78,26 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                     {this.notSaved && <Alert color="danger">Что-то пошло не так и курс не сохранилось</Alert>}
                     {this.saved && <Alert color="success">Всё удачно сохранилось</Alert>}
                     <div className="row justify-content-center">
-                        <label className="instruction">
-                            Введите название курса
-                        </label>
-                        <input
-                            onChange={(e) => this.inputName(e)}/>
+                        {this.renderCourseNameInput()}
                     </div>
                     <div className="row justify-content-center">
-                        <label>Введите описание курса</label>
-                        <input onChange={(e) => this.inputDescription(e)}/>
+                        {this.renderDescriptionInput()}
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button
-                        className="saveLessonButton"
-                        onClick={() => this.addCourse()}>
-                        Сохранить курс
-                    </Button>
+                    {this.renderSaveButton()}
                 </ModalFooter>
             </>
+        );
+    }
+
+    renderCancelButton() {
+        return(
+            <Button
+                color="primary"
+                onClick={() => this.addNewCourseToggle()}>
+                ОТМЕНИТЬ
+            </Button>
         );
     }
 
@@ -81,11 +113,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                     СОЗДАНИЕ НОВОГО КУРСА
                 </ModalHeader>
                 {this.renderBody()}
-                <Button
-                    color="primary"
-                    onClick={() => this.addNewCourseToggle()}>
-                    ОТМЕНИТЬ
-                </Button>
+                {this.renderCancelButton()}
             </Modal>
         );
     }

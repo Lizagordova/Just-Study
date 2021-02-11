@@ -59,16 +59,17 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             <Button outline color="primary" onClick={() => this.addOrUpdateNewLessonToggle()}>
                 Добавить урок
             </Button>
-        )
+        );
     }
 
     renderLessonDescription() {
         return(
             <>
-                <Label className="instruction" style={{width: "100%"}} align="center">
+                <Label className="inputLabel" align="center">
                     Введите описание урока
                 </Label>
                 <Input
+                    className="dataInput"
                     value={this.description}
                     onChange={(e) => this.inputDescription(e)}/>
             </>
@@ -78,8 +79,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderOrderInput() {
         return(
             <>
-                <Label style={{width: "100%"}} align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
+                <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
                 <Input
+                    className="dataInput"
                     value={this.order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
@@ -89,7 +91,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderStartDateInput() {
         return(
             <>
-                <Label style={{width: "100%"}} align="center">Выберите дату начала доступа урока</Label>
+                <Label className="inputLabel" align="center">Выберите дату начала доступа урока</Label>
                 <Calendar
                     value={this.startDate}
                     onChange={(date) => this.inputDate(date, "startDate")}
@@ -101,7 +103,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderEndDateInput() {
         return(
             <>
-                <Label style={{width: "100%"}} align="center">Выберите дату окончания доступа урока</Label>
+                <Label className="inputLabel" align="center">Выберите дату окончания доступа урока</Label>
                 <Calendar
                     value={this.expireDate}
                     onChange={(date) => this.inputDate(date, "expireDate")}
@@ -165,9 +167,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 isOpen={this.addOrUpdateNewLesson}
                 toggle={() => this.addOrUpdateNewLessonToggle()}
             >
-                <ModalHeader>
-                    УРОК
-                </ModalHeader>
+            <div className="row justify-content-center">
+                УРОК
+            </div>
                 {this.renderBody()}
                 {this.renderCancelButton()}
             </Modal>

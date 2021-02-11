@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
-import { Card, CardHeader } from "reactstrap";
+import { Card, CardHeader, Alert } from "reactstrap";
 import { Nav, Tab } from "react-bootstrap";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
@@ -31,6 +31,24 @@ export class Course extends Component<ICourseProps> {
     componentDidMount(): void {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         this.props.store.lessonStore.getLessonsByCourse(courseId);
+    }
+
+    renderCourseContent() {
+        let coursesExists = this.props.store.courseStore.choosenCourse.id !== undefined;
+        console.log("coursesExists", coursesExists);
+        if(!coursesExists) {
+            return(
+                <Alert>Добавьте курсы. Пока нет ни одного курса.</Alert>
+            );
+        } else {
+            return(
+                <>
+                    {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
+                    {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
+                    {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
+                </>
+            );
+        }
     }
 
     renderCourseMenu() {
@@ -66,9 +84,7 @@ export class Course extends Component<ICourseProps> {
                         </Nav>
                     </CardHeader>
                 </Card>
-                {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
-                {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
-                {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
+                {this.renderCourseContent()}
             </Tab.Container>
         );
     }

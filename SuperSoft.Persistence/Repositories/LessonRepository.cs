@@ -77,7 +77,7 @@ namespace SuperSoft.Persistence.Repositories
 		public List<Lesson> GetLessonsByCourse(int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetGetMaterialsByLessonParam(courseId);
+			var param = GetCourseParam(courseId);
 			var response = conn.QueryMultiple(GetLessonsByCourseSp, param, commandType: CommandType.StoredProcedure);
 			var data = GetLessonData(response);
 			var lessons = MapLessonsList(data);
@@ -135,6 +135,14 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("lessonId", lessonId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetCourseParam(int courseId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("courseId", courseId);
 
 			return param;
 		}

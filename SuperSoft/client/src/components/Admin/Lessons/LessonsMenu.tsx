@@ -53,7 +53,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                 {this.notDeleted && <Alert>Что-то пошло не так и урок не удалился</Alert>}
                 <Row>
                     <Col sm={2}>
-                        <Button color="primary" className="lessonToggle" onClick={() => this.toggleNav()}>УРОКИ</Button>
+                        <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">
                                 {lessons.map((lesson) => {
@@ -82,11 +82,11 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                                 </div>
                                             </Nav.Item>
                                         </>
-                                    )
+                                    );
                                 })}
-                                <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined}/>
                             </Nav>
                         </Collapse>
+                        <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined}/>
                     </Col>
                     <Col sm={10}>
                         <LessonPage store={this.props.store}/>
@@ -94,15 +94,15 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                     {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit}  />}
                 </Row>
             </Tab.Container>
-        )
+        );
     }
 
     render() {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <>
-                {lessons !== undefined && lessons.length > 0 && this.renderLessonsMenu(lessons)}
-                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
+                {lessons !== undefined && this.renderLessonsMenu(lessons)}
+                {lessons === undefined && renderSpinner()}
             </>
         );
     }
