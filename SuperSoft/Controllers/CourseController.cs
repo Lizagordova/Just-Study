@@ -49,15 +49,17 @@ namespace SuperSoft.Controllers
 			}
 
 			var course = _mapper.Map<CourseReadModel, Course>(courseReadModel);
+			int courseId = 0;
 			try
 			{
-				var courseId = _courseEditor.AddOrUpdateCourse(course);
+				courseId = _courseEditor.AddOrUpdateCourse(course);
 				_courseEditor.AttachTeacherToCourse(courseId, userId);
 
 				return new JsonResult(courseId);
 			}
 			catch (Exception e)
 			{
+				_courseEditor.DeleteCourse(courseId);
 				_logService.AddLogAddOrUpdateCourseException(_logger, e, course);
 
 				return new StatusCodeResult(500);

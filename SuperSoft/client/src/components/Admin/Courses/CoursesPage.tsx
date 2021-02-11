@@ -29,45 +29,58 @@ class CoursesPage extends Component<ICoursesPageProps> {
         this.props.store.courseStore.getCoursesForTeacher();
     }
 
+    renderCourse() {
+        let coursesExists = this.props.store.courseStore.coursesForTeacher.length !== 0;
+        if(!coursesExists) {
+            return(
+                <Alert>Добавьте курсы. Пока нет ни одного курса.</Alert>
+            );
+        } else {
+            return (
+                <Course store={this.props.store}/>
+            );
+        }
+    }
+
     renderCoursesMenu(courses: CourseViewModel[]) {
-        return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
-                <Row>
-                    <Col sm={2}>
-                        <Nav  variant="pills" className="flex-column">
-                            <div className="container-fluid">
-                            {courses.map((course) => {
-                                return (
-                                    <Nav.Item key={course.id}>
-                                        <div className="row" key={course.id}>
-                                            <div className="col-8">
-                                                <Nav.Link
-                                                      eventKey={course.id}
-                                                      className="nav-link lesson"
-                                                      onClick={() => this.changeCourse(course)}>
-                                                    {course.name}
-                                                </Nav.Link>
-                                            </div>
-                                            <div className="col-2 col-lg-offset-10">
-                                                <i className="fa fa-window-close"
-                                                   aria-hidden="true"
-                                                   onClick={() => this.deleteCourse(course.id)}/>
-                                            </div>
-                                        </div>
-                                    </Nav.Item>
-                                );
-                            })}
-                            {<AddNewCourse courseStore={this.props.store.courseStore}/>}
-                            </div>
-                        </Nav>
-                    </Col>
-                    <Col sm={10}>
-                        <Course store={this.props.store}/>
-                    </Col>
-                </Row>
-            </Tab.Container>
-        );
+            return (
+                <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                    {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
+                    <Row>
+                        <Col sm={2}>
+                            <Nav variant="pills" className="flex-column">
+                                <div className="container-fluid">
+                                    {courses.map((course) => {
+                                        return (
+                                            <Nav.Item key={course.id}>
+                                                <div className="row" key={course.id}>
+                                                    <div className="col-8">
+                                                        <Nav.Link
+                                                            eventKey={course.id}
+                                                            className="nav-link lesson"
+                                                            onClick={() => this.changeCourse(course)}>
+                                                            {course.name}
+                                                        </Nav.Link>
+                                                    </div>
+                                                    <div className="col-2 col-lg-offset-10">
+                                                        <i className="fa fa-window-close"
+                                                           aria-hidden="true"
+                                                           onClick={() => this.deleteCourse(course.id)}/>
+                                                    </div>
+                                                </div>
+                                            </Nav.Item>
+                                        );
+                                    })}
+                                    {<AddNewCourse courseStore={this.props.store.courseStore}/>}
+                                </div>
+                            </Nav>
+                        </Col>
+                        <Col sm={10}>
+                            {this.renderCourse()}
+                        </Col>
+                    </Row>
+                </Tab.Container>
+            );
     }
 
     render() {

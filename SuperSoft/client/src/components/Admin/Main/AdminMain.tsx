@@ -7,6 +7,7 @@ import CoursesPage from "../Courses/CoursesPage";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
 import TrainingPage from "../../Common/Training/TrainingPage";
 import UsersPage from "../Users/UsersPage";
+import "../../../styles/lesson.css";
 
 @observer
 export class AdminMain extends React.Component<IAdminMainProps> {
@@ -19,38 +20,38 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                             <NavItem>
                                 <NavLink to="/courses" exact className="nav-link" style={{fontSize: "1.5em"}}
                                     activeStyle={{
-                                        color: '#ffffff',
-                                        backgroundColor: '#003B46',
-                                        textDecoration: 'none'
-                                         }}>
+                                    color: '#ffffff',
+                                    backgroundColor: '#4169E1',
+                                    textDecoration: 'none'
+                                    }}>
                                     КУРСЫ
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
                                     activeStyle={{
-                                        color: '#ffffff',
-                                        backgroundColor: '#003B46',
-                                        textDecoration: 'none'
-                                         }}>
+                                    color: '#ffffff',
+                                    backgroundColor: '#4169E1',
+                                    textDecoration: 'none'
+                                    }}>
                                     ПОЛЬЗОВАТЕЛИ
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>СЛОВАРЬ</NavLink>
+                                     activeStyle={{
+                                     color: '#ffffff',
+                                     backgroundColor: '#4169E1',
+                                     textDecoration: 'none'
+                                    }}>СЛОВАРЬ</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
-                                             textDecoration: 'none'
-                                         }}>ТРЕНИРОВКИ</NavLink>
+                                     activeStyle={{
+                                     color: '#ffffff',
+                                     backgroundColor: '#4169E1',
+                                     textDecoration: 'none'
+                                     }}>ТРЕНИРОВКИ</NavLink>
                             </NavItem>
                             <Button
                                 outline color="primary"

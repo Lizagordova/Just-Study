@@ -131,7 +131,7 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateUserCourseParam(UserCourse userCourse)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("userCourse", "UDT_UserCourse");
+			var tvp = new TableValuedParameter("userCourse", "UDT_User_Course");
 			var udt = _mapper.Map<UserCourse, UserCourseUdt>(userCourse);
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);

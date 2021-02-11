@@ -26,7 +26,9 @@ namespace SuperSoft.Persistence.Services.Courses
 			{
 				UserId = teacherId,
 				CourseId = courseId,
-				CourseRole = CourseRole.Teacher
+				CourseRole = CourseRole.Teacher,
+				ExpireDate = null,
+				StartDate = null
 			};
 			_courseRepository.AddOrUpdateUserCourse(userCourse);
 		}

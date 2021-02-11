@@ -21,11 +21,14 @@
     height: 150px;
 }
 
-
 .inputLabel {
     width: 100%;
 }
 
 .dataInput {
     width: 70%;
+}
+
+.saveLessonButton {
+    margin-top: 10px;
 }

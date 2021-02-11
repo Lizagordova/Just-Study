@@ -69,7 +69,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                     Введите описание урока
                 </Label>
                 <Input
-                    className="dataInput"
+                    style={{width: "70%"}}
                     value={this.description}
                     onChange={(e) => this.inputDescription(e)}/>
             </>
@@ -81,7 +81,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             <>
                 <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
                 <Input
-                    className="dataInput"
+                    style={{width: "70%"}}
                     value={this.order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>

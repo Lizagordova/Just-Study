@@ -30,6 +30,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
 					.ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
 					.ForMember(dest => dest.Tarif, opt => opt.MapFrom(src => src.Tarif))
+					.ForMember(dest => dest.CourseRole, opt => opt.MapFrom(src => src.CourseRole))
 					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
 					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate));
 			});

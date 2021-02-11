@@ -83,7 +83,7 @@ class CourseStore {
     }
 
     async deleteCourse(courseId: number): Promise<number> {
-        const response = await fetch("/addorupdatecourse", {
+        const response = await fetch("/deletecourse", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

@@ -34,13 +34,6 @@ export class Course extends Component<ICourseProps> {
     }
 
     renderCourseContent() {
-        let coursesExists = this.props.store.courseStore.choosenCourse.id !== undefined;
-        console.log("coursesExists", coursesExists);
-        if(!coursesExists) {
-            return(
-                <Alert>Добавьте курсы. Пока нет ни одного курса.</Alert>
-            );
-        } else {
             return(
                 <>
                     {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
@@ -48,7 +41,6 @@ export class Course extends Component<ICourseProps> {
                     {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
                 </>
             );
-        }
     }
 
     renderCourseMenu() {

@@ -3,7 +3,7 @@
 	[UserId] INT,
 	[CourseId] INT,
 	[Tarif] INT,
-	[StartDate] DATETIME2,
-	[ExpireDate] DATETIME2,
+	[StartDate] DATETIME2 NULL,
+	[ExpireDate] DATETIME2 NULL,
 	[CourseRole] INT
 );

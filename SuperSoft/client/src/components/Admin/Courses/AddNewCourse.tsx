@@ -47,6 +47,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                     Введите название курса
                 </Label>
                 <Input
+                    style={{width: "70%"}}
                     onChange={(e) => this.inputName(e)}/>
             </>
         );
@@ -56,7 +57,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
         return(
             <>
                 <Label>Введите описание курса</Label>
-                <Input onChange={(e) => this.inputDescription(e)}/>
+                <Input
+                    style={{width: "70%"}}
+                    onChange={(e) => this.inputDescription(e)}/>
             </>
         );
     }
@@ -64,10 +67,20 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     renderSaveButton() {
         return(
             <Button
-                className="saveLessonButton"
+                style={{width: "80%", marginBottom: "10px"}}
+                outline color="success"
                 onClick={() => this.addCourse()}>
                 Сохранить курс
             </Button>
+        );
+    }
+
+    renderWarnings() {
+        return (
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и курс не сохранилось</Alert>}
+                {this.saved && <Alert color="success">Всё удачно сохранилось</Alert>}
+            </>
         );
     }
 
@@ -75,8 +88,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
         return(
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и курс не сохранилось</Alert>}
-                    {this.saved && <Alert color="success">Всё удачно сохранилось</Alert>}
+                    {this.renderWarnings()}
                     <div className="row justify-content-center">
                         {this.renderCourseNameInput()}
                     </div>
@@ -84,9 +96,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                         {this.renderDescriptionInput()}
                     </div>
                 </ModalBody>
-                <ModalFooter>
+                <div className="row justify-content-center">
                     {this.renderSaveButton()}
-                </ModalFooter>
+                </div>
             </>
         );
     }
@@ -109,9 +121,12 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                 isOpen={this.addNewCourse}
                 toggle={() => this.addNewCourseToggle()}
             >
-                <ModalHeader >
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.addNewCourseToggle()}
+                   className="fa fa-window-close" aria-hidden="true"/>
+                <div className="row justify-content-center">
                     СОЗДАНИЕ НОВОГО КУРСА
-                </ModalHeader>
+                </div>
                 {this.renderBody()}
                 {this.renderCancelButton()}
             </Modal>
@@ -130,6 +145,12 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     @action
     addNewCourseToggle() {
         this.addNewCourse = !this.addNewCourse;
+        this.initialState();
+    }
+
+    initialState() {
+        this.notSaved = false;
+        this.saved = false;
     }
 
     addCourse() {
