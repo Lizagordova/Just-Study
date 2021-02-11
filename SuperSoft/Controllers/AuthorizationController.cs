@@ -80,8 +80,13 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var userInfo = _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = user.PasswordHash, Email = user.Email, Login = user.Login });
+				if (userInfo == null)
+				{
+					return new StatusCodeResult(401);
+				}
 				SetUserData(userInfo.Role, userInfo.Token, userInfo.Id);
-				return userInfo != null ? new OkResult() : new StatusCodeResult(401);
+
+				return new OkResult();
 			}
 			catch (Exception e)
 			{

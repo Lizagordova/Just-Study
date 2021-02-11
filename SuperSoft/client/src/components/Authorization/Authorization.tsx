@@ -46,7 +46,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
     renderPasswordInput() {
         return (
             <>
-                <Label style={{width: "100%"}}>ПАРОЛЬ</Label>
+                <Label className="formLabel">ПАРОЛЬ</Label>
                 <Input
                     style={{width: "80%"}}
                     type="password"
