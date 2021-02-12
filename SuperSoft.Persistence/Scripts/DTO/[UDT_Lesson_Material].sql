@@ -2,6 +2,6 @@
 (
 	[Id] INT,
 	[LessonId] INT,
-	[Path] NVARCHAR(MAX),
-	[Url] NVARCHAR(MAX)
+	[Path] NVARCHAR(MAX) NULL,
+	[Url] NVARCHAR(MAX) NULL
 );

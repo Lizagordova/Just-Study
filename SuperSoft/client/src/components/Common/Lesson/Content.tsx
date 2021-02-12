@@ -1,8 +1,9 @@
 ﻿import React, { Component } from 'react';
 import LessonStore from "../../../stores/LessonStore";
-import {LessonMaterialViewModel} from "../../../Typings/viewModels/LessonMaterialViewModel";
-import {Material} from "./Material";
-import {renderSpinner} from "../../../functions/renderSpinner";
+import { LessonMaterialViewModel } from "../../../Typings/viewModels/LessonMaterialViewModel";
+import { Material } from "./Material";
+import { renderSpinner } from "../../../functions/renderSpinner";
+import { Alert } from "reactstrap";
 
 class IContentProps {
     lessonStore: LessonStore;
@@ -27,7 +28,8 @@ export class Content extends Component<IContentProps> {
         return(
             <>
                 {materials !== undefined && materials.length > 0 && this.renderMaterials(materials)}
-                {(materials === undefined || materials.length === 0) && renderSpinner()}
+                {materials === undefined && renderSpinner()}
+                {materials.length === 0 && <Alert color="primary">Пока нет материалов для данного урока:(</Alert>}
             </>
         );
     }

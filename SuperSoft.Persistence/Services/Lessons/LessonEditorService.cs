@@ -58,6 +58,15 @@ namespace SuperSoft.Persistence.Services.Lessons
 			_lessonRepository.DeleteMaterial(materialId);
 		}
 
+		public void DeleteMaterial(int lessonId, IFormFile file)
+		{
+			var path = GetPath(lessonId, file.FileName);
+			if (File.Exists(path))
+			{
+				File.Delete(path);
+			}
+		}
+
 		private string GetPath(int lessonId, string fileName)
 		{
 			var path = "";

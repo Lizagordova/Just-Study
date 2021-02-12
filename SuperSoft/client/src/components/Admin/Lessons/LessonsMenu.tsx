@@ -93,11 +93,23 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                         <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
                     </Col>
                     <Col sm={10}>
-                        <LessonPage store={this.props.store}/>
+                        {this.renderLessonPage()}
                     </Col>
                     {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
                 </Row>
             </Tab.Container>
+        );
+    }
+
+    renderLessonPage() {
+        let lessonChoosen = this.props.store.lessonStore.choosenLesson !== undefined;
+        console.log("lessonChoosen", lessonChoosen);
+        console.log("choosenLesson", this.props.store.lessonStore.choosenLesson);
+        return(
+            <>
+                {lessonChoosen && <LessonPage store={this.props.store}/>}
+                {!lessonChoosen && <Alert color="success">Выберите урок:)</Alert>}
+            </>
         );
     }
 

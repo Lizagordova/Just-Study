@@ -15,7 +15,7 @@ export class AdminMain extends React.Component<IAdminMainProps> {
         return (
             <>
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="mainMenuHeader">
                         <Nav tabs className="nav">
                             <NavItem>
                                 <NavLink to="/courses" exact className="nav-link" style={{fontSize: "1.5em"}}

@@ -9,5 +9,6 @@ namespace SuperSoft.Domain.Services.Lessons
 		void DeleteLesson(int lessonId);
 		int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId, IFormFile file);
 		void DeleteMaterial(int materialId);
+		void DeleteMaterial(int lessonId, IFormFile file);
 	}
 }

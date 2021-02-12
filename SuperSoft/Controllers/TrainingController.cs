@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Services.Trainings;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels.Queries;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
+using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers
 {
@@ -46,6 +49,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tasks = _trainingReader.GetTasks(query);
+				var tasksViewModels = tasks.Select(_mapper.Map<Task, TaskViewModel>).ToList();
 
 				return new JsonResult(tasks);
 			}

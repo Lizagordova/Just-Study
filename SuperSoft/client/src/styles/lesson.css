@@ -32,3 +32,40 @@
 .saveLessonButton {
     margin-top: 10px;
 }
+
+.menuHeader {
+    height: 70px;
+    font-size: 0.9em;
+}
+
+.menuCourseHeader {
+    height: 70px;
+}
+
+.mainMenuHeader {
+    height: 70px;
+    font-size: 0.9em;
+}
+
+@media (max-width: 900px) {
+    .menuHeader {
+        height: 130px;
+    }
+}
+@media (max-width: 765px) {
+    .mainMenuHeader {
+        height: 130px;
+    }
+}
+
+@media (max-width: 450px) {
+    .mainMenuHeader {
+        height: 180px;
+    }
+}
+
+@media (max-width: 360px) {
+    .menuCourseHeader {
+        height: 130px;
+    }
+}

@@ -32,7 +32,7 @@ export class LessonPage extends Component<ILessonPageProps> {
         return(
             <Tab.Container>
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="menuHeader">
                         <Nav variant="pills">
                             <Nav.Item>
                                 <Nav.Link

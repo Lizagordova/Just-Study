@@ -4,7 +4,7 @@
 	{
 		public int Id { get; set; }
 		public int LessonId { get; set; }
-		public string Path { get; set; }
-		public string Url { get; set; }
+		public string? Path { get; set; }
+		public string? Url { get; set; }
 	}
 }

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [Lesson_Material]
 (
-	[Id] INT,
+	[Id] INT PRIMARY KEY IDENTITY,
 	[LessonId] INT REFERENCES [Lesson]([Id]) ON DELETE CASCADE,
-	[Path] NVARCHAR(MAX),
-	[Url] NVARCHAR(MAX)
+	[Path] NVARCHAR(MAX) NULL,
+	[Url] NVARCHAR(MAX) NULL
 );

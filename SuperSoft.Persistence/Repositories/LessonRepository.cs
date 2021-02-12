@@ -150,7 +150,7 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateMaterialParam(LessonMaterial lessonMaterial, int lessonId)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("lessonMaterial", "UDT_LessonMaterial");
+			var tvp = new TableValuedParameter("lessonMaterial", "UDT_Lesson_Material");
 			var udt = _mapper.Map<LessonMaterial, LessonMaterialUdt>(lessonMaterial);
 			udt.LessonId = lessonId;
 			tvp.AddObjectAsRow(udt);

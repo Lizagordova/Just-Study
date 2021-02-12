@@ -47,7 +47,7 @@ export class Course extends Component<ICourseProps> {
         return(
             <Tab.Container>
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="menuCourseHeader">
                         <Nav variant="pills">
                             <Nav.Item>
                                 <Nav.Link

@@ -6,7 +6,7 @@ namespace SuperSoft.Persistence.Helpers
 	{
 		public static string GetLessonMaterialPath(int lessonId)
 		{
-			var path = "ClientApp/build/lessons";
+			var path = "client/build/lessons";
 			CreateDirectory(path);
 			path = $"{path}/{lessonId}";
 			CreateDirectory(path);
@@ -18,7 +18,7 @@ namespace SuperSoft.Persistence.Helpers
 
 		public static string GetTaskPath(int taskId)
 		{
-			var path = "ClientApp/build/tasks";
+			var path = "client/build/tasks";
 			CreateDirectory(path);
 			path = $"{path}/{taskId}";
 			CreateDirectory(path);
@@ -28,7 +28,7 @@ namespace SuperSoft.Persistence.Helpers
 
 		public static string GetTaskImagePath(int taskId)
 		{
-			var path = "ClientApp/build/images";
+			var path = "client/build/images";
 			CreateDirectory(path);
 			path =$"{path}/tasks";
 			CreateDirectory(path);
@@ -40,7 +40,7 @@ namespace SuperSoft.Persistence.Helpers
 
 		public static string GetLessonImagePath(int lessonId)
 		{
-			var path = "ClientApp/build/images";
+			var path = "client/build/images";
 			CreateDirectory(path);
 			path =$"{path}/lessons";
 			CreateDirectory(path);
