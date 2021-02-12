@@ -40,12 +40,12 @@ namespace SuperSoft.Persistence.Services.MapperService
 			AddMapping<LessonCourseUdt, Lesson>(cfg =>
 			{
 				cfg.CreateMap<LessonCourseUdt, Lesson>()
-					.ForMember(dest => dest.Id, opt => opt.Ignore())
-					.ForMember(dest => dest.Description, opt => opt.Ignore())
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.LessonId))
+					.ForMember(dest => dest.ExpireDate, opt => opt.MapFrom(src => src.ExpireDate))
+					.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
+					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
 					.ForMember(dest => dest.Name, opt => opt.Ignore())
-					.ForMember(dest => dest.Order, opt => opt.Ignore())
-					.ForMember(dest => dest.StartDate, opt => opt.Ignore())
-					.ForMember(dest => dest.ExpireDate, opt => opt.Ignore());
+					.ForMember(dest => dest.Description, opt => opt.Ignore());
 			});
 
 			AddMapping<LessonMaterial, LessonMaterialUdt>(cfg =>

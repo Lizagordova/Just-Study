@@ -50,7 +50,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     renderLessonsMenu(lessons: LessonViewModel[]) {
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                {this.notDeleted && <Alert>Что-то пошло не так и урок не удалился</Alert>}
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
                 <Row>
                     <Col sm={2}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
@@ -68,11 +68,11 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                                              eventKey={lesson.id}
                                                              className="nav-link lesson"
                                                              onClick={() => this.lessonToggle(lesson)}>
-                                                            Урок {lesson.order}
+                                                            {lesson.name}
                                                         </Nav.Link>
                                                     </div>
-                                                    <div className="col-4 col-lg-offset-8">
-                                                        <i className="fa fa-window-close deleteLesson"
+                                                    <div className="col-4">
+                                                        <i className="fa fa-window-close"
                                                            aria-hidden="true"
                                                            onClick={() => this.deleteLesson(lesson.id)}/>
                                                         <i className="fa fa-edit"
@@ -108,6 +108,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     deleteLesson(lessonId: number) {
+        console.log("i want to delete lesson", lessonId);
         let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
         if(result) {
             this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)

@@ -51,7 +51,7 @@ namespace SuperSoft.Persistence.Repositories
 		public void DeleteLesson(int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetDeleteLessonParam(lessonId);
+			var param = GetLessonParam(lessonId);
 			conn.Query(DeleteLessonSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
 		}
@@ -89,7 +89,7 @@ namespace SuperSoft.Persistence.Repositories
 		public List<LessonMaterial> GetMaterialsByLesson(int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetGetLessonsByCourseParam(lessonId);
+			var param = GetLessonParam(lessonId);
 			var lessonMaterialUdts = conn.Query<LessonMaterialUdt>(GetMaterialsByLessonSp, param, commandType: CommandType.StoredProcedure);
 			var lessonMaterials = lessonMaterialUdts.Select(_mapper.Map<LessonMaterialUdt, LessonMaterial>).ToList();
 			DatabaseHelper.CloseConnection(conn);
@@ -131,7 +131,7 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
-		private DynamicTvpParameters GetDeleteLessonParam(int lessonId)
+		private DynamicTvpParameters GetLessonParam(int lessonId)
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("lessonId", lessonId);

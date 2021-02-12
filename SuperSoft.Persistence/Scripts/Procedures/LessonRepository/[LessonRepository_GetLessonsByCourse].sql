@@ -34,7 +34,7 @@ BEGIN
 		[Description]
 	FROM [Lesson]
 	WHERE [Id] IN (
-		SELECT [Id]
+		SELECT [LessonId]
 		FROM @lessonCourses
 	);
 
