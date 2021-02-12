@@ -16,7 +16,7 @@ class ILessonsMenuProps {
 @observer
 export class LessonsMenu extends Component<ILessonsMenuProps> {
     editLesson: boolean = false;
-    lessonToEdit: LessonViewModel;
+    lessonToEdit: LessonViewModel = new LessonViewModel();
     notDeleted: boolean = false;
     deleted: boolean = false;
     isNavOpen: boolean = true;
@@ -38,6 +38,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     editLessonToggle(lesson: LessonViewModel) {
+        console.log("i am ready to edit", lesson);
         this.editLesson = true;
         this.lessonToEdit = lesson;
     }
@@ -108,7 +109,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     deleteLesson(lessonId: number) {
-        console.log("i want to delete lesson", lessonId);
         let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
         if(result) {
             this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)

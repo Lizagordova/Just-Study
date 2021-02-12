@@ -35,15 +35,16 @@ class LessonStore {
         }
     }
 
-    async addOrUpdateLesson(id: number, order: number, courseId: number, description: string, startDate: Date | Date[], expireDate: Date | Date[]): Promise<number> {
+    async addOrUpdateLesson(id: number, order: number, courseId: number, name: string, description: string, startDate: Date | Date[], expireDate: Date | Date[]): Promise<number> {
         const response = await fetch("addorupdatelesson", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({id: id, courseId: courseId, description: description, startDate: startDate, expireDate: expireDate})
+            body: JSON.stringify({id: id, courseId: courseId, name: name, description: description, startDate: startDate, expireDate: expireDate})
         });
         if(response.status === 200) {
+            console.log("status in store", response.status);
             this.getLessonsByCourse(courseId);
         }
 

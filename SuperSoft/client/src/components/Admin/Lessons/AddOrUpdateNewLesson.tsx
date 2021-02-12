@@ -42,19 +42,29 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     componentDidMount(): void {
         if(this.props.edit) {
-            let lessonToEdit = this.props.lessonToEdit;
-            if(lessonToEdit !== undefined) {
-                this.id = lessonToEdit.id;
-                this.order = lessonToEdit.order;
-                this.description = lessonToEdit.description;
-                this.startDate = lessonToEdit.startDate;
-                this.expireDate = lessonToEdit.expireDate;
-                this.name = lessonToEdit.name;
-            }
-            this.addOrUpdateNewLesson = true;
+            this.fillData()
         } else {
             this.order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
         }
+    }
+
+    componentDidUpdate(prevProps: Readonly<IAddOrUpdateNewLessonProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if (prevProps.lessonToEdit !== this.props.lessonToEdit) {
+            this.fillData()
+        }
+    }
+
+    fillData() {
+        let lessonToEdit = this.props.lessonToEdit;
+        if(lessonToEdit !== undefined) {
+            this.id = lessonToEdit.id;
+            this.order = lessonToEdit.order;
+            this.description = lessonToEdit.description;
+            this.startDate = lessonToEdit.startDate;
+            this.expireDate = lessonToEdit.expireDate;
+            this.name = lessonToEdit.name;
+        }
+        this.addOrUpdateNewLesson = true;
     }
 
     renderButton() {
@@ -106,11 +116,12 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     renderStartDateInput() {
+        const startDate = typeof this.startDate === "string" ? new Date(this.startDate) : this.startDate;
         return(
             <>
                 <Label className="inputLabel" align="center">Выберите дату начала доступа урока</Label>
                 <Calendar
-                    value={this.startDate}
+                    value={startDate}
                     onChange={(date) => this.inputDate(date, "startDate")}
                 />
             </>
@@ -118,11 +129,12 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     renderEndDateInput() {
+        const expireDate = typeof this.expireDate === "string" ? new Date(this.expireDate) : this.expireDate;
         return(
             <>
                 <Label className="inputLabel" align="center">Выберите дату окончания доступа урока</Label>
                 <Calendar
-                    value={this.expireDate}
+                    value={expireDate}
                     onChange={(date) => this.inputDate(date, "expireDate")}
                 />
             </>
@@ -145,6 +157,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             <>
                 <ModalBody>
                     {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранилось</Alert>}
+                    {this.saved && <Alert color="success">Урок успешно сохранился!</Alert>}
                     <div className="row justify-content-center">
                         {this.renderNameDescription()}
                     </div>
@@ -201,6 +214,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     render() {
+        console.log("expireDate", this.expireDate);
+        console.log("startDate", this.startDate);
         return(
             <>
                 {this.addOrUpdateNewLesson && this.renderAddOrUpdateNewLessonWindow()}
@@ -216,7 +231,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     addOrUpdateLesson() {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         this.props.store.lessonStore
-            .addOrUpdateLesson(this.id, this.order, courseId, this.description, this.startDate, this.expireDate)
+            .addOrUpdateLesson(this.id, this.order, courseId, this.name, this.description, this.startDate, this.expireDate)
             .then((status) => {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
