@@ -10,6 +10,7 @@ class IAddOrUpdateNewLessonProps {
     store: RootStore;
     edit: boolean = false;
     lessonToEdit: LessonViewModel | undefined;
+    cancelEdit: any | undefined;
 }
 
 @observer
@@ -214,18 +215,20 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     render() {
-        console.log("expireDate", this.expireDate);
-        console.log("startDate", this.startDate);
         return(
             <>
                 {this.addOrUpdateNewLesson && this.renderAddOrUpdateNewLessonWindow()}
-                {!this.addOrUpdateNewLesson && this.renderButton()}
+                {!this.addOrUpdateNewLesson && !this.props.edit && this.renderButton()}
             </>
         );
     }
 
     addOrUpdateNewLessonToggle() {
+        if(this.props.cancelEdit !== undefined) {
+            this.props.cancelEdit();
+        }
         this.addOrUpdateNewLesson = !this.addOrUpdateNewLesson;
+        
     }
 
     addOrUpdateLesson() {

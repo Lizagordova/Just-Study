@@ -44,7 +44,6 @@ class LessonStore {
             body: JSON.stringify({id: id, courseId: courseId, name: name, description: description, startDate: startDate, expireDate: expireDate})
         });
         if(response.status === 200) {
-            console.log("status in store", response.status);
             this.getLessonsByCourse(courseId);
         }
 
@@ -66,7 +65,7 @@ class LessonStore {
         return response.status;
     }
 
-    async getMaterialsByLesson(lessonId: number) {
+    async getMaterialsByLesson(lessonId: number): Promise<number> {
         const response = await fetch("getmaterialsbylesson", {
             method: "POST",
             headers: {
@@ -78,7 +77,7 @@ class LessonStore {
             this.materialsByChoosenLesson = await response.json();
         }
 
-        return response.json();
+        return response.status;
     }
 
     async deleteMaterial(materialId: number): Promise<number> {

@@ -37,8 +37,11 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         this.isNavOpen = !this.isNavOpen;
     }
 
+    editToggle = () => {
+        this.editLesson = !this.editLesson;
+    };
+
     editLessonToggle(lesson: LessonViewModel) {
-        console.log("i am ready to edit", lesson);
         this.editLesson = true;
         this.lessonToEdit = lesson;
     }
@@ -87,12 +90,12 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                 })}
                             </Nav>
                         </Collapse>
-                        <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined}/>
+                        <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
                     </Col>
                     <Col sm={10}>
                         <LessonPage store={this.props.store}/>
                     </Col>
-                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit}  />}
+                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
                 </Row>
             </Tab.Container>
         );
