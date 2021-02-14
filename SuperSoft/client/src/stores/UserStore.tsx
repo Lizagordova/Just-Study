@@ -14,7 +14,8 @@ class UserStore {
             currentUser: observable,
             authorizationRequired: observable,
             wrongCredetianals: observable,
-            registrationRequired: observable
+            registrationRequired: observable,
+            users: observable
         });
         this.setInitialData();
     }
@@ -75,6 +76,22 @@ class UserStore {
                 login: user.login, role: user.role,
                 // todo: подумать как и когда их передавать::: passwordHash: user.passwordHash, token: user.token
             })
+        });
+        if(response.status === 200) {
+            this.getUsers();
+        }
+
+        return response.status;
+    }
+    
+    async deleteUser(userId: number): Promise<number> {
+        console.log("userId", userId);
+        const response = await fetch("/deleteuser", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({id: userId})
         });
         if(response.status === 200) {
             this.getUsers();

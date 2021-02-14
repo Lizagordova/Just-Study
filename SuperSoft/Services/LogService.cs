@@ -276,6 +276,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogDeleteUserException(ILogger logger, Exception e, int userId)
+		{
+			var customMessage = $"Не удалось удалить пользователя с userId={userId}";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAuthorizationProblemException(ILogger logger, Exception e, string login)
 		{
 			var customMessage = $"Не удалось авторизоваться польователю c логином={login}";

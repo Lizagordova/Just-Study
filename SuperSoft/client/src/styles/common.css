@@ -7,6 +7,15 @@
     height: 60px;
 }
 
+.inputLabel {
+    margin-top: 2px;
+    width: 100%;
+}
+
+.modalInput {
+    width: 70%;
+}
+
 @media (max-width: 600px) {
     .nav {
         height: 120px;
@@ -21,4 +30,8 @@
 
 .controlButton {
     width: 90%;
+}
+
+Table, td, tr, thead {
+    border: 1px solid black;
 }

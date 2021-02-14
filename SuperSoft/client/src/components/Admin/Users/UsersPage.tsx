@@ -4,6 +4,7 @@ import RootStore from "../../../stores/RootStore";
 import Users from "./Users";
 import AddOrUpdateUserWindow from "./AddOrUpdateUserWindow";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
+import "../../../styles/users.css";
 
 class IUsersPageProps {
     store: RootStore;
@@ -20,7 +21,7 @@ class UsersPage extends Component<IUsersPageProps> {
     renderAddUserWindow() {
         return (
             <>
-                {<AddOrUpdateUserWindow userStore={this.props.store.userStore} edit={false} userToEdit={new UserViewModel()}/>}
+                {<AddOrUpdateUserWindow userStore={this.props.store.userStore} edit={false} userToEdit={new UserViewModel()} cancelEdit={undefined} />}
             </>
         );
     }

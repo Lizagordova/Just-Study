@@ -61,7 +61,7 @@ namespace SuperSoft.Controllers
 
 		[HttpGet]
 		[Route("/getusers")]
-		public ActionResult GetUser()
+		public ActionResult GetUsers()
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())
@@ -78,6 +78,29 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogAddOrUpdateUserException(_logger, e);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/deleteuser")]
+		public ActionResult DeleteUser([FromBody]UserReadModel userReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+			try
+			{
+				_userEditor.DeleteUser(userReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteUserException(_logger, e, userReadModel.Id);
 
 				return new StatusCodeResult(500);
 			}

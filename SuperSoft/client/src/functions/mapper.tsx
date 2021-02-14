@@ -94,7 +94,7 @@ export function mapToUserReadModel(user: UserViewModel): UserReadModel {
     userReadModel.email = user.email;
     userReadModel.password = user.passwordHash;
     userReadModel.token = user.token;
-    userReadModel.role = user.id;
+    userReadModel.role = user.role;
 
     return userReadModel;
 }

@@ -1,19 +1,35 @@
-﻿import React, { Component } from 'react';
+﻿import React, {Component} from 'react';
 import UserStore from "../../../stores/UserStore";
 import { makeObservable, observable } from "mobx";
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input } from "reactstrap";
+import {
+    Alert,
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter
+} from "reactstrap";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import { mapToUserReadModel } from "../../../functions/mapper";
+import { observer } from "mobx-react";
+import { translateRole } from "../../../functions/translater";
 
 class IAddOrUpdateUserProps {
     userStore: UserStore;
     edit: boolean = false;
     userToEdit: UserViewModel;
+    cancelEdit: any | undefined;
 }
 
+@observer
 class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
-    addOrUpdateUserOpen: boolean;
+    addOrUpdateUserOpen: boolean = false;
     user: UserViewModel = new UserViewModel();
     notSaved: boolean;
     roleMenuOpen: boolean;
@@ -34,11 +50,14 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
             this.user = this.props.userToEdit;
             this.addOrUpdateUserOpen = true;
         }
+        this.user.role = this.user.role === undefined ? UserRole.User : this.user.role;
     }
 
     renderAddUserButton() {
         return (
-            <Button onClick={() => this.toggleAddUser()}>
+            <Button
+                className="addUserButton"
+                onClick={() => this.toggleAddUser()}>
                 Добавить пользователя
             </Button>
         );
@@ -46,49 +65,73 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
 
     renderFirstNameInput(user: UserViewModel) {
         return(
-            <Input
-                placeholder="Имя"
-                value={user.firstName}
-                onChange={(e) => this.inputData(e, "firstName")}/>
+            <>
+                <Label className="inputLabel" align="center">
+                    Имя
+                </Label>
+                <Input
+                    style={{width: "70%"}}
+                    placeholder="Имя"
+                    value={user.firstName}
+                    onChange={(e) => this.inputData(e, "firstName")}/>
+           </>
         );
     }
 
     renderLastNameInput(user: UserViewModel) {
         return(
+            <>
+                <Label className="inputLabel" align="center">
+                    Фамилия
+                </Label>
             <Input
+                style={{width: "70%"}}
                 placeholder="Фамилия"
                 value={user.lastName}
                 onChange={(e) => this.inputData(e, "lastName")}/>
+            </>
         );
     }
 
     renderEmailInput(user: UserViewModel) {
         return(
-            <Input
-                placeholder="E-mail"
-                value={user.email}
-                onChange={(e) => this.inputData(e, "email")}/>
+            <>
+                <Label className="inputLabel" align="center">
+                    Email
+                </Label>
+                <Input
+                    style={{width: "70%"}}
+                    placeholder="Email"
+                    value={user.email}
+                    onChange={(e) => this.inputData(e, "email")}/>
+            </>
         );
     }
 
     renderLoginInput(user: UserViewModel) {
         return(
-            <Input
-                placeholder="E-mail"
-                value={user.login}
-                onChange={(e) => this.inputData(e, "login")}/>
+            <>
+                <Label className="inputLabel" align="center">
+                    Логин
+                </Label>
+                <Input
+                    style={{width: "70%"}}
+                    placeholder="Логин"
+                    value={user.login}
+                    onChange={(e) => this.inputData(e, "login")}/>
+            </>
         );
     }
 
     renderRole(user: UserViewModel) {
         return(
-            <Dropdown isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
+            <Dropdown style={{marginTop: "7px", opacity: ".7"}} isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
                 <DropdownToggle caret>
-                    {user.role}
+                    {translateRole(user.role)}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem id="1" onClick={() => this.roleChange(UserRole.Admin)}>Учитель</DropdownItem>
-                    <DropdownItem id="2" onClick={() => this.roleChange(UserRole.User)}>Ученик</DropdownItem>
+                    <DropdownItem id="1" onClick={() => this.roleChange(UserRole.Admin)}>{translateRole(UserRole.Admin)}</DropdownItem>
+                    <DropdownItem id="2" onClick={() => this.roleChange(UserRole.User)}>{translateRole(UserRole.User)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
@@ -96,7 +139,10 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
 
     renderSaveUserButton() {
         return(
-            <Button>
+            <Button
+                outline color="success"
+                style={{width: "80%", marginBottom: "10px"}}
+                onClick={() => this.save()}>
                 Сохранить
             </Button>
         );
@@ -106,7 +152,7 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
         return(
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранилось</Alert>}
+                    {this.notSaved && <Alert color="danger">Что-то пошло не так и пользователь не сохранился :(</Alert>}
                     <div className="row justify-content-center">
                         {this.renderFirstNameInput(user)}
                     </div>
@@ -123,9 +169,9 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
                         {this.renderRole(user)}
                     </div>
                 </ModalBody>
-                <ModalFooter>
+                <div className="row justify-content-center">
                     {this.renderSaveUserButton()}
-                </ModalFooter>
+                </div>
             </>
         );
     }
@@ -148,9 +194,9 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
                 isOpen={this.addOrUpdateUserOpen}
                 toggle={() => this.toggleAddUser()}
             >
-                <ModalHeader>
+                <div className="row justify-content-center">
                     ПОЛЬЗОВАТЕЛЬ
-                </ModalHeader>
+                </div>
                 {this.renderBody(this.user)}
                 {this.renderCancelButton()}
             </Modal>
@@ -160,13 +206,16 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
     render() {
         return(
             <>
-                {!this.addOrUpdateUserOpen && this.renderAddUserButton()}
+                {!this.props.edit && this.renderAddUserButton()}
                 {this.addOrUpdateUserOpen && this.renderAddOrUpdateUserWindow()}
             </>
         );
     }
 
     toggleAddUser() {
+        if(this.props.cancelEdit !== undefined) {
+            this.props.cancelEdit();
+        }
         this.addOrUpdateUserOpen = !this.addOrUpdateUserOpen;
     }
 
@@ -195,7 +244,9 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
         this.props.userStore.addOrUpdateUser(userReadModel)
             .then((status) => {
                 this.notSaved = status !== 200;
-                this.addOrUpdateUserOpen = status !== 200;
+                if(status === 200) {
+                    this.toggleAddUser();
+                }
             });
     }
 }

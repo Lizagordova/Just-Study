@@ -2,10 +2,11 @@
 import UserStore from "../../../stores/UserStore";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { observer } from "mobx-react";
-import { makeObservable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { Label } from "reactstrap";
 import { translateRole } from "../../../functions/translater";
 import AddOrUpdateUserWindow from "./AddOrUpdateUserWindow";
+import { Alert } from "reactstrap";
 
 class IUserProps {
     userStore: UserStore;
@@ -15,32 +16,39 @@ class IUserProps {
 @observer
 class User extends Component<IUserProps> {
     editUser: boolean;
+    notDeleted: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            
-        })
+            editUser: observable,
+            notDeleted: observable
+        });
     }
 
     renderUser(user: UserViewModel) {
         return(
-            <tr onClick={() => this.toggleEditUser()}>
-                <td>
+            <tr>
+                <td onClick={() => this.toggleEditUser()}>
                     {this.renderId(user)}
                 </td>
-                <td>
+                <td onClick={() => this.toggleEditUser()}>
                     {this.renderNames(user)}
                 </td>
-                <td>
+                <td onClick={() => this.toggleEditUser()}>
                     {this.renderEmail(user)}
                 </td>
-                <td>
+                <td onClick={() => this.toggleEditUser()}>
                     {this.renderLogin(user)}
                 </td>
-                <td>
+                <td onClick={() => this.toggleEditUser()}>
                     {this.renderRole(user)}
+                </td>
+                <td>
+                    <i
+                       onClick={() => this.deleteUser()}
+                       className="fa fa-window-close" aria-hidden="true"/>
                 </td>
             </tr>
         );
@@ -88,21 +96,34 @@ class User extends Component<IUserProps> {
 
     renderEditUserWindow() {
         return(
-            <AddOrUpdateUserWindow userStore={this.props.userStore} edit={true} userToEdit={this.props.user} />
+            <AddOrUpdateUserWindow userStore={this.props.userStore} edit={true} userToEdit={this.props.user} cancelEdit={this.toggleEditUser}/>
         );
     }
 
     render() {
         return(
             <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и не удалось удалить пользователя :(</Alert>}
                 {this.editUser && this.renderEditUserWindow()}
-                {!this.editUser && this.renderUser(this.props.user)}
+                {this.renderUser(this.props.user)}
             </>
         );
     }
 
-    toggleEditUser() {
+    toggleEditUser = () => {
         this.editUser = !this.editUser;
+    };
+
+    deleteUser() {
+        let user = this.props.user;
+        let result = window.confirm(`Вы уверены, что хотите удалить ${user.firstName} ${user.lastName}?`);
+        if(result) {
+            this.props.userStore
+                .deleteUser(user.id)
+                .then((status) => {
+                    this.notDeleted = status !== 200;
+                });
+        }
     }
 }
 

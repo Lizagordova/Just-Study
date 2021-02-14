@@ -21,10 +21,6 @@
     height: 150px;
 }
 
-.inputLabel {
-    width: 100%;
-}
-
 .dataInput {
     width: 70%;
 }
@@ -52,7 +48,7 @@
         height: 130px;
     }
 }
-@media (max-width: 765px) {
+@media (max-width: 720px) {
     .mainMenuHeader {
         height: 130px;
     }

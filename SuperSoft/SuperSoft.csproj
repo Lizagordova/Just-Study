@@ -21,6 +21,7 @@
 		<Content Include="client\src\styles\authorization.css" />
 		<Content Include="client\src\styles\common.css" />
 		<Content Include="client\src\styles\lesson.css" />
+		<Content Include="client\src\styles\users.css" />
 		<None Remove="$(SpaRoot)**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<None Include="client\src\components\Admin\CompletedHomework\CompletedHomework.tsx" />
