@@ -1,5 +1,5 @@
 ﻿import { CourseViewModel } from "../Typings/viewModels/CourseViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserCourseViewModel } from "../Typings/viewModels/UserCourseViewModel";
 
 class CourseStore {
@@ -118,14 +118,34 @@ class CourseStore {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({userId: details.userId,
+            courseRole: details.courseRole, tarif: details.tarif, startDate: details.startDate,
+            expireDate: details.expireDate, courseId: details.courseId})
         });
+        if(response.status === 200) {
+            this.getUsersByCourse(details.courseId);
+        }
 
         return response.status;
     }
 
     async computeUserCourseProgress(userId: number, courseId: number): Promise<number> {//todo: доделать + сделать модельку под прогресс
         return 200;
+    }
+
+    async deleteUserFromCourse(userId: number, courseId: number): Promise<number> {
+        const response = await fetch("/deleteuserfromcourse", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({userId: userId, courseId: courseId})
+        });
+        if(response.status === 200) {
+            this.getUsersByCourse(courseId);
+        }
+
+        return response.status;
     }
 
     setChoosenCourse(course: CourseViewModel): void {

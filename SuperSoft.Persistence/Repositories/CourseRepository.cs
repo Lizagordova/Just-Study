@@ -23,6 +23,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetUserCoursesSp = "CourseRepository_GetUserCourses";
 		private const string GetUsersByCourseSp = "CourseRepository_GetUsersByCourse";
 		private const string GetCoursesByQuerySp = "CourseRepository_GetCoursesByQuery";
+		private const string DeleteUserFromCourseSp = "CourseRepository_DeleteUserFromCourse";
 
 		public CourseRepository(
 			MapperService mapper)
@@ -95,6 +96,23 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return courses;
+		}
+
+		public void DeleteUserFromCourse(UserCourse userCourse)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetDeleteUserFromCourseParam(userCourse);
+			conn.Query(DeleteUserFromCourseSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
+		private DynamicTvpParameters GetDeleteUserFromCourseParam(UserCourse userCourse)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("userId", userCourse.UserId);
+			param.Add("courseId", userCourse.CourseId);
+
+			return param;
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateCourseParam(Course course)

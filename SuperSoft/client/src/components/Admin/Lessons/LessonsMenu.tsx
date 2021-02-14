@@ -65,7 +65,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                     let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
                                     return (
                                         <>
-                                            <Nav.Item>
+                                            <Nav.Item key={lesson.id}>
                                                 <div className="row">
                                                     <div className="col-8">
                                                         <Nav.Link
@@ -103,12 +103,10 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
 
     renderLessonPage() {
         let lessonChoosen = this.props.store.lessonStore.choosenLesson !== undefined;
-        console.log("lessonChoosen", lessonChoosen);
-        console.log("choosenLesson", this.props.store.lessonStore.choosenLesson);
         return(
             <>
                 {lessonChoosen && <LessonPage store={this.props.store}/>}
-                {!lessonChoosen && <Alert color="success">Выберите урок:)</Alert>}
+                {!lessonChoosen && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
     }

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [CourseRepository_AddOrUpdateUserCourse]
+﻿CREATE PROCEDURE [dbo].[CourseRepository_AddOrUpdateUserCourse]
 	@userCourse [UDT_User_Course] READONLY
 AS
 BEGIN
@@ -7,7 +7,7 @@ BEGIN
 	USING @userCourse AS [src]
 	ON [dest].[UserId] = [src].[UserId]
 		AND [dest].[CourseId] = [src].[CourseId]
-		AND [dest].[CourseRole] = [src].[CourseRole]
+		/*AND [dest].[CourseRole] = [src].[CourseRole]*/
 	WHEN NOT MATCHED THEN
 		INSERT (
 			[UserId],

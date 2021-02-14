@@ -43,6 +43,11 @@ namespace SuperSoft.Persistence.Services.Courses
 			_courseRepository.AddOrUpdateUserCourse(userCourse);
 		}
 
+		public void DeleteUserFromCourse(UserCourse userCourse)
+		{
+			_courseRepository.DeleteUserFromCourse(userCourse);
+		}
+
 		public void DeleteCourse(int courseId)
 		{
 			_courseRepository.DeleteCourse(courseId);

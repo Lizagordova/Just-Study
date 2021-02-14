@@ -14,5 +14,6 @@ namespace SuperSoft.Domain.Repositories
 		List<UserCourse> GetUserCourses(int userId, CourseRole courseRole);
 		List<UserCourse> GetUsersByCourse(int courseId);
 		List<Course> GetCoursesByQuery(CoursesInfoQuery query);
+		void DeleteUserFromCourse(UserCourse userCourse);
 	}
 }

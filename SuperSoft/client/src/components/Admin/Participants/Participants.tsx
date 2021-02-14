@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import CourseStore from "../../../stores/CourseStore";
 import Participant from "./Participant";
+import { Table } from "reactstrap";
 
 class IParticipantsProps {
     participants: UserViewModel[];
@@ -14,7 +15,7 @@ class IParticipantsProps {
 class Participants extends Component<IParticipantsProps>{
     renderParticipants(participants: UserViewModel[]) {
         return(
-            <>
+            <Table>
                 <thead>
                     <tr>
                         <td>ФИО</td>
@@ -22,14 +23,17 @@ class Participants extends Component<IParticipantsProps>{
                         <td>Дата начала</td>
                         <td>Дата окончания</td>
                         <td>Роль</td>
+                        <td></td>
                     </tr>
                 </thead>
+                <tbody>
                 {participants.map(p => {
                     return(
-                        <Participant participant={p} courseStore={this.props.courseStore} deleteParticipant={this.props.deleteParticipant}/>
+                        <Participant key={p.id} participant={p} courseStore={this.props.courseStore} deleteParticipant={this.props.deleteParticipant} />
                     );
                 })}
-            </>
+                </tbody>
+            </Table>
         );
     }
 

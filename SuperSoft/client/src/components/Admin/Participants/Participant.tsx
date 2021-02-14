@@ -1,14 +1,16 @@
-﻿import React, { Component } from 'react';
-import { observer } from "mobx-react";
-import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
+﻿import React, {Component} from 'react';
+import {observer} from "mobx-react";
+import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 import CourseStore from "../../../stores/CourseStore";
-import { UserCourseViewModel } from "../../../Typings/viewModels/UserCourseViewModel";
-import { Label, Button, Alert, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
-import { makeObservable, observable } from "mobx";
+import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label, Alert } from "reactstrap";
+import {makeObservable, observable, toJS} from "mobx";
 import Calendar from "react-calendar";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { Tarif } from "../../../Typings/enums/Tarif";
-import { translateTarif } from "../../../functions/translater";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {Tarif} from "../../../Typings/enums/Tarif";
+import {translateCourseRole, translateRole, translateTarif} from "../../../functions/translater";
+import {renderSpinner} from "../../../functions/renderSpinner";
+import {CourseRole} from "../../../Typings/enums/CourseRole";
 
 class IParticipantProps {
     participant: UserViewModel;
@@ -23,6 +25,8 @@ class Participant extends Component<IParticipantProps> {
     details: UserCourseViewModel;
     roleMenuOpen: boolean;
     tarifOpen: boolean;
+    startDateCalendarOpen: boolean;
+    expireDateCalendarOpen: boolean;
 
     constructor() {
         // @ts-ignore
@@ -32,36 +36,51 @@ class Participant extends Component<IParticipantProps> {
             saved: observable,
             details: observable,
             roleMenuOpen: observable,
+            tarifOpen: observable,
+            startDateCalendarOpen: observable,
+            expireDateCalendarOpen: observable
         });
     }
 
     componentDidMount(): void {
         let participant = this.props.participant;
-        let details = this.props.courseStore.usersByCourse.filter(u => u.userId === participant.id)[0];
+        this.details = this.props.courseStore.usersByCourse.filter(u => u.userId === participant.id)[0];
+    }
+
+    renderWarnings() {
+        return(
+            <>
+                {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}
+                {this.saved && <Alert color="color">Данные успешно обновились :)</Alert>}
+            </>
+        );
     }
 
     renderParticipant(participant: UserViewModel, details: UserCourseViewModel) {
         return(
-            <tr>
-                <td>
-                    {this.renderName(participant)}
-                </td>
-                <td>
-                    {this.renderTarif(details)}
-                </td>
-                <td>
-                    {this.renderStartDate(details)}
-                </td>
-                <td>
-                    {this.renderEndDate(details)}
-                </td>
-                <td>
-                    {this.renderRole(details)}
-                </td>
-                <td>
-                    {this.renderControlButtons()}
-                </td>
-            </tr>
+            <>
+                {this.renderWarnings()}
+                <tr>
+                    <td>
+                        {this.renderName(participant)}
+                    </td>
+                    <td>
+                        {this.renderTarif(details)}
+                    </td>
+                    <td>
+                        {this.renderStartDate(details)}
+                    </td>
+                    <td>
+                        {this.renderEndDate(details)}
+                    </td>
+                    <td>
+                        {this.renderRole(details)}
+                    </td>
+                    <td>
+                        {this.renderControlButtons()}
+                    </td>
+                </tr>
+            </>
         );
     }
 
@@ -88,18 +107,40 @@ class Participant extends Component<IParticipantProps> {
     }
 
     renderStartDate(details: UserCourseViewModel) {
+        return (
+            <>
+                {<span onClick={() => this.toggleStartDate()}>{new Date(details.startDate).toLocaleDateString()}</span>}
+                {this.startDateCalendarOpen && this.renderStartDateCalendar(details)}
+            </>
+        );
+    }
+
+    renderStartDateCalendar(details: UserCourseViewModel) {
+        const startDate = typeof details.startDate === "string" ? new Date(details.startDate) : details.startDate;
         return(
             <Calendar
-                value={details.startDate}
+                minDate={new Date(2021)}
+                value={startDate}
                 onChange={(date) => this.inputDate(date, "startDate")}
             />
         );
     }
 
     renderEndDate(details: UserCourseViewModel) {
+        return (
+            <>
+                {<span onClick={() => this.toggleExpireDate()}>{new Date(details.expireDate).toLocaleDateString()}</span>}
+                {this.expireDateCalendarOpen && this.renderEndDateCalendar(details)}
+            </>
+        );
+    }
+
+    renderEndDateCalendar(details: UserCourseViewModel) {
+        const expireDate = typeof details.expireDate === "string" ? new Date(details.expireDate) : details.expireDate;
         return(
             <Calendar
-                value={details.expireDate}
+                minDate={new Date(2021)}
+                value={expireDate}
                 onChange={(date) => this.inputDate(date, "expireDate")}
             />
         );
@@ -109,11 +150,11 @@ class Participant extends Component<IParticipantProps> {
         return(
             <Dropdown isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
                 <DropdownToggle caret>
-                    {details.role}
+                    {translateCourseRole(details.courseRole)}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem id="1" onClick={() => this.roleChange(UserRole.Admin)}>Учитель</DropdownItem>
-                    <DropdownItem id="2" onClick={() => this.roleChange(UserRole.User)}>Ученик</DropdownItem>
+                    <DropdownItem id="1" onClick={() => this.roleCourseChange(CourseRole.Teacher)}>{translateCourseRole(CourseRole.Teacher)}</DropdownItem>
+                    <DropdownItem id="2" onClick={() => this.roleCourseChange(CourseRole.Pupil)}>{translateCourseRole(CourseRole.Pupil)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
@@ -122,10 +163,14 @@ class Participant extends Component<IParticipantProps> {
     renderControlButtons() {
         return(
             <>
-                <Button color="success" onClick={() => this.updateParticipant()}>
+                <Button 
+                    style={{width: "90%", marginBottom: "4px"}}
+                    outline color="success" onClick={() => this.updateParticipant()}>
                     СОХРАНИТЬ
                 </Button>
-                <Button color="danger" onClick={() => this.props.deleteParticipant()}>
+                <Button
+                    style={{width: "90%", marginBottom: "10px"}}
+                    outline color="danger" onClick={() => this.props.deleteParticipant(this.props.participant)}>
                     УДАЛИТЬ
                 </Button>
             </>
@@ -135,7 +180,8 @@ class Participant extends Component<IParticipantProps> {
     render() {
         return (
             <>
-                {this.renderParticipant(this.props.participant, this.details)}
+                {this.details !== undefined && this.renderParticipant(this.props.participant, this.details)}
+                {this.details === undefined && renderSpinner()}
             </>
         );
     }
@@ -160,8 +206,8 @@ class Participant extends Component<IParticipantProps> {
         this.roleMenuOpen = !this.roleMenuOpen;
     }
 
-    roleChange(role: UserRole) {
-        this.details.role = role;
+    roleCourseChange(role: CourseRole) {
+        this.details.courseRole = role;
     }
 
     tarifChange(tarif: Tarif) {
@@ -170,6 +216,14 @@ class Participant extends Component<IParticipantProps> {
 
     toggleTarif() {
         this.tarifOpen = !this.tarifOpen;
+    }
+
+    toggleStartDate() {
+        this.startDateCalendarOpen = !this.startDateCalendarOpen;
+    }
+
+    toggleExpireDate() {
+        this.expireDateCalendarOpen = !this.expireDateCalendarOpen;
     }
 }
 

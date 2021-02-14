@@ -95,9 +95,9 @@ export class Course extends Component<ICourseProps> {
         this.lessonsActive = false;
         this.wordsOfADay = false;
         this.participants = false;
-        if(turnOn === "lessonsActive") {
+        if(turnOn === "lessons") {
             this.lessonsActive = true;
-        } else if(turnOn === "lessonsActive") {
+        } else if(turnOn === "wordsOfADay") {
             this.wordsOfADay = true;
         } else if(turnOn === "participants") {
             this.participants = true;

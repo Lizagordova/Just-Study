@@ -1,11 +1,12 @@
 ﻿import React, { Component }from 'react';
 import { observer } from "mobx-react";
 import CourseStore from "../../../stores/CourseStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
 import { Button, Alert, Label } from "reactstrap";
 import Participants from "./Participants";
+import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
 
 class IParticipantsPageProps {
     courseStore: CourseStore;
@@ -18,6 +19,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     restUsers: UserViewModel[] = new Array<UserViewModel>();
     saved: boolean;
     notSaved: boolean;
+    notDeleted: boolean;
 
     constructor() {
         // @ts-ignore
@@ -26,11 +28,16 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             participants: observable,
             saved: observable,
             notSaved: observable,
-            restUsers: observable
+            restUsers: observable,
+            notDeleted: observable
         });
     }
 
     componentDidMount(): void {
+        this.setUsers();
+    }
+
+    setUsers() {
         let usersByCourse = this.props.courseStore.usersByCourse;
         let users = this.props.userStore.users;
         let participants = users.filter(u => usersByCourse
@@ -39,6 +46,8 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         this.restUsers = users.filter(function(u) {
             return !participants.includes(u);
         });
+        console.log("participants", toJS(participants));
+        console.log("usersByCourse", toJS(usersByCourse));
         this.participants = participants;
     }
 
@@ -53,11 +62,12 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             <>
                 {users.map(u => {
                     return(
-                        <div className="row justify-content-center">
+                        <div className="row justify-content-center" style={{border: "1px solid black"}}>
                             <Label>
                                 {u.lastName} {u.firstName}
                             </Label>
-                            <i style={{marginLeft: '98%', width: '2%'}}
+                            <i
+                               style={{marginLeft: "10px"}}
                                onClick={() => this.addParticipant(u)}
                                className="fa fa fa-plus" aria-hidden="true"/>
                         </div>
@@ -80,7 +90,8 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         return(
             <>
                 {this.saved && <Alert color="success">Список успешно обновлён!</Alert>}
-                {this.notSaved && <Alert color="danged">Что-то пошло не так, и список не обновился:(</Alert>}
+                {this.notSaved && <Alert color="danged">Что-то пошло не так, и список не обновился :(</Alert>}
+                {this.notDeleted && <Alert color="danged">Что-то пошло не так, и пользователь не удалился:(</Alert>}
             </>
         );
     }
@@ -117,17 +128,35 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             });
     }
 
-    deleteParticipant(participant: UserViewModel) {
-        let participants = this.participants;
-        this.participants = participants.filter(p => p.id !== participant.id);
-    }
+    deleteParticipant = (participant: UserViewModel) => {
+        this.props.courseStore.deleteUserFromCourse(participant.id, this.props.courseStore.choosenCourse.id)
+            .then((status) => {
+                if(status === 200) {
+                    this.props.courseStore.getUsersByCourse(this.props.courseStore.choosenCourse.id)
+                        .then(() => {
+                            this.setUsers(); 
+                        });
+                }
+                 this.notDeleted = status !== 200;
+                
+            })
+    };
 
     addParticipant(user: UserViewModel) {
-        let participants = this.participants;
-        let restUsers = this.restUsers;
-        participants.push(user);
-        this.participants = participants;
-        this.restUsers = restUsers.filter(u => u.id !== user.id);
+        let userCourseViewModel = new UserCourseViewModel();
+        userCourseViewModel.courseId = this.props.courseStore.choosenCourse.id;
+        userCourseViewModel.userId = user.id;
+        userCourseViewModel.expireDate = new Date();
+        userCourseViewModel.startDate = new Date();
+        this.props.courseStore.addOrUpdateUserCourseDetails(userCourseViewModel)
+            .then((status) => {
+                if(status === 200) {
+                    this.props.courseStore.getUsersByCourse(this.props.courseStore.choosenCourse.id)
+                        .then((status) => {
+                            this.setUsers();
+                        });
+                }
+            });
     }
 }
 

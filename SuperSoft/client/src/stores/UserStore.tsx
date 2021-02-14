@@ -85,7 +85,6 @@ class UserStore {
     }
     
     async deleteUser(userId: number): Promise<number> {
-        console.log("userId", userId);
         const response = await fetch("/deleteuser", {
             method: "POST",
             headers: {

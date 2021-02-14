@@ -12,6 +12,6 @@ namespace SuperSoft.ViewModels
 		public Tarif Tarif { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime ExpireDate { get; set; }
-		public UserRole Role { get; set; }
+		public CourseRole CourseRole { get; set; }
 	}
 }

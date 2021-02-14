@@ -1,6 +1,7 @@
 ﻿import {PartOfSpeech} from "../Typings/enums/PartOfSpeech";
 import {Tarif} from "../Typings/enums/Tarif";
 import {UserRole} from "../Typings/enums/UserRole";
+import {CourseRole} from "../Typings/enums/CourseRole";
 
 export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
     if(partOfSpeech === PartOfSpeech.Adjective) {
@@ -31,6 +32,16 @@ export function translateRole(role: UserRole): string {
         return "Пользователь";
     } else if(role === UserRole.Admin) {
         return "Администратор"
+    }
+
+    return "";
+}
+
+export function translateCourseRole(role: CourseRole): string {
+    if(role === CourseRole.Pupil) {
+        return "Ученик";
+    } else if(role === CourseRole.Teacher) {
+        return "Учитель"
     }
 
     return "";

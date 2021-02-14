@@ -23,11 +23,20 @@ export class Material extends Component<IMaterialProps> {
     }
 
     renderMaterial(material: LessonMaterialViewModel) {
-        return(
-            <>
-                {material.id} {material.path} {material.url}
-            </>
-        );
+        console.log("material path", material.path);
+        if(material.path.includes("pptx")) {
+            let path = material.path.replace("client/build", ".");
+            console.log("path", path);
+            /*return (
+                <iframe src={path} width='962px' height='565px' frameBorder='0' />
+            );*/
+        } else {
+            return(
+                <>
+                    {material.id} {material.path} {material.url}
+                </>
+            );
+        }
     }
 
     render() {

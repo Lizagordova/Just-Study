@@ -37,6 +37,9 @@ namespace SuperSoft.Configuration
 			builder
 				.ExportAsEnum<WordTrainingType>()
 				.OverrideNamespace("enums");
+			builder
+				.ExportAsEnum<CourseRole>()
+				.OverrideNamespace("enums");
 		}
 	}
 }

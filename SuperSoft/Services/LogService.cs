@@ -138,6 +138,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogDeleteUserFromCourseDetails(ILogger logger, Exception e, int courseId, int userId)
+		{
+			var customMessage = $"Не удалось удалить пользователя userId={userId} с courseId={courseId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateParticipantsListException(ILogger logger, Exception e, int courseId)
 		{
 			var customMessage = $"Не удалось добавить или обновить лист участников курса с courseId={courseId}.";

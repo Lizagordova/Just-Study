@@ -3,7 +3,7 @@
 //     the code is regenerated.
 
 import { Tarif } from '../enums/Tarif';
-import { UserRole } from '../enums/UserRole';
+import { CourseRole } from '../enums/CourseRole';
 
 export class UserCourseReadModel
 {
@@ -12,5 +12,5 @@ export class UserCourseReadModel
 	public tarif: Tarif;
 	public startDate: any;
 	public expireDate: any;
-	public role: UserRole;
+	public courseRole: CourseRole;
 }
