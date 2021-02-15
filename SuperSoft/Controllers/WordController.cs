@@ -57,7 +57,7 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 
-			var wordViewModels = words.Select(_mapper.Map<Word, WordViewModel>).ToList();
+			var wordViewModels = words.Select(MapWordViewModel).ToList();
 
 			return new JsonResult(wordViewModels);
 		}
@@ -96,7 +96,7 @@ namespace SuperSoft.Controllers
 				return new BadRequestResult();
 			}
 
-			var word = _mapper.Map<WordReadModel, Word>(wordReadModel);
+			var word = MapWord(wordReadModel);
 			try
 			{
 				_wordEditor.AddOrUpdateWordToDictionary(word);
@@ -121,7 +121,7 @@ namespace SuperSoft.Controllers
 				return new BadRequestResult();
 			}
 
-			var word = _mapper.Map<WordReadModel, Word>(userWordReadModel.Word);
+			var word = MapWord(userWordReadModel.Word);
 			try
 			{
 				_wordEditor.AddOrUpdateWordToUserDictionary(word, userWordReadModel.UserId);
@@ -269,7 +269,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var word = _wordReader.GetWordOfADay(wordReadModel.Date, wordReadModel.CourseId);
-				var wordViewModel = _mapper.Map<Word, WordViewModel>(word);
+				var wordViewModel = MapWordViewModel(word);
 
 				return new JsonResult(wordViewModel);
 			}
@@ -286,21 +286,22 @@ namespace SuperSoft.Controllers
 		public ActionResult AddOrUpdateWordOfADay([FromBody]WordOfADayReadModel wordOfADay)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
+			if (role != UserRole.Admin.ToString())
 			{
 				return new BadRequestResult();
 			}
 
-			var word = _mapper.Map<WordReadModel, Word>(wordOfADay.Word);
+			var word = MapWord(wordOfADay.Word);
 			try
 			{
 				word.Id = _wordEditor.AddOrUpdateWordOfDay(word, wordOfADay.Date, wordOfADay.CourseId);
-				var wordViewModel = _mapper.Map<Word, WordViewModel>(word);
+				var wordViewModel = MapWordViewModel(word);
 
 				return new JsonResult(wordViewModel);
 			}
 			catch (Exception e)
 			{
+				_wordEditor.DeleteWordFromDictionary(word.Id);
 				_logService.AddLogAddOrUpdateWordOfADayException(_logger, e, wordOfADay.Date, wordOfADay.CourseId);
 
 				return new StatusCodeResult(500);
@@ -337,7 +338,7 @@ namespace SuperSoft.Controllers
 		public ActionResult GetAnswersToWordOfADayByWord([FromBody]WordReadModel wordReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
+			if (role != UserRole.Admin.ToString())
 			{
 				return new BadRequestResult();
 			}
@@ -380,6 +381,22 @@ namespace SuperSoft.Controllers
 
 				return new StatusCodeResult(500);
 			}
+		}
+
+		private Word MapWord(WordReadModel wordReadModel)
+		{
+			var word = _mapper.Map<WordReadModel, Word>(wordReadModel);
+			word.Examples = wordReadModel.Examples.Select(_mapper.Map<ExampleReadModel, Example>).ToList();
+
+			return word;
+		}
+
+		private WordViewModel MapWordViewModel(Word word)
+		{
+			var wordViewModel = _mapper.Map<Word, WordViewModel>(word);
+			wordViewModel.Examples = word.Examples.Select(_mapper.Map<Example, ExampleViewModel>).ToList();
+
+			return wordViewModel;
 		}
 	}
 }

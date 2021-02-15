@@ -6,6 +6,7 @@ import { Accordion } from "react-bootstrap";
 import UserAnswer from "./UserAnswer";
 import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import { makeObservable, observable } from "mobx";
+import {renderSpinner} from "../../../functions/renderSpinner";
 
 class IUserAnswersProps {
     store: RootStore;
@@ -15,13 +16,18 @@ class IUserAnswersProps {
 @observer
 class UserAnswers extends Component<IUserAnswersProps> {
     userWords: UserWordViewModel[] = new Array<UserWordViewModel>();
+    loaded: boolean = false;
 
     constructor() {
         //@ts-ignore
         super();
         makeObservable(this, {
-            userWords: observable
+            userWords: observable,
+            loaded: observable
         });
+    }
+
+    componentDidMount(): void {
         this.getUserWords();
     }
 
@@ -30,7 +36,9 @@ class UserAnswers extends Component<IUserAnswersProps> {
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
                     let userWord = this.getUserWord(user.id);
-                    return <UserAnswer user={user} store={this.props.store} userWord={userWord}/>
+                    console.log("user", user);
+                    console.log("userWord", userWord);
+                    return <UserAnswer user={user} store={this.props.store} userWord={userWord} />
                 })}
             </Accordion>
         );
@@ -40,14 +48,14 @@ class UserAnswers extends Component<IUserAnswersProps> {
         let users = this.getUsers();
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {this.renderUsers(users)}
+                {this.loaded && this.renderUsers(users)}
+                {this.loaded && renderSpinner()}
             </div>
         );
     }
 
     getUsers(): UserViewModel[] {
         let usersByCourse = this.props.store.courseStore.usersByCourse;
-
         return this.props.store.userStore.users
             .filter(u => usersByCourse
                 .map(uc => uc.userId)
@@ -58,6 +66,7 @@ class UserAnswers extends Component<IUserAnswersProps> {
         this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId, this.props.store.courseStore.choosenCourse.id)
             .then((userWords) => {
                 this.userWords = userWords;
+                this.loaded = true;
             });
     }
 

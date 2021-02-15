@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Words;
+using SuperSoft.Persistence.Extensions;
 
 namespace SuperSoft.Persistence.Services.Words
 {
@@ -40,7 +41,10 @@ namespace SuperSoft.Persistence.Services.Words
 
 		public Word GetWordOfADay(DateTime date, int courseId)
 		{
-			return _wordRepository.GetWordOfADay(date, courseId);
+			date = date.GetDayFromDate();
+			var word =  _wordRepository.GetWordOfADay(date, courseId);
+
+			return word;
 		}
 
 		public UserWord GetUserWordProgress(int userId, int wordId)

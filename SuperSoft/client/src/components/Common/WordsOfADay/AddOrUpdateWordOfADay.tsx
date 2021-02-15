@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { Button, Input, Modal, ModalBody, Alert, Label } from "reactstrap";
 import { translatePartOfSpeech } from "../../../functions/translater";
 import { PartOfSpeech } from "../../../Typings/enums/PartOfSpeech";
@@ -20,15 +20,12 @@ class IAddOrUpdateWordOfADayProps {
     currentUser: UserViewModel;
     wordStore: WordStore;
     date: Date | Date[];
-    addOrUpdateWordOfADayToggle: any;
-    cancelEdit: any | undefined;
-    edit: boolean;
+    cancelEdit: any;
 }
 
 @observer
 class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
     word: WordReadModel;
-    addOrUpdateWord: boolean = false;
     notSaved: boolean = false;
     saved: boolean = false;
 
@@ -37,24 +34,28 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         super();
         makeObservable(this, {
             word: observable,
-            addOrUpdateWord: observable,
             notSaved: observable,
             saved: observable
         });
     }
 
     componentDidMount(): void {
-        if(this.props.edit) {
-            this.addOrUpdateWord = true;
-        }
         this.word = mapToWordReadModel(this.props.word);
     }
 
     componentDidUpdate(prevProps: Readonly<IAddOrUpdateWordOfADayProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if (prevProps.word !== this.props.word) {
             this.word = mapToWordReadModel(this.props.word);
-            this.addOrUpdateWord = true;
         }
+    }
+
+    renderCautions() {
+        return(
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и слово дня не сохранилось!</Alert>}
+                {this.saved && <Alert color="success">Слово дня успешно сохранилось!!</Alert>}
+            </>
+        );
     }
 
     renderWordInput(word: WordViewModel) {
@@ -101,12 +102,10 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 <Label className="inputLabel" align="center">
                     Значение на русском
                 </Label>
-                <textarea
+                <Input
                     style={{width: "80%"}}
-                    cols={30}
-                    rows={1}
                     className="form-control rounded-0 fileInput"
-                    onChange={(e) => this.handleChangeFromTextarea(e)}
+                    onChange={(e) => this.handleChangeFromInput(e)}
                     name="russianMeaning"
                     value={word.russianMeaning}
                 />
@@ -120,12 +119,10 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 <Label className="inputLabel" align="center">
                     Значение на английском
                 </Label>
-                <textarea
+                <Input
                     style={{width: "80%"}}
-                    cols={30}
-                    rows={1}
                     className="form-control rounded-0 fileInput"
-                    onChange={(e) => this.handleChangeFromTextarea(e)}
+                    onChange={(e) => this.handleChangeFromInput(e)}
                     name="englishMeaning"
                     value={word.englishMeaning}
                 />
@@ -139,14 +136,12 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
                 <Label className="inputLabel" align="center">
                     Пример
                 </Label>
-                <textarea
+                <Input
                     style={{width: "80%"}}
                     placeholder="пример"
-                    cols={30}
-                    rows={1}
                     className="form-control rounded-0 fileInput"
-                    onChange={(e) => this.handleChangeFromTextarea(e)}
-                    name="example">{word.examples[0]}</textarea>
+                    onChange={(e) => this.handleChangeFromInput(e)}
+                    name="example">{word.examples[0]}</Input>
             </>
         );
     }
@@ -168,8 +163,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         return (
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и слово не сохранилось</Alert>}
-                    {this.saved && <Alert color="success">Слово успешно сохранился!</Alert>}
+                    {this.renderCautions()}
                     <div className="row justify-content-center">
                         {this.renderWordInput(word)}
                     </div>
@@ -197,7 +191,7 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         return(
             <Button
                 color="primary"
-                onClick={() => this.addOrUpdateWordToggle()}>
+                onClick={() => this.props.cancelEdit()}>
                 ОТМЕНИТЬ
             </Button>
         );
@@ -208,11 +202,11 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
             <Modal
                 centered={true}
                 size="lg"
-                isOpen={this.addOrUpdateWord}
-                toggle={() => this.addOrUpdateWordToggle()}
+                isOpen={true}
+                toggle={() => this.props.cancelEdit()}
             >
                 <i style={{marginLeft: '96%', width: '2%'}}
-                   onClick={() => this.addOrUpdateWordToggle()}
+                   onClick={() => this.props.cancelEdit()}
                    className="fa fa-window-close" aria-hidden="true"/>
                 <div className="row justify-content-center">
                     СЛОВО
@@ -223,54 +217,29 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
         );
     }
 
-    renderButton() {
-        return(
-            <Button outline color="primary" onClick={() => this.addOrUpdateWordToggle()}>
-                Добавить слово
-            </Button>
-        );
-    }
-
     render() {
-        console.log("add or update word", this.addOrUpdateWord);
         return(
             <>
-                {this.addOrUpdateWord && this.renderAddOrUpdateWordOfADayWindow(this.props.word)}
-                {!this.addOrUpdateWord && !this.props.edit && this.renderButton()}
+                {this.renderAddOrUpdateWordOfADayWindow(this.props.word)}
             </>
         );
     }
 
     handleChangeFromInput(event: React.ChangeEvent<HTMLInputElement>) {
+        let name = event.target.name;
         let value = event.target.value;
-        console.log("value", value);
-        if(value === 'word') {
+        if(name === 'word') {
             this.word.word = value;
-        } else if(value === 'russianMeaning') {
+        } else if(name === 'russianMeaning') {
             this.word.russianMeaning = value;
-        } else if(value === 'englishMeaning') {
+        } else if(name === 'englishMeaning') {
             this.word.englishMeaning = value;
-        } else if(value === 'example') {
+        } else if(name === 'example') {
             //todo: наверно, проверку надо делать
             if(this.word.examples.length === 0) {
                 this.word.examples.push(new ExampleReadModel());
             }
             this.word.examples[0].example = value;
-        }
-    }
-
-    handleChangeFromTextarea(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        let targetName = event.target.name;
-        if(targetName === 'russianMeaning') {
-            this.word.russianMeaning = targetName;
-        } else if(targetName === 'englishMeaning') {
-            this.word.englishMeaning = targetName;
-        } else if(targetName === 'example') {
-            //todo: наверно, проверку надо делать
-            if(this.word.examples.length === 0) {
-                this.word.examples.push(new ExampleReadModel());
-            }
-            this.word.examples[0].example= targetName;
         }
     }
 
@@ -287,16 +256,10 @@ class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
             wordOfADay.date = this.props.date;
             this.props.wordStore.addOrUpdateWordOfADay(wordOfADay)
                 .then((status) => {
-                    this.props.addOrUpdateWordOfADayToggle()
-                })
+                    this.notSaved = status !== 200;
+                    this.saved = status === 200;
+                });
         }
-    }
-
-    addOrUpdateWordToggle() {
-        if(this.props.cancelEdit !== undefined) {
-            this.props.cancelEdit();
-        }
-        this.addOrUpdateWord = !this.addOrUpdateWord;
     }
 }
 

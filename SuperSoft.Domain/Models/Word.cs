@@ -11,6 +11,6 @@ namespace SuperSoft.Domain.Models
 		public string EnglishMeaning { get; set; }
 		public string RussianMeaning { get; set; }
 		public PartOfSpeech PartOfSpeech { get; set; }
-		public IReadOnlyCollection<Example> Examples { get; set; } = Array.Empty<Example>();
+		public List<Example> Examples { get; set; } = new List<Example>();
 	}
 }

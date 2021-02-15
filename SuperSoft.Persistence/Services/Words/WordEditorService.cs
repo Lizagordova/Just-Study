@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Words;
+using SuperSoft.Persistence.Extensions;
 
 namespace SuperSoft.Persistence.Services.Words
 {
@@ -51,6 +52,7 @@ namespace SuperSoft.Persistence.Services.Words
 
 		public int AddOrUpdateWordOfDay(Word word, DateTime date, int courseId)
 		{
+			date = date.GetDayFromDate();
 			var wordId = _wordRepository.AddOrUpdateWordToDictionary(word);
 			_wordRepository.AddOrUpdateWordOfDay(wordId, date, courseId);
 

@@ -17,7 +17,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.RussianMeaning, opt => opt.MapFrom(src => src.RussianMeaning))
 					.ForMember(dest => dest.WordText, opt => opt.MapFrom(src => src.Word))
 					.ForMember(dest => dest.PartOfSpeech, opt => opt.MapFrom(src => src.PartOfSpeech))
-					.ForMember(dest => dest.Examples, opt => opt.MapFrom(src => src.Examples));
+					.ForMember(dest => dest.Examples, opt => opt.Ignore());//todo: разберись потом как это норм делать
 			});
 
 			AddMapping<Word, WordViewModel>(cfg =>
@@ -28,7 +28,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.RussianMeaning, opt => opt.MapFrom(src => src.RussianMeaning))
 					.ForMember(dest => dest.Word, opt => opt.MapFrom(src => src.WordText))
 					.ForMember(dest => dest.PartOfSpeech, opt => opt.MapFrom(src => src.PartOfSpeech))
-					.ForMember(dest => dest.Examples, opt => opt.MapFrom(src => src.Examples));
+					.ForMember(dest => dest.Examples, opt => opt.Ignore());
 			});
 
 			AddMapping<ExampleReadModel, Example>(cfg =>

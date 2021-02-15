@@ -36,6 +36,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
             </Accordion.Toggle>
         );
     }
+
     renderComments() {
         return(
             <>

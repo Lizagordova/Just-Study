@@ -46,8 +46,6 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         this.restUsers = users.filter(function(u) {
             return !participants.includes(u);
         });
-        console.log("participants", toJS(participants));
-        console.log("usersByCourse", toJS(usersByCourse));
         this.participants = participants;
     }
 

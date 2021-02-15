@@ -3,6 +3,6 @@
 	public class ExampleViewModel
 	{
 		public int Id { get; set; }
-		public int Example { get; set; }
+		public string Example { get; set; }
 	}
 }
