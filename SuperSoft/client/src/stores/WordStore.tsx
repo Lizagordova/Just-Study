@@ -156,6 +156,7 @@ class WordStore {
             wordOfADay = await response.json();
         }
 
+        console.log("wordOfADay", wordOfADay);
         return wordOfADay;
     }
 

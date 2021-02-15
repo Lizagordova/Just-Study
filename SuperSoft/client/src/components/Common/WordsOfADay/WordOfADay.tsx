@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
 import {observer} from "mobx-react";
-import {Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row} from "reactstrap";
+import { Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row, Alert } from "reactstrap";
 import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
 import RootStore from "../../../stores/RootStore";
 import {makeObservable, observable} from "mobx";
@@ -33,20 +33,22 @@ class WordOfADay extends Component<IWordOfADayProps> {
         makeObservable(this, {
             word: observable,
             addOrUpdate: observable,
+            role: observable,
+            showCautions: observable,
             showComments: observable,
             itIsNotAllowedToWatchNextWords: observable,
             showUserAnswers: observable
         });
-        this.role = this.props.store.userStore.currentUser.role;
     }
 
     componentDidMount(): void {
+       this.role = this.props.store.userStore.currentUser.role;
        this.props.store.wordStore
             .getWordOfADay(this.props.date, this.props.store.courseStore.choosenCourse.id)
             .then((word) => {
                 this.word = word;
-                this.showCautions = word.word === "";
-                this.addOrUpdate = word.word === "";
+                this.showCautions = word.word === null;
+                this.addOrUpdate = word.word === null;
             });
     }
 
@@ -58,11 +60,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     renderCautions() {
         return(
-            <div className="row justify-content-center">
-                <span>
-                На эту дату слово дня отсутствует
-                </span>
-            </div>
+            <Alert color="danger">На эту дату слово дня отсутствует</Alert>
         );
     }
 
@@ -157,7 +155,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         let currentUser = this.props.store.userStore.currentUser;
         return (
-            <AddOrUpdateWordOfADay word={this.word} courseId={courseId} currentUser={currentUser} wordStore={this.props.store.wordStore} date={this.props.date} addOrUpdateWordOfADayToggle={this.toggleAddOrUpdateWord} />
+            <AddOrUpdateWordOfADay word={this.word} courseId={courseId} currentUser={currentUser} wordStore={this.props.store.wordStore} date={this.props.date} addOrUpdateWordOfADayToggle={this.toggleAddOrUpdateWord} cancelEdit={this.toggleAddOrUpdateWord} edit={true}/>
         );
     }
 
@@ -212,7 +210,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         }
     }
 
-    toggleAddOrUpdateWord() {
+    toggleAddOrUpdateWord = () => {
         this.addOrUpdate = !this.addOrUpdate;
         this.setWordOfADay();
     }

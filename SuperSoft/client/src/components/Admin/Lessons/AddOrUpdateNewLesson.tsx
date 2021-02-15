@@ -157,7 +157,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         return(
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранилось</Alert>}
+                    {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранился</Alert>}
                     {this.saved && <Alert color="success">Урок успешно сохранился!</Alert>}
                     <div className="row justify-content-center">
                         {this.renderNameDescription()}
@@ -228,7 +228,6 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             this.props.cancelEdit();
         }
         this.addOrUpdateNewLesson = !this.addOrUpdateNewLesson;
-        
     }
 
     addOrUpdateLesson() {

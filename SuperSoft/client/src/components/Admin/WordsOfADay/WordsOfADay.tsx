@@ -11,7 +11,7 @@ class IWordsOfADayProps {
 
 @observer
 class WordsOfADay extends Component<IWordsOfADayProps> {
-    choosenDate: Date | Date[];
+    choosenDate: Date | Date[] = new Date();
 
     constructor() {
         // @ts-ignore
@@ -22,9 +22,10 @@ class WordsOfADay extends Component<IWordsOfADayProps> {
     }
 
     renderCalendar() {
+        const choosenDate = typeof this.choosenDate === "string" ? new Date(this.choosenDate) : this.choosenDate;
         return(
             <Calendar
-                value={this.choosenDate}
+                value={choosenDate}
                 onChange={(date) => this.inputDate(date)}
             />
         );

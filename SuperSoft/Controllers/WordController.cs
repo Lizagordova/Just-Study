@@ -261,16 +261,17 @@ namespace SuperSoft.Controllers
 		[Route("/getwordofaday")]
 		public ActionResult GetWordOfADay([FromBody]WordOfADayReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
+			var role = SessionHelper.GetRole(HttpContext);//todo:дату без времени прокидывать!!!!
 			if (role == null)
 			{
 				return new BadRequestResult();
 			}
 			try
 			{
-				_wordReader.GetWordOfADay(wordReadModel.Date, wordReadModel.CourseId);
+				var word = _wordReader.GetWordOfADay(wordReadModel.Date, wordReadModel.CourseId);
+				var wordViewModel = _mapper.Map<Word, WordViewModel>(word);
 
-				return new OkResult();
+				return new JsonResult(wordViewModel);
 			}
 			catch (Exception e)
 			{

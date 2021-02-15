@@ -137,7 +137,7 @@ namespace SuperSoft.Persistence.Repositories
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetGetWordOfADayParam(date, courseId);
 			var response = conn.QueryMultiple(GetWordOfADaySp, param, commandType: CommandType.StoredProcedure);
-			var word = MapWordsCollection(response).FirstOrDefault();
+			var word = MapWordsCollection(response).FirstOrDefault() ?? new Word();
 			DatabaseHelper.CloseConnection(conn);
 
 			return word;
