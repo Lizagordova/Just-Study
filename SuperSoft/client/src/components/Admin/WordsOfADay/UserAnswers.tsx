@@ -49,7 +49,7 @@ class UserAnswers extends Component<IUserAnswersProps> {
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 {this.loaded && this.renderUsers(users)}
-                {this.loaded && renderSpinner()}
+                {!this.loaded && renderSpinner()}
             </div>
         );
     }

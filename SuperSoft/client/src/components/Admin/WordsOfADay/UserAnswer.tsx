@@ -8,6 +8,7 @@ import {makeObservable, observable} from "mobx";
 import CommentGroup from "../../Common/Comments/CommentGroup";
 import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
 import RootStore from "../../../stores/RootStore";
+import { Alert } from "reactstrap";
 
 class IUserAnswerProps {
     userWord: UserWordViewModel;
@@ -31,7 +32,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
 
     renderUserName(user: UserViewModel) {
         return (
-            <Accordion.Toggle as={Button} variant="link" eventKey={user.id.toString()} onClick={() => this.setState({userAnswersLoad: true})}>
+            <Accordion.Toggle style={{width: "90%"}} as={Button} variant="link" eventKey={user.id.toString()} onClick={() => this.setState({userAnswersLoad: true})}>
                 <span>{user.firstName + ' ' + user.lastName}</span>
             </Accordion.Toggle>
         );
@@ -52,16 +53,22 @@ class UserAnswer extends Component<IUserAnswerProps> {
     }
 
     renderAnswer(answer: UserWordViewModel) {
-        return(
-            <div className="row justify-content-center">
-                <div className="col-8">
-                    <span>{answer.answer}</span>
+        if (answer !== undefined) {
+            return(
+                <div className="row justify-content-center">
+                    <div className="col-8">
+                        <span>{answer.answer}</span>
+                    </div>
+                    <div className="col-4">
+                        {this.renderComments()}
+                    </div>
                 </div>
-                <div className="col-4">
-                    {this.renderComments()}
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <Alert color="primary">Пользователь пока не добавил ответ.</Alert>
+            );
+        }
     }
 
     render() {
