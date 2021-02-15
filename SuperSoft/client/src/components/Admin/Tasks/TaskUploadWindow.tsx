@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
-import { Alert, Button, ModalBody, ModalFooter, Input } from "reactstrap";
+import { Alert, Button, ModalBody, ModalFooter, Input, Label } from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
@@ -13,7 +13,9 @@ import {subtaskTranspiler} from "../../../functions/subtaskTranspiler";
 @observer
 class TaskUploadWindow extends Component<IUploadTaskProps> {
     task: TaskReadModel = new TaskReadModel();
+    subtasks: SubtaskReadModel[] = new Array<SubtaskReadModel>();
     notSaved: boolean;
+    loaded: boolean;
 
     constructor() {
         // @ts-ignore
@@ -21,25 +23,32 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         makeObservable(this, {
             task: observable,
             notSaved: observable,
+            loaded: observable,
+            subtasks: observable
         });
     }
 
     componentDidMount(): void {
-        this.task = this.props.task;
+        let task = this.props.task;
+        if(task.subtasks !== undefined) {
+            this.subtasks = task.subtasks;
+        }
+        this.task = task;
+        this.loaded = true;
     }
 
     updateSubtask(subtask: SubtaskReadModel, i: number) {
-        this.task.subtasks[i] = subtask;
+        this.subtasks[i] = subtask;
     }
 
     deleteSubtask(i: number) {
-        this.task.subtasks = this.task.subtasks.filter((s,ind) => ind !== i);
+        this.subtasks = this.subtasks.filter((s,ind) => ind !== i);
     }
 
     renderInputForSubtasks() {
         return(
             <>
-                {this.task.subtasks.map((s, i) => {
+                {this.subtasks.map((s, i) => {
                     let order = i;
                     if(s.order > 0) {
                         order = s.order;
@@ -76,11 +85,11 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     renderInstructionField() {
         return(
             <div className="row justify-content-center">
-                <label className="instruction">
+                <Label className="inputLabel" align="center">
                     Введите инструкцию к заданию
-                </label>
-                <textarea
-                    className="taskInput"
+                </Label>
+                <Input
+                    style={{width: "70%"}}
                     value={this.task.instruction}
                     onChange={(e) => this.inputInstruction(e)}/>
             </div>
@@ -96,7 +105,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     renderAddSubtaskButton() {
         return(
             <div className="row justify-content-center">
-                <Button className="addTask"
+                <Button 
+                    style={{width: "70%", marginTop: "10px"}}
                     onClick={() => this.addSubtask()}
                     outline color="secondary">
                     <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
@@ -114,15 +124,16 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     renderSaveButton() {
         return(
             <Button
-                className="saveTaskButton"
+                outline color="success"
+                style={{width: "70%"}}
                 onClick={() => this.saveTask()}>
                 Сохранить упражнение
             </Button>
         );
     }
 
-    render() {
-        return(
+    renderTaskUpdloadWindow() {
+        return (
             <>
                 <ModalBody>
                     {getTaskTitle(this.task.taskType)}
@@ -135,9 +146,17 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         {this.renderTags()}
                     </div>
                 </ModalBody>
-                <ModalFooter>
+                <div className="row justify-content-center" style={{marginTop: "10px"}}>
                     {this.renderSaveButton()}
-                </ModalFooter>
+                </div>
+            </>
+        );
+    }
+
+    render() {
+        return(
+            <>
+                {this.loaded && this.renderTaskUpdloadWindow()}
             </>
         );
     }
@@ -145,14 +164,17 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     addSubtask() {
         let subtask = new SubtaskReadModel();
         subtask.subtaskType = subtaskTranspiler(this.task.taskType);
-        this.task.subtasks.push(subtask);
+        let subtasks = this.subtasks;
+        subtasks.push(subtask);
+        this.subtasks = subtasks;
     }
 
-    inputInstruction(event: React.FormEvent<HTMLTextAreaElement>) {
+    inputInstruction(event: React.FormEvent<HTMLInputElement>) {
         this.task.instruction = event.currentTarget.value;
     }
 
     saveTask() {
+        this.task.subtasks = this.subtasks;
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(status === 200) {

@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {Alert, Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row} from "reactstrap";
 import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
 import RootStore from "../../../stores/RootStore";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import CommentGroup from "../Comments/CommentGroup";
 import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
@@ -57,7 +57,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     componentDidUpdate(prevProps: Readonly<IWordOfADayProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.date !== this.props.date) {
-            this.setWordOfADay();
+            this.setWordOfADay(this.props.date);
         }
     }
 
@@ -174,7 +174,6 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderUserAnswers() {
-        console.log("i want to transfer store", this.props.store);
         return (
             <UserAnswers store={this.props.store}  wordId={this.word.id}/>
         );
@@ -227,16 +226,16 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     toggleAddOrUpdateWord = () => {
         this.addOrUpdate = !this.addOrUpdate;
-        this.setWordOfADay();
+        this.setWordOfADay(this.props.date);
     }
 
     toggleComments() {
         this.showComments = !this.showComments;
     }
 
-    setWordOfADay() {
+    setWordOfADay(date: Date | Date[]) {
         let courseId = this.props.store.courseStore.choosenCourse.id;
-        this.props.store.wordStore.getWordOfADay(this.props.date, courseId)
+        this.props.store.wordStore.getWordOfADay(date, courseId)
             .then((word) => {
                 this.word = word;
             });

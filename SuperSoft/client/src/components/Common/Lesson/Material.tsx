@@ -26,7 +26,6 @@ export class Material extends Component<IMaterialProps> {
         console.log("material path", material.path);
         if(material.path.includes("pptx")) {
             let path = material.path.replace("client/build", ".");
-            console.log("path", path);
             /*return (
                 <iframe src={path} width='962px' height='565px' frameBorder='0' />
             );*/

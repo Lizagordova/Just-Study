@@ -36,8 +36,6 @@ class UserAnswers extends Component<IUserAnswersProps> {
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
                     let userWord = this.getUserWord(user.id);
-                    console.log("user", user);
-                    console.log("userWord", userWord);
                     return <UserAnswer user={user} store={this.props.store} userWord={userWord} />
                 })}
             </Accordion>
