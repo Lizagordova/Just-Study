@@ -18,6 +18,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     subtasks: SubtaskReadModel[] = new Array<SubtaskReadModel>();
     tags: TagReadModel[] = new Array<TagReadModel>();
     notSaved: boolean;
+    saved: boolean;
     loaded: boolean;
 
     constructor() {
@@ -28,7 +29,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             notSaved: observable,
             loaded: observable,
             subtasks: observable,
-            tags: observable
+            tags: observable,
+            saved: observable
         });
     }
 
@@ -72,7 +74,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     renderTags() {
         let tags = this.props.store.tags;
         console.log("tags", toJS(tags));
-        if(tags.length !== 0) {
+        if(tags !== undefined && tags.length !== 0) {
             return(
                 <div className="row justify-content-center">
                     <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
@@ -126,6 +128,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
+                {this.saved && <Alert color="success">Задание успешно сохранилось</Alert>}
             </>
         );
     }
@@ -197,12 +200,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         console.log("this task tags", toJS(task.tags));
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
-                if(status === 200) {
-                    this.props.toggle();
-                    this.notSaved = false;
-                } else {
-                    this.notSaved = true;
-                }
+                console.log("status", status);
+                this.notSaved = status !== 200;
+                this.saved = status === 200;
         });
     }
 }

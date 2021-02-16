@@ -37,9 +37,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     }
 
     renderTooltip() {
-        
         let subtaskType = this.subtask.subtaskType;
-        console.log("subtaskType", subtaskType);
         if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm) {
             return(
                 <>

@@ -25,7 +25,7 @@ class IAddOrUpdateWordOfADayProps {
 
 @observer
 class AddOrUpdateWordOfADay extends Component<IAddOrUpdateWordOfADayProps> {
-    word: WordReadModel;
+    word: WordReadModel = new WordReadModel();
     notSaved: boolean = false;
     saved: boolean = false;
 

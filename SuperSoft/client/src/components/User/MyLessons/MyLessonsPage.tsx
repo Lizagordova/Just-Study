@@ -17,9 +17,8 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
     isNavOpen: boolean;
     courseId: number;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IMyLessonsPageProps) {
+        super(props);
         makeObservable(this, {
             isNavOpen: observable,
             courseId: observable,

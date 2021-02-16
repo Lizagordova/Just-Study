@@ -22,9 +22,8 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ISubtaskProps) {
+        super(props);
         makeObservable(this, {
             notSaved: observable,
             userAnswer: observable,
@@ -148,9 +147,8 @@ class Dropdown extends Component<IDropdownProps> {
     answerGroup : SubtaskAnswerGroupViewModel;
     isOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IDropdownProps) {
+        super(props);
         makeObservable(this, {
             userAnswerGroup: observable,
             answerGroup: observable,

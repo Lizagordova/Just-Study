@@ -20,9 +20,8 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     days: number[] = new Array<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     tracker: TrackerReadModel = new TrackerReadModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: INaStarteTrackerProps) {
+        super(props);
         makeObservable(this, {
             tracker: observable
         });

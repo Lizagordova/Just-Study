@@ -22,9 +22,8 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ISubtaskProps) {
+        super(props);
         makeObservable(this, {
             notSaved: observable,
             userAnswer: observable,
@@ -146,12 +145,11 @@ class IGapProps {
 
 @observer
 class Gap extends Component<IGapProps> {
-    userAnswerGroup: UserSubtaskAnswerGroupViewModel;
-    answerGroup : SubtaskAnswerGroupViewModel;
+    userAnswerGroup: UserSubtaskAnswerGroupViewModel = new UserSubtaskAnswerGroupViewModel();
+    answerGroup : SubtaskAnswerGroupViewModel = new SubtaskAnswerGroupViewModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IGapProps) {
+        super(props);
         makeObservable(this, {
             userAnswerGroup: observable,
             answerGroup: observable

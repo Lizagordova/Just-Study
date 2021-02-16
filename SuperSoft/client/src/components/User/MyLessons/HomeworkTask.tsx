@@ -6,7 +6,8 @@ import { Button } from "reactstrap";
 import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
 import { makeObservable, observable } from "mobx";
 import { Task } from "../../Common/Tasks/Task";
-import {NavigationType} from "../../../NavigationType";
+import { NavigationType } from "../../../NavigationType";
+import { observer } from "mobx-react";
 
 class IHomeworkTaskProps {
     store: RootStore;
@@ -15,6 +16,7 @@ class IHomeworkTaskProps {
     taskToggler: any;
 }
 
+@observer
 class HomeworkTask extends Component<IHomeworkTaskProps> {
     showComments: boolean;
 

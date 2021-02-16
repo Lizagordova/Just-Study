@@ -18,9 +18,8 @@ class Comment extends Component<ICommentProps> {
     notDeleted: boolean;
     editWindowOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ICommentProps) {
+        super(props);
         makeObservable(this, {
             comment: observable,
             notDeleted: observable,

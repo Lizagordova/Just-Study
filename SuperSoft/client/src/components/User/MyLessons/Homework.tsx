@@ -14,7 +14,7 @@ class IHomeworkProps {
 
 @observer
 class Homework extends Component<IHomeworkProps> {
-    taskToRender: TaskViewModel;
+    taskToRender: TaskViewModel = new TaskViewModel();
 
     constructor() {
         // @ts-ignore

@@ -16,14 +16,14 @@ class ICompletedTaskProps {
 
 @observer
 class CompletedTask extends Component<ICompletedTaskProps> {
-    commentsWindowOpen: boolean;
+    commentsWindowOpen: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             commentsWindowOpen: observable
-        })
+        });
     }
 
     commentsToggle() {

@@ -15,7 +15,7 @@ class ICoursesPageProps {
 
 @observer
 class CoursesPage extends Component<ICoursesPageProps> {
-    notDeleted: boolean;
+    notDeleted: boolean = false;
 
     constructor() {
         // @ts-ignore

@@ -27,7 +27,7 @@ export class Course extends Component<ICourseProps> {
             participants: observable,
         });
     }
-    
+
     componentDidMount(): void {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         this.props.store.lessonStore.getLessonsByCourse(courseId);

@@ -15,7 +15,7 @@ class INotificationProps {
 
 @observer
 class Notification extends Component<INotificationProps> {
-    userNotification: UserNotificationReadModel;
+    userNotification: UserNotificationReadModel = new UserNotificationReadModel();
     
     constructor() {
         // @ts-ignore

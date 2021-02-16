@@ -12,7 +12,7 @@ class IContentProps {
 @observer
 export class ContentUpload extends Component<IContentProps> {
     file: File;
-    notLoaded: boolean;
+    notLoaded: boolean = false;
 
     constructor() {
         // @ts-ignore

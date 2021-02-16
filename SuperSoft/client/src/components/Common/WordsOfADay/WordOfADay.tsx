@@ -20,7 +20,7 @@ class IWordOfADayProps {
 
 @observer
 class WordOfADay extends Component<IWordOfADayProps> {
-    word: WordViewModel;
+    word: WordViewModel = new WordViewModel();
     addOrUpdate: boolean = false;
     role: UserRole;
     showComments: boolean;

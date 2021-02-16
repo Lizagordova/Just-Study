@@ -22,9 +22,8 @@ class Word extends Component<IWordProps> {
     notDeleted: boolean;
     edit: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IWordProps) {
+        super(props);
         makeObservable(this, {
             word: observable,
             notDeleted: observable,

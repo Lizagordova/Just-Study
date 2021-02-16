@@ -18,16 +18,16 @@ class IAddSubtaskProps {
 
 @observer
 class AddSubtask extends Component<IAddSubtaskProps> {
-    subtask: SubtaskReadModel;
+    subtask: SubtaskReadModel = new SubtaskReadModel();
     notSaved: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IAddSubtaskProps) {
+        super(props);
         makeObservable(this, {
             subtask: observable,
             notSaved: observable
         });
+        console.log("props in constructor", this.props);
         this.subtask.taskId = this.props.taskId;
         this.subtask.subtaskType = subtaskTranspiler(this.props.taskType)
     }
@@ -44,7 +44,12 @@ class AddSubtask extends Component<IAddSubtaskProps> {
 
     renderSaveButton() {
         return (
-            <Button onClick={() => this.saveSubtask()}>Сохранить</Button>
+            <div className="row justify-content-center">
+                <Button
+                    outline color="success"
+                    style={{width: "70%", marginTop: "5px", marginBottom: "5px"}}
+                    onClick={() => this.saveSubtask()}>Сохранить</Button>
+            </div>
         );
     }
 

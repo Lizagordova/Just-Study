@@ -27,7 +27,7 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
             notSaved: observable
         });
     }
-    
+
     componentDidMount(): void {
         this.props.wordStore.getUserWordsProgress(this.props.wordId, this.props.userId)
             .then((userAnswer) => {

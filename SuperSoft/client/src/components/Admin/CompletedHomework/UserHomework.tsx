@@ -13,13 +13,14 @@ class IUserHomeworkProps {
 
 @observer
 class UserHomework extends Component<IUserHomeworkProps> {
-    loadHomework: boolean;
+    loadHomework: boolean = false;
+
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             loadHomework: observable
-        })
+        });
     }
 
     loadHomeworkToggle() {

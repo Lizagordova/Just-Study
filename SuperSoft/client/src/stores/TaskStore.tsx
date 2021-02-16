@@ -11,7 +11,7 @@ import {TagReadModel} from "../Typings/readModels/TagReadModel";
 
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
-    tags: TagViewModel[];
+    tags: TagViewModel[] = new Array<TagViewModel>();
 
     constructor() {
         makeObservable(this, {
@@ -33,15 +33,18 @@ class TaskStore {
     }
 
     async getTasksByLesson(lessonId: number) {
+        console.log("i start to get tasks");
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({lessonId: lessonId})
+            body: JSON.stringify({id: lessonId})
         });
         if(response.status === 200) {
-            this.tasksByChoosenLesson = await response.json();
+            let tasksByChoosenLesson = await response.json();
+            console.log("tasksByChoosenLesson", tasksByChoosenLesson);
+            this.tasksByChoosenLesson = tasksByChoosenLesson;
         }
     }
 
@@ -53,8 +56,9 @@ class TaskStore {
         });
         if(response.status === 200) {
             let taskId = await response.json();
-            task.subtasks.forEach((sub) => {
+            task.subtasks.forEach((sub, i) => {
                 sub.taskId = taskId;
+                console.log("sub order", i);
                 this.addOrUpdateSubtask(sub);
             });
             this.getTasksByLesson(lessonId);
@@ -78,7 +82,15 @@ class TaskStore {
         if(task.instruction !== undefined) {
             formData.append("instruction", task.instruction.toString());
         }
-        
+        if(task.subtasks !== undefined) {
+            console.log("task subtasks", task.subtasks);
+            // @ts-ignore
+            formData.append("subtasks", task.subtasks);
+        }
+        if(task.tags !== undefined) {
+            formData.append("tags", task.tags.toString());
+        }
+
         return formData;
     }
 
@@ -158,19 +170,26 @@ class TaskStore {
     }
 
     async addOrUpdateUserSubtask(userSubtask: UserSubtaskReadModel): Promise<number> {
+        let formData = this.getFormDataForUserSubtask(userSubtask);
         const response = await fetch("/addorupdateusersubtask", {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                userId: userSubtask.userId, answer: userSubtask.answer,
-                status: userSubtask.status, subtaskId: userSubtask.subtaskId,
-                taskId: userSubtask.taskId, files: userSubtask.files
-            })
+            body: formData
         });
 
         return response.status;
+    }
+
+    getFormDataForUserSubtask(userSubtask: UserSubtaskReadModel): FormData {
+        let formData = new FormData();
+        //todo: тут добавить проверку на undefined
+        formData.append("userId", userSubtask.userId.toString());
+        formData.append("answer", userSubtask.answer.toString());
+        formData.append("status", userSubtask.status.toString());
+        formData.append("subtaskId", userSubtask.subtaskId.toString());
+        formData.append("taskId", userSubtask.subtaskId.toString());
+        formData.append("files", userSubtask.files.toString());
+
+        return formData;
     }
 
     async addOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup: UserSubtaskAnswerGroupReadModel): Promise<number> {

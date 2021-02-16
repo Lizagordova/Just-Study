@@ -18,7 +18,8 @@ class TrainingPage extends Component<ITrainingPageProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            filtersOpen: observable
+            filtersOpen: observable,
+            mainTagn: observable
         });
     }
 

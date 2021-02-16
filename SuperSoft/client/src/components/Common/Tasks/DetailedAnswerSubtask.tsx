@@ -21,7 +21,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
             notSaved: observable,
             userAnswer: observable,
             saved: observable,
-            notDeleted: observable,
+            notDeleted: observable
         });
     }
 

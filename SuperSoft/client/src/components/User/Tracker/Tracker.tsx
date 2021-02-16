@@ -16,9 +16,8 @@ class ITrackerProps {
 class Tracker extends Component<ITrackerProps> {
     perceived: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITrackerProps) {
+        super(props);
         makeObservable(this, {
             perceived: observable
         });
