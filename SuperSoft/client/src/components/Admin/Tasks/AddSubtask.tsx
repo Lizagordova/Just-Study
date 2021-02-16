@@ -26,7 +26,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
         super();
         makeObservable(this, {
             subtask: observable,
-            notSaved: observable,
+            notSaved: observable
         });
         this.subtask.taskId = this.props.taskId;
         this.subtask.subtaskType = subtaskTranspiler(this.props.taskType)
@@ -38,7 +38,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
 
     renderSubtaskForm() {
         return(
-            <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} order={this.props.order} />
+            <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} />
         );
     }
 

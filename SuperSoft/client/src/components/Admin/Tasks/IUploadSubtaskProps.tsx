@@ -4,5 +4,4 @@ export class IUploadSubtaskProps {
     subtask: SubtaskReadModel;
     updateSubtask: any;
     deleteSubtask: any;
-    order: number;
 }

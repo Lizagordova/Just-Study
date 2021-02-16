@@ -91,7 +91,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatetask")]
-		public ActionResult AddOrUpdateTask([FromBody]TaskReadModel taskReadModel)
+		public ActionResult AddOrUpdateTask([FromForm]TaskReadModel taskReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())
@@ -120,7 +120,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatesubtask")]
-		public ActionResult AddOrUpdateSubtask([FromBody]SubtaskReadModel subtaskReadModel)
+		public ActionResult AddOrUpdateSubtask([FromForm]SubtaskReadModel subtaskReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())

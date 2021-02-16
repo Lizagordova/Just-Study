@@ -5,43 +5,46 @@ import { makeObservable, observable } from "mobx";
 import { IUploadSubtaskProps } from "./IUploadSubtaskProps";
 import { SubtaskType } from "../../../Typings/enums/SubtaskType";
 import { getTooltipText } from "../../../functions/getTooltipText";
+import { observer } from "mobx-react";
 
+@observer
 class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
-    subtask: SubtaskReadModel;
-    tooltipOpen: boolean;
+    subtask: SubtaskReadModel = new SubtaskReadModel();
+    tooltipOpen: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             subtask: observable,
-            tooltipOpen: observable,
+            tooltipOpen: observable
         });
     }
 
     componentDidMount(): void {
         this.subtask = this.props.subtask;
-        this.subtask.order = this.props.order;
     }
     
     renderOrderInput() {
         return(
-            <div className="col-2">
+            <>
                 <Label>Номер</Label>
                 <Input
                     value={this.subtask.order}
                     onChange={(e) => this.inputOrder(e)}/>
-            </div>
+            </>
         );
     }
 
     renderTooltip() {
+        
         let subtaskType = this.subtask.subtaskType;
+        console.log("subtaskType", subtaskType);
         if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm) {
             return(
                 <>
-                    <span id="DisabledAutoHideExample">Введите предложение</span>
-                    <Tooltip placement="top" isOpen={this.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={this.tooltipToggle}>
+                    <span id="DisabledAutoHideExample">Введите текст задания</span>
+                    <Tooltip placement="top" isOpen={this.tooltipOpen} autohide={true} target="DisabledAutoHideExample" toggle={() => this.tooltipToggle()}>
                         {getTooltipText(subtaskType)}
                     </Tooltip>
                 </>
@@ -52,10 +55,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     renderInputText() {
         return(
             <>
-                <Label className="instruction">
-                    Введите текст задания
-                </Label>
-                <textarea
+                <Input
                     className="taskInput"
                     defaultValue={this.subtask.text}
                     onChange={(e) => this.inputText(e)}/>
@@ -67,7 +67,9 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
         let subtaskType = this.subtask.subtaskType;
         if(subtaskType === SubtaskType.LoadAudio || subtaskType || SubtaskType.DetailedAnswer) {
             return(
-                <Input className="fileInput"
+                <Input
+                    style={{marginTop: "5px"}}
+                    className="fileInput"
                     type="file"
                     onChange={(e) => this.inputFile(e)}/>
             );
@@ -77,7 +79,9 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     renderInput() {
         return(
             <div className="row justify-content-center">
-                {this.renderOrderInput()}
+                <div className="col-2">
+                    {this.renderOrderInput()}
+                </div>
                 <div className="col-10">
                     {this.renderTooltip()}
                     {this.renderInputText()}
@@ -96,16 +100,16 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     }
 
     updateParentSubtask() {
-        this.props.updateSubtask(this.subtask, this.props.order);
+        this.props.updateSubtask(this.subtask, this.subtask.order);
     }
 
     inputFile(event: React.ChangeEvent<HTMLInputElement>) {
         // @ts-ignore
-        this.subtask.files.push(event.target.files[0]);
+        this.subtask.file = event.target.files[0];
         this.updateParentSubtask();
     }
 
-    inputText(event: React.FormEvent<HTMLTextAreaElement>) {
+    inputText(event: React.FormEvent<HTMLInputElement>) {
         this.subtask.text = event.currentTarget.value;
         this.updateParentSubtask();
     }

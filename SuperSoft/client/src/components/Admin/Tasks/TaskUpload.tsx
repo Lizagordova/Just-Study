@@ -40,7 +40,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
                     <div className="row justify-content-center">
                         {TaskTypeTranslater.map(type => {
                             return (
-                                <div className="col-6 align-items-center" style={{marginTop: "3px"}}>
+                                <div className="col-6 align-items-center" style={{marginTop: "5px"}}>
                                     <div className="row justify-content-center">
                                         <Button className="modalButton" outline color="secondary"
                                                 onClick={() => this.modalToggle(type.type)}>
@@ -93,9 +93,9 @@ class TaskUpload extends Component<ITaskUploadProps> {
                 isOpen={this.taskUploadWindowOpen}
                 toggle={() => this.toggleTaskUploadWindow()}
             >
-                <ModalHeader >
+                <div className="row justify-content-center">
                     СОЗДАТЬ НОВОЕ УПРАЖНЕНИЕ
-                </ModalHeader>
+                </div>
                 {this.renderBody()}
                 <Button
                     color="primary"
@@ -115,7 +115,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
         );
     }
 
-    toggleTaskUploadWindow() {
+    toggleTaskUploadWindow = () => {
         this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
         this.showMenu = true;
     }

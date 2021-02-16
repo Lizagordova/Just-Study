@@ -2,18 +2,21 @@
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
 import { Alert, Button, ModalBody, ModalFooter, Input, Label } from "reactstrap";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
 import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
 import { IUploadTaskProps } from "./IUploadTaskProps";
 import SubtaskUploadWindow from "./SubtaskUploadWindow";
 import { getTaskTitle } from "../../../functions/getTaskTitle";
 import {subtaskTranspiler} from "../../../functions/subtaskTranspiler";
+import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
+import {mapToTagReadModel} from "../../../functions/mapper";
 
 @observer
 class TaskUploadWindow extends Component<IUploadTaskProps> {
     task: TaskReadModel = new TaskReadModel();
     subtasks: SubtaskReadModel[] = new Array<SubtaskReadModel>();
+    tags: TagReadModel[] = new Array<TagReadModel>();
     notSaved: boolean;
     loaded: boolean;
 
@@ -24,7 +27,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             task: observable,
             notSaved: observable,
             loaded: observable,
-            subtasks: observable
+            subtasks: observable,
+            tags: observable
         });
     }
 
@@ -33,11 +37,14 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         if(task.subtasks !== undefined) {
             this.subtasks = task.subtasks;
         }
+        if(task.tags !== undefined) {
+            this.tags = task.tags;
+        }
         this.task = task;
         this.loaded = true;
     }
 
-    updateSubtask(subtask: SubtaskReadModel, i: number) {
+    updateSubtask = (subtask: SubtaskReadModel, i: number) => {
         this.subtasks[i] = subtask;
     }
 
@@ -49,37 +56,37 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return(
             <>
                 {this.subtasks.map((s, i) => {
-                    let order = i;
                     if(s.order > 0) {
-                        order = s.order;
+                        
+                    } else {
+                        s.order = i;
                     }
                     return (
-                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} order={order}/>
+                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} />
                     );
                 })}
             </>
         );
     }
 
-    addTag(tag: TagViewModel) {
-        this.task.tags.push(tag);
-    }
-
     renderTags() {
         let tags = this.props.store.tags;
-        return(
-            <div className="row justify-content-center">
-                <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                    {tags.map((tag) => {
-                        return(
-                            <option key={tag.id} onClick={() => this.addTag(tag)}>
-                                {tag.name}
-                            </option>
-                        );
-                    })}
-                </Input>
-            </div>
-        )
+        console.log("tags", toJS(tags));
+        if(tags.length !== 0) {
+            return(
+                <div className="row justify-content-center">
+                    <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                        {tags.map((tag) => {
+                            return(
+                                <option key={tag.id} onClick={() => this.addTag(tag)}>
+                                    {tag.name}
+                                </option>
+                            );
+                        })}
+                    </Input>
+                </div>
+            );
+        }
     }
 
     renderInstructionField() {
@@ -117,7 +124,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
  
     renderCaution() {
         return(
-            <> {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}</>
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
+            </>
         );
     }
 
@@ -125,7 +134,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return(
             <Button
                 outline color="success"
-                style={{width: "70%"}}
+                style={{width: "70%", marginBottom: "5px"}}
                 onClick={() => this.saveTask()}>
                 Сохранить упражнение
             </Button>
@@ -136,8 +145,10 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return (
             <>
                 <ModalBody>
-                    {getTaskTitle(this.task.taskType)}
                     <div className="container-fluid">
+                        <div className="row justify-content-center">
+                            {getTaskTitle(this.task.taskType)}
+                        </div>
                         {this.renderCaution()}
                         {this.renderInstructionField()}
                         {this.renderTextField()}
@@ -169,12 +180,21 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         this.subtasks = subtasks;
     }
 
+    addTag(tag: TagViewModel) {
+        let tagReadModel = mapToTagReadModel(tag);
+        this.tags.push(tagReadModel);
+    }
+    
     inputInstruction(event: React.FormEvent<HTMLInputElement>) {
         this.task.instruction = event.currentTarget.value;
     }
 
     saveTask() {
-        this.task.subtasks = this.subtasks;
+        let task = this.task;
+        task.subtasks = this.subtasks;
+        task.tags = this.tags;
+        console.log("this task subtasks", toJS(task.subtasks));
+        console.log("this task tags", toJS(task.tags));
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(status === 200) {

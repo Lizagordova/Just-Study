@@ -10,6 +10,8 @@ import {SubtaskViewModel} from "../Typings/viewModels/SubtaskViewModel";
 import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
 import {UserViewModel} from "../Typings/viewModels/UserViewModel";
 import {UserReadModel} from "../Typings/readModels/UserReadModel";
+import {TagViewModel} from "../Typings/viewModels/TagViewModel";
+import {TagReadModel} from "../Typings/readModels/TagReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -97,4 +99,12 @@ export function mapToUserReadModel(user: UserViewModel): UserReadModel {
     userReadModel.role = user.role;
 
     return userReadModel;
+}
+
+export function mapToTagReadModel(tag: TagViewModel): TagReadModel {
+    let tagReadModel = new TagReadModel();
+    tagReadModel.id = tag.id;
+    tagReadModel.name = tag.name;
+    
+    return tagReadModel;
 }

@@ -20,18 +20,33 @@ namespace SuperSoft.Persistence.Services.Tasks
 		public int AddOrUpdateTask(Task task)
 		{
 			var taskId = _taskRepository.AddOrUpdateTask(task);
-			var subtasks = task.Subtasks;
-			foreach (var taskSubtask in subtasks)
-			{
-				var subtask = PreHandleSubtask(taskSubtask, taskId);
-				var subtaskId = _taskRepository.AddOrUpdateSubtask(subtask, taskId);
-				subtask.Id = subtaskId;
-				taskSubtask.Id = subtaskId;
-			}
-
-			task.Subtasks = subtasks;
 
 			return taskId;
+		}
+
+		public void AttachTaskToLesson(int taskId, int lessonId, int order)
+		{
+			_taskRepository.AttachTaskToLesson(taskId, lessonId, order);
+		}
+
+		public int AddOrUpdateSubtask(Subtask taskSubtask, int taskId)
+		{
+			var subtaskId = _taskRepository.AddOrUpdateSubtask(taskSubtask, taskId);
+			taskSubtask.Id = subtaskId;
+			var subtask = PreHandleSubtask(taskSubtask, taskId);
+			subtaskId = _taskRepository.AddOrUpdateSubtask(subtask, taskId);
+
+			return subtaskId;
+		}
+
+		public void DeleteTask(int taskId)
+		{
+			_taskRepository.DeleteTask(taskId);
+		}
+
+		public void DeleteSubtask(int subtaskId)
+		{
+			_taskRepository.DeleteSubtask(subtaskId);
 		}
 
 		private Subtask PreHandleSubtask(Subtask subtask, int taskId)
@@ -62,28 +77,6 @@ namespace SuperSoft.Persistence.Services.Tasks
 				var groupId = _taskRepository.AddOrUpdateAnswerGroup(subtask.Id, answerGroup);//todo: довольно опасная штука, особенно если 2 раза добавлять
 				subtask.Text = subtask.Text.Replace(group.Value, $@"[{groupId}]");
 			}
-		}
-
-		public void AttachTaskToLesson(int taskId, int lessonId, int order)
-		{
-			_taskRepository.AttachTaskToLesson(taskId, lessonId, order);
-		}
-
-		public int AddOrUpdateSubtask(Subtask subtask, int taskId)
-		{
-			var subtaskId = _taskRepository.AddOrUpdateSubtask(subtask, taskId);
-
-			return subtaskId;
-		}
-
-		public void DeleteTask(int taskId)
-		{
-			_taskRepository.DeleteTask(taskId);
-		}
-
-		public void DeleteSubtask(int subtaskId)
-		{
-			_taskRepository.DeleteSubtask(subtaskId);
 		}
 
 		private string GetPath(int taskId, string fileName)

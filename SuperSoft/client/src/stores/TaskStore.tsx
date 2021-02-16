@@ -1,4 +1,4 @@
-﻿import { makeObservable, observable } from "mobx";
+﻿import {makeObservable, observable, toJS} from "mobx";
 import { TaskViewModel } from "../Typings/viewModels/TaskViewModel";
 import {TaskReadModel} from "../Typings/readModels/TaskReadModel";
 import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
@@ -46,41 +46,81 @@ class TaskStore {
     }
 
     async addOrUpdateTask(task: TaskReadModel, lessonId: number): Promise<number> {
+        const formData = this.getFormDataForTask(task, lessonId);
         const response = await fetch("/addorupdatetask", {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({lessonId: lessonId,
-                id: task.id, taskType: task.taskType, 
-                instruction: task.instruction, text: task.text,
-                subtasks: task.subtasks, tags: task.tags
-            })
+            body: formData
         });
         if(response.status === 200) {
+            let taskId = await response.json();
+            task.subtasks.forEach((sub) => {
+                sub.taskId = taskId;
+                this.addOrUpdateSubtask(sub);
+            });
             this.getTasksByLesson(lessonId);
         }
 
         return response.status;
     }
 
+    getFormDataForTask(task: TaskReadModel, lessonId: number): FormData {
+        let formData = new FormData();
+        formData.append("lessonId", lessonId.toString());
+        if(task.id !== undefined) {
+            formData.append("id", task.id.toString());
+        }
+        if(task.taskType !== undefined) {
+            formData.append("taskType", task.taskType.toString());
+        }
+        if(task.text !== undefined) {
+            formData.append("text", task.text.toString());
+        }
+        if(task.instruction !== undefined) {
+            formData.append("instruction", task.instruction.toString());
+        }
+        
+        return formData;
+    }
+
     async addOrUpdateSubtask(subtask: SubtaskReadModel): Promise<number> {
+        const formData = this.getFormDataForSubtask(subtask);
         const response = await fetch("/addorupdatesubtask", {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                id: subtask.id, taskId: subtask.taskId,
-                subtaskType: subtask.subtaskType, order: subtask.order,
-                text: subtask.text, path: subtask.path /*todo: зачем path нужен???*/
-            })
+            body: formData
         });
         if(response.status === 200) {
             this.updateTaskByTaskId(subtask.taskId);
         }
 
         return response.status;
+    }
+
+    getFormDataForSubtask(subtask: SubtaskReadModel): FormData {
+        const formData = new FormData();
+        formData.append("subtaskType", subtask.subtaskType.toString());
+        if(subtask.order !== undefined) {
+            formData.append("order", subtask.order.toString());
+        }
+        if(subtask.text !== undefined) {
+            formData.append("text", subtask.text.toString());
+        }
+        if(subtask.path !== undefined) {
+            formData.append("path", subtask.path.toString());
+        }
+        if(subtask.id !== undefined) {
+            formData.append("path", subtask.id.toString());
+        }
+        if(subtask.id !== undefined) {
+            formData.append("id", subtask.id.toString());
+        }
+        if(subtask.taskId !== undefined) {
+            formData.append("taskId", subtask.taskId.toString());
+        }
+        if(subtask.taskId !== undefined) {
+            formData.append("file", subtask.file);
+        }
+        
+        return formData;
     }
 
     async deleteTask(taskId: number, lessonId: number) {
