@@ -19,6 +19,7 @@ using SuperSoft.Domain.Services.Trackers;
 using SuperSoft.Domain.Services.Trainings;
 using SuperSoft.Domain.Services.Users;
 using SuperSoft.Domain.Services.Words;
+using SuperSoft.Helpers;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services.Comments;
 using SuperSoft.Persistence.Services.Courses;
@@ -102,6 +103,7 @@ namespace SuperSoft
 			services.AddSingleton<LogService>();
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();
+			services.AddSingleton<MapHelper>();
 		}
 		
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

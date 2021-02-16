@@ -19,7 +19,7 @@ class TrainingPage extends Component<ITrainingPageProps> {
         super();
         makeObservable(this, {
             filtersOpen: observable,
-            mainTagn: observable
+            mainTag: observable
         });
     }
 

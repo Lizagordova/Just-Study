@@ -196,11 +196,12 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         let task = this.task;
         task.subtasks = this.subtasks;
         task.tags = this.tags;
-        console.log("this task subtasks", toJS(task.subtasks));
-        console.log("this task tags", toJS(task.tags));
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
-                console.log("status", status);
+                if(status === 200) {
+                    console.log("status", status);
+                    this.props.store.getTasksByLesson(this.props.lessonId);
+                }
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });

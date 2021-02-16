@@ -28,8 +28,8 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Instruction, opt => opt.MapFrom(src => src.Instruction))
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 					.ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType))
-					.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
-					.ForMember(dest => dest.Subtasks, opt => opt.MapFrom(src => src.Subtasks));
+					.ForMember(dest => dest.Tags, opt => opt.Ignore())
+					.ForMember(dest => dest.Subtasks, opt => opt.Ignore());
 			});
 
 			AddMapping<SubtaskReadModel, Subtask>(cfg =>
@@ -52,14 +52,14 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Path, opt => opt.MapFrom(src => src.Path))
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 					.ForMember(dest => dest.SubtaskType, opt => opt.MapFrom(src => src.SubtaskType))
-					.ForMember(dest => dest.AnswerGroups, opt => opt.MapFrom(src => src.AnswerGroups));
+					.ForMember(dest => dest.AnswerGroups, opt => opt.Ignore());
 			});
 
 			AddMapping<SubtaskAnswerGroup, SubtaskAnswerGroupViewModel>(cfg =>
 			{
 				cfg.CreateMap<SubtaskAnswerGroup, SubtaskAnswerGroupViewModel>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers));
+					.ForMember(dest => dest.Answers, opt => opt.Ignore());
 			});
 
 			AddMapping<SubtaskAnswer, SubtaskAnswerViewModel>(cfg =>

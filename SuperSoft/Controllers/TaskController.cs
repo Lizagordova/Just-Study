@@ -22,6 +22,7 @@ namespace SuperSoft.Controllers
 		private readonly ITagReaderService _tagReader;
 		private readonly ILogger<TaskController> _logger;
 		private readonly LogService _logService;
+		private readonly MapHelper _mapHelper;
 
 		public TaskController(
 			MapperService mapper,
@@ -29,7 +30,8 @@ namespace SuperSoft.Controllers
 			ITaskReaderService taskReader,
 			ITagReaderService tagReader,
 			ILogger<TaskController> logger,
-			LogService logService)
+			LogService logService,
+			MapHelper mapHelper)
 		{
 			_mapper = mapper;
 			_taskEditor = taskEditor;
@@ -37,6 +39,7 @@ namespace SuperSoft.Controllers
 			_tagReader = tagReader;
 			_logger = logger;
 			_logService = logService;
+			_mapHelper = mapHelper;
 		}
 
 		[HttpPost]
@@ -52,7 +55,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tasks = _taskReader.GetTasksByChoosenLesson(lessonReadModel.Id);
-				var taskViewModels = tasks.Select(_mapper.Map<Task, TaskViewModel>).ToList();
+				var taskViewModels = tasks.Select(_mapHelper.MapTaskViewModel).ToList();
 
 				return new JsonResult(taskViewModels);
 			}

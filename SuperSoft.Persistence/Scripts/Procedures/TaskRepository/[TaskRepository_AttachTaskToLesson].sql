@@ -27,7 +27,7 @@ BEGIN
 			AND [TaskId] = @taskId
 			AND [LessonId] = @lessonId;
 
-	IF @taskExistedId IS NOT NULL
+	IF @taskExistedId IS NULL
 		INSERT
 		INTO [Lesson_Task] (
 			[TaskId],

@@ -61,7 +61,6 @@ class TaskStore {
                 console.log("sub order", i);
                 this.addOrUpdateSubtask(sub);
             });
-            this.getTasksByLesson(lessonId);
         }
 
         return response.status;
