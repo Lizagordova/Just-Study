@@ -14,11 +14,12 @@ class IHomeworkPageProps {
 @observer
 class HomeworkPage extends Component<IHomeworkPageProps> {
     renderTasks(tasks: TaskViewModel[]) {
+        console.log("tasks", tasks);
         return (
             <>
                 {tasks.map((task) => {
                     return(
-                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id}/>
+                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id} key={task.id}/>
                     );
                 })}
             </>

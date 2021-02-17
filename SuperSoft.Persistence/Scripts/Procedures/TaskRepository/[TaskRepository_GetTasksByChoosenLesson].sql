@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [TaskRepository_GetTasksByChoosenLesson]
+﻿CREATE PROCEDURE [dbo].[TaskRepository_GetTasksByChoosenLesson]
 	@lessonId INT
 AS
 BEGIN
@@ -7,6 +7,15 @@ BEGIN
 	DECLARE @tags [UDT_Tag];
 	DECLARE @taskTags [UDT_Task_Tag];
 	DECLARE @taskIds [UDT_Integer];
+
+	INSERT
+	INTO @taskIds (
+		[Id]
+	)
+	SELECT
+		[TaskId]
+	FROM [Lesson_Task]
+	WHERE [LessonId] = @lessonId;
 
 	INSERT
 	INTO @tasks (
@@ -18,16 +27,10 @@ BEGIN
 		[Id],
 		[Instruction],
 		[Text]
-	FROM [Task];
-
-	INSERT
-	INTO @taskIds (
-		[Id]
-	)
-	SELECT
-		[TaskId]
-	FROM [Lesson_Task]
-	WHERE [LessonId] = @lessonId;
+	FROM [Task] 
+	WHERE [Id] IN (
+		SELECT [Id]
+		FROM @taskIds);
 
 	INSERT
 	INTO @subtasks (
@@ -80,7 +83,7 @@ BEGIN
 	);
 
 	SELECT * FROM @tasks;
-	SELECT * FROM @subtasks;
+	SELECT * FROM @subtasks ORDER BY [Order] ASC;
 	SELECT * FROM @tags;
 	SELECT * FROM @taskTags;
 END

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [TaskRepository_AddOrUpdateAnswerGroup]
+﻿CREATE PROCEDURE [dbo].[TaskRepository_AddOrUpdateAnswerGroup]
 	@subtaskId INT,
 	@subtaskAnswers [UDT_SubtaskAnswer] READONLY
 AS
@@ -27,5 +27,5 @@ BEGIN
 		[Explanation]
 	FROM @subtaskAnswers;
 
-	SELECT @subtaskId;
-END	
+	SELECT @groupId;
+END

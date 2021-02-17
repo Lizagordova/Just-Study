@@ -1,7 +1,7 @@
-﻿import React, { Component } from 'react';
-import {Badge, CardText, DropdownItem, DropdownMenu, ButtonDropdown, DropdownToggle} from "reactstrap";
+﻿import React, {Component} from 'react';
+import {Badge, ButtonDropdown, CardText, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
@@ -10,6 +10,7 @@ import {SubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/SubtaskAn
 import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
+import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 
 @observer
 export class RightVerbFormSubtask extends Component<ISubtaskProps> {
@@ -21,6 +22,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     answerGroupIds: RegExpMatchArray | null;
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
+    loaded: boolean = false;
 
     constructor(props: ISubtaskProps) {
         super(props);
@@ -31,6 +33,8 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
             notDeleted: observable,
             partsOfSentence: observable,
             answerGroupIds: observable,
+            subtask: observable,
+            loaded: observable
         });
         this.subtask = this.props.subtask;
     }
@@ -38,6 +42,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+        this.loaded = true;
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
@@ -76,19 +81,27 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     getAnswerGroup(groupId: string): SubtaskAnswerGroupViewModel {
-        return this.subtask.answerGroups.filter(ag => ag.id === Number(groupId))[0];
+        console.log("this subtask", toJS(this.subtask));
+        let answerGroup = this.subtask.answerGroups.filter(ag => ag.id === Number(groupId))[0];
+       console.log("groupId", groupId);
+        console.log("answerGroup", toJS(answerGroup));
+        return answerGroup;
     }
 
     renderSentence() {
         let partsOfSentence = this.partsOfSentence;
         let groupIds = this.answerGroupIds;
+        console.log("partsOfSentence", toJS(this.partsOfSentence));
+        console.log("groupIds", toJS(groupIds));
         return(
             <>
                 {partsOfSentence.map((p, i ) => {
+                    console.log("p", p);
+                    console.log("i", i);
                     return (
                         <>
                             <span style={{clear: 'both'}}>{p}</span>
-                            {groupIds !== null && i < groupIds.length && <Dropdown answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])}/>}
+                            {groupIds !== null && i < groupIds.length && <Dropdown answerGroup={this.getAnswerGroup(groupIds[i])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[i])} key={i}/>}
                         </>
                     )
                 })}
@@ -109,9 +122,10 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     render() {
+        console.log("this subtaskkkkkk", toJS(this.subtask));
         return(
             <>
-                {this.renderSubtask(this.props.subtask)}
+                {this.loaded && this.renderSubtask(this.subtask)}
             </>
         );
     }
@@ -143,8 +157,8 @@ class IDropdownProps {
 
 @observer
 class Dropdown extends Component<IDropdownProps> {
-    userAnswerGroup: UserSubtaskAnswerGroupViewModel;
-    answerGroup : SubtaskAnswerGroupViewModel;
+    userAnswerGroup: UserSubtaskAnswerGroupViewModel = new UserSubtaskAnswerGroupViewModel();
+    answerGroup : SubtaskAnswerGroupViewModel = new SubtaskAnswerGroupViewModel();
     isOpen: boolean;
 
     constructor(props: IDropdownProps) {
@@ -154,8 +168,19 @@ class Dropdown extends Component<IDropdownProps> {
             answerGroup: observable,
             isOpen: observable
         });
-        this.userAnswerGroup = this.props.userAnswerGroup;
+        console.log("props in dropdown", toJS(this.props));
+        this.setUserAnswerGroup();
         this.answerGroup = this.props.answerGroup;
+    }
+
+    setUserAnswerGroup() {
+        if(this.props.userAnswerGroup !== undefined) {
+            this.userAnswerGroup = this.props.userAnswerGroup;
+        } else {
+            let userAnswerGroup = new UserSubtaskAnswerGroupViewModel();
+            userAnswerGroup.status = CompletingStatus.NotCompleted;
+            this.userAnswerGroup = userAnswerGroup;
+        }
     }
 
     toggle() {
@@ -168,6 +193,7 @@ class Dropdown extends Component<IDropdownProps> {
         if(answer !== undefined && answer.isRight) {
             this.userAnswerGroup.status = 4;
         } else {
+            console.log("userAnswerGroup", toJS(this.userAnswerGroup));
             this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
         }
         this.userAnswerGroup.lastAnswer = id;
@@ -230,6 +256,7 @@ class Dropdown extends Component<IDropdownProps> {
             answerGroupReadModel.status = this.userAnswerGroup.status;
             answerGroupReadModel.answerGroupId = this.userAnswerGroup.answerGroupId;
             answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
+            console.log("answerGroupReadModel", answerGroupReadModel);
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }
     }

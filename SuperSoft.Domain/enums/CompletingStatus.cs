@@ -3,6 +3,9 @@
 	public enum CompletingStatus
 	{
 		NotCompleted,
+		FirstAttempt,
+		SecondAttempt,
+		ThirdAttempt,
 		Completed
 	}
 }

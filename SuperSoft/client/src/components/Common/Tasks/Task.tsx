@@ -3,7 +3,7 @@ import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Alert, Button, Card, CardBody, CardTitle} from 'reactstrap';
 import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
@@ -139,11 +139,11 @@ export class Task extends Component<ITaskProps> {
         }
         if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
             return(
-                <DetailedAnswerSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId}/>
+                <DetailedAnswerSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} />
             );
         } else if(subtask.subtaskType === SubtaskType.FillGaps) {
             return(
-                <FillGapsSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId}/>
+                <FillGapsSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id}/>
             );
         } /*else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
             return(
@@ -151,21 +151,22 @@ export class Task extends Component<ITaskProps> {
             );
         }*/ else if(subtask.subtaskType === SubtaskType.LoadAudio) {
             return(
-                <LoadAudioSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId}/>
+                <LoadAudioSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id}/>
             );
         } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
             return(
-                <RightVerbFormSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId}/>
+                <RightVerbFormSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id}/>
             );
         } else if(subtask.subtaskType === SubtaskType.LoadFile) {
             return(
-                <LoadFileSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId}/>
+                <LoadFileSubtask subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id}/>
             );
         }
     }
 
     render() {
         let task = this.props.task;
+        console.log("task", toJS(task));
         return(
             <>
                 {this.renderTask(task)}

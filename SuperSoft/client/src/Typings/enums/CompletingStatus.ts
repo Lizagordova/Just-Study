@@ -4,5 +4,8 @@
 
 export enum CompletingStatus { 
 	NotCompleted = 0, 
-	Completed = 1
+	FirstAttempt = 1, 
+	SecondAttempt = 2, 
+	ThirdAttempt = 3, 
+	Completed = 4
 }
