@@ -2,6 +2,7 @@
 import {Tarif} from "../Typings/enums/Tarif";
 import {UserRole} from "../Typings/enums/UserRole";
 import {CourseRole} from "../Typings/enums/CourseRole";
+import {SubtaskType} from "../Typings/enums/SubtaskType";
 
 export function translatePartOfSpeech(partOfSpeech: PartOfSpeech): string {
     if(partOfSpeech === PartOfSpeech.Adjective) {
@@ -42,6 +43,24 @@ export function translateCourseRole(role: CourseRole): string {
         return "Ученик";
     } else if(role === CourseRole.Teacher) {
         return "Учитель"
+    }
+
+    return "";
+}
+
+export function translateSubtaskType(subtaskType: SubtaskType): string {
+    if(subtaskType === SubtaskType.DetailedAnswer) {
+        return "Задание на загрузку развёрнутого ответа";
+    } else if(subtaskType === SubtaskType.RightVerbForm) {
+        return "Выбрать правильную форму глагола"
+    } else if(subtaskType === SubtaskType.LoadAudio) {
+        return "Задание на загрузку аудио"
+    } else if(subtaskType === SubtaskType.FillGaps) {
+        return "Задание на заполнение пропусков"
+    } else if(subtaskType === SubtaskType.LoadFile) {
+        return "Задание на загрузку файла"
+    } else if(subtaskType === SubtaskType.InsertWordsIntoGaps) {
+        return "Задание вставить слова в пропуски"
     }
 
     return "";

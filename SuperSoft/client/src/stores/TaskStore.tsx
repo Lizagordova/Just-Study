@@ -43,7 +43,6 @@ class TaskStore {
         });
         if(response.status === 200) {
             let tasksByChoosenLesson = await response.json();
-            console.log("tasksByChoosenLesson", tasksByChoosenLesson);
             this.tasksByChoosenLesson = tasksByChoosenLesson;
         }
     }
@@ -58,7 +57,6 @@ class TaskStore {
             let taskId = await response.json();
             task.subtasks.forEach((sub, i) => {
                 sub.taskId = taskId;
-                console.log("sub order", i);
                 this.addOrUpdateSubtask(sub);
             });
         }
@@ -82,7 +80,6 @@ class TaskStore {
             formData.append("instruction", task.instruction.toString());
         }
         if(task.subtasks !== undefined) {
-            console.log("task subtasks", task.subtasks);
             // @ts-ignore
             formData.append("subtasks", task.subtasks);
         }
@@ -255,7 +252,7 @@ class TaskStore {
         });
         if(response.status === 200) {
             let taskIndex = this.tasksByChoosenLesson.findIndex(t => t.id === taskId);
-            this.tasksByChoosenLesson[taskIndex] = await response.json();
+            this.tasksByChoosenLesson[taskIndex] =  await response.json();
         }
     }
 }

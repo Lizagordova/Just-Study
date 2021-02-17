@@ -81,23 +81,15 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     getAnswerGroup(groupId: string): SubtaskAnswerGroupViewModel {
-        console.log("this subtask", toJS(this.subtask));
-        let answerGroup = this.subtask.answerGroups.filter(ag => ag.id === Number(groupId))[0];
-       console.log("groupId", groupId);
-        console.log("answerGroup", toJS(answerGroup));
-        return answerGroup;
+        return this.subtask.answerGroups.filter(ag => ag.id === Number(groupId))[0];
     }
 
     renderSentence() {
         let partsOfSentence = this.partsOfSentence;
         let groupIds = this.answerGroupIds;
-        console.log("partsOfSentence", toJS(this.partsOfSentence));
-        console.log("groupIds", toJS(groupIds));
         return(
             <>
                 {partsOfSentence.map((p, i ) => {
-                    console.log("p", p);
-                    console.log("i", i);
                     return (
                         <>
                             <span style={{clear: 'both'}}>{p}</span>
@@ -122,7 +114,6 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     render() {
-        console.log("this subtaskkkkkk", toJS(this.subtask));
         return(
             <>
                 {this.loaded && this.renderSubtask(this.subtask)}
@@ -168,7 +159,6 @@ class Dropdown extends Component<IDropdownProps> {
             answerGroup: observable,
             isOpen: observable
         });
-        console.log("props in dropdown", toJS(this.props));
         this.setUserAnswerGroup();
         this.answerGroup = this.props.answerGroup;
     }
@@ -193,7 +183,6 @@ class Dropdown extends Component<IDropdownProps> {
         if(answer !== undefined && answer.isRight) {
             this.userAnswerGroup.status = 4;
         } else {
-            console.log("userAnswerGroup", toJS(this.userAnswerGroup));
             this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
         }
         this.userAnswerGroup.lastAnswer = id;
@@ -256,7 +245,6 @@ class Dropdown extends Component<IDropdownProps> {
             answerGroupReadModel.status = this.userAnswerGroup.status;
             answerGroupReadModel.answerGroupId = this.userAnswerGroup.answerGroupId;
             answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
-            console.log("answerGroupReadModel", answerGroupReadModel);
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }
     }

@@ -40,7 +40,7 @@ export class Task extends Component<ITaskProps> {
         });
     }
 
-    addSubtaskToggle() {
+    addSubtaskToggle = () => {
         this.addSubtask = !this.addSubtask;
     }
 
@@ -80,12 +80,13 @@ export class Task extends Component<ITaskProps> {
         if(role === UserRole.Admin) {
             let order = this.props.task.subtasks.length;
             let taskId = this.props.task.id;
-            let taskType = this.props.task.taskType;
-            return(
-                <>
-                    {this.addSubtask && <AddSubtask order={order} taskId={taskId} taskStore={this.props.store.taskStore} taskType={taskType} toggle={this.addSubtaskToggle}/>}
-                </>
-            );
+            if(this.addSubtask) {
+                return(
+                    <div className="row justify-content-center" style={{border: "1px solid black"}}>
+                        {this.addSubtask && <AddSubtask order={order} taskId={taskId} taskStore={this.props.store.taskStore} toggle={this.addSubtaskToggle}/>}
+                    </div>
+                );
+            }
         }
     }
 
@@ -166,7 +167,6 @@ export class Task extends Component<ITaskProps> {
 
     render() {
         let task = this.props.task;
-        console.log("task", toJS(task));
         return(
             <>
                 {this.renderTask(task)}

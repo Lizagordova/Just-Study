@@ -1,18 +1,20 @@
-import React, { Component } from "react";
-import { Button } from "reactstrap";
+import React, {Component} from "react";
+import {Button} from "reactstrap";
 import SubtaskUploadWindow from "./SubtaskUploadWindow";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
 import TaskStore from "../../../stores/TaskStore";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import { TaskType } from "../../../Typings/enums/TaskType";
-import { subtaskTranspiler } from "../../../functions/subtaskTranspiler";
+import { SubtaskType } from "../../../Typings/enums/SubtaskType";
+import { translateSubtaskType} from "../../../functions/translater";
+import { Input } from "reactstrap";
+import { transformValueToSubtaskType } from "../../../functions/transformer";
+import { Alert } from "reactstrap";
 
 class IAddSubtaskProps {
     order: number;
     taskStore: TaskStore;
     taskId: number;
-    taskType: TaskType;
     toggle: any;
 }
 
@@ -27,18 +29,25 @@ class AddSubtask extends Component<IAddSubtaskProps> {
             subtask: observable,
             notSaved: observable
         });
-        console.log("props in constructor", this.props);
         this.subtask.taskId = this.props.taskId;
-        this.subtask.subtaskType = subtaskTranspiler(this.props.taskType)
+        this.subtask.subtaskType = SubtaskType.InsertWordsIntoGaps;
     }
 
-    updateSubtask(subtask: SubtaskReadModel, order: number) {
+    updateSubtask = (subtask: SubtaskReadModel) => {
         this.subtask = subtask;
-    }
+    };
 
     renderSubtaskForm() {
         return(
             <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} />
+        );
+    }
+
+    renderWarnings() {
+        return(
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и подзадание не сохранилось</Alert>}
+            </>
         );
     }
 
@@ -53,13 +62,34 @@ class AddSubtask extends Component<IAddSubtaskProps> {
         );
     }
 
+    renderSelectSubtaskTypeButton() {
+        return (
+            <>
+                <Input type="select" id="exampleSelect" onClick={(e) => this.handleSubtaskType(e)}>
+                    <option value="InsertWordsIntoGaps">{translateSubtaskType(SubtaskType.InsertWordsIntoGaps)}</option>
+                    <option value="RightVerbForm">{translateSubtaskType(SubtaskType.RightVerbForm)}</option>
+                    <option value="LoadAudio">{translateSubtaskType(SubtaskType.LoadAudio)}</option>
+                    <option value="FillGaps">{translateSubtaskType(SubtaskType.FillGaps)}</option>
+                    <option value="LoadFile">{translateSubtaskType(SubtaskType.LoadFile)}</option>
+                    <option value="DetailedAnswer">{translateSubtaskType(SubtaskType.DetailedAnswer)}</option>
+                </Input>
+            </>
+        );
+    }
+
     render() {
         return(
             <>
+                {this.renderWarnings()}
+                {this.renderSelectSubtaskTypeButton()}
                 {this.renderSubtaskForm()}
                 {this.renderSaveButton()}
             </>
         );
+    }
+
+    handleSubtaskType(event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+        this.subtask.subtaskType = transformValueToSubtaskType(event.currentTarget.value);
     }
 
     saveSubtask() {

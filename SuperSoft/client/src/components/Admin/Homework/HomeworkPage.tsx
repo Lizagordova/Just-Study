@@ -6,6 +6,7 @@ import TaskUpload from "../Tasks/TaskUpload";
 import { Task } from "../../Common/Tasks/Task";
 import { Alert } from "reactstrap";
 import { observer } from "mobx-react";
+import { toJS } from "mobx";
 
 class IHomeworkPageProps {
     store: RootStore;
@@ -14,7 +15,6 @@ class IHomeworkPageProps {
 @observer
 class HomeworkPage extends Component<IHomeworkPageProps> {
     renderTasks(tasks: TaskViewModel[]) {
-        console.log("tasks", tasks);
         return (
             <>
                 {tasks.map((task) => {

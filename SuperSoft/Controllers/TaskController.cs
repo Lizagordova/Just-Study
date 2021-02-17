@@ -207,8 +207,9 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var task = _taskReader.GetTaskById(taskReadModel.Id);
+				var taskViewModel = _mapHelper.MapTaskViewModel(task);
 
-				return new JsonResult(task);
+				return new JsonResult(taskViewModel);
 			}
 			catch (Exception e)
 			{

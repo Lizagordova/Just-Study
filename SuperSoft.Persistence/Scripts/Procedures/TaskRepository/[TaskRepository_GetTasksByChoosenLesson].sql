@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[TaskRepository_GetTasksByChoosenLesson]
+﻿CREATE PROCEDURE [TaskRepository_GetTasksByChoosenLesson]
 	@lessonId INT
 AS
 BEGIN

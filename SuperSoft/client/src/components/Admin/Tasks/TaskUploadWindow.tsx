@@ -73,7 +73,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
 
     renderTags() {
         let tags = this.props.store.tags;
-        console.log("tags", toJS(tags));
         if(tags !== undefined && tags.length !== 0) {
             return(
                 <div className="row justify-content-center">
@@ -199,7 +198,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(status === 200) {
-                    console.log("status", status);
                     this.props.store.getTasksByLesson(this.props.lessonId);
                 }
                 this.notSaved = status !== 200;

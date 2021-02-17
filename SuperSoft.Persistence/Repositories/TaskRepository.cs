@@ -179,11 +179,9 @@ namespace SuperSoft.Persistence.Repositories
 
 		private Task MapTask(TaskData taskData)
 		{
-			var task = new Task
-			{
-				Subtasks = taskData.Subtasks.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList(),
-				Tags = taskData.Tags.Select(_mapper.Map<TagUdt, Tag>).ToList()
-			};
+			var task = _mapper.Map<TaskUdt, Task>(taskData.Tasks.FirstOrDefault());
+			task.Subtasks = taskData.Subtasks.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList();
+			task.Tags = taskData.Tags.Select(_mapper.Map<TagUdt, Tag>).ToList();
 
 			return task;
 		}
