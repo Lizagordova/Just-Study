@@ -25,11 +25,11 @@ namespace SuperSoft.Persistence.Repositories
 			_mapper = mapper;
 		}
 
-		public int AddOrUpdateTracker(Tracker tracker)
+		public int AddOrUpdateTracker(Tracker tracker, int userId, int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetAddOrUpdateTrackerParam(tracker);
-			var trackerId = conn.Query(AddOrUpdateTrackerSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			var param = GetAddOrUpdateTrackerParam(tracker, userId, courseId);
+			var trackerId = conn.Query<int>(AddOrUpdateTrackerSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
 			return trackerId;
@@ -55,11 +55,13 @@ namespace SuperSoft.Persistence.Repositories
 			return tracker;
 		}
 
-		private DynamicTvpParameters GetAddOrUpdateTrackerParam(Tracker tracker)
+		private DynamicTvpParameters GetAddOrUpdateTrackerParam(Tracker tracker, int userId, int courseId)
 		{
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("tracker", "UDT_Tracker");
 			var udt = _mapper.Map<Tracker, TrackerUdt>(tracker);
+			udt.CourseId = courseId;
+			udt.UserId = userId;
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
 
@@ -101,7 +103,10 @@ namespace SuperSoft.Persistence.Repositories
 		private Tracker MapTracker(TrackerData data)
 		{
 			var tracker = _mapper.Map<TrackerUdt, Tracker>(data.Tracker);
-			tracker.TrackersByDay = data.TrackersByDay.Select(_mapper.Map<TrackerByDayUdt, TrackerByDay>).ToList();
+			if (tracker != null)
+			{
+				tracker.TrackersByDay = data.TrackersByDay.Select(_mapper.Map<TrackerByDayUdt, TrackerByDay>).ToList();
+			}
 
 			return tracker;
 		}

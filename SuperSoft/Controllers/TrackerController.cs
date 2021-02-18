@@ -72,7 +72,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tracker = _mapper.Map<TrackerReadModel, Tracker>(trackerReadModel);
-				_trackerEditor.AddOrUpdateTracker(tracker);
+				_trackerEditor.AddOrUpdateTracker(tracker, trackerReadModel.UserId, trackerReadModel.CourseId);
 
 				return new OkResult();
 			}

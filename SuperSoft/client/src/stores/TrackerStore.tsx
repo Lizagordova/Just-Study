@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import { TrackerReadModel } from "../Typings/readModels/TrackerReadModel";
 
 class TrackerStore {
-    currentTracker: TrackerViewModel;
+    currentTracker: TrackerViewModel = new TrackerViewModel();
 
     constructor() {
         makeObservable(this, {
@@ -12,7 +12,6 @@ class TrackerStore {
     }
 
     async getTracker(userId: number, courseId: number): Promise<number> {
-        let tracker = new TrackerViewModel();
         const response = await fetch("/gettracker", {
             method: "POST",
             headers: {
@@ -21,14 +20,16 @@ class TrackerStore {
             body: JSON.stringify({userId: userId, courseId: courseId})
         });
         if(response.status === 200) {
-            this.currentTracker = await response.json();
+            let currentTracker = await response.json();
+            console.log("currentTracker", currentTracker);
+            this.currentTracker = currentTracker;
         }
 
         return response.status;
     }
 
     async addOrUpdateTracker(tracker: TrackerReadModel) {
-        const response = await fetch("/gettracker", {
+        const response = await fetch("/addorupdatetracker", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

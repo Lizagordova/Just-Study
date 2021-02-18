@@ -15,6 +15,7 @@ import { Registration } from "./components/Authorization/Registration";
 import { UserRole } from "./Typings/enums/UserRole";
 import { AdminMain } from "./components/Admin/Main/AdminMain";
 import { UserMain } from "./components/User/Main/UserMain";
+import  "../src/styles/lesson.css";
 
 interface Props {
     store: RootStore;

@@ -29,7 +29,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.Day))
 					.ForMember(dest => dest.ChatParticipation, opt => opt.MapFrom(src => src.ChatParticipation))
-					.ForMember(dest => dest.CompletedHomework, opt => opt.MapFrom(src => src.CompleteHomework))
+					.ForMember(dest => dest.CompletedHomework, opt => opt.MapFrom(src => src.CompletedHomework))
 					.ForMember(dest => dest.WebinarWatch, opt => opt.MapFrom(src => src.WebinarWatch))
 					.ForMember(dest => dest.DictionaryOfLesson, opt => opt.MapFrom(src => src.DictionaryOfLesson))
 					.ForMember(dest => dest.WordOfADay, opt => opt.MapFrom(src => src.WordOfADay));
@@ -41,7 +41,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Day, opt => opt.MapFrom(src => src.Day))
 					.ForMember(dest => dest.ChatParticipation, opt => opt.MapFrom(src => src.ChatParticipation))
-					.ForMember(dest => dest.CompleteHomework, opt => opt.MapFrom(src => src.CompletedHomework))
+					.ForMember(dest => dest.CompletedHomework, opt => opt.MapFrom(src => src.CompletedHomework))
 					.ForMember(dest => dest.WebinarWatch, opt => opt.MapFrom(src => src.WebinarWatch))
 					.ForMember(dest => dest.DictionaryOfLesson, opt => opt.MapFrom(src => src.DictionaryOfLesson))
 					.ForMember(dest => dest.WordOfADay, opt => opt.MapFrom(src => src.WordOfADay));

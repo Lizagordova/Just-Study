@@ -4,14 +4,15 @@ import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
 import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
 import { TrackerViewModel } from "../Typings/viewModels/TrackerViewModel";
 import { TrackerReadModel } from "../Typings/readModels/TrackerReadModel";
-import {TrackerByDayReadModel} from "../Typings/readModels/TrackerByDayReadModel";
-import {TrackerByDayViewModel} from "../Typings/viewModels/TrackerByDayViewModel";
-import {SubtaskViewModel} from "../Typings/viewModels/SubtaskViewModel";
-import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
-import {UserViewModel} from "../Typings/viewModels/UserViewModel";
-import {UserReadModel} from "../Typings/readModels/UserReadModel";
-import {TagViewModel} from "../Typings/viewModels/TagViewModel";
-import {TagReadModel} from "../Typings/readModels/TagReadModel";
+import { TrackerByDayReadModel } from "../Typings/readModels/TrackerByDayReadModel";
+import { TrackerByDayViewModel } from "../Typings/viewModels/TrackerByDayViewModel";
+import { SubtaskViewModel } from "../Typings/viewModels/SubtaskViewModel";
+import { SubtaskReadModel } from "../Typings/readModels/SubtaskReadModel";
+import { UserViewModel } from "../Typings/viewModels/UserViewModel";
+import { UserReadModel } from "../Typings/readModels/UserReadModel";
+import { TagViewModel } from "../Typings/viewModels/TagViewModel";
+import { TagReadModel } from "../Typings/readModels/TagReadModel";
+import { toJS } from "mobx";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -44,9 +45,17 @@ export function mapToTrackerReadModel(tracker: TrackerViewModel, userId: number,
     trackerReadModel.userId = userId;
     trackerReadModel.courseId = courseId;
     if(tracker.trackersByDay.length === 0) {
-        tracker.trackersByDay = new Array<TrackerByDayViewModel>(daysCount);
+        let trackersByDay = new Array<TrackerByDayViewModel>();
+        for(let i = 0; i < daysCount; i++) {
+            let trackerByDay = new TrackerByDayViewModel();
+            trackerByDay.day = i + 1;
+            trackersByDay.push(trackerByDay);
+        }
+        tracker.trackersByDay = trackersByDay;
     }
-    trackerReadModel.trackersByDay = tracker.trackersByDay.map(t => mapToTrackerByDayReadModel(t));
+    trackerReadModel.trackersByDay = tracker.trackersByDay.map(t => {
+        return mapToTrackerByDayReadModel(t)
+    });
 
     return trackerReadModel;
 }
@@ -54,11 +63,11 @@ export function mapToTrackerReadModel(tracker: TrackerViewModel, userId: number,
 export function mapToTrackerByDayReadModel(trackerByDay: TrackerByDayViewModel): TrackerByDayReadModel {
     let trackerByDayReadModel = new TrackerByDayReadModel();
     trackerByDayReadModel.id = trackerByDay.id;
-    trackerByDayReadModel.chatParticipation = trackerByDay.chatParticipation;
-    trackerByDayReadModel.completedHomework = trackerByDay.completedHomework;
-    trackerByDayReadModel.dictionaryOfLesson = trackerByDay.dictionaryOfLesson;
-    trackerByDayReadModel.webinarWatch = trackerByDay.webinarWatch;
-    trackerByDayReadModel.wordOfADay = trackerByDay.wordOfADay;
+    trackerByDayReadModel.chatParticipation = trackerByDay.chatParticipation !== undefined ? trackerByDay.chatParticipation : false;
+    trackerByDayReadModel.completedHomework = trackerByDay.completedHomework !== undefined ? trackerByDay.completedHomework : false;
+    trackerByDayReadModel.dictionaryOfLesson = trackerByDay.dictionaryOfLesson !== undefined ? trackerByDay.dictionaryOfLesson : false;
+    trackerByDayReadModel.webinarWatch = trackerByDay.webinarWatch !== undefined ? trackerByDay.webinarWatch : false;
+    trackerByDayReadModel.wordOfADay = trackerByDay.wordOfADay !== undefined ? trackerByDay.wordOfADay : false;
     trackerByDayReadModel.day = trackerByDay.day;
 
     return trackerByDayReadModel;

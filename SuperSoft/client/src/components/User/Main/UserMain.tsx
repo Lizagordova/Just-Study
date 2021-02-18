@@ -30,7 +30,10 @@ export class UserMain extends React.Component<IUserMainProps> {
         courseStore.getUserCourses()
             .then((status) => {
                 if(status === 200) {
-                    let userCoursesIds = this.props.store.courseStore.userCourses.map(c => c.courseId);
+                    let userCoursesIds = this.props.store.courseStore.userCourses.map(c => {
+                        return c.courseId
+                    });
+                    console.log("userCoursesIds", userCoursesIds);
                     courseStore.getCoursesInfo(userCoursesIds);
                 }
             });
@@ -50,7 +53,7 @@ export class UserMain extends React.Component<IUserMainProps> {
         return (
             <>
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="mainMenuHeader">
                         <Nav tabs className="nav">
                             <NavItem>
                                 {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
@@ -59,7 +62,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 <NavLink to="/home" exact className="nav-link" style={{fontSize: "1.5em"}}
                                      activeStyle={{
                                          color: '#ffffff',
-                                         backgroundColor: '#003B46',
+                                         backgroundColor: '#4169E1',
                                          textDecoration: 'none'
                                      }}>ГЛАВНАЯ</NavLink>
                             </NavItem>
@@ -67,7 +70,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 <NavLink to="/mycourses" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
-                                             backgroundColor: '#003B46',
+                                             backgroundColor: '#4169E1',
                                              textDecoration: 'none'
                                          }}>МОИ УРОКИ</NavLink>
                             </NavItem>
@@ -75,7 +78,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                             color: '#ffffff',
-                                             backgroundColor: '#003B46',
+                                             backgroundColor: '#4169E1',
                                              textDecoration: 'none'
                                          }}>СЛОВАРЬ</NavLink>
                             </NavItem>
@@ -83,7 +86,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
-                                             backgroundColor: '#003B46',
+                                             backgroundColor: '#4169E1',
                                              textDecoration: 'none'
                                          }}>ТРЕНИРОВКИ</NavLink>
                             </NavItem>

@@ -7,7 +7,7 @@ import CoursesPage from "../Courses/CoursesPage";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
 import TrainingPage from "../../Common/Training/TrainingPage";
 import UsersPage from "../Users/UsersPage";
-import "../../../styles/lesson.css";
+
 
 @observer
 export class AdminMain extends React.Component<IAdminMainProps> {

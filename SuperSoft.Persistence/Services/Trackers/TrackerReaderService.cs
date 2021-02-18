@@ -17,6 +17,11 @@ namespace SuperSoft.Persistence.Services.Trackers
 		public Tracker GetTracker(int userId, int courseId)
 		{
 			var tracker = _trackerRepository.GetTracker(userId, courseId);
+			if (tracker == null)
+			{
+				tracker = new Tracker();
+				tracker.Id = _trackerRepository.AddOrUpdateTracker(tracker, userId, courseId);
+			}
 
 			return tracker;
 		}

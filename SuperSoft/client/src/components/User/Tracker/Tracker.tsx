@@ -2,8 +2,8 @@
 import {TrackerViewModel} from "../../../Typings/viewModels/TrackerViewModel";
 import TrackerStore from "../../../stores/TrackerStore";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
-import {renderSpinner} from "../../../functions/renderSpinner";
+import { makeObservable, observable, toJS } from "mobx";
+import { renderSpinner } from "../../../functions/renderSpinner";
 import NaStarteTracker from "./Types/NaStarteTracker";
 
 class ITrackerProps {
@@ -25,6 +25,7 @@ class Tracker extends Component<ITrackerProps> {
     }
 
     renderTracker(tracker: TrackerViewModel) {
+        console.log("prepare to render tracker", toJS(tracker));
         return (
             <NaStarteTracker tracker={tracker} trackerStore={this.props.trackerStore} userId={this.props.userId} courseId={this.props.courseId} />
         );
@@ -32,10 +33,11 @@ class Tracker extends Component<ITrackerProps> {
     
     render() {
         let currentTracker = this.props.trackerStore.currentTracker;
+        console.log("currentTracker in tracker", toJS(currentTracker));
         return(
             <>
                 {!this.perceived && renderSpinner()}
-                {this.renderTracker(currentTracker)}
+                {this.perceived && this.renderTracker(currentTracker)}
             </>
         );
     }
@@ -43,7 +45,7 @@ class Tracker extends Component<ITrackerProps> {
     getTracker() {
         this.props.trackerStore.getTracker(this.props.userId, this.props.courseId)
             .then((status) => {
-                this.perceived = status !== 200;
+                this.perceived = status === 200;
             });
     }
 }

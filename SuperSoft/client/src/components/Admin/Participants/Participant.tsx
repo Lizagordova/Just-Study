@@ -51,7 +51,7 @@ class Participant extends Component<IParticipantProps> {
         return(
             <>
                 {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}
-                {this.saved && <Alert color="color">Данные успешно обновились :)</Alert>}
+                {this.saved && <Alert color="success">Данные успешно обновились :)</Alert>}
             </>
         );
     }

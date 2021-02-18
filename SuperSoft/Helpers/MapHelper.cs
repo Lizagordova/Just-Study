@@ -39,5 +39,13 @@ namespace SuperSoft.Helpers
 
 			return answerGroupViewModel;
 		}
+
+		public TrackerViewModel MapTrackerViewModel(Tracker tracker)
+		{
+			var trackerViewModel = _mapper.Map<Tracker, TrackerViewModel>(tracker);
+			trackerViewModel.TrackersByDay = tracker.TrackersByDay.Select(_mapper.Map<TrackerByDay, TrackerByDayViewModel>).ToList();
+
+			return trackerViewModel;
+		}
 	}
 }

@@ -192,11 +192,13 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderButton() {
-        return(
-            <Button outline color="primary" onClick={() => this.toggleAddOrUpdateWord()}>
-                Добавить слово
-            </Button>
-        );
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return(
+                <Button outline color="primary" onClick={() => this.toggleAddOrUpdateWord()}>
+                    Добавить слово
+                </Button>
+            );
+        }
     }
 
     render() {
