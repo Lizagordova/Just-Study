@@ -39,7 +39,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
 
     renderSubtaskForm() {
         return(
-            <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} />
+            <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} index={0} />
         );
     }
 

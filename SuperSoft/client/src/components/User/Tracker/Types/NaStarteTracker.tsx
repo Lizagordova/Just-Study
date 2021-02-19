@@ -20,11 +20,13 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     days: number[] = new Array<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     tracker: TrackerReadModel = new TrackerReadModel();
     trackersByDay: TrackerByDayReadModel[] = new Array<TrackerByDayReadModel>();
+    update: boolean;
 
     constructor(props: INaStarteTrackerProps) {
         super(props);
         makeObservable(this, {
             tracker: observable,
+            update: observable
         });
         observable.map(this.trackersByDay);
         this.setInitialData();
@@ -39,8 +41,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         this.addOrUpdateTracker();
     }
 
-    renderTracker(trackersByDay: TrackerByDayReadModel[]) {
-        console.log("trackersByDay in renderTracker", toJS(trackersByDay));
+    renderTracker(update: boolean) {
         return(
             <Table>
                 {this.renderHead()}
@@ -98,11 +99,9 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     }
 
     render() {
-        console.log("tracker in na starte tracker", this.tracker);
-        console.log("trackersByDay in na starte tracker", this.trackersByDay);
         return(
             <>
-                {this.renderTracker(this.trackersByDay)}
+                {this.renderTracker(this.update)}
             </>
         );
     }
@@ -121,8 +120,6 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     handleChange(type: TrackerType, day: number) {
         let trackerByDay = this.trackersByDay.filter(t => t.day === day)[0];
         let index = this.trackersByDay.indexOf(trackerByDay);
-        console.log("trackerByDay before changing", trackerByDay);
-        console.log("index", index);
         if(type === TrackerType.ChatParticipation) {
             trackerByDay.chatParticipation = !trackerByDay.chatParticipation;
         } else if(type === TrackerType.CompletedHomework) {
@@ -137,6 +134,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
         let trackersByDay = this.trackersByDay;
         trackersByDay[index] = trackerByDay;
         this.trackersByDay = trackersByDay;
+        this.toggleUpdate();
     }
 
     isCompleted(trackerByDay: TrackerByDayReadModel, type: TrackerType): boolean {
@@ -172,6 +170,10 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
 
     addOrUpdateTracker() {
         this.props.trackerStore.addOrUpdateTracker(this.tracker);
+    }
+
+    toggleUpdate() {
+        this.update = !this.update;
     }
 }
 

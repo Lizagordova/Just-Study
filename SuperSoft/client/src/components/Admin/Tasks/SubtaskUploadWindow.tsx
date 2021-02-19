@@ -24,7 +24,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     componentDidMount(): void {
         this.subtask = this.props.subtask;
     }
-    
+
     renderOrderInput() {
         return(
             <>
@@ -77,6 +77,9 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     renderInput() {
         return(
             <div className="row justify-content-center">
+                <i style={{marginLeft: '95%', width: '3%'}}
+                   onClick={() => this.handleDelete()}
+                   className="fa fa-window-close" aria-hidden="true" />
                 <div className="col-2">
                     {this.renderOrderInput()}
                 </div>
@@ -124,6 +127,10 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
 
     tooltipToggle() {
         this.tooltipOpen = !this.tooltipOpen;
+    }
+
+    handleDelete() {
+        this.props.deleteSubtask(this.props.index);
     }
 }
 

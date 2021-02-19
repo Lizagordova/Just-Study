@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import {Badge, CardText} from "reactstrap";
+import {Badge, CardText, Input} from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
@@ -10,6 +10,7 @@ import {SubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/SubtaskAn
 import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
+import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 
 @observer
 export class FillGapsSubtask extends Component<ISubtaskProps> {
@@ -21,6 +22,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     answerGroupIds: RegExpMatchArray | null;
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
+    loaded: boolean;
 
     constructor(props: ISubtaskProps) {
         super(props);
@@ -31,6 +33,8 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
             notDeleted: observable,
             partsOfSentence: observable,
             answerGroupIds: observable,
+            loaded: observable,
+            userAnswerGroups: observable
         });
         this.subtask = this.props.subtask;
     }
@@ -38,6 +42,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+        this.loaded = true;
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
@@ -113,7 +118,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     render() {
         return(
             <>
-                {this.renderSubtask(this.props.subtask)}
+                {this.loaded && this.renderSubtask(this.subtask)}
             </>
         );
     }
@@ -147,15 +152,31 @@ class IGapProps {
 class Gap extends Component<IGapProps> {
     userAnswerGroup: UserSubtaskAnswerGroupViewModel = new UserSubtaskAnswerGroupViewModel();
     answerGroup : SubtaskAnswerGroupViewModel = new SubtaskAnswerGroupViewModel();
+    update: boolean;
 
     constructor(props: IGapProps) {
         super(props);
         makeObservable(this, {
             userAnswerGroup: observable,
-            answerGroup: observable
+            answerGroup: observable,
+            update: observable
         });
-        this.userAnswerGroup = this.props.userAnswerGroup;
+        this.setUserAnswerGroup();
         this.answerGroup = this.props.answerGroup;
+    }
+
+    setUserAnswerGroup() {
+        if(this.props.userAnswerGroup !== undefined) {
+            this.userAnswerGroup = this.props.userAnswerGroup;
+        } else {
+            let userAnswerGroup = new UserSubtaskAnswerGroupViewModel();
+            userAnswerGroup.status = CompletingStatus.NotCompleted;
+            this.userAnswerGroup = userAnswerGroup;
+        }
+    }
+
+    toggleUpdate() {
+        this.update = !this.update;
     }
 
     inputChange(event: React.FormEvent<HTMLInputElement>) {
@@ -170,7 +191,9 @@ class Gap extends Component<IGapProps> {
 
     checkAnswer() {
         let lastAnswer = this.userAnswerGroup.lastAnswer.toLowerCase().trim();
-        let rightAnswers = this.answerGroup.answers.filter(ans => ans.isRight).filter(ans => ans.answer.toLowerCase());
+        let rightAnswers = this.answerGroup.answers
+            .filter(ans => ans.isRight)
+            .filter(ans => ans.answer.toLowerCase());
         let userRightAnswer = rightAnswers.filter(ans => ans.answer === lastAnswer);
         if(userRightAnswer === null) {//todo: возможно здесь undefined или length = 0
             this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
@@ -180,7 +203,7 @@ class Gap extends Component<IGapProps> {
         this.addOrUpdateUserAnswerGroup();
     }
 
-    renderInput() {
+    renderInput(update: boolean) {
         let answers = this.answerGroup.answers;
         let status = this.userAnswerGroup.status;
         return(
@@ -199,7 +222,7 @@ class Gap extends Component<IGapProps> {
     render() {
         return(
             <>
-                {this.renderInput()}
+                {this.renderInput(this.update)}
             </>
         );
     }
@@ -213,5 +236,6 @@ class Gap extends Component<IGapProps> {
             answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }
+        this.toggleUpdate();
     }
 }

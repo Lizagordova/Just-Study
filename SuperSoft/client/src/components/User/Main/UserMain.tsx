@@ -67,7 +67,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                                      }}>ГЛАВНАЯ</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/mycourses" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                <NavLink to="/mylessons" exact className="nav-link" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
                                              backgroundColor: '#4169E1',

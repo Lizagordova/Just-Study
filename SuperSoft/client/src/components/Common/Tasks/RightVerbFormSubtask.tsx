@@ -72,7 +72,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
 
     renderBadge(subtask: SubtaskViewModel) {
         return(
-            <Badge outline color="primary">{subtask.order + 1 }</Badge>
+            <Badge outline color="primary">{this.props.order}</Badge>
         );
     }
 

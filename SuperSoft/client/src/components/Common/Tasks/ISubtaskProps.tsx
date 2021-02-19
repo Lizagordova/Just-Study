@@ -8,4 +8,5 @@ export class ISubtaskProps {
     userId: number;
     userSubtask: UserSubtaskViewModel;
     taskId: number;
+    order: number;
 }

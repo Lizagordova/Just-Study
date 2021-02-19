@@ -48,11 +48,11 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
 
     updateSubtask = (subtask: SubtaskReadModel, i: number) => {
         this.subtasks[i] = subtask;
-    }
+    };
 
-    deleteSubtask(i: number) {
+    deleteSubtask = (i: number) => {
         this.subtasks = this.subtasks.filter((s,ind) => ind !== i);
-    }
+    };
 
     renderInputForSubtasks() {
         return(
@@ -64,7 +64,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         s.order = i;
                     }
                     return (
-                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} />
+                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} index={i}/>
                     );
                 })}
             </>

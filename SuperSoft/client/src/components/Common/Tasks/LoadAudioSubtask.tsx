@@ -1,12 +1,12 @@
-﻿import React, { Component } from 'react';
-import { Alert, Button, CardImg, CardText, Input } from "reactstrap";
-import { ISubtaskProps } from "./ISubtaskProps";
-import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
-import { makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { UserSubtaskReadModel } from "../../../Typings/readModels/UserSubtaskReadModel";
-import { UserSubtaskViewModel } from "../../../Typings/viewModels/UserSubtaskViewModel";
+﻿import React, {Component} from 'react';
+import {Alert, Button, CardImg, CardText, Input} from "reactstrap";
+import {ISubtaskProps} from "./ISubtaskProps";
+import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
+import {makeObservable, observable} from "mobx";
+import {observer} from "mobx-react";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
+import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 
 @observer
 export class LoadAudioSubtask extends Component<ISubtaskProps> {
@@ -57,10 +57,11 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     renderImage(subtask: SubtaskViewModel) {
+        console.log("subtask path", subtask.path);
         return (
             <>
                 {subtask.path !== null &&
-                <CardImg src={subtask.path.replace('ClientApp/build', './')} alt="Loading..."/>}
+                <CardImg src={subtask.path.replace('client/build', './')} alt="Loading..."/>}
             </>
         );
     }
@@ -87,7 +88,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         return(
             <CardText>
                 {this.userAnswer.answerFiles.map(ans => {
-                    let answerPath = ans.replace('ClientApp/build', '.');
+                    let answerPath = ans.replace('client/build', '.');
                     return(
                         <div className="row justify-content-center">
                             <audio className="audio" controls>
@@ -111,13 +112,9 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel) {
-        return(
-            <>
-                {this.renderControlButton()}
-                {this.renderSubtaskText(subtask)}
-                {this.renderImage(subtask)}
-                {this.renderUserAnswers()}
+    renderAnswerInput() {
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            return (
                 <CardText>
                     <div className="row justify-content-center">
                         {this.renderInputFile()}
@@ -125,6 +122,18 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
                         {this.renderCautions()}
                     </div>
                 </CardText>
+            );
+        }
+    }
+
+    renderSubtask(subtask: SubtaskViewModel) {
+        return(
+            <>
+                {this.renderControlButton()}
+                {this.renderSubtaskText(subtask)}
+                {this.renderImage(subtask)}
+                {this.renderUserAnswers()}
+                {this.renderAnswerInput()}
             </>
         );
     }

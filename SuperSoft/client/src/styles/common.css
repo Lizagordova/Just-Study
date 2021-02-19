@@ -35,3 +35,11 @@
 Table, td, tr, thead {
     border: 1px solid black;
 }
+
+.fillGapInputRight {
+    background-color: lightgreen;
+}
+
+.fillGapInputWrong {
+    background-color: lightcoral;
+}
