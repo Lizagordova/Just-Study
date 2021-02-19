@@ -2,6 +2,8 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +62,19 @@ namespace SuperSoft
 			services.AddHttpsRedirection(options =>
 			{
 				options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+			});
+			services.Configure<IISServerOptions>(options =>
+			{
+				options.MaxRequestBodySize = int.MaxValue;
+			});
+			services.Configure<KestrelServerOptions>(options =>
+			{
+				options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
+			});
+			services.Configure<FormOptions>(x =>
+			{
+				x.ValueLengthLimit = int.MaxValue;
+				x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
 			});
 		}
 
