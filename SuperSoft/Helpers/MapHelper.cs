@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using SuperSoft.Domain.Models;
+using SuperSoft.ReadModels;
 using SuperSoft.Services.MapperService;
 using SuperSoft.ViewModels;
 
@@ -46,6 +47,14 @@ namespace SuperSoft.Helpers
 			trackerViewModel.TrackersByDay = tracker.TrackersByDay.Select(_mapper.Map<TrackerByDay, TrackerByDayViewModel>).ToList();
 
 			return trackerViewModel;
+		}
+
+		public Tracker MapTracker(TrackerReadModel trackerReadModel)
+		{
+			var tracker = _mapper.Map<TrackerReadModel, Tracker>(trackerReadModel);
+			tracker.TrackersByDay = trackerReadModel.TrackersByDay.Select(_mapper.Map<TrackerByDayReadModel, TrackerByDay>).ToList();
+
+			return tracker;
 		}
 	}
 }

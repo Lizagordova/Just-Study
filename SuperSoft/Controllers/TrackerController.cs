@@ -18,13 +18,15 @@ namespace SuperSoft.Controllers
 		private readonly ITrackerReaderService _trackerReader;
 		private readonly ILogger<TrackerController> _logger;
 		private readonly LogService _logService;
+		private readonly MapHelper _mapHelper;
 
 		public TrackerController(
 			ITrackerEditorService trackerEditor,
 			ITrackerReaderService trackerReader,
 			ILogger<TrackerController> logger,
 			MapperService mapper,
-			LogService logService
+			LogService logService,
+			MapHelper mapHelper
 		)
 		{
 			_mapper = mapper;
@@ -32,6 +34,7 @@ namespace SuperSoft.Controllers
 			_trackerReader = trackerReader;
 			_logger = logger;
 			_logService = logService;
+			_mapHelper = mapHelper;
 		}
 
 		[HttpPost]
@@ -47,7 +50,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tracker = _trackerReader.GetTracker(trackerReadModel.UserId, trackerReadModel.CourseId);
-				var trackerViewModel = _mapper.Map<Tracker, TrackerViewModel>(tracker);
+				var trackerViewModel = _mapHelper.MapTrackerViewModel(tracker);
 
 				return new JsonResult(trackerViewModel);
 			}
@@ -71,7 +74,7 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				var tracker = _mapper.Map<TrackerReadModel, Tracker>(trackerReadModel);
+				var tracker = _mapHelper.MapTracker(trackerReadModel);
 				_trackerEditor.AddOrUpdateTracker(tracker, trackerReadModel.UserId, trackerReadModel.CourseId);
 
 				return new OkResult();

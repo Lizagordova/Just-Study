@@ -73,7 +73,7 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("trackersByDay", "UDT_TrackerByDay");
 			var udt = trackerByDays.Select(_mapper.Map<TrackerByDay, TrackerByDayUdt>);
-			tvp.AddObjectAsRow(udt);
+			tvp.AddGenericList(udt);
 			param.Add(tvp);
 			param.Add("trackerId", trackerId);
 

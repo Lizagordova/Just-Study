@@ -13,14 +13,14 @@ namespace SuperSoft.Services.MapperService
 			{
 				cfg.CreateMap<TrackerReadModel, Tracker>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.TrackersByDay, opt => opt.MapFrom(src => src.TrackersByDay));
+					.ForMember(dest => dest.TrackersByDay, opt => opt.Ignore());
 			});
 
 			AddMapping<Tracker, TrackerViewModel>(cfg =>
 			{
 				cfg.CreateMap<Tracker, TrackerViewModel>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-					.ForMember(dest => dest.TrackersByDay, opt => opt.MapFrom(src => src.TrackersByDay));
+					.ForMember(dest => dest.TrackersByDay, opt => opt.Ignore());
 			});
 
 			AddMapping<TrackerByDay, TrackerByDayViewModel>(cfg =>
