@@ -31,9 +31,9 @@ class Words extends Component<IWordsProps> {
         let userWords = this.getUserWords();
         return(
             <>
-                {userWords.map((userWord) => {
+                {userWords.map((userWord, i) => {
                     return (
-                        <Word userWord={userWord} wordStore={this.props.wordStore} userStore={this.props.userStore} />
+                        <Word userWord={userWord} wordStore={this.props.wordStore} userStore={this.props.userStore} key={i}/>
                     )
                 })}
             </>

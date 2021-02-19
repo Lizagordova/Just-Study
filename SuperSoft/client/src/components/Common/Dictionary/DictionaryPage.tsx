@@ -4,11 +4,12 @@ import { observer } from "mobx-react";
 import { Button } from 'reactstrap';
 import { makeObservable, observable } from "mobx";
 import { UserRole } from "../../../Typings/enums/UserRole";
-import Word from "./Word";
 import Words from "./Words";
-import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import WordsTrainingPage from "../../User/Dictionary/WordsTrainingPage";
 import Search from "./Search";
+import "../../../styles/dictionary.css";
+import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
+import AddOrUpdateWord from "./AddOrUpdateWord";
 
 class IDictionaryPageProps {
     store: RootStore;
@@ -24,7 +25,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         super();
         makeObservable(this, {
             addNewWord: observable,
-            training: observable,
+            training: observable
         });
     }
 
@@ -37,9 +38,9 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         }
     }
 
-    addNewWordToggle() {
+    addNewWordToggle = () => {
         this.addNewWord = !this.addNewWord;
-    }
+    };
 
     trainingToggle() {
         this.training = !this.training;
@@ -47,7 +48,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
 
     renderSearch() {
         return(
-            <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="col-lg-6 col-md-6 col-sm-12" style={{marginTop: "10px"}}>
                 <Search wordStore={this.props.store.wordStore} user={this.props.store.userStore.currentUser} />
             </div>
         );
@@ -55,7 +56,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
 
     renderAddNewWordButton() {
         return(
-            <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="col-lg-6 col-md-6 col-sm-12" style={{marginTop: "10px", marginBottom: "10px"}}>
                 {!this.addNewWord && <Button
                     outline
                     color="primary"
@@ -70,7 +71,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         return(
             <>
                 {this.addNewWord && <div className="row justify-content-center">
-                    <Word userStore={this.props.store.userStore} userWord={new UserWordViewModel()} wordStore={this.props.store.wordStore}/>
+                    <AddOrUpdateWord word={new WordViewModel()} wordStore={this.props.store.wordStore} cancelEdit={this.addNewWordToggle} courseId={undefined} currentUser={this.props.store.userStore.currentUser} date={undefined} isWordOfADay={false}/>
                 </div>}
             </>
         );

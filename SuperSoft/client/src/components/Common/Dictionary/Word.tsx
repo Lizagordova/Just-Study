@@ -1,12 +1,13 @@
-﻿import React, { Component } from 'react';
-import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
-import { Card, CardText, Progress } from "reactstrap";
-import { makeObservable, observable } from "mobx";
+﻿import React, {Component} from 'react';
+import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
+import {Card, CardText, Progress} from "reactstrap";
+import {makeObservable, observable} from "mobx";
 import WordStore from "../../../stores/WordStore";
 import UserStore from "../../../stores/UserStore";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { observer } from "mobx-react";
-import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {observer} from "mobx-react";
+import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import {translatePartOfSpeech} from "../../../functions/translater";
 import AddOrUpdateWord from "./AddOrUpdateWord";
 
 
@@ -38,32 +39,32 @@ class Word extends Component<IWordProps> {
 
     renderWord() {
         return(
-            <div className="col-lg-2 col-md-9 col-sm-9 col-xs-9">
-                {this.word.word.toUpperCase()}
+            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 wordColumn">
+                <span>{this.word.word.toUpperCase()}</span>
             </div>
         );
     }
 
     renderPartOfSpeech() {
         return(
-            <div className="col-lg-2 col-md-9 col-sm-9 col-xs-9">
-                {this.word.partOfSpeech}
+            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <span>{translatePartOfSpeech(this.word.partOfSpeech)}</span>
             </div>
         );
     }
 
     renderEnglishMeaning() {
         return(
-            <div className="col-lg-2 col-md-9 col-sm-9 col-xs-9">
-                {this.word.englishMeaning}
+            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <span>{this.word.englishMeaning}</span>
             </div>
         );
     }
 
     renderRussianMeaning() {
         return(
-            <div className="col-lg-2 col-md-9 col-sm-9 col-xs-9">
-                {this.word.russianMeaning}
+            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <span>{this.word.russianMeaning}</span>
             </div>
         );
     }
@@ -71,31 +72,28 @@ class Word extends Component<IWordProps> {
     renderControlButtons() {
         return(
             <>
-                <div className="row justify-content-center">
-                    <p onClick={() => this.handleDelete()}>
-                        <i className="fa fa-window-close" aria-hidden="true"/>
-                    </p>
+                <div className="row justify-content-center" onClick={() => this.handleDelete()}>
+                     <i className="fa fa-window-close" aria-hidden="true"/>
                 </div>
-                <div className="row justify-content-center">
-                    <p onClick={() => this.editToggle()}>
-                        <i className="fa fa-edit" aria-hidden="true"/>
-                    </p>
+                <div className="row justify-content-center" onClick={() => this.editToggle()}>
+                     <i className="fa fa-edit" aria-hidden="true"/>
                 </div>
             </>
         );
     }
 
     renderProgress() {
-        return(
-            <Progress color="success" value={this.props.userWord.rightAnswers / 0.05}>выучено на {this.computeProgress()} %</Progress>
-        )
+        if(this.props.userStore.currentUser.role != UserRole.Admin) {
+            return(
+                <Progress color="success" value={this.props.userWord.rightAnswers / 0.05}>выучено на {this.computeProgress()} %</Progress>
+            );
+        }
     }
 
     renderWordCard() {
         return(
-            <Card className="cardWord" body>
-                <CardText>
-                    <div className="row justify-content-center rowWord">
+            <Card className="cardWord">
+                    <div className="row">
                         <div className="col-10">
                             <div className="row justify-content-center">
                                 {this.renderWord()}
@@ -108,7 +106,6 @@ class Word extends Component<IWordProps> {
                             {this.renderControlButtons()}
                         </div>
                     </div>
-                </CardText>
                 <CardText style={{marginTop: '25px'}}>
                     {this.renderProgress()}
                 </CardText>
@@ -120,7 +117,7 @@ class Word extends Component<IWordProps> {
         return(
             <>
                 {!this.edit && this.renderWordCard()}
-                {this.edit && <AddOrUpdateWord word={this.word} userStore={this.props.userStore} wordStore={this.props.wordStore} addOrUpdateWordToggle={this.editToggle}/>}
+                {this.edit && <AddOrUpdateWord word={this.word} cancelEdit={this.editToggle} courseId={undefined} currentUser={this.props.userStore.currentUser} date={undefined} isWordOfADay={false} wordStore={this.props.wordStore} />}
             </>
         );
     }
@@ -147,9 +144,9 @@ class Word extends Component<IWordProps> {
         return 401;
     }
 
-    editToggle() {
+    editToggle = () => {
         this.edit = !this.edit;
-    }
+    };
 
     computeProgress() {
         let progress = this.props.userWord.rightAnswers / 5 * 100;

@@ -7,11 +7,11 @@ import {makeObservable, observable, toJS} from "mobx";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import CommentGroup from "../Comments/CommentGroup";
 import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
-import AddOrUpdateWordOfADay from "./AddOrUpdateWordOfADay";
 import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
 import AnswerToWordOfADay from "./AnswerToWordOfADay";
 import UserAnswers from "../../Admin/WordsOfADay/UserAnswers";
 import {translatePartOfSpeech} from "../../../functions/translater";
+import AddOrUpdateWord from "../Dictionary/AddOrUpdateWord";
 
 class IWordOfADayProps {
     date: Date | Date[];
@@ -159,7 +159,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         let currentUser = this.props.store.userStore.currentUser;
         return (
-            <AddOrUpdateWordOfADay word={this.word} courseId={courseId} currentUser={currentUser} wordStore={this.props.store.wordStore} date={this.props.date} cancelEdit={this.toggleAddOrUpdateWord} />
+            <AddOrUpdateWord word={this.word} cancelEdit={this.toggleAddOrUpdateWord} courseId={courseId} currentUser={currentUser} date={this.props.date} isWordOfADay={true} wordStore={this.props.store.wordStore} />
         );
     }
 
@@ -229,7 +229,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     toggleAddOrUpdateWord = () => {
         this.addOrUpdate = !this.addOrUpdate;
         this.setWordOfADay(this.props.date);
-    }
+    };
 
     toggleComments() {
         this.showComments = !this.showComments;

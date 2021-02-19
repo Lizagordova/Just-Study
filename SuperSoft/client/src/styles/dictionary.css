@@ -1,0 +1,15 @@
+﻿.cardWord {
+    background-color: #adb5bd;
+    height: 50px;
+    font-size: 0.8em;
+}
+
+.wordColumn {
+    width: 10%;
+}
+
+@media (max-width : 600px) {
+    .cardWord {
+        height: 80px;
+    }
+}
