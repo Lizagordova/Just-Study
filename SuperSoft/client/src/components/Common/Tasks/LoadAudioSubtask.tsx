@@ -57,7 +57,6 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     renderImage(subtask: SubtaskViewModel) {
-        console.log("subtask path", subtask.path);
         return (
             <>
                 {subtask.path !== null &&

@@ -25,7 +25,6 @@ class Tracker extends Component<ITrackerProps> {
     }
 
     renderTracker(tracker: TrackerViewModel) {
-        console.log("prepare to render tracker", toJS(tracker));
         return (
             <NaStarteTracker tracker={tracker} trackerStore={this.props.trackerStore} userId={this.props.userId} courseId={this.props.courseId} />
         );
@@ -33,7 +32,6 @@ class Tracker extends Component<ITrackerProps> {
     
     render() {
         let currentTracker = this.props.trackerStore.currentTracker;
-        console.log("currentTracker in tracker", toJS(currentTracker));
         return(
             <>
                 {!this.perceived && renderSpinner()}

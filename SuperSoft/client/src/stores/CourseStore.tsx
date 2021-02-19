@@ -31,7 +31,6 @@ class CourseStore {
         const response = await fetch("/getusercourses");
         if(response.status === 200) {
             let courses = await response.json();
-            console.log("courses", courses);
             this.userCourses = courses;
         }
 
@@ -48,7 +47,6 @@ class CourseStore {
         });
         if(response.status === 200) {
             let coursesInfo = await response.json();
-            console.log("coursesInfo", coursesInfo);
             this.coursesInfo = coursesInfo;
             if(coursesInfo.length > 0) {
                 this.choosenCourse = coursesInfo[0];

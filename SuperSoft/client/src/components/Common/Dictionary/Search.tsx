@@ -3,7 +3,7 @@ import WordStore from "../../../stores/WordStore";
 import { observer } from "mobx-react";
 import { Input } from "reactstrap";
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import { mapToWordReadModel } from "../../../functions/mapper";
@@ -18,23 +18,22 @@ class Search extends Component<ISearchProps> {
     foundWords: WordViewModel[] = new Array<WordViewModel>();
     selectOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ISearchProps) {
+        super(props);
         makeObservable(this, {
             foundWords: observable,
             selectOpen: observable
         });
+        this.foundWords = this.props.wordStore.dictionary;
     }
 
     renderSearchBox() {
         return(
             <>
                 <Input type="text"
-                       className="searchInput"
-                       onMouseEnter={() => this.selectOpen = true}
-                       onMouseOut={() => this.selectOpen = false}
-                       onChange={(e) => this.onChange(e)}
+                    className="searchInput"
+                    onFocus={() => this.selectOpenToggle()}
+                    onChange={(e) => this.onChange(e)}
                 />
                 <button className="searchButton" type="submit"/>
             </>
@@ -50,9 +49,10 @@ class Search extends Component<ISearchProps> {
                             <option
                                 value={word.word}
                                 id={word.id.toString()}
-                                onClick={(e) => this.setState({chosenWord: word})}
-                            >{word.word}</option>
-                            <i className="fa fa-plus" aria-hidden="true" onClick={() => this.addWordToDictionary(word)}/>
+                                onClick={() => this.addWordToDictionary(word)}
+                            >
+                                {word.word}
+                            </option>
                         </>
                     )
                 })}
@@ -63,7 +63,7 @@ class Search extends Component<ISearchProps> {
     render() {
         return(
             <div className="row" style={{marginLeft: "5px", marginRight: "5px"}}>
-                <div className="col-sm-6">
+                <div className="col-lg-6 col-md-6 col-sm-12">
                     <div className="searchbar searchForm">
                         {this.renderSearchBox()}
                     </div>
@@ -83,6 +83,10 @@ class Search extends Component<ISearchProps> {
             let wordReadModel = mapToWordReadModel(word);
             this.props.wordStore.addOrUpdateWordToUserDictionary(wordReadModel, this.props.user.id);
         }
+    }
+
+    selectOpenToggle() {
+        this.selectOpen = !this.selectOpen;
     }
 }
 

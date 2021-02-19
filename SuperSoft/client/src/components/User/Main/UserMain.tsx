@@ -33,7 +33,6 @@ export class UserMain extends React.Component<IUserMainProps> {
                     let userCoursesIds = this.props.store.courseStore.userCourses.map(c => {
                         return c.courseId
                     });
-                    console.log("userCoursesIds", userCoursesIds);
                     courseStore.getCoursesInfo(userCoursesIds);
                 }
             });

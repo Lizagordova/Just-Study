@@ -33,7 +33,6 @@ class TaskStore {
     }
 
     async getTasksByLesson(lessonId: number) {
-        console.log("i start to get tasks");
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {

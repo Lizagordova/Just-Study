@@ -217,7 +217,6 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
     }
 
     render() {
-        console.log("word", this.word);
         return(
             <>
                 {this.renderAddOrUpdateWordWindow(this.word, this.update)}

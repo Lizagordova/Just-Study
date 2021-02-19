@@ -19,19 +19,24 @@ class IDictionaryPageProps {
 class DictionaryPage extends Component<IDictionaryPageProps> {
     addNewWord: boolean;
     training: boolean;
+    searchAllowed: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             addNewWord: observable,
-            training: observable
+            training: observable,
+            searchAllowed: observable
         });
     }
 
     componentDidMount(): void {
         let role = this.props.store.userStore.currentUser.role;
-        this.props.store.wordStore.getDictionary();
+        this.props.store.wordStore.getDictionary()
+            .then(() => {
+                this.searchAllowed = true;
+            });
         if(role === UserRole.User) {
             let userId = this.props.store.userStore.currentUser.id;
             this.props.store.wordStore.getUserDictionary(userId);
@@ -115,7 +120,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         return(
             <div className="container-fluid">
                 <div className="row justify-content-center">
-                    {this.renderSearch()}
+                    {this.searchAllowed && this.renderSearch()}
                     {this.renderAddNewWordButton()}
                     {this.renderTrainingButton()}
                     {this.renderWordTrainingPage()}

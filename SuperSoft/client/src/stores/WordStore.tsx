@@ -16,6 +16,9 @@ class WordStore {
         });
     }
 
+    setDictionary() {
+        
+    }
    async deleteWordFromDictionary(wordId: number): Promise<number> {
        const response = await fetch("/deletewordfromdictionary", {
            method: "POST",
@@ -92,7 +95,6 @@ class WordStore {
    }
 
     async addOrUpdateWordToUserDictionary(word: WordReadModel, userId: number): Promise<number> {
-        console.log("i am in addOrUpdateWordToUserDictionary", word);
         const response = await fetch("/addorupdatewordtouserdictionary", {
             method: "POST",
             headers: {

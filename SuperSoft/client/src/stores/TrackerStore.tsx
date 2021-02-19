@@ -21,7 +21,6 @@ class TrackerStore {
         });
         if(response.status === 200) {
             let currentTracker = await response.json();
-            console.log("currentTracker", currentTracker);
             this.currentTracker = currentTracker;
         }
 
