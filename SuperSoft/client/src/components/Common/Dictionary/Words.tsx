@@ -1,11 +1,12 @@
-﻿import React, { Component } from 'react';
-import { makeObservable } from "mobx";
+﻿import React, {Component} from 'react';
 import UserStore from "../../../stores/UserStore";
 import WordStore from "../../../stores/WordStore";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
 import Word from "./Word";
-import { observer } from "mobx-react";
+import {observer} from "mobx-react";
+import {Alert} from "reactstrap";
+import {toJS} from "mobx";
 
 class IWordsProps {
     userStore: UserStore;
@@ -27,17 +28,38 @@ class Words extends Component<IWordsProps> {
         }
     }
 
+    renderCautions() {
+        let role = this.props.userStore.currentUser.role;
+        if(role === UserRole.Admin) {
+            return(
+                <Alert color="primary" style={{marginTop: "0px"}}> В словарике пока нет слов</Alert>
+            );
+        } else {
+            return(
+                <Alert color="primary" style={{marginTop: "10px"}}> В вашем словарике пока нет слов. Вы можете добавить слова из общего словарика.</Alert>
+            );
+        }
+    }
+
     renderWords() {
         let userWords = this.getUserWords();
-        return(
-            <>
-                {userWords.map((userWord, i) => {
-                    return (
-                        <Word userWord={userWord} wordStore={this.props.wordStore} userStore={this.props.userStore} key={i}/>
-                    )
-                })}
-            </>
-        );
+        if(userWords.length === 0) {
+            return (
+                <>
+                    {this.renderCautions()}
+                </>
+            );
+        } else {
+            return(
+                <>
+                    {userWords.map((userWord, i) => {
+                        return (
+                            <Word userWord={userWord} wordStore={this.props.wordStore} userStore={this.props.userStore} key={i}/>
+                        )
+                    })}
+                </>
+            );
+        }
     }
 
     render() {

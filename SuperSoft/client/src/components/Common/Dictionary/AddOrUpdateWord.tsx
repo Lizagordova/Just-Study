@@ -51,8 +51,8 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
     renderCautions() {
         return(
             <>
-                {this.notSaved && <Alert color="danger">Что-то пошло не так и слово дня не сохранилось!</Alert>}
-                {this.saved && <Alert color="success">Слово дня успешно сохранилось!!</Alert>}
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и слово не сохранилось!</Alert>}
+                {this.saved && <Alert color="success">Слово успешно сохранилось!!</Alert>}
             </>
         );
     }
@@ -86,9 +86,9 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
                     type="select"
                     id="exampleSelect"
                     onClick={(e) => this.handlePartOfSpeech(e)}>
-                    <option value="Noun">{translatePartOfSpeech(PartOfSpeech.Noun)}</option>
                     <option value="Adjective">{translatePartOfSpeech(PartOfSpeech.Adjective)}</option>
                     <option value="Verb">{translatePartOfSpeech(PartOfSpeech.Verb)}</option>
+                    <option value="Noun">{translatePartOfSpeech(PartOfSpeech.Noun)}</option>
                     <option value="Adverb">{translatePartOfSpeech(PartOfSpeech.Adverb)}</option>
                 </Input>
             </>
@@ -246,6 +246,7 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
 
     handlePartOfSpeech(event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
         this.word.partOfSpeech = transformValueToPartOfSpeech(event.currentTarget.value);
+        this.toggleUpdate()
     }
 
     handleSave() {

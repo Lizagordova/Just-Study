@@ -157,7 +157,7 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateUserWordParam(UserWord userWord)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("userWord", "UDT_UserWord");
+			var tvp = new TableValuedParameter("userWord", "UDT_User_Word");
 			var userWordUdt = _mapper.Map<UserWord, UserWordUdt>(userWord);
 			tvp.AddObjectAsRow(userWordUdt);
 			param.Add(tvp);

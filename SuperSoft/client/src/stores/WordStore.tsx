@@ -92,6 +92,7 @@ class WordStore {
    }
 
     async addOrUpdateWordToUserDictionary(word: WordReadModel, userId: number): Promise<number> {
+        console.log("i am in addOrUpdateWordToUserDictionary", word);
         const response = await fetch("/addorupdatewordtouserdictionary", {
             method: "POST",
             headers: {

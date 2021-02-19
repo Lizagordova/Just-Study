@@ -44,9 +44,9 @@ export class Settings extends Component<ISettingsProps> {
                 <CardBody  className="text-center">
                     {this.renderTrainingTypeInput()}
                 </CardBody>
-                <CardFooter>
+                <div className="row justify-content-center">
                     {this.renderContinueButton()}
-                </CardFooter>
+                </div>
             </Card>
         )
     }

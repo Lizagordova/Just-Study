@@ -42,9 +42,9 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         this.addNewWord = !this.addNewWord;
     };
 
-    trainingToggle() {
+    trainingToggle = () => {
         this.training = !this.training;
-    }
+    };
 
     renderSearch() {
         return(
@@ -57,12 +57,12 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
     renderAddNewWordButton() {
         return(
             <div className="col-lg-6 col-md-6 col-sm-12" style={{marginTop: "10px", marginBottom: "10px"}}>
-                {!this.addNewWord && <Button
+                <Button
                     outline
                     color="primary"
                     onClick={() => this.addNewWordToggle()}>
                     Добавить новое слово
-                </Button>}
+                </Button>
             </div>
         );
     }
@@ -81,7 +81,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         let role = this.props.store.userStore.currentUser.role;
         if(role === UserRole.User) {
             return(
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{marginTop: 10}}>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{marginTop: 10, marginBottom: 10}}>
                     <Button
                         disabled={false}
                         color="primary trainingButton"

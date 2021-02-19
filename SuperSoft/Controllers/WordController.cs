@@ -165,7 +165,7 @@ namespace SuperSoft.Controllers
 		public ActionResult DeleteWordFromUserDictionary([FromBody]UserWordReadModel userWordReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
+			if (role == null)
 			{
 				return new BadRequestResult();
 			}

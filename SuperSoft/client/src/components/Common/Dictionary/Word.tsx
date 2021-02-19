@@ -116,7 +116,7 @@ class Word extends Component<IWordProps> {
     render() {
         return(
             <>
-                {!this.edit && this.renderWordCard()}
+                {this.renderWordCard()}
                 {this.edit && <AddOrUpdateWord word={this.word} cancelEdit={this.editToggle} courseId={undefined} currentUser={this.props.userStore.currentUser} date={undefined} isWordOfADay={false} wordStore={this.props.wordStore} />}
             </>
         );

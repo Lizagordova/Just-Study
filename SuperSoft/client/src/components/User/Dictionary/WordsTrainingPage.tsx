@@ -105,7 +105,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     }
 
     renderFinish() {
-        if(!this.showWords && this.countLearntWords == this.userWords.length ) {
+        if(!this.showWords && this.countLearntWords == this.userWords.length && this.countLearntWords > 0) {
             return(
                 <Card>
                     <CardBody>
@@ -145,7 +145,6 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         if(trainingType === 1) {
             return(
                 <EnglishWordRussianMeaningTraining continue={this.handleAnswer} word={word} words={words}/>
-
             );
         } else if(trainingType === 2) {
             return(
