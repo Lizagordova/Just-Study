@@ -31,16 +31,16 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
         });
     }
 
-    componentDidMount(): void {
+    componentWillMount(): void {
         let role = this.props.store.userStore.currentUser.role;
         this.props.store.wordStore.getDictionary()
             .then(() => {
                 this.searchAllowed = true;
+                if(role === UserRole.User) {
+                    let userId = this.props.store.userStore.currentUser.id;
+                    this.props.store.wordStore.getUserDictionary(userId);
+                }
             });
-        if(role === UserRole.User) {
-            let userId = this.props.store.userStore.currentUser.id;
-            this.props.store.wordStore.getUserDictionary(userId);
-        }
     }
 
     addNewWordToggle = () => {

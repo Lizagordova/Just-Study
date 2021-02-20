@@ -268,8 +268,13 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
         if (role === UserRole.Admin) {
             this.props.wordStore.addOrUpdateWordToDictionary(this.word)
                 .then((status) => {
-                    this.notSaved = status !== 200;
-                    this.saved = status === 200;
+                    if(status === 200) {
+                        this.props.wordStore.getDictionary()
+                            .then((resp) => {
+                                this.notSaved = resp !== 200;
+                                this.saved = resp === 200;
+                            })
+                    }
                 });
         } else if (role === UserRole.User) {
             let userId = this.props.currentUser.id;

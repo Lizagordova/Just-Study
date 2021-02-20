@@ -16,9 +16,6 @@ class WordStore {
         });
     }
 
-    setDictionary() {
-        
-    }
    async deleteWordFromDictionary(wordId: number): Promise<number> {
        const response = await fetch("/deletewordfromdictionary", {
            method: "POST",
@@ -89,7 +86,7 @@ class WordStore {
        });
        if(response.status === 200) {
            this.getDictionary();
-       }
+       } 
 
        return response.status;
    }
@@ -106,8 +103,10 @@ class WordStore {
             })
         });
         if(response.status === 200) {
-            this.getDictionary();
-            this.getUserDictionary(userId);
+            this.getDictionary()
+                .then((status) => {
+                    this.getUserDictionary(userId);
+                });
         }
 
         return response.status;

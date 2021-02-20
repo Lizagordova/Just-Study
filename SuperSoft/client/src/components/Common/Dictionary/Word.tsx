@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
 import {Card, CardText, Progress} from "reactstrap";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import WordStore from "../../../stores/WordStore";
 import UserStore from "../../../stores/UserStore";
 import {UserRole} from "../../../Typings/enums/UserRole";
@@ -9,6 +9,7 @@ import {observer} from "mobx-react";
 import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
 import {translatePartOfSpeech} from "../../../functions/translater";
 import AddOrUpdateWord from "./AddOrUpdateWord";
+import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
 
 
 class IWordProps {
