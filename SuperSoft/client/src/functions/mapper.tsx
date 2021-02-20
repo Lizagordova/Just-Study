@@ -32,7 +32,7 @@ export function mapToUserAnswerReadModel(userWord: UserWordViewModel): UserWordR
     userAnswer.rightAnswers = userWord.rightAnswers;
     userAnswer.status = userWord.status;
     userAnswer.countOfAttempts = userWord.countOfAttempts;
-    // userAnswer.word = new WordReadModel(); todo: если это и так работает, то забей
+    userAnswer.word = new WordReadModel();// todo: если это и так работает, то забей
     userAnswer.word.id = userWord.wordId;
     userAnswer.userId = userWord.userId;
 

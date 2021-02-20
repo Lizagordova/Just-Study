@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Button, Card, CardText, CardFooter, CardTitle } from "reactstrap";
 import { ITrainingTypeProps } from "./ITrainingTypeProps";
+import {translatePartOfSpeech} from "../../../../functions/translater";
 
 class ShowWordTraining extends Component<ITrainingTypeProps> {
     continue() {
@@ -12,7 +13,7 @@ class ShowWordTraining extends Component<ITrainingTypeProps> {
         return (
             <>
                 <CardTitle className="text-center">{word.word}</CardTitle>
-                <CardText className="text-center">{word.partOfSpeech}</CardText>
+                <CardText className="text-center">{translatePartOfSpeech(word.partOfSpeech)}</CardText>
                 <CardText className="text-center">{word.englishMeaning}</CardText>
                 <CardText className="text-center">{word.russianMeaning}</CardText>
             </>

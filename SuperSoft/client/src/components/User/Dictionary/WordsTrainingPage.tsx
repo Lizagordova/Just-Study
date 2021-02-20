@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import { observer } from "mobx-react";
 import WordStore from "../../../stores/WordStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { Button, Card, CardBody, CardFooter, Modal, ModalBody } from "reactstrap";
 import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
@@ -12,6 +12,8 @@ import EnglishWordRussianMeaningTraining from "./TrainingTypes/EnglishWordRussia
 import RussianWordEnglishWordTraining from "./TrainingTypes/RussianWordEnglishWordTraining";
 import ShowWordTraining from "./TrainingTypes/ShowWordTraining";
 import { UserWordReadModel } from "../../../Typings/readModels/UserWordReadModel";
+import {shuffleWords} from "../../../functions/shuffleWords";
+import {mapToUserAnswerReadModel, mapToUserReadModel} from "../../../functions/mapper";
 
 class IWordsTrainingPageProps {
     onToggle: any;
@@ -29,9 +31,9 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     trainingType: WordTrainingType;
     settings : boolean = true;
     showWords: boolean;
-    showOrder: number;
+    showOrder: number = 0;
     countLearntWords: number = 0;
-    rightAnswersShouldBe: number = 5;
+    rightAnswersShouldBe: number = 2;
     toggleTrain: boolean;
 
     constructor() {
@@ -52,11 +54,12 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         });
     }
 
-    startTraining(userWords: UserWordViewModel[]) {
+    startTraining = (userWords: UserWordViewModel[]) => {
+        console.log("userWords", toJS(userWords));
         this.userWords = userWords;
         this.settings = false;
         this.showWords = true;
-    }
+    };
 
     getWord(wordId: number): WordViewModel {
         return this.props.wordStore.dictionary.filter(w => w.id === wordId)[0];
@@ -69,7 +72,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         );
     }
 
-    continueShow() {
+    continueShow = () => {
         let showOrder = this.showOrder;
         showOrder = ++showOrder;
         if(showOrder <= this.userWords.length - 1) {
@@ -77,7 +80,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         } else {
             this.showWords = false;
         }
-    }
+    };
 
     renderSettings() {
         return(
@@ -108,17 +111,17 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         if(!this.showWords && this.countLearntWords == this.userWords.length && this.countLearntWords > 0) {
             return(
                 <Card>
-                    <CardBody>
+                    <div className="row justify-content-center">
                         Поздравляем! Ты всё выучил!
-                    </CardBody>
-                    <CardFooter>
+                    </div>
+                    <div className="row justify-content-center">
                         <Button
                             outline
                             color="primary"
                             onClick={() => this.handleToggle()}>
                             Закрыть
                         </Button>
-                    </CardFooter>
+                    </div>
                 </Card>
             );
         }
@@ -139,7 +142,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
 
     train(toggleTrain: boolean) {
         let wordId = this.chooseWord();
-        let words = this.chooseWords(wordId);
+        let words = shuffleWords(this.chooseWords(wordId));
         let word = this.props.wordStore.dictionary.filter(w => w.id === wordId)[0];
         let trainingType = this.getRandomIntInclusive(1, 2);
         if(trainingType === 1) {
@@ -182,12 +185,16 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
         return words;
     }
 
-    handleAnswer(wordId: number, right: boolean) {
+    handleAnswer = (wordId: number, right: boolean) => {
+        console.log("wordId", wordId, "right", right);
         let userWords = this.userWords;
+        console.log("userWords", toJS(userWords));
         let userWord = userWords.find(userWord => userWord.wordId == wordId);
+        console.log("userWord", toJS(userWord));
         let userWordIndex = userWords
             .map((w) => { return w.wordId ;})
             .indexOf(wordId);
+        console.log("userWordIndex", toJS(userWordIndex));
         if(right && userWord !== undefined) {
             userWord.rightAnswers = ++userWord.rightAnswers;
             if(userWord.rightAnswers == this.rightAnswersShouldBe) {
@@ -197,18 +204,15 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
             userWords[userWordIndex] = userWord;
         }
         this.toggleTrain = !this.toggleTrain;
-    }
+    };
 
     handleToggle() {
         let userWordsReadModels = new Array<UserWordReadModel>();
         let userWords = this.userWords;
+        console.log("userWords", toJS(userWords));
         for(let i = 0; i < userWords.length; i++ ) {
-            let userWordReadModel = new UserWordReadModel();
-            userWordReadModel.word.id = userWords[i].wordId;
-            userWordReadModel.rightAnswers = userWords[i].rightAnswers;
-            userWordReadModel.countOfAttempts = userWords[i].countOfAttempts;
-            userWordReadModel.status = userWords[i].status;
-            userWordReadModel.answer = userWords[i].answer;
+            
+            let userWordReadModel = mapToUserAnswerReadModel(userWords[i]);
             userWordsReadModels.push(userWordReadModel)
         }
         this.props.wordStore.addOrUpdateUserWordsProgress(userWordsReadModels);

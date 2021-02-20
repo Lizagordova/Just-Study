@@ -2,7 +2,6 @@
 import { ITrainingTypeProps } from "./ITrainingTypeProps";
 import { observer } from "mobx-react";
 import { Button, Card, CardBody, CardFooter, CardTitle } from "reactstrap";
-import { shuffleWords } from "../../../../functions/shuffleWords";
 import { WordViewModel } from "../../../../Typings/viewModels/WordViewModel";
 import { makeObservable, observable } from "mobx";
 
@@ -20,6 +19,13 @@ class RussianWordEnglishWordTraining extends Component<ITrainingTypeProps> {
             choosenAnswerId: observable,
             rightAnswer: observable,
         });
+    }
+
+    componentDidUpdate(prevProps: Readonly<ITrainingTypeProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.word !== this.props.word) {
+            this.answered = false;
+            this.rightAnswer = false;
+        }
     }
 
     renderWords(words: WordViewModel[]) {
@@ -58,7 +64,7 @@ class RussianWordEnglishWordTraining extends Component<ITrainingTypeProps> {
             <Card style={{width: '100%'}}>
                 <CardTitle className="text-center">{this.props.word.russianMeaning}</CardTitle>
                 <CardBody>
-                    {this.renderWords(shuffleWords(this.props.words))}
+                    {this.renderWords(this.props.words)}
                 </CardBody>
                 <CardFooter className="text-center">
                     {this.renderButtons()}
@@ -73,6 +79,7 @@ class RussianWordEnglishWordTraining extends Component<ITrainingTypeProps> {
     }
 
     continue() {
+        console.log("russianWordEnglishMeaning this.props.word.id, this.rightAnswer", this.props.word.id, this.rightAnswer);
         this.props.continue(this.props.word.id, this.rightAnswer);
     }
 

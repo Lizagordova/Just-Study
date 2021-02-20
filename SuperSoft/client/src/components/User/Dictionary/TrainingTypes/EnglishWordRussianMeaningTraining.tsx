@@ -1,9 +1,9 @@
 ﻿import React, { Component } from "react";
 import { Card, CardTitle, CardBody, CardFooter, Button } from "reactstrap";
-import { shuffleWords } from "../../../../functions/shuffleWords";
 import { ITrainingTypeProps } from "./ITrainingTypeProps";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
+import {WordViewModel} from "../../../../Typings/viewModels/WordViewModel";
 
 @observer
 class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
@@ -11,9 +11,8 @@ class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
     choosenAnswerId: number;
     rightAnswer: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITrainingTypeProps) {
+        super(props);
         makeObservable(this, {
             answered: observable,
             choosenAnswerId: observable,
@@ -21,8 +20,14 @@ class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
         });
     }
 
-    renderWords() {
-        let words = shuffleWords(this.props.words);
+    componentDidUpdate(prevProps: Readonly<ITrainingTypeProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.word !== this.props.word) {
+            this.answered = false;
+            this.rightAnswer = false;
+        }
+    }
+
+    renderWords(words: WordViewModel[]) {
         return(
             <>
                 {words.map((word) => {
@@ -58,7 +63,7 @@ class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
             <Card style={{width: '100%'}}>
                 <CardTitle className="text-center">{this.props.word.word}</CardTitle>
                 <CardBody>
-                    {this.renderWords()}
+                    {this.renderWords(this.props.words)}
                 </CardBody>
                 <CardFooter className="text-center">
                     {this.renderButtons()}
@@ -73,6 +78,7 @@ class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
     }
 
     continue() {
+        console.log("englishWordRussiaMeaning this.props.word.id, this.rightAnswer", this.props.word.id, this.rightAnswer);
         this.props.continue(this.props.word.id, this.rightAnswer);
     }
 

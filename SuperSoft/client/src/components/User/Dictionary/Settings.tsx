@@ -1,11 +1,11 @@
-﻿import React, { Component } from 'react';
-import { WordTrainingType } from "../../../Typings/enums/WordTrainingType";
-import { Alert, Button, Card, CardBody, CardFooter, Input } from "reactstrap";
-import { UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
-import { WordViewModel} from "../../../Typings/viewModels/WordViewModel";
-import { makeObservable, observable } from "mobx";
+﻿import React, {Component} from 'react';
+import {WordTrainingType} from "../../../Typings/enums/WordTrainingType";
+import {Alert, Button, Card, CardBody, Input} from "reactstrap";
+import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
+import {makeObservable, observable, toJS} from "mobx";
 import WordStore from "../../../stores/WordStore";
-import { CompletingStatus } from "../../../Typings/enums/CompletingStatus";
+import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 
 class ISettingsProps {
     wordStore: WordStore;
@@ -19,7 +19,7 @@ export class Settings extends Component<ISettingsProps> {
     words: WordViewModel[] = new Array<WordViewModel>();
     wordsCountWarning: boolean;
     littleCountWords: boolean;
-    trainingType: WordTrainingType;
+    trainingType: WordTrainingType = WordTrainingType.LearnNew;
 
     constructor() {
         // @ts-ignore
@@ -48,7 +48,7 @@ export class Settings extends Component<ISettingsProps> {
                     {this.renderContinueButton()}
                 </div>
             </Card>
-        )
+        );
     }
 
     renderCautions() {
@@ -71,8 +71,8 @@ export class Settings extends Component<ISettingsProps> {
     renderTrainingTypeInput() {
         return (
             <Input type="select" name="select" id="exampleSelect">
-                <option key="repeat" onClick={() => this.selectTrainingType(WordTrainingType.Repeat)}>ПОВТОРИТЬ</option>
                 <option key="learnnew" onClick={() => this.selectTrainingType(WordTrainingType.LearnNew)}>УЧИТЬ НОВЫЕ</option>
+                <option key="repeat" onClick={() => this.selectTrainingType(WordTrainingType.Repeat)}>ПОВТОРИТЬ</option>
             </Input>
         );
     }
@@ -94,6 +94,7 @@ export class Settings extends Component<ISettingsProps> {
     }
 
     selectTrainingType(trainingType: WordTrainingType) {
+        console.log("trainingtype", trainingType);
         this.trainingType = trainingType;
     }
 
@@ -105,6 +106,7 @@ export class Settings extends Component<ISettingsProps> {
 
     continue() {
         let userWords = this.chooseWordsForTraining();
+        console.log("choose userWords: ", userWords);
         if(userWords.length < 5) {
             this.littleCountWords = true;
         } else {
@@ -115,6 +117,8 @@ export class Settings extends Component<ISettingsProps> {
    chooseWordsForTraining(): UserWordViewModel[] {
         let userWords = new Array<UserWordViewModel>();
         if(this.trainingType === WordTrainingType.LearnNew) {
+            console.log("this.props.wordStore.userDictionary", this.props.wordStore.userDictionary);
+            console.log("this.props.wordStore.filter", this.props.wordStore.userDictionary.filter(uw => uw.status === CompletingStatus.NotCompleted));
             userWords = this.props.wordStore.userDictionary
                 .filter(uw => uw.status === CompletingStatus.NotCompleted)
                 .slice(0, 5);
@@ -123,6 +127,7 @@ export class Settings extends Component<ISettingsProps> {
                 .filter(uw => uw.status === CompletingStatus.Completed)
                 .slice(0, 5);
         }
+        console.log("userWords", toJS(userWords));
 
         return userWords;
     }

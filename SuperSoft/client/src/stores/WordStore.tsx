@@ -1,5 +1,5 @@
 ﻿import { WordViewModel } from "../Typings/viewModels/WordViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
 import { WordReadModel } from "../Typings/readModels/WordReadModel";
 import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
