@@ -218,7 +218,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         return(
             <>
                 {this.addOrUpdateNewLesson && this.renderAddOrUpdateNewLessonWindow()}
-                {!this.addOrUpdateNewLesson && !this.props.edit && this.renderButton()}
+                {!this.props.edit && this.renderButton()}
             </>
         );
     }
@@ -227,7 +227,19 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         if(this.props.cancelEdit !== undefined) {
             this.props.cancelEdit();
         }
+        this.initialState();
         this.addOrUpdateNewLesson = !this.addOrUpdateNewLesson;
+    }
+
+    initialState() {
+        this.id = 0;
+        this.order = 0;
+        this.description = "";
+        this.startDate = new Date();
+        this.expireDate = new Date();
+        this.notSaved = false;
+        this.saved = false;
+        this.name = "";
     }
 
     addOrUpdateLesson() {

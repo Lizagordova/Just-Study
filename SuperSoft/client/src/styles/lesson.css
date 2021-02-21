@@ -43,6 +43,9 @@
     font-size: 0.9em;
 }
 
+.userMenuHeader {
+    height: 70px;
+}
 @media (max-width: 900px) {
     .menuHeader {
         height: 130px;

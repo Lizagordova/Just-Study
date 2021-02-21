@@ -15,7 +15,7 @@ class ILessonPageProps {
 class LessonPage extends Component<ILessonPageProps> {
     lessonActive: boolean;
     homeworkActive: boolean;
-    
+
     constructor() {
         // @ts-ignore
         super();
@@ -29,7 +29,7 @@ class LessonPage extends Component<ILessonPageProps> {
         return(
             <Tab.Container>
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="userMenuHeader">
                         <Nav variant="pills">
                             <Nav.Item>
                                 <Nav.Link

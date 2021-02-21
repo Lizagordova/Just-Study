@@ -29,7 +29,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             lessonToEdit: observable,
             notDeleted: observable,
             deleted: observable,
-            isNavOpen: observable,
+            isNavOpen: observable
         });
     }
 
@@ -56,43 +56,46 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
                 <Row>
-                    <Col sm={2}>
+                    <Col sm={3}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">
-                                {lessons.map((lesson) => {
-                                    // @ts-ignore
-                                    let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
-                                    return (
-                                        <>
-                                            <Nav.Item key={lesson.id}>
-                                                <div className="row">
-                                                    <div className="col-8">
-                                                        <Nav.Link
-                                                             eventKey={lesson.id}
-                                                             className="nav-link lesson"
-                                                             onClick={() => this.lessonToggle(lesson)}>
-                                                            {lesson.name}
-                                                        </Nav.Link>
+                                <div className="container-fluid">
+                                    {lessons.map((lesson) => {
+                                        // @ts-ignore
+                                        let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
+                                        return (
+                                            <>
+                                                <Nav.Item key={lesson.id}>
+                                                    <div className="row" key={lesson.id} style={{height: "auto"}}>
+                                                        <div className="col-8" style={{height: "auto"}}>
+                                                            <Nav.Link
+                                                                style={{height: "auto"}}
+                                                                eventKey={lesson.id}
+                                                                className="nav-link lesson"
+                                                                onClick={() => this.lessonToggle(lesson)}>
+                                                                {lesson.name}
+                                                            </Nav.Link>
+                                                        </div>
+                                                        <div className="col-2 col-lg-offset-10">
+                                                            <i className="fa fa-window-close"
+                                                               aria-hidden="true"
+                                                               onClick={() => this.deleteLesson(lesson.id)}/>
+                                                            <i className="fa fa-edit"
+                                                               aria-hidden="true"
+                                                               onClick={() => this.editLessonToggle(lesson)}/>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-4">
-                                                        <i className="fa fa-window-close"
-                                                           aria-hidden="true"
-                                                           onClick={() => this.deleteLesson(lesson.id)}/>
-                                                        <i className="fa fa-edit"
-                                                           aria-hidden="true"
-                                                           onClick={() => this.editLessonToggle(lesson)}/>
-                                                    </div>
-                                                </div>
-                                            </Nav.Item>
-                                        </>
-                                    );
-                                })}
+                                                </Nav.Item>
+                                            </>
+                                        );
+                                    })}
+                                    <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
+                                </div>
                             </Nav>
                         </Collapse>
-                        <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
                     </Col>
-                    <Col sm={10}>
+                    <Col sm={9}>
                         {this.renderLessonPage()}
                     </Col>
                     {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}

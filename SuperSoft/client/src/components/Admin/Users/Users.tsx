@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import User from "./User";
 import { Table } from "reactstrap";
+import {toJS} from "mobx";
 
 class IUsersProps {
     userStore: UserStore;
@@ -36,6 +37,7 @@ class Users extends Component<IUsersProps> {
     }
 
     render() {
+        console.log("this props userStore users", toJS(this.props.userStore.users));
         let users = this.props.userStore.users;
         return(
             <>

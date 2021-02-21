@@ -2,12 +2,13 @@
 import RootStore from "../../../stores/RootStore";
 import { Accordion } from "react-bootstrap";
 import UserHomework from "./UserHomework";
+import { observer } from "mobx-react";
 
 class ICompletedHomeworkPageProps {
     store: RootStore;
 }
 
-
+@observer
 export class CompletedHomeworkPage extends Component<ICompletedHomeworkPageProps> {
     renderUsers() {
         let users = this.props.store.courseStore.usersByCourse;
