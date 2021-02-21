@@ -11,7 +11,13 @@
 
 @media (max-width : 600px) {
     .cardWord {
-        height: 80px;
+        height: 100px;
+    }
+}
+
+@media (max-width : 600px) {
+    .cardWord {
+        height: 120px;
     }
 }
 
