@@ -2,12 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { CommentedEntityType } from '../enums/CommentedEntityType';
 import { CommentReadModel } from './CommentReadModel';
 
 export class CommentGroupReadModel
 {
 	public id: number;
-	public commentedEntityType: string;
+	public commentedEntityType: CommentedEntityType;
 	public commentedEntityId: number;
 	public userId: number;
 	public comment: CommentReadModel;

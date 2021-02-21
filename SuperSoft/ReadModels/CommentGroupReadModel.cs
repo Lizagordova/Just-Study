@@ -1,4 +1,5 @@
 ﻿using SuperSoft.Configuration.Typings.Attributes;
+using SuperSoft.Domain.enums;
 
 namespace SuperSoft.ReadModels
 {
@@ -6,7 +7,7 @@ namespace SuperSoft.ReadModels
 	public class CommentGroupReadModel
 	{
 		public int Id { get; set; }
-		public string CommentedEntityType { get; set; }
+		public CommentedEntityType CommentedEntityType { get; set; }
 		public int CommentedEntityId { get; set; }
 		public int UserId { get; set; }
 		public CommentReadModel Comment { get; set; } = new CommentReadModel();

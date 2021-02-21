@@ -10,6 +10,7 @@ class ICommentProps {
     comment: CommentViewModel;
     userStore: UserStore;
     saveComment: any;
+    updateCommentGroup: any;
 }
 
 @observer
@@ -23,7 +24,7 @@ class Comment extends Component<ICommentProps> {
         makeObservable(this, {
             comment: observable,
             notDeleted: observable,
-            
+            editWindowOpen: observable
         });
         this.comment = this.props.comment;
     }
@@ -32,6 +33,11 @@ class Comment extends Component<ICommentProps> {
         let result = window.confirm('Вы уверены, что хотите удалить комментарий?');
         if(result) {
             this.removeComment()
+                .then((status) => {
+                    if(status === 200) {
+                        this.props.updateCommentGroup();
+                    }
+                });
         }
     }
 
@@ -52,7 +58,11 @@ class Comment extends Component<ICommentProps> {
         return(
             <>
                 <Input value={this.comment.text} onChange={(e) => this.handleChange(e)}/>
-                <Button outline color="primary" onClick={() => this.handleSave()}>Сохранить</Button>
+                <Button 
+                    outline color="primary"
+                    onClick={() => this.handleSave()}>
+                    Сохранить
+                </Button>
             </>
         );
     }
@@ -61,12 +71,14 @@ class Comment extends Component<ICommentProps> {
         if(this.props.userStore.currentUser.id === this.comment.userId) {
             return(
                 <>
-                    <i style={{marginLeft: '98%', width: '2%'}}
+                    <i
+                        style={{marginLeft: "5px", height: "10px"}}
+                        onClick={() => this.editCommentToggle()}
+                        className="fa fa-edit" aria-hidden="true"/>
+                    <i
+                        style={{marginLeft: "5px", height: "10px"}}
                        onClick={() => this.remove()}
                        className="fa fa-window-close" aria-hidden="true"/>
-                    <i style={{marginLeft: '98%', width: '2%'}}
-                       onClick={() => this.editCommentToggle()}
-                       className="fa fa-edit" aria-hidden="true"/>
                 </>
             );
         }
@@ -77,8 +89,14 @@ class Comment extends Component<ICommentProps> {
         let user = this.props.userStore.users.filter(u => u.id === this.comment.userId)[0];
         return(
             <>
-                <div>{user.firstName + ' ' + user.lastName}</div>
-                <div>{comment.text} </div>
+                <div>
+                    {user.firstName + ' ' + user.lastName}
+                </div>
+                <div>
+                    {comment.text}
+                    {this.renderControlButtons()}
+                </div>
+                {this.renderCautions()}
             </>
         )
     }
@@ -94,8 +112,6 @@ class Comment extends Component<ICommentProps> {
     render() {
         return(
             <>
-                {this.renderCautions()}
-                {this.renderControlButtons()}
                 {this.renderComment()}
                 {this.editWindowOpen && this.renderEditInput()}
             </>

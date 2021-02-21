@@ -26,9 +26,9 @@ class CompletedTask extends Component<ICompletedTaskProps> {
         });
     }
 
-    commentsToggle() {
+    commentsToggle = () => {
         this.commentsWindowOpen = !this.commentsWindowOpen;
-    }
+    };
 
     renderTask() {
         return (

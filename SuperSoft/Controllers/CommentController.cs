@@ -18,6 +18,7 @@ namespace SuperSoft.Controllers
 		private readonly NotificationService _notificationService;
 		private readonly ICommentReaderService _commentReader;
 		private readonly ICommentEditorService _commentEditor;
+		private readonly MapHelper _mapHelper;
 		private readonly LogService _logService;
 		private readonly ILogger<CommentController> _logger;
 
@@ -26,6 +27,7 @@ namespace SuperSoft.Controllers
 			NotificationService notificationService,
 			ICommentReaderService commentReader,
 			ICommentEditorService commentEditor,
+			MapHelper mapHelper,
 			LogService logService,
 			ILogger<CommentController> logger
 		)
@@ -36,6 +38,7 @@ namespace SuperSoft.Controllers
 			_commentEditor = commentEditor;
 			_logService = logService;
 			_logger = logger;
+			_mapHelper = mapHelper;
 		}
 
 		[HttpPost]
@@ -82,13 +85,14 @@ namespace SuperSoft.Controllers
 			{
 				return new BadRequestResult();
 			}
-			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroupReadModel);
+
+			var group = _mapHelper.MapCommentGroup(commentGroupReadModel);
 			var groupId = _commentEditor.AddOrUpdateCommentGroup(group);
 			group.Id = groupId;
 			try
 			{
 				var commentGroup = _commentReader.GetCommentGroup(group);
-				var groupViewModel = _mapperService.Map<CommentGroup, CommentGroupViewModel>(commentGroup);//todo: я думаю, здесь надо маппер для comments сделать ещё
+				var groupViewModel = _mapHelper.MapCommentGroupViewModel(commentGroup);
 
 				return new JsonResult(groupViewModel);
 			}

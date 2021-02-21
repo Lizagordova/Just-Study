@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using SuperSoft.Domain.Models;
 using SuperSoft.ReadModels;
 using SuperSoft.Services.MapperService;
@@ -55,6 +56,22 @@ namespace SuperSoft.Helpers
 			tracker.TrackersByDay = trackerReadModel.TrackersByDay.Select(_mapper.Map<TrackerByDayReadModel, TrackerByDay>).ToList();
 
 			return tracker;
+		}
+
+		public CommentGroup MapCommentGroup(CommentGroupReadModel commentGroupReadModel)
+		{
+			var commentGroup = _mapper.Map<CommentGroupReadModel, CommentGroup>(commentGroupReadModel);
+			commentGroup.Comments = new List<Comment>() { _mapper.Map<CommentReadModel, Comment>(commentGroupReadModel.Comment) };
+
+			return commentGroup;
+		}
+
+		public CommentGroupViewModel MapCommentGroupViewModel(CommentGroup commentGroup)
+		{
+			var commentGroupViewModel = _mapper.Map<CommentGroup, CommentGroupViewModel>(commentGroup);
+			commentGroupViewModel.Comments = commentGroup.Comments.Select(_mapper.Map<Comment, CommentViewModel>).ToList();
+
+			return commentGroupViewModel;
 		}
 	}
 }

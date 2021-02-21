@@ -2,7 +2,7 @@
 import { Button, Input, Modal, ModalFooter, ModalHeader, ModalBody, Alert } from "reactstrap";
 import { CommentGroupViewModel } from "../../../Typings/viewModels/CommentGroupViewModel";
 import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { observer } from "mobx-react";
 import RootStore from "../../../stores/RootStore";
 import Comment from "./Comment";
@@ -19,15 +19,14 @@ class ICommentGroupProps {
 
 @observer
 class CommentGroup extends Component<ICommentGroupProps> {
-    commentGroup: CommentGroupViewModel;
+    commentGroup: CommentGroupViewModel = new CommentGroupViewModel();
     notReceived: boolean;
-    windowOpen: boolean;
+    windowOpen: boolean = true;
     notSaved: boolean;
     newComment: CommentViewModel = new CommentViewModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ICommentGroupProps) {
+        super(props);
         makeObservable(this, {
             commentGroup: observable,
             notReceived: observable,
@@ -35,9 +34,11 @@ class CommentGroup extends Component<ICommentGroupProps> {
             notSaved: observable,
             newComment: observable,
         });
+        this.setCommentGroup();
     }
     
-    componentDidMount(): void {
+    setCommentGroup() {
+        console.log("i am ready to getcommentgroup");
         this.getCommentGroup()
             .then((status) => {
                 if(status !== 200) {
@@ -59,19 +60,27 @@ class CommentGroup extends Component<ICommentGroupProps> {
 
     renderCommentInput() {
         return(
-            <Input placeholder="Введите комментарий" onChange={(e) => this.handleChange(e)}/>
+            <Input 
+                style={{width: "90%"}}
+                placeholder="Введите комментарий"
+                onChange={(e) => this.handleChange(e)}/>
         );
     }
 
     renderSaveButton() {
         return(
-            <Button outline color="primary" onClick={() => this.handleSave()}>Сохранить</Button>
+            <Button
+                outline color="primary"
+                style={{width: "70%", marginTop: "5px", marginBottom: "5px"}}
+                onClick={() => this.handleSave()}>
+                Сохранить
+            </Button>
         );
     }
 
-    renderComments() {
-        let comments = this.commentGroup.comments;
+    renderComments(comments: CommentViewModel[]) {
         let myId = this.props.store.userStore.currentUser.id;
+        console.log("comments", comments);
         return(
             <>
                 <ul className="message-list">
@@ -79,7 +88,7 @@ class CommentGroup extends Component<ICommentGroupProps> {
                         return(
                             // @ts-ignore
                             <li key={comment.id} className="message" align={`${comment.userId === myId ? "right": "left"}`}>
-                                <Comment comment={comment} userStore={this.props.store.userStore} saveComment={this.handleSave}/>
+                                <Comment comment={comment} userStore={this.props.store.userStore} saveComment={this.handleSave} updateCommentGroup={this.updateCommentGroup}/>
                             </li>
                         );
                     })}
@@ -88,19 +97,36 @@ class CommentGroup extends Component<ICommentGroupProps> {
         );
     }
 
-    render() {
-        return(
+    renderBody() {
+        let comments = this.commentGroup.comments;
+        console.log("comments", toJS(comments));
+        return (
             <Modal toggle={() => this.handleToggle()} isOpen={this.windowOpen} size="lg">
                 {this.renderCaution()}
-                <ModalHeader toggle={() => this.handleToggle()} cssModule={{'modal-title': 'w-100 text-center'}}>Комментарии</ModalHeader>
+                <ModalHeader 
+                    toggle={() => this.handleToggle()}
+                    cssModule={{'modal-title': 'w-100 text-center'}}>
+                    Комментарии
+                </ModalHeader>
                 <ModalBody>
-                    {this.renderComments()}
+                    {this.renderComments(comments)}
                 </ModalBody>
-                <ModalFooter>
+                <div className="row justify-content-center">
                     {this.renderCommentInput()}
+                </div>
+                <div className="row justify-content-center">
                     {this.renderSaveButton()}
-                </ModalFooter>
+                </div>
             </Modal>
+        );
+    }
+
+    render() {
+        console.log("commentGroup", this.commentGroup);
+        return(
+            <>
+                {this.renderBody()}
+            </>
         );
     }
 
@@ -123,8 +149,12 @@ class CommentGroup extends Component<ICommentGroupProps> {
         this.newComment.text = event.currentTarget.value;
     }
 
+    updateCommentGroup = () => {
+        this.getCommentGroup();
+    }
+
     async getCommentGroup(): Promise<number> {
-        const response = await fetch(`/getcommentgroup`, {
+        const response = await fetch("/getcommentgroup", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -150,7 +180,8 @@ class CommentGroup extends Component<ICommentGroupProps> {
                 groupId: this.commentGroup.id,
                 commentedEntityType: this.commentGroup.commentedEntityType,
                 commentedEntityId: this.commentGroup.commentedEntityId,
-                userId: this.commentGroup.userId
+                userId: this.commentGroup.userId,
+                id: this.commentGroup.id
             })
         });
 

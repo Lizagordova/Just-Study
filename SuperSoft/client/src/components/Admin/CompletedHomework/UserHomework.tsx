@@ -37,7 +37,7 @@ class UserHomework extends Component<IUserHomeworkProps> {
                             <span>{user.firstName + ' ' + user.lastName}</span>
                         </Accordion.Toggle>
                     </CardHeader>
-                    <Accordion.Collapse eventKey={user.id.toString()}>
+                    <Accordion.Collapse eventKey={user.id.toString()} key={user.id.toString()}>
                         <CardBody>
                             {this.loadHomework && <CompletedHomework userId={user.id} store={this.props.store} />}
                         </CardBody>

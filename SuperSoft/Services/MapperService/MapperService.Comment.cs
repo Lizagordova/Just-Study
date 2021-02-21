@@ -16,7 +16,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
 					.ForMember(dest => dest.CommentedEntityId, opt => opt.MapFrom(src => src.CommentedEntityId))
 					.ForMember(dest => dest.CommentedEntityType, opt => opt.MapFrom(src => src.CommentedEntityType))
-					.ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comment));
+					.ForMember(dest => dest.Comments, opt => opt.Ignore());
 			});
 
 			AddMapping<CommentGroup, CommentGroupViewModel>(cfg =>
@@ -26,7 +26,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
 					.ForMember(dest => dest.CommentedEntityId, opt => opt.MapFrom(src => src.CommentedEntityId))
 					.ForMember(dest => dest.CommentedEntityType, opt => opt.MapFrom(src => src.CommentedEntityType))
-					.ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments));
+					.ForMember(dest => dest.Comments, opt => opt.Ignore());
 			});
 
 			AddMapping<CommentReadModel, Comment>(cfg =>

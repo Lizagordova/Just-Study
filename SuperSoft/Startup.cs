@@ -118,6 +118,7 @@ namespace SuperSoft
 			services.AddSingleton<LogService>();
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();
+			services.AddSingleton<NotificationService>();
 			services.AddSingleton<MapHelper>();
 		}
 		
