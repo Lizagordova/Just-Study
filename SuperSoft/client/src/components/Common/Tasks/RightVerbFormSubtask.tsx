@@ -38,6 +38,13 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
         this.subtask = this.props.subtask;
     }
 
+    componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.userSubtask !== this.props.userSubtask) {
+            console.log("ДААААААААААА");
+            this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+        }
+    }
+
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
@@ -77,7 +84,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     getUserAnswerGroup(groupId: string): UserSubtaskAnswerGroupViewModel {
-        console.log("userAnswerGroups", this.userAnswerGroups, "groupId", groupId);
+        console.log("userAnswerGroups ", this.userAnswerGroups, "groupId", groupId);
         return this.userAnswerGroups.filter(ug => ug.answerGroupId === Number(groupId))[0];
     }
 

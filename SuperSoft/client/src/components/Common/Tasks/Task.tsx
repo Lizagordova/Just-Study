@@ -30,15 +30,29 @@ export class Task extends Component<ITaskProps> {
     addSubtask: boolean;
     userTask: UserTaskViewModel = new UserTaskViewModel();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITaskProps) {
+        super(props);
         makeObservable(this, {
             notDeleted: observable,
             editTaskWindowOpen: observable,
-            addSubtask: observable,
+            addSubtask: observable
         });
-        this.userTask = this.props.store.taskStore.getUserTask(this.props.task.id, this.props.userId)
+        this.getUserTask();
+    }
+
+    componentDidUpdate(prevProps: Readonly<ITaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.task !== this.props.task) {
+            this.getUserTask();
+        }
+    }
+
+    getUserTask() {
+        this.props.store.taskStore
+            .getUserTask(this.props.task.id, this.props.userId)
+            .then((userTask) => {
+                console.log("perceived user task", userTask);
+                this.userTask = userTask;
+            });
     }
 
     addSubtaskToggle = () => {

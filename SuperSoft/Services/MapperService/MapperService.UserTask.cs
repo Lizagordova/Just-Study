@@ -20,6 +20,7 @@ namespace SuperSoft.Services.MapperService
 				cfg.CreateMap<UserSubtaskReadModel, UserSubtask>()
 					.ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+					.ForMember(dest => dest.SubtaskId, opt => opt.MapFrom(src => src.SubtaskId))
 					.ForMember(dest => dest.AnswerPath, opt => opt.Ignore())
 					.ForMember(dest => dest.UserSubtaskAnswerGroups, opt => opt.Ignore());
 			});
@@ -27,11 +28,11 @@ namespace SuperSoft.Services.MapperService
 			AddMapping<UserSubtask, UserSubtaskViewModel>(cfg =>
 			{
 				cfg.CreateMap<UserSubtask, UserSubtaskViewModel>()
-					.ForMember(dest => dest.SubtaskId, opt => opt.Ignore())
+					.ForMember(dest => dest.SubtaskId, opt => opt.MapFrom(src => src.SubtaskId))
 					.ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
 					.ForMember(dest => dest.AnswerFiles, opt => opt.MapFrom(src => src.AnswerPath))//TODO: ХУЙНЯ
-					.ForMember(dest => dest.UserSubtaskAnswerGroups, opt => opt.MapFrom(src => src.UserSubtaskAnswerGroups));
+					.ForMember(dest => dest.UserSubtaskAnswerGroups, opt => opt.Ignore());
 			});
 
 			AddMapping<UserSubtaskAnswerGroupReadModel, UserSubtaskAnswerGroup>(cfg =>

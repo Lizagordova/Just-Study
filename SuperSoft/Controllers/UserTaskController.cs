@@ -17,18 +17,21 @@ namespace SuperSoft.Controllers
 		private readonly IUserTaskEditorService _userTaskEditor;
 		private readonly IUserTaskReaderService _userTaskReader;
 		private readonly ILogger<TaskController> _logger;
+		private readonly MapHelper _mapHelper;
 		private readonly LogService _logService;
 
 		public UserTaskController(
 			MapperService mapper,
 			IUserTaskEditorService userTaskEditor,
 			IUserTaskReaderService userTaskReader,
+			MapHelper mapHelper,
 			ILogger<TaskController> logger,
 			LogService logService)
 		{
 			_mapper = mapper;
 			_userTaskEditor = userTaskEditor;
 			_userTaskReader = userTaskReader;
+			_mapHelper = mapHelper;
 			_logger = logger;
 			_logService = logService;
 		}
@@ -46,7 +49,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var userTask = _userTaskReader.GetUserTask(userTaskReadModel.TaskId, userTaskReadModel.UserId);
-				var userTasksViewModel = _mapper.Map<UserTask, UserTaskViewModel>(userTask);
+				var userTasksViewModel = _mapHelper.MapUserTaskViewModel(userTask);
 
 				return new JsonResult(userTasksViewModel);
 			}

@@ -166,7 +166,8 @@ namespace SuperSoft.Persistence.Repositories
 			{
 				UserSubtasks = reader.Read<UserSubtaskUdt>().ToList(),
 				AnswerGroups = reader.Read<SubtaskAnswerGroupUdt>().ToList(),
-				UserSubtaskGroups = reader.Read<UserSubtaskAnswerGroupUdt>().ToList()
+				UserSubtaskGroups = reader.Read<UserSubtaskAnswerGroupUdt>().ToList(),
+				SubtaskIds = reader.Read<int>().ToList()
 			};
 
 			return data;
@@ -174,15 +175,49 @@ namespace SuperSoft.Persistence.Repositories
 
 		private UserTask MapUserTask(UserTaskData data)
 		{
-			var userTask = new UserTask();
-			userTask.UserSubtasks = data.UserSubtasks
+			var userSubtasks = data.SubtaskIds
 				.GroupJoin(data.UserSubtaskGroups,
-					u => u.SubtaskId,
-					g => g.SubtaskId,
+					sId => sId,
+					sg => sg.SubtaskId,
 					MapUserSubtask)
 				.ToList();
+			foreach (var userSubtask in userSubtasks)
+			{
+				foreach (var userSubtaskUdt in data.UserSubtasks)
+				{
+					if (userSubtask.SubtaskId == userSubtaskUdt.SubtaskId)
+					{
+						userSubtask.Answer = userSubtaskUdt.Answer;
+						userSubtask.AnswerPath = userSubtaskUdt.AnswerPath;
+						userSubtask.Status = userSubtaskUdt.Status;
+					}
+				}
+			}
+			var userTask = new UserTask
+			{
+				UserSubtasks = userSubtasks
+			};
 
 			return userTask;
+		}
+
+		private UserSubtask MapUserSubtask(UserSubtask userSubtask, UserSubtaskUdt userSubtaskUdt)
+		{
+			var fullUserSubtask = _mapper.Map<UserSubtaskUdt, UserSubtask>(userSubtaskUdt);
+			fullUserSubtask.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups;
+
+			return userSubtask;
+		}
+
+		private UserSubtask MapUserSubtask(int subtaskId, IEnumerable<UserSubtaskAnswerGroupUdt> userGroups)
+		{
+			var userSubtask = new UserSubtask
+			{
+				SubtaskId = subtaskId,
+				UserSubtaskAnswerGroups = userGroups.Select(_mapper.Map<UserSubtaskAnswerGroupUdt, UserSubtaskAnswerGroup>).ToList()
+			};
+
+			return userSubtask;
 		}
 
 		private UserSubtask MapUserSubtask(UserSubtaskUdt userSubtaskUdt, IEnumerable<UserSubtaskAnswerGroupUdt> userGroups)

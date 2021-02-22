@@ -31,7 +31,7 @@ class Homework extends Component<IHomeworkProps> {
                     <Nav variant="pills">
                         {tasks.map((task, i) => {
                             return (
-                                <Nav.Item>
+                                <Nav.Item key={i}>
                                     <Nav.Link
                                         className="nav-link lesson"
                                         eventKey={i}
@@ -61,7 +61,7 @@ class Homework extends Component<IHomeworkProps> {
         );
     }
 
-    taskToggler(navigation: NavigationType) {
+    taskToggler = (navigation: NavigationType) => {
         let tasks = this.props.store.taskStore.tasksByChoosenLesson;
         let index = tasks.indexOf(this.taskToRender);
         if(navigation === NavigationType.Forward) {
@@ -77,7 +77,7 @@ class Homework extends Component<IHomeworkProps> {
                 this.taskToRender = tasks[tasks.length - 1];
             }
         }
-    }
+    };
 }
 
 export default Homework;

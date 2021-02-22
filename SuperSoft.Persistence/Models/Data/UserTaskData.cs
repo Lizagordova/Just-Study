@@ -8,5 +8,6 @@ namespace SuperSoft.Persistence.Models.Data
 		public List<UserSubtaskUdt> UserSubtasks { get; set; }
 		public List<UserSubtaskAnswerGroupUdt> UserSubtaskGroups { get; set; }
 		public List<SubtaskAnswerGroupUdt> AnswerGroups { get; set; }
+		public List<int> SubtaskIds { get; set; }
 	}
 }

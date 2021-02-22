@@ -28,29 +28,21 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
         });
     }
 
-    renderTask(task: TaskViewModel) {
+    renderTaskCard(task: TaskViewModel) {
         return(
             <>
                 <div className="row justify-content-center">
-                    <Task store={this.props.store} task={this.props.task} userId={this.props.userId}/>
+                    {this.renderTask()}
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-4 text-center">
-                        <Button
-                            onClick={() => {this.props.taskToggler(NavigationType.Back)}}>
-                            <i className="fa fa-long-arrow-left" aria-hidden="true"/>
-                        </Button>
+                        {this.renderBackButton()}
                     </div>
                     <div className="col-4 text-center">
-                        <Button
-                            outline color="primary"
-                            onClick={() => this.toggleComments()}>Комментарии</Button>
+                        {this.renderComments()}
                     </div>
                     <div className="col-4 text-center">
-                        <Button
-                            onClick={() => {this.props.taskToggler(NavigationType.Forward)}}>
-                            <i className="fa fa-long-arrow-right" aria-hidden="true"/>
-                        </Button>
+                        {this.renderForwardButton()}
                     </div>
                     {this.showComments && <CommentGroup commentedEntityType={CommentedEntityType.LessonTask} commentedEntityId={task.id} userId={this.props.userId} onToggle={this.toggleComments} store={this.props.store}/>}
                 </div>
@@ -58,10 +50,42 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
         );
     }
 
+    renderComments() {
+        return (
+            <Button
+                outline color="primary"
+                onClick={() => this.toggleComments()}>Комментарии</Button>
+        );
+    }
+
+    renderForwardButton() {
+        return (
+            <Button
+                onClick={() => {this.props.taskToggler(NavigationType.Forward)}}>
+                <i className="fa fa-long-arrow-right" aria-hidden="true"/>
+            </Button>
+        );
+    }
+
+    renderBackButton() {
+        return (
+            <Button
+                onClick={() => {this.props.taskToggler(NavigationType.Back)}}>
+                <i className="fa fa-long-arrow-left" aria-hidden="true"/>
+            </Button>
+        );
+    }
+
+    renderTask() {
+        return(
+            <Task store={this.props.store} task={this.props.task} userId={this.props.userId}/>
+        );
+    }
+
     render() {
         return(
             <>
-                {this.renderTask(this.props.task)}
+                {this.renderTaskCard(this.props.task)}
             </>
         );
     }

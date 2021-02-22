@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SuperSoft.Domain.Models;
+using SuperSoft.Persistence.Models.Dto;
 using SuperSoft.ReadModels;
 using SuperSoft.Services.MapperService;
 using SuperSoft.ViewModels;
@@ -72,6 +73,23 @@ namespace SuperSoft.Helpers
 			commentGroupViewModel.Comments = commentGroup.Comments.Select(_mapper.Map<Comment, CommentViewModel>).ToList();
 
 			return commentGroupViewModel;
+		}
+
+		public UserTaskViewModel MapUserTaskViewModel(UserTask userTask)
+		{
+			var userTaskViewModel = new UserTaskViewModel
+			{
+				UserSubtasks = userTask.UserSubtasks.Select(MapUserSubtaskViewModel).ToList()
+			};
+			return userTaskViewModel;
+		}
+
+		public UserSubtaskViewModel MapUserSubtaskViewModel(UserSubtask userSubtask)
+		{
+			var userSubtaskViewModel = _mapper.Map<UserSubtask, UserSubtaskViewModel>(userSubtask);
+			userSubtaskViewModel.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups.Select(_mapper.Map<UserSubtaskAnswerGroup, UserSubtaskAnswerGroupViewModel>).ToList();
+
+			return userSubtaskViewModel;
 		}
 	}
 }
