@@ -185,6 +185,7 @@ class TaskStore {
     }
 
     async addOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup: UserSubtaskAnswerGroupReadModel): Promise<number> {
+        console.log("userSubtaskAnswerGroup", toJS(userSubtaskAnswerGroup));
         const response = await fetch("/addorupdateusersubtaskanswergroup", {
             method: "POST",
             headers: {

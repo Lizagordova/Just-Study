@@ -2,11 +2,13 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { CompletingStatus } from '../enums/CompletingStatus';
+
 export class UserSubtaskAnswerGroupReadModel
 {
 	public userId: number;
 	public answerGroupId: number;
 	public subtaskId: number;
-	public status: number;
+	public status: CompletingStatus;
 	public lastAnswer: string;
 }

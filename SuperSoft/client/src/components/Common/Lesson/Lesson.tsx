@@ -4,11 +4,13 @@ import { UserRole } from "../../../Typings/enums/UserRole";
 import { Content } from "./Content";
 import { ContentUpload } from "../../Admin/Lessons/ContentUpload";
 import { Label } from "reactstrap";
+import {observer} from "mobx-react";
 
 class ILessonProps {
     store: RootStore;
 }
 
+@observer
 export class Lesson extends Component<ILessonProps> {
     renderContentUpload() {
         let role = this.props.store.userStore.currentUser.role;

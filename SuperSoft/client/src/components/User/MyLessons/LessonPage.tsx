@@ -13,7 +13,7 @@ class ILessonPageProps {
 
 @observer
 class LessonPage extends Component<ILessonPageProps> {
-    lessonActive: boolean;
+    lessonActive: boolean = true;
     homeworkActive: boolean;
 
     constructor() {

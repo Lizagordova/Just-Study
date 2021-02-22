@@ -11,10 +11,10 @@ import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserS
 import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
+import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
 
 @observer
 export class RightVerbFormSubtask extends Component<ISubtaskProps> {
-    notSaved: boolean;
     userAnswer: UserSubtaskReadModel = new UserSubtaskReadModel();
     saved: boolean;
     notDeleted: boolean;
@@ -27,7 +27,6 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     constructor(props: ISubtaskProps) {
         super(props);
         makeObservable(this, {
-            notSaved: observable,
             userAnswer: observable,
             saved: observable,
             notDeleted: observable,
@@ -42,6 +41,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+        console.log("userAnswerGroups", toJS(this.props.userSubtask.userSubtaskAnswerGroups));
         this.loaded = true;
     }
 
@@ -77,6 +77,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     getUserAnswerGroup(groupId: string): UserSubtaskAnswerGroupViewModel {
+        console.log("userAnswerGroups", this.userAnswerGroups, "groupId", groupId);
         return this.userAnswerGroups.filter(ug => ug.answerGroupId === Number(groupId))[0];
     }
 
@@ -102,6 +103,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     renderSubtask(subtask: SubtaskViewModel) {
+        console.log("this", this.userAnswer);
         return (
             <>
                 <CardText>
@@ -114,21 +116,12 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     render() {
+        console.log(" i am here blya");
         return(
             <>
                 {this.loaded && this.renderSubtask(this.subtask)}
             </>
         );
-    }
-
-    save() {
-        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
-                .then((status) => {
-                    this.notSaved = status !== 200;
-                    this.saved = status === 200;
-                });
-        }
     }
 
     deleteSubtask() {
@@ -219,6 +212,7 @@ class Dropdown extends Component<IDropdownProps> {
                         {answers.map((answer) => {
                             return(
                                 <DropdownItem
+                                    key={answer.id.toString()}
                                     onClick={(e) => this.click(e)}
                                     id={answer.id.toString()}
                                 >{answer.answer}</DropdownItem>
@@ -240,10 +234,8 @@ class Dropdown extends Component<IDropdownProps> {
 
     addOrUpdateUserAnswerGroup() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            let answerGroupReadModel = new UserSubtaskAnswerGroupReadModel();
-            answerGroupReadModel.lastAnswer = this.userAnswerGroup.lastAnswer;
-            answerGroupReadModel.status = this.userAnswerGroup.status;
-            answerGroupReadModel.answerGroupId = this.userAnswerGroup.answerGroupId;
+            let answerGroupReadModel = mapToUserSubtaskAnswerGroupReadModel(this.userAnswerGroup);
+            answerGroupReadModel.answerGroupId = this.answerGroup.id;
             answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }

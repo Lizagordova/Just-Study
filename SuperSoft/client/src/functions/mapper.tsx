@@ -15,6 +15,8 @@ import { TagReadModel } from "../Typings/readModels/TagReadModel";
 import { toJS } from "mobx";
 import {TaskViewModel} from "../Typings/viewModels/TaskViewModel";
 import {TaskReadModel} from "../Typings/readModels/TaskReadModel";
+import {UserSubtaskAnswerGroupReadModel} from "../Typings/readModels/UserSubtaskAnswerGroupReadModel";
+import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -130,4 +132,13 @@ export function mapToTaskReadModel(task: TaskViewModel): TaskReadModel {
     taskReadModel.tags = task.tags;
 
     return taskReadModel;
+}
+
+export function mapToUserSubtaskAnswerGroupReadModel(userAnswerGroup: UserSubtaskAnswerGroupViewModel): UserSubtaskAnswerGroupReadModel {
+    let answerGroupReadModel = new UserSubtaskAnswerGroupReadModel();
+    answerGroupReadModel.lastAnswer = userAnswerGroup.lastAnswer;
+    answerGroupReadModel.status = userAnswerGroup.status;
+    answerGroupReadModel.answerGroupId = userAnswerGroup.answerGroupId;
+    
+    return answerGroupReadModel;
 }

@@ -57,7 +57,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         return (
             <>
                 {subtask.path !== null &&
-                <CardImg src={subtask.path.replace('ClientApp/build', './')} alt="Loading..."/>}
+                <CardImg src={subtask.path.replace('client/build', './')} alt="Loading..."/>}
             </>
         );
     }
@@ -66,6 +66,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         return(
             <div className="col-12">
                 <textarea
+                    style={{width: "90%"}}
                     value={this.userAnswer.answer}
                     className="answerInput"
                     onChange={(e) => this.inputAnswer(e)}/>

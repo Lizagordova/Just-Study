@@ -41,9 +41,12 @@ export class TaskEdit extends Component<ITaskEditProps> {
                 isOpen={true}
                 toggle={() => this.props.toggle()}
             >
-                <ModalHeader>
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.props.toggle()}
+                   className="fa fa-window-close" aria-hidden="true"/>
+                <div className="row justify-content-center">
                     РЕДАКТИРОВАНИЕ УПРАЖНЕНИЯ
-                </ModalHeader>
+                </div>
                 {this.renderBody()}
                 <Button color="primary"
                         onClick={() => this.props.toggle()}>

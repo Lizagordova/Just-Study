@@ -57,7 +57,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
                 <td></td>
                 {this.days.map((day, i) => {
                     return(
-                        <td>{i + 1}</td>
+                        <td key={i}>{i + 1}</td>
                     );
                 })}
             </tr>
@@ -85,7 +85,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
                     let trackerByDay = this.getTrackerByDay(day);
                     return(
                         <>
-                            <td id={day.toString()} onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))} key={i}>
+                            <td onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))} key={i}>
                                 {this.isCompleted(trackerByDay, type)
                                 ? <i className="fa fa-check" aria-hidden="true"/> :
                                 <i className="fa fa-times" aria-hidden="true"/>

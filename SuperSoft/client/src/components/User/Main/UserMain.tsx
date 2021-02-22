@@ -16,16 +16,16 @@ export class UserMain extends React.Component<IUserMainProps> {
     courseMenuOpen: boolean;
     notificationsOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IUserMainProps) {
+        super(props);
         makeObservable(this, {
             courseMenuOpen: observable,
             notificationsOpen: observable,
         });
+        this.getInitialState();
     }
 
-    componentDidMount(): void {
+    getInitialState() {
         let courseStore = this.props.store.courseStore;
         courseStore.getUserCourses()
             .then((status) => {

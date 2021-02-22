@@ -4,12 +4,14 @@ import { LessonMaterialViewModel } from "../../../Typings/viewModels/LessonMater
 import { Material } from "./Material";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import { Alert } from "reactstrap";
+import { observer } from "mobx-react";
 
 class IContentProps {
     lessonStore: LessonStore;
     courseId: number;
 }
 
+@observer
 export class Content extends Component<IContentProps> {
     renderMaterials(materials: LessonMaterialViewModel[]) {
         return(

@@ -167,7 +167,6 @@ export class Task extends Component<ITaskProps> {
 
     render() {
         let task = this.props.task;
-        console.log("task to edit", toJS(task));
         return(
             <>
                 {this.renderTask(task)}

@@ -3,7 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import { Nav, Tab } from "react-bootstrap";
 import { Button, Col, Collapse, Row, Alert } from "reactstrap";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import LessonPage from "./LessonPage";
 
@@ -14,7 +14,7 @@ class IMyLessonsPageProps {
 
 @observer
 class MyLessonsPage extends Component<IMyLessonsPageProps> {
-    isNavOpen: boolean;
+    isNavOpen: boolean = true;
     courseId: number;
 
     constructor(props: IMyLessonsPageProps) {
@@ -42,33 +42,36 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row>
-                    <Col sm={2}>
+                    <Col sm={3}>
                         <Button color="primary" className="lessonToggle" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">
-                                {lessons.map((lesson) => {
-                                    // @ts-ignore
-                                    let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
-                                    return (
-                                        <>
-                                            <Nav.Item>
-                                                <div className="row">
-                                                    <Nav.Link
-                                                        eventKey={lesson.id}
-                                                        disabled={isDisabled}
-                                                        className="nav-link lesson"
-                                                        onClick={() => this.lessonToggle(lesson)}>
-                                                        Урок {lesson.order}
-                                                    </Nav.Link>
-                                                </div>
-                                            </Nav.Item>
-                                        </>
-                                    );
-                                })}
+                                <div className="container-fluid">
+                                    {lessons.map((lesson) => {
+                                        let currentDate = new Date().toString();
+                                        let isDisabled = Date.parse(currentDate) > Date.parse(lesson.expireDate)  && Date.parse(currentDate) < Date.parse(lesson.startDate);
+                                        return (
+                                            <>
+                                                <Nav.Item key={lesson.id}>
+                                                    <div className="row" key={lesson.id}>
+                                                        <Nav.Link
+                                                            key={lesson.id}
+                                                            eventKey={lesson.id}
+                                                            disabled={isDisabled}
+                                                            className="nav-link lesson"
+                                                            onClick={() => this.lessonToggle(lesson)}>
+                                                            {lesson.name}
+                                                        </Nav.Link>
+                                                    </div>
+                                                </Nav.Item>
+                                            </>
+                                        );
+                                    })}
+                                </div>
                             </Nav>
                         </Collapse>
                     </Col>
-                    <Col sm={10}>
+                    <Col sm={9}>
                         <LessonPage store={this.props.store}/>
                     </Col>
                 </Row>

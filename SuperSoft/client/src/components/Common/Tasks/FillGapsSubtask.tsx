@@ -11,6 +11,7 @@ import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserS
 import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
+import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
 
 @observer
 export class FillGapsSubtask extends Component<ISubtaskProps> {
@@ -42,6 +43,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+        console.log("userSubtaskAnswerGroups", toJS(this.props.userSubtask.userSubtaskAnswerGroups));
         this.loaded = true;
     }
 
@@ -79,6 +81,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     }
 
     getUserAnswerGroup(groupId: string): UserSubtaskAnswerGroupViewModel {
+        console.log("his.userAnswerGroups", this.userAnswerGroups, "groupId", groupId);
         return this.userAnswerGroups.filter(ug => ug.answerGroupId === Number(groupId))[0];
     }
 
@@ -229,11 +232,8 @@ class Gap extends Component<IGapProps> {
 
     addOrUpdateUserAnswerGroup() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            let answerGroupReadModel = new UserSubtaskAnswerGroupReadModel();
-            answerGroupReadModel.lastAnswer = this.userAnswerGroup.lastAnswer;
-            answerGroupReadModel.status = this.userAnswerGroup.status;
-            answerGroupReadModel.answerGroupId = this.userAnswerGroup.answerGroupId;
-            answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
+            let answerGroupReadModel = mapToUserSubtaskAnswerGroupReadModel(this.userAnswerGroup);
+            answerGroupReadModel.answerGroupId = this.answerGroup.id;
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }
         this.toggleUpdate();
