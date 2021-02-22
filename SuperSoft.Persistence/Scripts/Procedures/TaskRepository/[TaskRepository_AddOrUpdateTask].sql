@@ -11,16 +11,19 @@ BEGIN
 	WHEN NOT MATCHED THEN
 		INSERT (
 			[Text],
-			[Instruction]
+			[Instruction],
+			[TaskType]
 		) VALUES (
 			[src].[Text],
-			[src].[Instruction]
+			[src].[Instruction],
+			[src].[TaskType]
 		)
 	WHEN MATCHED THEN
 		UPDATE
 		SET
 			[dest].[Text] = [src].[Text],
-			[dest].[Instruction] = [src].[Instruction]
+			[dest].[Instruction] = [src].[Instruction],
+			[dest].[TaskType] = [src].[TaskType]
 	OUTPUT INSERTED.ID INTO @mergedIds;
 
 	DECLARE @taskId INT = (SELECT TOP 1 [Id] FROM @mergedIds);

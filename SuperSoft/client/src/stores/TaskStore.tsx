@@ -41,8 +41,7 @@ class TaskStore {
             body: JSON.stringify({id: lessonId})
         });
         if(response.status === 200) {
-            let tasksByChoosenLesson = await response.json();
-            this.tasksByChoosenLesson = tasksByChoosenLesson;
+            this.tasksByChoosenLesson  = await response.json();
         }
     }
 
@@ -64,25 +63,26 @@ class TaskStore {
     }
 
     getFormDataForTask(task: TaskReadModel, lessonId: number): FormData {
+        console.log("task", toJS(task));
         let formData = new FormData();
         formData.append("lessonId", lessonId.toString());
-        if(task.id !== undefined) {
+        if(task.id !== undefined && task.id !== null) {
             formData.append("id", task.id.toString());
         }
-        if(task.taskType !== undefined) {
+        if(task.taskType !== undefined && task.taskType !== null) {
             formData.append("taskType", task.taskType.toString());
         }
-        if(task.text !== undefined) {
+        if(task.text !== undefined && task.text !== null) {
             formData.append("text", task.text.toString());
         }
-        if(task.instruction !== undefined) {
+        if(task.instruction !== undefined && task.instruction !== null) {
             formData.append("instruction", task.instruction.toString());
         }
-        if(task.subtasks !== undefined) {
+        if(task.subtasks !== undefined && task.subtasks !== null) {
             // @ts-ignore
             formData.append("subtasks", task.subtasks);
         }
-        if(task.tags !== undefined) {
+        if(task.tags !== undefined && task.tags !== null) {
             formData.append("tags", task.tags.toString());
         }
 
@@ -105,25 +105,22 @@ class TaskStore {
     getFormDataForSubtask(subtask: SubtaskReadModel): FormData {
         const formData = new FormData();
         formData.append("subtaskType", subtask.subtaskType.toString());
-        if(subtask.order !== undefined) {
+        if(subtask.order !== undefined && subtask.order !== null) {
             formData.append("order", subtask.order.toString());
         }
-        if(subtask.text !== undefined) {
+        if(subtask.text !== undefined && subtask.text !== null) {
             formData.append("text", subtask.text.toString());
         }
-        if(subtask.path !== undefined) {
+        if(subtask.path !== undefined  && subtask.path !== null) {
             formData.append("path", subtask.path.toString());
         }
-        if(subtask.id !== undefined) {
-            formData.append("path", subtask.id.toString());
-        }
-        if(subtask.id !== undefined) {
+        if(subtask.id !== undefined && subtask.id !== null) {
             formData.append("id", subtask.id.toString());
         }
-        if(subtask.taskId !== undefined) {
+        if(subtask.taskId !== undefined && subtask.taskId !== null) {
             formData.append("taskId", subtask.taskId.toString());
         }
-        if(subtask.taskId !== undefined) {
+        if(subtask.file !== undefined && subtask.file !== null) {
             formData.append("file", subtask.file);
         }
         

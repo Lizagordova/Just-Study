@@ -13,6 +13,8 @@ import { UserReadModel } from "../Typings/readModels/UserReadModel";
 import { TagViewModel } from "../Typings/viewModels/TagViewModel";
 import { TagReadModel } from "../Typings/readModels/TagReadModel";
 import { toJS } from "mobx";
+import {TaskViewModel} from "../Typings/viewModels/TaskViewModel";
+import {TaskReadModel} from "../Typings/readModels/TaskReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -116,4 +118,16 @@ export function mapToTagReadModel(tag: TagViewModel): TagReadModel {
     tagReadModel.name = tag.name;
     
     return tagReadModel;
+}
+
+export function mapToTaskReadModel(task: TaskViewModel): TaskReadModel {
+    let taskReadModel = new TaskReadModel();
+    taskReadModel.id = task.id;
+    taskReadModel.instruction = task.instruction;
+    taskReadModel.text = task.text;
+    taskReadModel.taskType = task.taskType;
+    taskReadModel.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
+    taskReadModel.tags = task.tags;
+
+    return taskReadModel;
 }

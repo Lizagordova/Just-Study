@@ -2,7 +2,7 @@
 	@lessonId INT
 AS
 BEGIN
-	DECLARE @tasks [UDT_Task];
+	DECLARE @tasfks [UDT_Task];
 	DECLARE @subtasks [UDT_Subtask];
 	DECLARE @tags [UDT_Tag];
 	DECLARE @taskTags [UDT_Task_Tag];
@@ -21,12 +21,14 @@ BEGIN
 	INTO @tasks (
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	)
 	SELECT
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	FROM [Task] 
 	WHERE [Id] IN (
 		SELECT [Id]

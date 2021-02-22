@@ -11,12 +11,14 @@ BEGIN
 	INTO @tasks (
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	)
 	SELECT
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	FROM [Task];
 
 	INSERT

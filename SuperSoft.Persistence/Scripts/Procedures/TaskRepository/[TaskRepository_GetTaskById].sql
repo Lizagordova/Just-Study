@@ -11,12 +11,14 @@ BEGIN
 	INTO @task (
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	)
 	SELECT
 		[Id],
 		[Instruction],
-		[Text]
+		[Text],
+		[TaskType]
 	FROM [Task]
 	WHERE [Id] = @taskId;
 

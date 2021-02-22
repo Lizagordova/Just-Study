@@ -59,10 +59,13 @@ namespace SuperSoft.Persistence.Services.Tasks
 
 			if (subtaskType == SubtaskType.DetailedAnswer || subtaskType == SubtaskType.LoadAudio || subtaskType == SubtaskType.LoadFile)
 			{
-				var bytes = FileHelper.GetBytes(subtask.File);
-				var path = GetPath(taskId, subtask.File.FileName);
-				FileHelper.SaveContent(bytes, path);
-				subtask.Path = path;
+				if (subtask.File != null)
+				{
+					var bytes = FileHelper.GetBytes(subtask.File);
+					var path = GetPath(taskId, subtask.File.FileName);
+					FileHelper.SaveContent(bytes, path);
+					subtask.Path = path;
+				}
 			}
 			return subtask;
 		}

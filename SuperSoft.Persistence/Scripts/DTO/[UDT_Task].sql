@@ -2,5 +2,6 @@
 (
 	[Id] INT,
 	[Instruction] NVARCHAR(MAX),
-	[Text] NVARCHAR(MAX)
+	[Text] NVARCHAR(MAX),
+	[TaskType] INT
 );
