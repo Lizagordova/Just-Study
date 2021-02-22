@@ -185,7 +185,6 @@ class TaskStore {
     }
 
     async addOrUpdateUserSubtaskAnswerGroup(userSubtaskAnswerGroup: UserSubtaskAnswerGroupReadModel): Promise<number> {
-        console.log("userSubtaskAnswerGroup", toJS(userSubtaskAnswerGroup));
         const response = await fetch("/addorupdateusersubtaskanswergroup", {
             method: "POST",
             headers: {
@@ -209,6 +208,24 @@ class TaskStore {
             },
             body: JSON.stringify({
                 userId: userId, subtaskId: subtaskId
+            })
+        });
+        if(response.status === 200) {
+            userSubtask = await response.json();
+        }
+
+        return userSubtask;
+    }
+
+    async getUserTask(taskId: number, userId: number): Promise<UserSubtaskViewModel> {
+        let userSubtask =  new UserSubtaskViewModel();
+        const response = await fetch("/getusertask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userId: userId, taskId: taskId
             })
         });
         if(response.status === 200) {

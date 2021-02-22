@@ -2,6 +2,7 @@
 (
 	[UserId] INT,
 	[AnswerGroupId] INT,
+	[SubtaskId] INT,
 	[Status] INT,
 	[LastAnswer] NVARCHAR(MAX)
 );

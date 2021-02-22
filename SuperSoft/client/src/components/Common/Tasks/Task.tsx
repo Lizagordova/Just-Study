@@ -38,11 +38,12 @@ export class Task extends Component<ITaskProps> {
             editTaskWindowOpen: observable,
             addSubtask: observable,
         });
+        this.userTask = this.props.store.taskStore.getUserTask(this.props.task.id, this.props.userId)
     }
 
     addSubtaskToggle = () => {
         this.addSubtask = !this.addSubtask;
-    }
+    };
 
     renderControlButtons() {
         let role = this.props.store.userStore.currentUser.role;
