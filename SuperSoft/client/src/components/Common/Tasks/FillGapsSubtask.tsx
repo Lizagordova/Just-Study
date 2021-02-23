@@ -24,6 +24,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
     loaded: boolean;
+    update: boolean;
 
     constructor(props: ISubtaskProps) {
         super(props);
@@ -35,7 +36,8 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
             partsOfSentence: observable,
             answerGroupIds: observable,
             loaded: observable,
-            userAnswerGroups: observable
+            userAnswerGroups: observable,
+            update: observable
         });
         this.subtask = this.props.subtask;
     }
@@ -44,6 +46,18 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
         this.loaded = true;
+    }
+
+    componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.userSubtask !== this.props.userSubtask) {
+            console.log("userSubtask changed", toJS(this.props.userSubtask));
+            this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+            this.updateToggle();
+        }
+    }
+
+    updateToggle() {
+        this.update = !this.update;
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
@@ -73,9 +87,9 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         }
     }
 
-    renderBadge(subtask: SubtaskViewModel) {
+    renderBadge() {
         return(
-            <Badge outline color="primary">{subtask.order + 1 }</Badge>
+            <Badge outline="true" color="primary">{this.props.order + 1 }</Badge>
         );
     }
 
@@ -96,7 +110,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                     return (
                         <>
                             <span style={{clear: 'both'}}>{p}</span>
-                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])}/>}
+                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])} key={i}/>}
                         </>
                     )
                 })}
@@ -104,12 +118,12 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel) {
+    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
         return (
             <>
                 <CardText>
                     {this.renderControlButton()}
-                    {this.renderBadge(subtask)}
+                    {this.renderBadge()}
                     {this.renderSentence()}
                 </CardText>
             </>
@@ -119,7 +133,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     render() {
         return(
             <>
-                {this.loaded && this.renderSubtask(this.subtask)}
+                {this.loaded && this.renderSubtask(this.subtask, this.update)}
             </>
         );
     }
@@ -164,6 +178,13 @@ class Gap extends Component<IGapProps> {
         });
         this.setUserAnswerGroup();
         this.answerGroup = this.props.answerGroup;
+    }
+
+    
+    componentDidUpdate(prevProps: Readonly<IGapProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.userAnswerGroup !== this.props.userAnswerGroup) {
+            this.setUserAnswerGroup();
+        }
     }
 
     setUserAnswerGroup() {
@@ -214,7 +235,7 @@ class Gap extends Component<IGapProps> {
                 disabled={status === 4 || status === 2}
                 onChange={(e) => this.inputChange(e)}
                 /* onBlur={() => this.checkAnswer()}*/
-                value={this.userAnswerGroup.lastAnswer}
+                value={this.userAnswerGroup.lastAnswer !== undefined ? this.userAnswerGroup.lastAnswer : ""}
                 onKeyPress={(e) => this.handleKeyPress(e)}
             />
         );
@@ -232,6 +253,7 @@ class Gap extends Component<IGapProps> {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             let answerGroupReadModel = mapToUserSubtaskAnswerGroupReadModel(this.userAnswerGroup);
             answerGroupReadModel.answerGroupId = this.answerGroup.id;
+            answerGroupReadModel.userId = this.props.store.userStore.currentUser.id;
             this.props.store.taskStore.addOrUpdateUserSubtaskAnswerGroup(answerGroupReadModel);
         }
         this.toggleUpdate();

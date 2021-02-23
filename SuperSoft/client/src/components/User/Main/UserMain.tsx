@@ -135,7 +135,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                         return(
                             <DropdownItem
                                 onClick={(e) => this.toggleCourse(course)}
-                                id={course.id.toString()}
+                                key={course.id.toString()}
                             >{course.name}</DropdownItem>
                         );
                     })}

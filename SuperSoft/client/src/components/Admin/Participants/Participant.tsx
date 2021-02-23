@@ -99,8 +99,8 @@ class Participant extends Component<IParticipantProps> {
                     {translateTarif(details.tarif)}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem id="1" onClick={() => this.tarifChange(Tarif.Usual)}>{translateTarif(Tarif.Usual)}</DropdownItem>
-                    <DropdownItem id="2" onClick={() => this.tarifChange(Tarif.Premium)}>{translateTarif(Tarif.Premium)}</DropdownItem>
+                    <DropdownItem key="1" id="1" onClick={() => this.tarifChange(Tarif.Usual)}>{translateTarif(Tarif.Usual)}</DropdownItem>
+                    <DropdownItem key="2" id="2" onClick={() => this.tarifChange(Tarif.Premium)}>{translateTarif(Tarif.Premium)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
@@ -153,8 +153,8 @@ class Participant extends Component<IParticipantProps> {
                     {translateCourseRole(details.courseRole)}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem id="1" onClick={() => this.roleCourseChange(CourseRole.Teacher)}>{translateCourseRole(CourseRole.Teacher)}</DropdownItem>
-                    <DropdownItem id="2" onClick={() => this.roleCourseChange(CourseRole.Pupil)}>{translateCourseRole(CourseRole.Pupil)}</DropdownItem>
+                    <DropdownItem id="1" key="1" onClick={() => this.roleCourseChange(CourseRole.Teacher)}>{translateCourseRole(CourseRole.Teacher)}</DropdownItem>
+                    <DropdownItem id="2" key="1" onClick={() => this.roleCourseChange(CourseRole.Pupil)}>{translateCourseRole(CourseRole.Pupil)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );

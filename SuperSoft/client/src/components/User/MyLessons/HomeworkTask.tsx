@@ -90,7 +90,7 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
         );
     }
 
-    toggleComments() {
+    toggleComments = () => {
         this.showComments = !this.showComments;
     }
 }
