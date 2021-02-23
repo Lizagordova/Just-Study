@@ -15,7 +15,6 @@ import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
 
 @observer
 export class RightVerbFormSubtask extends Component<ISubtaskProps> {
-    userAnswer: UserSubtaskReadModel = new UserSubtaskReadModel();
     saved: boolean;
     notDeleted: boolean;
     partsOfSentence: string [] = new Array<string>();
@@ -23,32 +22,36 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     userAnswerGroups: UserSubtaskAnswerGroupViewModel[] = new Array<UserSubtaskAnswerGroupViewModel>();
     subtask: SubtaskViewModel = new SubtaskViewModel();
     loaded: boolean = false;
+    update: boolean;
 
     constructor(props: ISubtaskProps) {
         super(props);
         makeObservable(this, {
-            userAnswer: observable,
             saved: observable,
             notDeleted: observable,
             partsOfSentence: observable,
             answerGroupIds: observable,
             subtask: observable,
-            loaded: observable
+            loaded: observable,
+            update: observable
         });
         this.subtask = this.props.subtask;
     }
 
+    updateToggle() {
+        this.update = !this.update;
+    }
+
     componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.userSubtask !== this.props.userSubtask) {
-            console.log("ДААААААААААА");
             this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
+            this.updateToggle();
         }
     }
 
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
-        console.log("userAnswerGroups", toJS(this.props.userSubtask.userSubtaskAnswerGroups));
         this.loaded = true;
     }
 
@@ -77,14 +80,13 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
         }
     }
 
-    renderBadge(subtask: SubtaskViewModel) {
+    renderBadge() {
         return(
-            <Badge outline color="primary">{this.props.order}</Badge>
+            <Badge outline color="primary">{this.props.order + 1}</Badge>
         );
     }
 
     getUserAnswerGroup(groupId: string): UserSubtaskAnswerGroupViewModel {
-        console.log("userAnswerGroups ", this.userAnswerGroups, "groupId", groupId);
         return this.userAnswerGroups.filter(ug => ug.answerGroupId === Number(groupId))[0];
     }
 
@@ -109,13 +111,12 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel) {
-        console.log("this", this.userAnswer);
+    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
         return (
             <>
                 <CardText>
                     {this.renderControlButton()}
-                    {this.renderBadge(subtask)}
+                    {this.renderBadge()}
                     {this.renderSentence()}
                 </CardText>
             </>
@@ -123,10 +124,9 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     render() {
-        console.log(" i am here blya");
         return(
             <>
-                {this.loaded && this.renderSubtask(this.subtask)}
+                {this.loaded && this.renderSubtask(this.subtask, this.update)}
             </>
         );
     }
@@ -161,6 +161,12 @@ class Dropdown extends Component<IDropdownProps> {
         });
         this.setUserAnswerGroup();
         this.answerGroup = this.props.answerGroup;
+    }
+
+    componentDidUpdate(prevProps: Readonly<IDropdownProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.userAnswerGroup !== this.props.userAnswerGroup) {
+            this.setUserAnswerGroup();
+        }
     }
 
     setUserAnswerGroup() {

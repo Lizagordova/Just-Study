@@ -43,7 +43,6 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     componentDidMount(): void {
         this.parseSubtask(this.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
-        console.log("userSubtaskAnswerGroups", toJS(this.props.userSubtask.userSubtaskAnswerGroups));
         this.loaded = true;
     }
 
@@ -81,7 +80,6 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     }
 
     getUserAnswerGroup(groupId: string): UserSubtaskAnswerGroupViewModel {
-        console.log("his.userAnswerGroups", this.userAnswerGroups, "groupId", groupId);
         return this.userAnswerGroups.filter(ug => ug.answerGroupId === Number(groupId))[0];
     }
 

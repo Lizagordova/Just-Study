@@ -37,7 +37,6 @@ class Users extends Component<IUsersProps> {
     }
 
     render() {
-        console.log("this props userStore users", toJS(this.props.userStore.users));
         let users = this.props.userStore.users;
         return(
             <>

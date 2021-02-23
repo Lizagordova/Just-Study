@@ -29,15 +29,21 @@ export class Task extends Component<ITaskProps> {
     editTaskWindowOpen: boolean;
     addSubtask: boolean;
     userTask: UserTaskViewModel = new UserTaskViewModel();
+    update: boolean;
 
     constructor(props: ITaskProps) {
         super(props);
         makeObservable(this, {
             notDeleted: observable,
             editTaskWindowOpen: observable,
-            addSubtask: observable
+            addSubtask: observable,
+            update: observable
         });
         this.getUserTask();
+    }
+
+    updateToggle() {
+        this.update = !this.update;
     }
 
     componentDidUpdate(prevProps: Readonly<ITaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
@@ -50,8 +56,8 @@ export class Task extends Component<ITaskProps> {
         this.props.store.taskStore
             .getUserTask(this.props.task.id, this.props.userId)
             .then((userTask) => {
-                console.log("perceived user task", userTask);
                 this.userTask = userTask;
+                this.updateToggle();
             });
     }
 
@@ -126,19 +132,19 @@ export class Task extends Component<ITaskProps> {
                 {this.renderInstruction(task)}
                 {this.renderText(task)}
                 <CardBody style={{marginLeft: '5%'}}>
-                    {this.renderSubtasks(task.subtasks)}
+                    {this.renderSubtasks(task.subtasks, this.update)}
                 </CardBody>
                 {this.renderAddSubtask()}
             </Card>
         )
     }
 
-    renderSubtasks(subtasks: SubtaskViewModel[]) {
+    renderSubtasks(subtasks: SubtaskViewModel[], update: boolean) {
        return(
            <>
                {subtasks.map((subtask, i) => {
                    return(
-                       <>{this.renderSubtask(subtask, i)}</>
+                       <>{this.renderSubtask(subtask, i, update)}</>
                    );
                })}
                {this.renderAddSubtaskButton()}
@@ -146,7 +152,7 @@ export class Task extends Component<ITaskProps> {
        );
     }
 
-    renderSubtask(subtask: SubtaskViewModel, order: number) {
+    renderSubtask(subtask: SubtaskViewModel, order: number, update: boolean) {
         let userId = this.props.userId;
         let userSubtask = this.userTask.userSubtasks.find(u => u.subtaskId === subtask.id);
         let taskId = this.props.task.id;

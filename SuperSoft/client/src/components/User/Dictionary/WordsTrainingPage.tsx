@@ -55,8 +55,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     }
 
     startTraining = (userWords: UserWordViewModel[]) => {
-        console.log("userWords", toJS(userWords));
-        this.userWords = userWords;
+         this.userWords = userWords;
         this.settings = false;
         this.showWords = true;
     };
@@ -186,15 +185,11 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     }
 
     handleAnswer = (wordId: number, right: boolean) => {
-        console.log("wordId", wordId, "right", right);
-        let userWords = this.userWords;
-        console.log("userWords", toJS(userWords));
+         let userWords = this.userWords;
         let userWord = userWords.find(userWord => userWord.wordId == wordId);
-        console.log("userWord", toJS(userWord));
-        let userWordIndex = userWords
+         let userWordIndex = userWords
             .map((w) => { return w.wordId ;})
             .indexOf(wordId);
-        console.log("userWordIndex", toJS(userWordIndex));
         if(right && userWord !== undefined) {
             userWord.rightAnswers = ++userWord.rightAnswers;
             if(userWord.rightAnswers == this.rightAnswersShouldBe) {
@@ -209,7 +204,6 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
     handleToggle() {
         let userWordsReadModels = new Array<UserWordReadModel>();
         let userWords = this.userWords;
-        console.log("userWords", toJS(userWords));
         for(let i = 0; i < userWords.length; i++ ) {
             
             let userWordReadModel = mapToUserAnswerReadModel(userWords[i]);

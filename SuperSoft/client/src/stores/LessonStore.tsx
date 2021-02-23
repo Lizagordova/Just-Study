@@ -30,7 +30,6 @@ class LessonStore {
         });
         if(response.status === 200) {
             const data = await response.json();
-            console.log("data in getlessonsbycourse", data);
             this.lessonsByChoosenCourse = data;
             this.choosenLesson = data[0];
         }

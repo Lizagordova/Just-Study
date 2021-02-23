@@ -22,10 +22,10 @@ export class UserMain extends React.Component<IUserMainProps> {
             courseMenuOpen: observable,
             notificationsOpen: observable,
         });
-        this.getInitialState();
+        this.getInitialStateOfApplication();
     }
 
-    getInitialState() {
+    getInitialStateOfApplication() {
         let courseStore = this.props.store.courseStore;
         courseStore.getUserCourses()
             .then((status) => {

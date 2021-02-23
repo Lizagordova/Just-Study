@@ -78,8 +78,7 @@ class EnglishWordRussianMeaningTraining extends Component<ITrainingTypeProps> {
     }
 
     continue() {
-        console.log("englishWordRussiaMeaning this.props.word.id, this.rightAnswer", this.props.word.id, this.rightAnswer);
-        this.props.continue(this.props.word.id, this.rightAnswer);
+         this.props.continue(this.props.word.id, this.rightAnswer);
     }
 
     chooseAnswer(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {

@@ -64,7 +64,6 @@ class TaskStore {
     }
 
     getFormDataForTask(task: TaskReadModel, lessonId: number): FormData {
-        console.log("task", toJS(task));
         let formData = new FormData();
         formData.append("lessonId", lessonId.toString());
         if(task.id !== undefined && task.id !== null) {

@@ -23,7 +23,10 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
             isNavOpen: observable,
             courseId: observable,
         });
-        this.getLessons();
+        if(this.props.store.courseStore.choosenCourse.id !== undefined) {
+            this.getLessons();
+        }
+        
     }
 
     getLessons() {
@@ -113,7 +116,7 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
             return false;
         }
         let userCourse = courseStore.userCourses.filter(uc => uc.courseId === choosenCourseId)[0];
-        if(userCourse.expireDate < new Date() || userCourse.startDate > new Date()) {
+        if(userCourse === undefined || (userCourse.expireDate < new Date() || userCourse.startDate > new Date())) {
             return false;
         }
 

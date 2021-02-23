@@ -38,7 +38,6 @@ class CommentGroup extends Component<ICommentGroupProps> {
     }
     
     setCommentGroup() {
-        console.log("i am ready to getcommentgroup");
         this.getCommentGroup()
             .then((status) => {
                 if(status !== 200) {
@@ -80,7 +79,6 @@ class CommentGroup extends Component<ICommentGroupProps> {
 
     renderComments(comments: CommentViewModel[]) {
         let myId = this.props.store.userStore.currentUser.id;
-        console.log("comments", comments);
         return(
             <>
                 <ul className="message-list">
@@ -99,7 +97,6 @@ class CommentGroup extends Component<ICommentGroupProps> {
 
     renderBody() {
         let comments = this.commentGroup.comments;
-        console.log("comments", toJS(comments));
         return (
             <Modal toggle={() => this.handleToggle()} isOpen={this.windowOpen} size="lg">
                 {this.renderCaution()}
@@ -122,7 +119,6 @@ class CommentGroup extends Component<ICommentGroupProps> {
     }
 
     render() {
-        console.log("commentGroup", this.commentGroup);
         return(
             <>
                 {this.renderBody()}

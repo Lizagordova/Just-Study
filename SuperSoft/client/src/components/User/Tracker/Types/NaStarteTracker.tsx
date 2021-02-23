@@ -67,13 +67,13 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
 
     renderBody() {
         return (
-            <>
+            <tbody>
                 {this.renderRowOfTrackerByDay(TrackerType.WebinarWatch)}
                 {this.renderRowOfTrackerByDay(TrackerType.CompletedHomework)}
                 {this.renderRowOfTrackerByDay(TrackerType.WordOfADay)}
                 {this.renderRowOfTrackerByDay(TrackerType.DictionaryOfLesson)}
                 {this.renderRowOfTrackerByDay(TrackerType.ChatParticipation)}
-            </>
+            </tbody>
         );
     }
 
@@ -84,14 +84,12 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
                 {this.days.map((day, i) => {
                     let trackerByDay = this.getTrackerByDay(day);
                     return(
-                        <>
                             <td onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))} key={i}>
                                 {this.isCompleted(trackerByDay, type)
                                 ? <i className="fa fa-check" aria-hidden="true"/> :
                                 <i className="fa fa-times" aria-hidden="true"/>
                             }
                             </td>
-                        </>
                     );
                 })}
             </tr>

@@ -64,7 +64,7 @@ namespace SuperSoft.Controllers
 		public ActionResult GetUsers()
 		{
 			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
+			if (role == null)
 			{
 				return new BadRequestResult();
 			}

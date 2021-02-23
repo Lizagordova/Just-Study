@@ -1,6 +1,6 @@
 ﻿import React,{ Component } from 'react';
 import { CommentViewModel } from "../../../Typings/viewModels/CommentViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import UserStore from "../../../stores/UserStore";
 import { Alert, Input, Button } from "reactstrap";
 import { observer } from "mobx-react";

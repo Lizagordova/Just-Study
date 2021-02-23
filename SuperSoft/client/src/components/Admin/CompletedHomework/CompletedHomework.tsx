@@ -18,7 +18,7 @@ class CompletedHomework  extends Component<ICompletedHomeworkProps> {
                     return (
                         <>
                             <div className="row">
-                                <CompletedTask task={task} userId={this.props.userId} store={this.props.store}/>
+                                <CompletedTask task={task} userId={this.props.userId} store={this.props.store} key={task.id}/>
                             </div>
                             <hr />
                         </>
