@@ -50,6 +50,20 @@ namespace SuperSoft.Persistence.Helpers
 			return path;
 		}
 
+		public static string GetUserSubtaskPath(int userId, int subtaskId)
+		{
+			var path = "client/build/completedtasks";
+			CreateDirectory(path);
+			path = $"{path}/{userId}";
+			CreateDirectory(path);
+			path = $"{path}/subtasks";
+			CreateDirectory(path);
+			path = $"{path}/{subtaskId}";
+			CreateDirectory(path);
+
+			return path;
+		}
+
 		private static void CreateDirectory(string path)
 		{
 			if (!Directory.Exists(path))

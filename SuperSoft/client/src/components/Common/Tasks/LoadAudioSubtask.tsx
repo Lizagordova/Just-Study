@@ -7,6 +7,8 @@ import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
+import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
+import {renderSpinner} from "../../../functions/renderSpinner";
 
 @observer
 export class LoadAudioSubtask extends Component<ISubtaskProps> {
@@ -15,6 +17,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     saved: boolean;
     notDeleted: boolean;
     userAnswerReadModel: UserSubtaskReadModel = new UserSubtaskReadModel();
+    loading: boolean;
 
     constructor(props: ISubtaskProps) {
         super(props);
@@ -23,15 +26,23 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
             userAnswer: observable,
             saved: observable,
             notDeleted: observable,
+            loading: observable,
+            userAnswerReadModel: observable
         });
         this.setUserAnswer();
     }
 
     componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.userSubtask !== this.props.userSubtask) {
-            console.log("userSubtask", toJS(this.props.userSubtask));
             this.setUserAnswer();
         }
+    }
+
+    setInitialState() {
+        this.notSaved = false;
+        this.saved = false;
+        this.loading = false;
+        this.notDeleted = false;
     }
 
     setUserAnswer() {
@@ -42,6 +53,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         this.userAnswerReadModel.status = userSubtask.status;
         this.userAnswerReadModel.answer = userSubtask.answer;
     }
+
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
@@ -85,8 +97,19 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
                 {this.saved && <Alert color="success">Задание успешно сохранилось</Alert>}
                 {this.notDeleted && <Alert color="danger">Что-то пошло не так и задание не удалилось</Alert>}
+                {this.loading && renderSpinner()/*todo: сюда лучше потом progress*/}
             </>
         );
+    }
+
+    renderDeleteButton() {
+        if(this.props.userId === this.props.store.userStore.currentUser.id) {
+            return(
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.deleteAnswer()}
+                   className="fa fa-window-close" aria-hidden="true"/>
+            );
+        }
     }
 
     renderUserAnswers() {
@@ -96,6 +119,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
                     let answerPath = ans.replace('client/build', '.');
                     return(
                         <div className="row justify-content-center">
+                            {this.renderDeleteButton()}
                             <audio className="audio" controls>
                                 <source src={answerPath} type="audio/mpeg"/>
                             </audio>
@@ -152,29 +176,40 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     inputAnswer(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setInitialState();
         // @ts-ignore
         this.userAnswerReadModel.file = event.target.files[0];
     }
 
     save() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            this.loading = true;
             this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswerReadModel)
                 .then((status) => {
                     this.notSaved = status !== 200;
                     this.saved = status === 200;
+                    this.loading = false;
                 });
         }
     }
 
-    deleteAnswer() {//todo: РЕАЛИЗОВАТЬ
-        
-    }
+       deleteAnswer() {//todo: РЕАЛИЗОВАТЬ
+            /* let result = window.confirm('Вы уверены, что хотите удалить этот ответ?');
+            if(result) {
+                this.props.store
+                    .taskStore
+                    .deleteSubtask(materialId)
+                    .then((status) => {
+                        this.notDeleted = status !== 200;
+                    });
+            }*/
+        }
 
-    deleteSubtask() {
+        deleteSubtask() {
         this.props.store.taskStore
             .deleteSubtask(this.props.subtask.id, this.props.taskId)
             .then((status) => {
                 this.notDeleted = status !== 200;
             });
-    }
+        }
 }

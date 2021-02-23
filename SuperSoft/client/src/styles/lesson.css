@@ -46,14 +46,28 @@
 .userMenuHeader {
     height: 70px;
 }
+
+.materialContent {
+    width: 700px;
+    height: 700px;
+}
+
 @media (max-width: 900px) {
     .menuHeader {
         height: 130px;
+    }
+    .materialContent {
+        width: 600px;
+        height: 600px;
     }
 }
 @media (max-width: 720px) {
     .mainMenuHeader {
         height: 130px;
+    }
+    .materialContent {
+        width: 500px;
+        height: 500px;
     }
 }
 
@@ -61,10 +75,18 @@
     .mainMenuHeader {
         height: 195px;
     }
+    .materialContent {
+        width: 300px;
+        height: 300px;
+    }
 }
 
 @media (max-width: 370px) {
     .menuCourseHeader {
         height: 130px;
+    }
+    .materialContent {
+        width: 250px;
+        height: 250px;
     }
 }

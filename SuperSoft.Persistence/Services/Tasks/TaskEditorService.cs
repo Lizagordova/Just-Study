@@ -70,7 +70,6 @@ namespace SuperSoft.Persistence.Services.Tasks
 			return subtask;
 		}
 
-		
 		private void AddOrUpdateAnswerGroups(Subtask subtask)
 		{
 			var groups = SubtaskParserHelper.GetAnswerGroupsMatchCollection(subtask.Text, subtask.SubtaskType);

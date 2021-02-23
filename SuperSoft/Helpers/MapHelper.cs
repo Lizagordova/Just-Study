@@ -84,9 +84,16 @@ namespace SuperSoft.Helpers
 			return userTaskViewModel;
 		}
 
-		public UserSubtaskViewModel MapUserSubtaskViewModel(UserSubtask userSubtask)
+		private UserSubtaskViewModel MapUserSubtaskViewModel(UserSubtask userSubtask)
 		{
 			var userSubtaskViewModel = _mapper.Map<UserSubtask, UserSubtaskViewModel>(userSubtask);
+			var answers = new List<string>();
+			if (userSubtask.AnswerPath != null)
+			{
+				answers.Add(userSubtask.AnswerPath);
+			}
+
+			userSubtaskViewModel.AnswerFiles = answers;
 			userSubtaskViewModel.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups.Select(_mapper.Map<UserSubtaskAnswerGroup, UserSubtaskAnswerGroupViewModel>).ToList();
 
 			return userSubtaskViewModel;

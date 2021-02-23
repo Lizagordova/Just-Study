@@ -21,6 +21,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
 					.ForMember(dest => dest.SubtaskId, opt => opt.MapFrom(src => src.SubtaskId))
+					.ForMember(dest => dest.File, opt => opt.MapFrom(src => src.File))
 					.ForMember(dest => dest.AnswerPath, opt => opt.Ignore())
 					.ForMember(dest => dest.UserSubtaskAnswerGroups, opt => opt.Ignore());
 			});
@@ -31,7 +32,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.SubtaskId, opt => opt.MapFrom(src => src.SubtaskId))
 					.ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
 					.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-					.ForMember(dest => dest.AnswerFiles, opt => opt.MapFrom(src => src.AnswerPath))//TODO: ХУЙНЯ
+					.ForMember(dest => dest.AnswerFiles, opt => opt.Ignore())//TODO: ХУЙНЯ
 					.ForMember(dest => dest.UserSubtaskAnswerGroups, opt => opt.Ignore());
 			});
 

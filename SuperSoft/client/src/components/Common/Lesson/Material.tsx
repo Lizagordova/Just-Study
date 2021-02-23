@@ -28,6 +28,11 @@ export class Material extends Component<IMaterialProps> {
             /*return (
                 <iframe src={path} width='962px' height='565px' frameBorder='0' />
             );*/
+        } else if(material.path.includes("mp4")) {
+            let path = material.path.replace("client/build", ".");
+            return (
+                <iframe src={path} className="materialContent" />
+            );
         } else {
             return(
                 <>

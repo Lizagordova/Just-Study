@@ -161,6 +161,23 @@ class TaskStore {
         return response.status;
     }
 
+   /* async deleteUserSubtask(userSubtask: UserSubtaskViewModel) { //todo: доделать!!!
+        const response = await fetch("/deleteusersubtask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: subtaskId
+            })
+        });
+        if(response.status === 200) {
+            this.updateTaskByTaskId(taskId);
+        }
+
+        return response.status;
+    }*/
+
     async addOrUpdateUserSubtask(userSubtask: UserSubtaskReadModel): Promise<number> {
         let formData = this.getFormDataForUserSubtask(userSubtask);
         const response = await fetch("/addorupdateusersubtask", {
