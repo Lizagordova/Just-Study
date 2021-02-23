@@ -88,7 +88,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdateusersubtask")]
-		public ActionResult AddOrUpdateUserSubtask([FromBody]UserSubtaskReadModel userSubtaskReadModel)
+		public ActionResult AddOrUpdateUserSubtask([FromForm]UserSubtaskReadModel userSubtaskReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role == null)

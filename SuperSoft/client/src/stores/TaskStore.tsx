@@ -173,13 +173,24 @@ class TaskStore {
 
     getFormDataForUserSubtask(userSubtask: UserSubtaskReadModel): FormData {
         let formData = new FormData();
-        //todo: тут добавить проверку на undefined
-        formData.append("userId", userSubtask.userId.toString());
-        formData.append("answer", userSubtask.answer.toString());
-        formData.append("status", userSubtask.status.toString());
-        formData.append("subtaskId", userSubtask.subtaskId.toString());
-        formData.append("taskId", userSubtask.subtaskId.toString());
-        formData.append("files", userSubtask.files.toString());
+        if(userSubtask.userId !== undefined && userSubtask.userId !== null) {
+            formData.append("userId", userSubtask.userId.toString());
+        }
+        if(userSubtask.answer !== undefined && userSubtask.answer !== null) {
+            formData.append("answer", userSubtask.answer.toString());
+        }
+        if(userSubtask.status !== undefined && userSubtask.status !== null) {
+            formData.append("status", userSubtask.status.toString());
+        }
+        if(userSubtask.subtaskId !== undefined && userSubtask.subtaskId !== null) {
+            formData.append("subtaskId", userSubtask.subtaskId.toString());
+        }
+        if(userSubtask.taskId !== undefined && userSubtask.taskId !== null) {
+            formData.append("taskId", userSubtask.taskId.toString());
+        }
+        if(userSubtask.file !== undefined && userSubtask.file !== null) {
+            formData.append("file", userSubtask.file);
+        }
 
         return formData;
     }

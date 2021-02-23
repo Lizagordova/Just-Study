@@ -11,5 +11,5 @@ export class UserSubtaskReadModel
 	public taskId: number;
 	public status: CompletingStatus;
 	public answer: string;
-	public files: any[];
+	public file: any;
 }

@@ -139,8 +139,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
 
     inputAnswer(event: React.ChangeEvent<HTMLInputElement>) {
         // @ts-ignore
-        let file = event.target.files[0];
-        this.userAnswerReadModel.files.push(file);
+        this.userAnswerReadModel.file = event.target.files[0];
     }
 
     save() {
