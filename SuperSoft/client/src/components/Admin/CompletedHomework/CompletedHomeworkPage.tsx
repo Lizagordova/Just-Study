@@ -15,7 +15,9 @@ export class CompletedHomeworkPage extends Component<ICompletedHomeworkPageProps
         return(
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
-                    return <UserHomework userId={user.userId} store={this.props.store}/>
+                    if(user.userId !== this.props.store.userStore.currentUser.id) {
+                        return <UserHomework userId={user.userId} store={this.props.store} />
+                    }
                 })}
             </Accordion>
         );
