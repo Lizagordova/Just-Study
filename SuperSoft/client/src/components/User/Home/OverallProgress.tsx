@@ -31,7 +31,8 @@ class OverallProgress extends Component<IOverallProgressProps> {
         let userId = this.props.currentUser.id;
         let courseId = this.props.courseStore.choosenCourse.id;
         let userProgress = 0;
-        this.props.courseStore.computeUserCourseProgress(userId, courseId)
+        this.props.courseStore
+            .getUserCourseProgress(userId, courseId)
             .then((progress) => {
                 userProgress =  progress;
             });

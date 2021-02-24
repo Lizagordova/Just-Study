@@ -25,7 +25,6 @@ class Homework extends Component<IHomeworkProps> {
     }
 
     renderTasks(tasks: TaskViewModel[]) {
-        console.log("taskToRender", toJS(this.taskToRender));
         return(
             <Tab.Container>
                 <div className="container-fluid">

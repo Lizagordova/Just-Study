@@ -318,6 +318,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetUserCourseProgressException(ILogger logger, Exception e, int userId, int courseId)
+		{
+			var customMessage = $"Не удалось получить прогресс для userId={userId}, courseId={courseId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
