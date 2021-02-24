@@ -3,7 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Nav, Tab} from "react-bootstrap";
 import {observer} from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {Alert} from "reactstrap";
 import HomeworkTask from "./HomeworkTask";
 import {NavigationType} from "../../../NavigationType";
@@ -25,6 +25,7 @@ class Homework extends Component<IHomeworkProps> {
     }
 
     renderTasks(tasks: TaskViewModel[]) {
+        console.log("taskToRender", toJS(this.taskToRender));
         return(
             <Tab.Container>
                 <div className="container-fluid">
@@ -33,6 +34,7 @@ class Homework extends Component<IHomeworkProps> {
                             return (
                                 <Nav.Item key={i}>
                                     <Nav.Link
+                                        active={task === this.taskToRender}
                                         className="nav-link lesson"
                                         eventKey={i}
                                         onClick={() => this.taskToRender = task}

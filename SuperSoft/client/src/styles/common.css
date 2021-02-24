@@ -1,6 +1,10 @@
 ﻿.nav-link {
     height: 60px;
     width: 100%;
+    display: block;
+    padding: .7rem 15px;
+    color: #0366d6;
+    text-decoration: none;
 }
 
 .nav {
