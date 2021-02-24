@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [UserTaskRepository_GetUserTask]
+﻿CREATE PROCEDURE [dbo].[UserTaskRepository_GetUserTask]
 	@taskId INT,
 	@userId INT
 AS
@@ -35,7 +35,7 @@ BEGIN
 	WHERE [SubtaskId] IN (
 		SELECT [Id]
 		FROM @subtaskIds
-	);
+	) AND [UserId] = @userId;
 
 	INSERT
 	INTO @answerGroups (
@@ -67,7 +67,8 @@ BEGIN
 		[LastAnswer]
 	FROM [User_SubtaskAnswerGroup] AS [uag]
 	JOIN @answerGroups AS [ag]
-	ON [uag].[AnswerGroupId] = [ag].[Id];
+	ON [uag].[AnswerGroupId] = [ag].[Id]
+	AND [UserId] = @userId;
 
 	SELECT * FROM @userSubtasks;
 	SELECT * FROM @answerGroups;
