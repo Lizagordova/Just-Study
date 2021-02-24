@@ -50,7 +50,6 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
 
     componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.userSubtask !== this.props.userSubtask) {
-            console.log("userSubtask changed", toJS(this.props.userSubtask));
             this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
             this.updateToggle();
         }

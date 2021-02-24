@@ -1,11 +1,12 @@
-﻿import React, { Component } from 'react';
-import { Alert, Button, CardImg, CardText } from "reactstrap";
-import { ISubtaskProps } from "./ISubtaskProps";
-import { SubtaskViewModel } from "../../../Typings/viewModels/SubtaskViewModel";
-import { makeObservable, observable } from "mobx";
-import { observer } from "mobx-react";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { UserSubtaskReadModel } from "../../../Typings/readModels/UserSubtaskReadModel";
+﻿import React, {Component} from 'react';
+import {Alert, Button, CardImg, CardText} from "reactstrap";
+import {ISubtaskProps} from "./ISubtaskProps";
+import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
+import {makeObservable, observable, toJS} from "mobx";
+import {observer} from "mobx-react";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
+import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 
 @observer
 export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
@@ -13,26 +14,44 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     userAnswer: UserSubtaskReadModel = new UserSubtaskReadModel();
     saved: boolean;
     notDeleted: boolean;
+    update: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ISubtaskProps) {
+        super(props);
         makeObservable(this, {
             notSaved: observable,
             userAnswer: observable,
             saved: observable,
-            notDeleted: observable
+            notDeleted: observable,
+            update: observable
         });
+        this.setUserAnswer(this.props.userId, this.props.subtask.id, this.props.userSubtask);
     }
 
-    componentDidMount(): void {
-        let userSubtask = this.props.userSubtask;
-        this.userAnswer.answer = userSubtask.answer;
+    componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.userSubtask !== this.props.userSubtask) {
+            this.setUserAnswer(this.props.userId, this.props.subtask.id, this.props.userSubtask);
+            this.updateToggle();
+        }
+    }
+
+    updateToggle() {
+        this.update = !this.update;
+    }
+
+    setInitialState() {
+        this.notDeleted = false;
+        this.saved = false;
+        this.notSaved = false;
+    }
+
+    setUserAnswer(userId: number, subtaskId: number, userSubtask: UserSubtaskViewModel) {
+        this.userAnswer.userId = userId;
+        this.userAnswer.subtaskId = subtaskId;
         this.userAnswer.status = userSubtask.status;
-        this.userAnswer.subtaskId = this.props.subtask.id;
-        this.userAnswer.userId = this.props.store.userStore.currentUser.id;
+        this.userAnswer.answer = userSubtask.answer;
     }
-
+    
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
@@ -63,23 +82,27 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
 
     renderInputAnswerArea() {
-        return(
-            <div className="col-12">
-                <textarea
-                    style={{width: "90%"}}
-                    value={this.userAnswer.answer}
-                    className="answerInput"
-                    onChange={(e) => this.inputAnswer(e)}/>
-            </div>
-        )
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            return(
+                <div className="col-12">
+                    <textarea
+                        style={{width: "90%"}}
+                        value={this.userAnswer.answer}
+                        className="answerInput"
+                        onChange={(e) => this.inputAnswer(e)}/>
+                </div>
+            );
+        }
     }
 
     renderSaveButton() {
-        return(
-            <div className="col-lg-offset-10 col-lg-2">
-                <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
-            </div>
-        );
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            return(
+                <div className="col-lg-offset-10 col-lg-2">
+                    <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
+                </div>
+            );
+        }
     }
 
     renderCautions() {
@@ -92,7 +115,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel) {
+    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
         return(
             <>
                 {this.renderSubtaskText(subtask)}
@@ -114,12 +137,13 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     render() {
         return(
             <>
-                {this.renderSubtask(this.props.subtask)}
+                {this.renderSubtask(this.props.subtask, this.update)}
             </>
         );
     }
 
     inputAnswer(event: React.FormEvent<HTMLTextAreaElement>) {
+        this.setInitialState();
         this.userAnswer.answer = event.currentTarget.value;
     }
 

@@ -184,7 +184,6 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     }
 
     render() {
-        console.log("laoding", this.loading);
         return(
             <>
                 {this.renderSubtask(this.props.subtask)}
