@@ -52,10 +52,13 @@
     height: 700px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1037px) {
     .menuHeader {
         height: 130px;
     }
+}
+
+@media (max-width: 900px) {
     .materialContent {
         width: 600px;
         height: 600px;

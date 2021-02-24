@@ -6,5 +6,6 @@ namespace SuperSoft.Domain.Services.UserTasks
 	{
 		void AddOrUpdateUserSubtask(UserSubtask userSubtask, int userId, int subtaskId);
 		void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup answerGroup, int userId);
+		void DeleteUserSubtask(int userId, int subtaskId);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System.IO;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.UserTasks;
 using SuperSoft.Persistence.Helpers;
@@ -37,6 +38,16 @@ namespace SuperSoft.Persistence.Services.UserTasks
 		public void AddOrUpdateUserSubtaskAnswerGroup(UserSubtaskAnswerGroup answerGroup, int userId)
 		{
 			_userTaskRepository.AddOrUpdateUserSubtaskAnswerGroup(answerGroup, userId);
+		}
+
+		public void DeleteUserSubtask(int userId, int subtaskId)
+		{
+			var userSubtask = _userTaskRepository.GetUserSubtask(subtaskId, userId);
+			if (userSubtask.AnswerPath != null && File.Exists(userSubtask.AnswerPath))
+			{
+				File.Delete(userSubtask.AnswerPath);
+			}
+			_userTaskRepository.DeleteUserSubtask(userId, subtaskId);
 		}
 	}
 }

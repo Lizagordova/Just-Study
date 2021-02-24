@@ -7,8 +7,8 @@ import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
-import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
 import {renderSpinner} from "../../../functions/renderSpinner";
+import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
 
 @observer
 export class LoadAudioSubtask extends Component<ISubtaskProps> {
@@ -97,7 +97,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
                 {this.saved && <Alert color="success">Задание успешно сохранилось</Alert>}
                 {this.notDeleted && <Alert color="danger">Что-то пошло не так и задание не удалилось</Alert>}
-                {this.loading && renderSpinner()/*todo: сюда лучше потом progress*/}
+                {this.loading && renderLoadingProgress()}
             </>
         );
     }
@@ -193,16 +193,16 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         }
     }
 
-       deleteAnswer() {//todo: РЕАЛИЗОВАТЬ
-            /* let result = window.confirm('Вы уверены, что хотите удалить этот ответ?');
+       deleteAnswer() {
+            let result = window.confirm('Вы уверены, что хотите удалить этот ответ?');
             if(result) {
                 this.props.store
                     .taskStore
-                    .deleteSubtask(materialId)
+                    .deleteUserSubtask(this.props.userId, this.props.subtask.id, this.props.taskId)
                     .then((status) => {
                         this.notDeleted = status !== 200;
                     });
-            }*/
+            }
         }
 
         deleteSubtask() {

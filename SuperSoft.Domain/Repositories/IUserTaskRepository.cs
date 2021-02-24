@@ -11,5 +11,6 @@ namespace SuperSoft.Domain.Repositories
 		UserSubtask GetUserSubtask(int subtaskId, int userId);
 		UserTask GetUserTask(int taskId, int userId);
 		UserTask GetUserSubtasksAnswerGroups(int taskId, int userId);
+		void DeleteUserSubtask(int userId, int subtaskId);
 	}
 }

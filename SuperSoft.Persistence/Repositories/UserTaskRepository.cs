@@ -21,6 +21,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetUserTaskSp = "UserTaskRepository_GetUserTask";
 		private const string AddOrUpdateUserSubtaskAnswerGroupSp = "UserTaskRepository_AddOrUpdateUserSubtaskAnswerGroup";
 		private const string GetUserSubtasksAnswerGroupsSp = "UserTaskRepository_GetUserSubtasksAnswerGroups";
+		private const string DeleteUserSubtaskSp = "UserTaskRepository_DeleteUserSubtask";
 
 		public UserTaskRepository(
 			MapperService mapper)
@@ -83,7 +84,7 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetUserSubtaskParam(subtaskId, userId);
-			var response = conn.QueryMultiple(AddOrUpdateUserSubtaskAnswerGroupSp, param, commandType: CommandType.StoredProcedure);
+			var response = conn.QueryMultiple(GetUserSubtaskSp, param, commandType: CommandType.StoredProcedure);
 			var data = GetUserSubtaskData(response);
 			var userSubtask = MapUserSubtask(data);
 			DatabaseHelper.CloseConnection(conn);
@@ -113,6 +114,14 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return userTask;
+		}
+
+		public void DeleteUserSubtask(int userId, int subtaskId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetUserSubtaskParam(subtaskId, userId);
+			conn.Query(DeleteUserSubtaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateUserSubtaskParam(UserSubtask userSubtask, int userId, int subtaskId)
@@ -235,7 +244,7 @@ namespace SuperSoft.Persistence.Repositories
 
 		private UserSubtask MapUserSubtask(UserSubtaskData data)
 		{
-			var userSubtask = new UserSubtask();
+			var userSubtask = _mapper.Map<UserSubtaskUdt, UserSubtask>(data.UserSubtasks.FirstOrDefault());
 			/*userSubtask.UserSubtaskAnswerGroups = userSubtask.UserSubtaskAnswerGroups
 				.Join(userGroups,
 					s => s,

@@ -258,6 +258,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogDeleteUserSubtaskException(ILogger logger, Exception e, int subtaskId, int userId)
+		{
+			var customMessage = $"Не удалось удалить UserSubtask для userId={userId}; subtaskId={subtaskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateCommentException(ILogger logger, Exception e, Comment comment, int groupId)
 		{
 			var customMessage = $"Не удалось добавить комментарий text:{comment.Text};PublishDate={comment.PublishDate};UserId={comment.UserId};groupId={groupId}.";

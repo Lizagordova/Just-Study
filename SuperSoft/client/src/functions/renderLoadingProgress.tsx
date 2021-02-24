@@ -1,8 +1,10 @@
 ﻿import React from "react";
-import { Progress } from 'reactstrap';
+import { Spinner } from 'reactstrap';
 
 export function renderLoadingProgress() {
     return(
-        <Progress striped bar color="warning" value="80"/>
+        <Spinner color="primary"/>
     );
 }
+
+//<Progress striped bar color="warning" value="80"/>

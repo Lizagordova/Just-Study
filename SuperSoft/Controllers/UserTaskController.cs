@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services.UserTasks;
 using SuperSoft.Helpers;
@@ -131,6 +132,29 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogAddOrUpdateUserSubtaskAnswerGroupException(_logger, e, userSubtaskAnswerGroup, userSubtaskAnswerGroupReadModel.SubtaskId, userSubtaskAnswerGroupReadModel.UserId);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
+		[Route("/deleteusersubtask")]
+		public ActionResult DeleteUserSubtask([FromBody]UserSubtaskReadModel userSubtask)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.User.ToString())
+			{
+				return new BadRequestResult();
+			}
+			try
+			{
+				_userTaskEditor.DeleteUserSubtask(userSubtask.UserId, userSubtask.SubtaskId);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogDeleteUserSubtaskException(_logger, e, userSubtask.SubtaskId, userSubtask.UserId);
 
 				return new StatusCodeResult(500);
 			}
