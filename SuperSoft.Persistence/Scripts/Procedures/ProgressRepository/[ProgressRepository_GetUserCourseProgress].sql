@@ -26,11 +26,10 @@ BEGIN
 			AND [Status] = 4
 		);
 
-	DECLARE @notCompletedSubtasks INT = (
+	DECLARE @allSubtasks INT = (
 		SELECT COUNT(*)
 		FROM [User_Subtask] 
 		WHERE [SubtaskId] IN (SELECT [Id] FROM @subtaskIds)
-			AND [Status] != 4
 		);
 
 	INSERT
@@ -52,18 +51,16 @@ BEGIN
 			AND [Status] = 4
 		);
 
-	DECLARE @notCompletedUserSubtaskGroups INT = (
+	DECLARE @allUserSubtaskGroups INT = (
 		SELECT COUNT(*)
 		FROM [User_SubtaskAnswerGroup] 
 		WHERE [AnswerGroupId] IN (SELECT [Id] FROM @answerGroupIds)
-			AND [Status] != 4
 		);
-
 	DECLARE @progress FLOAT;
-	IF (@notCompletedSubtasks + @notCompletedUserSubtaskGroups > 0)
-		SET @progress = (@completedSubtasks + @completedUserSubtaskGroups) / (@notCompletedSubtasks + @notCompletedUserSubtaskGroups)
+	IF (@allSubtasks + @allUserSubtaskGroups > 0)
+		SET @progress = (CAST(@completedSubtasks AS FLOAT) + CAST(@completedUserSubtaskGroups AS FLOAT)) / (CAST(@allSubtasks AS FLOAT) + CAST(@allUserSubtaskGroups AS FLOAT))
 	ELSE
 		SET @progress = 0;
 
-	SELECT @progress;
+	SELECT @progress * 100;
 END

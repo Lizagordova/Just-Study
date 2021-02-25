@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[NotificationRepository_GetNotifications]
+﻿CREATE PROCEDURE [NotificationRepository_GetNotifications]
 	@userId INT
 AS
 BEGIN

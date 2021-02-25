@@ -2,19 +2,31 @@
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import Circle from "react-circle";
 import CourseStore from "../../../stores/CourseStore";
+import {observer} from "mobx-react";
+import {makeObservable, observable} from "mobx";
 
 class IOverallProgressProps {
     courseStore: CourseStore;
     currentUser: UserViewModel;
 }
 
+@observer
 class OverallProgress extends Component<IOverallProgressProps> {
+    progress: number = 0;
+
+    constructor(props: IOverallProgressProps) {
+        super(props);
+        makeObservable(this, {
+            progress: observable
+        });
+        this.computeProgress();
+    }
+
     renderProgress() {
-        let completedPercentage = this.computeProgress();
         return(
             <Circle//todo: изучи побольше, может быть тут можно несколько данных отображать
                 size="300"
-                progress={completedPercentage}
+                progress={this.progress}
             />
         );
     }
@@ -27,17 +39,14 @@ class OverallProgress extends Component<IOverallProgressProps> {
         );
     }
 
-    computeProgress(): number {
+    computeProgress() {
         let userId = this.props.currentUser.id;
         let courseId = this.props.courseStore.choosenCourse.id;
-        let userProgress = 0;
         this.props.courseStore
             .getUserCourseProgress(userId, courseId)
             .then((progress) => {
-                userProgress =  progress;
+                this.progress =  progress;
             });
-
-        return userProgress;
     }
 }
 
