@@ -17,12 +17,13 @@ class INotificationProps {
 class Notification extends Component<INotificationProps> {
     userNotification: UserNotificationReadModel = new UserNotificationReadModel();
     
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: INotificationProps) {
+        super(props);
         makeObservable(this, {
             userNotification: observable
         });
+        this.userNotification.notificationId = this.props.notification.id;
+        this.userNotification.userId = this.props.userStore.currentUser.id;
     }
     
     componentWillUnmount(): void {

@@ -12,7 +12,8 @@ BEGIN
 	SELECT
 		[NotificationId]
 	FROM [User_Notification]
-	WHERE [UserId] = @userId;
+	WHERE [UserId] = @userId
+	    AND [Seen] = 0;
 
 	INSERT
 	INTO @notifications (
@@ -32,6 +33,6 @@ BEGIN
 		FROM @notificationIdsForUser
 	);
 
-	SELECT * FROM @notificationIdsForUser;
+	SELECT * FROM @notifications;
 
 END

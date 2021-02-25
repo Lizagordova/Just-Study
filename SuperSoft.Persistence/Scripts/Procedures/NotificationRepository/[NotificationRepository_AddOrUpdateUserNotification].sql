@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [NotificationRepository_AddOrUpdateUserNotification]
-	@userNotification [UDT_UserNotification] READONLY
+	@userNotification [UDT_User_Notification] READONLY
 AS
 BEGIN
 	MERGE
-	INTO [UserNotification] AS [dest]
+	INTO [User_Notification] AS [dest]
 	USING @userNotification AS [src]
 	ON [dest].[UserId] = [dest].[UserId]
 		AND [dest].[NotificationId] = [src].[NotificationId]

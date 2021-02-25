@@ -67,7 +67,7 @@ namespace SuperSoft.Persistence.Repositories
 			var param = new DynamicTvpParameters();
 			var userIdsTvp = new TableValuedParameter("userForIds", "UDT_Integer");
 			var userIdsUdt = userForIds.Select(uId => new IntegerUdt() { Id = uId }).ToList();
-			userIdsTvp.AddObjectAsRow(userIdsUdt);
+			userIdsTvp.AddGenericList(userIdsUdt);
 			param.Add(userIdsTvp);
 			param.Add("notificationId", notificationId);
 
@@ -88,7 +88,7 @@ namespace SuperSoft.Persistence.Repositories
 		private DynamicTvpParameters GetAddOrUpdateUserNotificationParam(UserNotification userNotification)
 		{
 			var param = new DynamicTvpParameters();
-			var tvp = new TableValuedParameter("userNotification", "UDT_UserNotification");
+			var tvp = new TableValuedParameter("userNotification", "UDT_User_Notification");
 			var udt = _mapper.Map<UserNotification, UserNotificationUdt>(userNotification);
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);

@@ -14,25 +14,43 @@ class INotificationsProps {
 
 @observer
 class Notifications extends Component<INotificationsProps> {
+    renderBody(notifications: NotificationViewModel[]) {
+        return (
+            <ModalBody>
+                {notifications.map((notification,i) => {
+                    return (
+                        <div className="container-fluid" key={i}>
+                            <Notification notification={notification} notificationStore={this.props.notificationStore} userStore={this.props.userStore} />
+                        </div>
+                    );
+                })}
+            </ModalBody>
+        );
+    }
+
+    renderCloseButton() {
+        return (
+            <i style={{marginLeft: '96%', width: '2%'}}
+               onClick={() => this.props.toggle()}
+               className="fa fa-window-close" aria-hidden="true"/>
+        );
+    }
+
     renderNotifications(notifications: NotificationViewModel[]) {
         return(
             <Modal toggle={this.props.toggle} isOpen={true}>
-                <ModalBody>
-                    {notifications.map((notification) => {
-                        return (
-                            <div className="container-fluid">
-                                <Notification notification={notification} notificationStore={this.props.notificationStore} userStore={this.props.userStore} />
-                            </div>
-                        );
-                    })}
-                </ModalBody>
+                {this.renderCloseButton()}
+                {notifications.length === 0 && this.renderCaution()}
+                {notifications.length !== 0 && this.renderBody(notifications)}
             </Modal>
         );
     }
 
     renderCaution() {
         return(
-            <Alert color="primary">Уведомлений пока нет.</Alert>
+            <Alert color="primary" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
+                Уведомлений пока нет.
+            </Alert>
         );
     }
 
@@ -40,7 +58,6 @@ class Notifications extends Component<INotificationsProps> {
         let notifications = this.props.notificationStore.currentNotifications;
         return(
             <>
-                {notifications.length === 0 && this.renderCaution()}
                 {this.renderNotifications(notifications)}
             </>
         );

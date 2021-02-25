@@ -43,7 +43,7 @@ export class UserMain extends React.Component<IUserMainProps> {
     renderNotifications() {
         return(
             <>
-                {this.notificationsOpen && <Notifications toggle={this.toggleNotifications()} notificationStore={this.props.store.notificationStore} userStore={this.props.store.userStore} />}
+                {this.notificationsOpen && <Notifications toggle={this.toggleNotifications} notificationStore={this.props.store.notificationStore} userStore={this.props.store.userStore} />}
             </>
         );
     }
@@ -90,7 +90,17 @@ export class UserMain extends React.Component<IUserMainProps> {
                                          }}>ТРЕНИРОВКИ</NavLink>
                             </NavItem>
                             <NavItem>
-                                <i className="icon-notification" onClick={() => this.toggleNotifications()} />
+                                <NavLink to={"#"}
+                                         exact 
+                                         
+                                         className="nav-link" style={{fontSize: "1.5em"}}
+                                         activeStyle={{
+                                             color: '#ffffff',
+                                             backgroundColor: '#4169E1',
+                                             textDecoration: 'none'
+                                         }}>
+                                    <i className="fa fa-bell" onClick={() => this.toggleNotifications()} />
+                                </NavLink>
                             </NavItem>
                             <Button
                                 outline color="primary"
@@ -155,7 +165,7 @@ export class UserMain extends React.Component<IUserMainProps> {
         this.props.store.taskStore.getTasksByLesson(choosenLessonId);
     }
 
-    toggleNotifications() {
+    toggleNotifications = () => {
         this.notificationsOpen = !this.notificationsOpen;
     }
 }
