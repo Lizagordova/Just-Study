@@ -42,10 +42,11 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
+        let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row>
-                    <Col sm={3}>
+                    <Col sm={3} style={{height: `${rowHeight}px`}}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">

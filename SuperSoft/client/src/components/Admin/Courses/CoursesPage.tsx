@@ -48,11 +48,12 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
     
     renderCoursesMenu(courses: CourseViewModel[]) {
+        let rowHeight = this.isNavOpen ? courses.length * 100 : 40;
             return (
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                     {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
                     <Row>
-                        <Col sm={3}>
+                        <Col sm={3} style={{height: `${rowHeight}px`}}>
                             <Button color="primary" onClick={() => this.toggleNav()}>КУРСЫ</Button>
                             <Collapse isOpen={this.isNavOpen}>
                                 <Nav variant="pills" className="flex-column">

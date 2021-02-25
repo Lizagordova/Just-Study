@@ -52,11 +52,12 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
+        let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
                 <Row>
-                    <Col sm={3}>
+                    <Col sm={3} style={{height: `${rowHeight}px`}}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">
@@ -65,7 +66,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                         // @ts-ignore
                                         let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
                                         return (
-                                            <>
                                                 <Nav.Item key={lesson.id}>
                                                     <div className="row" key={lesson.id} style={{height: "auto"}}>
                                                         <div className="col-8" style={{height: "auto"}}>
@@ -87,7 +87,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                                         </div>
                                                     </div>
                                                 </Nav.Item>
-                                            </>
                                         );
                                     })}
                                     <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
