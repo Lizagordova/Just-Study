@@ -8,7 +8,7 @@ namespace SuperSoft.Domain.Models
 	public class UserSubtask
 	{
 		public int SubtaskId { get; set; }
-		public int Status { get; set; }
+		public CompletingStatus Status { get; set; }
 		public string Answer { get; set; }
 		public string AnswerPath { get; set; }
 		public IReadOnlyCollection<UserSubtaskAnswerGroup> UserSubtaskAnswerGroups { get; set; } = Array.Empty<UserSubtaskAnswerGroup>();

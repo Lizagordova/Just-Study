@@ -87,7 +87,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
                 <div className="col-12">
                     <textarea
                         style={{width: "90%"}}
-                        value={this.userAnswer.answer}
+                        defaultValue={this.userAnswer.answer}
                         className="answerInput"
                         onChange={(e) => this.inputAnswer(e)}/>
                 </div>

@@ -33,9 +33,9 @@ class OverallProgress extends Component<IOverallProgressProps> {
 
     render() {
         return(
-            <>
+            <div style={{marginTop: "10px"}}>
                 {this.renderProgress()}
-            </>
+            </div>
         );
     }
 

@@ -33,10 +33,10 @@ class Tracker extends Component<ITrackerProps> {
     render() {
         let currentTracker = this.props.trackerStore.currentTracker;
         return(
-            <>
+            <div style={{marginTop: "20px",  marginLeft:"10px"}}>
                 {!this.perceived && renderSpinner()}
                 {this.perceived && this.renderTracker(currentTracker)}
-            </>
+            </div>
         );
     }
 

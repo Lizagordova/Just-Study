@@ -43,7 +43,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
 
     renderTracker(update: boolean) {
         return(
-            <Table>
+            <Table style={{marginRight: "10px"}}>
                 {this.renderHead()}
                 {this.renderBody()}
             </Table>

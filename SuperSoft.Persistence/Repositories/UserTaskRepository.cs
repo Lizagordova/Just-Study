@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Dapper;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Persistence.Extensions;
@@ -198,7 +199,7 @@ namespace SuperSoft.Persistence.Repositories
 					{
 						userSubtask.Answer = userSubtaskUdt.Answer;
 						userSubtask.AnswerPath = userSubtaskUdt.AnswerPath;
-						userSubtask.Status = userSubtaskUdt.Status;
+						userSubtask.Status = (CompletingStatus)userSubtaskUdt.Status;
 					}
 				}
 			}

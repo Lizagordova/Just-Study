@@ -55,7 +55,6 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
                                         let currentDate = new Date().toString();
                                         let isDisabled = Date.parse(currentDate) > Date.parse(lesson.expireDate)  && Date.parse(currentDate) < Date.parse(lesson.startDate);
                                         return (
-                                            <>
                                                 <Nav.Item key={lesson.id}>
                                                     <div className="row" key={lesson.id}>
                                                         <Nav.Link
@@ -68,7 +67,6 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
                                                         </Nav.Link>
                                                     </div>
                                                 </Nav.Item>
-                                            </>
                                         );
                                     })}
                                 </div>
