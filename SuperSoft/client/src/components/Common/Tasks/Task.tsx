@@ -3,7 +3,7 @@ import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Alert, Button, Card, CardBody, CardTitle} from 'reactstrap';
 import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable} from "mobx";
 import {observer} from "mobx-react";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
@@ -16,6 +16,7 @@ import {LoadFileSubtask} from "./LoadFileSubtask";
 import {UserTaskViewModel} from "../../../Typings/viewModels/UserTaskViewModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import AddSubtask from "../../Admin/Tasks/AddSubtask";
+import {TaskType} from "../../../Typings/enums/TaskType";
 
 class ITaskProps {
     store: RootStore;
@@ -65,17 +66,32 @@ export class Task extends Component<ITaskProps> {
         this.addSubtask = !this.addSubtask;
     };
 
+    renderEditButton() {
+        console.log("this.props.task.taskType...", this.props.task.taskType);
+        if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
+            return (
+                <i style={{marginLeft: '98%', width: '2%'}}
+                   onClick={() => this.editTaskToggle()}
+                   className="fa fa-edit" aria-hidden="true"/>
+            );
+        }
+    }
+    
+    renderDeleteButton() {
+        return (
+            <i style={{marginLeft: '98%', width: '2%'}}
+               onClick={() => this.deleteTask()}
+               className="fa fa-window-close" aria-hidden="true"/>
+        );
+    }
+
     renderControlButtons() {
         let role = this.props.store.userStore.currentUser.role;
         if(role === UserRole.Admin) {
             return(
             <>
-                <i style={{marginLeft: '98%', width: '2%'}}
-                   onClick={() => this.deleteTask()}
-                   className="fa fa-window-close" aria-hidden="true"/>
-                <i style={{marginLeft: '98%', width: '2%'}}
-                    onClick={() => this.editTaskToggle()}
-                    className="fa fa-edit" aria-hidden="true"/>
+                {this.renderDeleteButton()}
+                {this.renderEditButton()}
             </>
             );
         }

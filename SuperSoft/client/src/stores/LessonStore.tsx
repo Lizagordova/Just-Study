@@ -92,7 +92,7 @@ class LessonStore {
             this.getMaterialsByLesson(this.choosenLesson.id);
         }
 
-        return response.json();
+        return response.status;
     }
 
     async addOrUpdateMaterial(file: File): Promise<number> {

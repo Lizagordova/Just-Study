@@ -1,13 +1,16 @@
-﻿import React, { Component } from 'react';
-import { LessonMaterialViewModel } from "../../../Typings/viewModels/LessonMaterialViewModel";
-import { observer } from "mobx-react";
-import  { Alert } from "reactstrap";
-import { makeObservable, observable } from "mobx";
+﻿import React, {Component} from 'react';
+import {LessonMaterialViewModel} from "../../../Typings/viewModels/LessonMaterialViewModel";
+import {observer} from "mobx-react";
+import {Alert} from "reactstrap";
+import {makeObservable, observable} from "mobx";
 import LessonStore from "../../../stores/LessonStore";
+import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
+import {UserRole} from "../../../Typings/enums/UserRole";
 
 class IMaterialProps {
     lessonStore: LessonStore;
     material: LessonMaterialViewModel;
+    currentUser: UserViewModel;
 }
 
 @observer
@@ -21,6 +24,16 @@ export class Material extends Component<IMaterialProps> {
             notDeleted: observable
         });
     }
+    
+    renderDeleteButton() {
+        if(this.props.currentUser.role === UserRole.Admin) {
+            return(
+                <i style={{marginLeft: '95%', width: '3%'}}
+                   onClick={() => this.delete()}
+                   className="fa fa-window-close" aria-hidden="true" />
+            );
+        }
+    }
 
     renderMaterial(material: LessonMaterialViewModel) {
         if(material.path.includes("pptx")) {
@@ -31,7 +44,10 @@ export class Material extends Component<IMaterialProps> {
         } else if(material.path.includes("mp4")) {
             let path = material.path.replace("client/build", ".");
             return (
-                <iframe src={path} className="materialContent" />
+                <>
+                    {this.renderDeleteButton()}
+                    <iframe src={path} className="materialContent" />
+                </>
             );
         } else {
             return(
@@ -51,7 +67,8 @@ export class Material extends Component<IMaterialProps> {
         );
     }
 
-    delete(materialId: number) {
+    delete() {
+        let materialId = this.props.material.id;
         let result = window.confirm('Вы уверены, что хотите удалить этот материал урока?');
         if(result) {
             this.props.lessonStore

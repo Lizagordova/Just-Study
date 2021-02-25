@@ -28,8 +28,15 @@ export class ContentUpload extends Component<IContentProps> {
         });
     }
 
+    setInitialState() {
+        this.notLoaded = false;
+        this.loaded = false;
+        this.loading = false;
+    }
+
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
+        this.setInitialState();
         let reader = new FileReader();
         // @ts-ignore
         let file = event.target.files[0];
@@ -54,6 +61,7 @@ export class ContentUpload extends Component<IContentProps> {
             <>
                 
                 <div className="row justify-content-center">
+                    {this.renderCautions()}
                     <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <input className="fileInput"
                             type="file"

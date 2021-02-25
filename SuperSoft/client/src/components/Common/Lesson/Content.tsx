@@ -5,10 +5,12 @@ import { Material } from "./Material";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import { Alert } from "reactstrap";
 import { observer } from "mobx-react";
+import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 
 class IContentProps {
     lessonStore: LessonStore;
     courseId: number;
+    currentUser: UserViewModel;
 }
 
 @observer
@@ -18,7 +20,7 @@ export class Content extends Component<IContentProps> {
             <>
                 {materials.map((material) => {
                     return(
-                        <Material key={material.id} material={material} lessonStore={this.props.lessonStore} />
+                        <Material key={material.id} material={material} lessonStore={this.props.lessonStore}  currentUser={this.props.currentUser}/>
                     );
                 })}
             </>

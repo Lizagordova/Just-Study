@@ -51,9 +51,12 @@ namespace SuperSoft.Persistence.Services.Lessons
 		{
 			var lessonMaterial = _lessonRepository.GetLessonMaterial(materialId);
 			var path = lessonMaterial.Path;
-			if (File.Exists(path))
+			using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
-				File.Delete(path);
+				if (File.Exists(path))
+				{
+					File.Delete(path);
+				}
 			}
 			_lessonRepository.DeleteMaterial(materialId);
 		}
