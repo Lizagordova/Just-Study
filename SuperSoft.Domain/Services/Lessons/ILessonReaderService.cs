@@ -7,5 +7,6 @@ namespace SuperSoft.Domain.Services.Lessons
 	{
 		List<Lesson> GetLessonsByCourse(int courseId);
 		List<LessonMaterial> GetMaterialsByLesson(int lessonId);
+		Lesson GetLessonById(int lessonId);
 	}
 }

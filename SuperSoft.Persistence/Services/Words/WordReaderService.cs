@@ -51,5 +51,12 @@ namespace SuperSoft.Persistence.Services.Words
 		{
 			return _wordRepository.GetUserWordProgress(userId, wordId);
 		}
+
+		public DateTime GetDateOfWordOfADayByWordId(int wordId)
+		{
+			var date = _wordRepository.GetDateOfWordOfADayByWordId(wordId);
+
+			return date;
+		}
 	}
 }

@@ -27,6 +27,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string AddOrUpdateWordToDictionarySp = "WordRepository_AddOrUpdateWordToDictionary";
 		private const string AddOrUpdateUserWordSp = "WordRepository_AddOrUpdateUserWord";
 		private const string AddOrUpdateWordOfDaySp = "WordRepository_AddOrUpdateWordOfDay";
+		private const string GetDateOfWordOfADayByWordIdSp = "WordRepository_GetDateOfWordOfADayByWordId";
 
 		public WordRepository(MapperService mapper)
 		{
@@ -154,6 +155,18 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return userWord;
+		}
+
+		public DateTime GetDateOfWordOfADayByWordId(int wordId)//todo: это очень большая хуйня, если одно слово дня привязано к нескольким курсам
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetWordIdParam(wordId);
+			var date = conn
+				.Query<DateTime>(GetDateOfWordOfADayByWordIdSp, param, commandType: CommandType.StoredProcedure)
+				.FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+
+			return date;
 		}
 
 		private DynamicTvpParameters GetAddOrUpdateUserWordParam(UserWord userWord)

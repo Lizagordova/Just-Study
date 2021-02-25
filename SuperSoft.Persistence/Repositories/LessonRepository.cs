@@ -23,6 +23,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetLessonsByCourseSp = "LessonRepository_GetLessonsByCourse";
 		private const string GetMaterialsByLessonSp = "LessonRepository_GetMaterialsByLesson";
 		private const string GetLessonMaterialSp = "LessonRepository_GetLessonMaterial";
+		private const string GetLessonByIdSp = "LessonRepository_GetLessonById";
 
 		public LessonRepository(
 			MapperService mapper)
@@ -108,6 +109,19 @@ namespace SuperSoft.Persistence.Repositories
 			return lessonMaterial;
 		}
 
+		public Lesson GetLessonById(int lessonId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetLessonParam(lessonId);
+			var lessonUdt = conn.Query<LessonUdt>(GetLessonByIdSp, param, commandType: CommandType.StoredProcedure)
+				.FirstOrDefault() ?? new LessonUdt();
+
+			var lesson = _mapper.Map<LessonUdt, Lesson>(lessonUdt);
+			DatabaseHelper.CloseConnection(conn);
+
+			return lesson;
+		}
+
 		private DynamicTvpParameters GetAddOrUpdateLessonParam(Lesson lesson)
 		{
 			var param = new DynamicTvpParameters();
@@ -163,14 +177,6 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("courseId", courseId);
-
-			return param;
-		}
-
-		private DynamicTvpParameters GetGetMaterialsByLessonParam(int lessonId)
-		{
-			var param = new DynamicTvpParameters();
-			param.Add("lessonId", lessonId);
 
 			return param;
 		}

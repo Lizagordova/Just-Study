@@ -27,5 +27,12 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 			return materials;
 		}
+
+		public Lesson GetLessonById(int lessonId)
+		{
+			var lesson = _lessonRepository.GetLessonById(lessonId);
+
+			return lesson;
+		}
 	}
 }

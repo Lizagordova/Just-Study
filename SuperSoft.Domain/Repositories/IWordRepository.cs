@@ -18,5 +18,6 @@ namespace SuperSoft.Domain.Repositories
 		List<UserWord> GetAnswersToWordOfADayByWord(int wordId, int courseId);
 		Word GetWordOfADay(DateTime date, int courseId);
 		UserWord GetUserWordProgress(int userId, int wordId);
+		DateTime GetDateOfWordOfADayByWordId(int wordId);
 	}
 }
