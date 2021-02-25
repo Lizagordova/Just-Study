@@ -96,10 +96,12 @@ class WordOfADay extends Component<IWordOfADayProps> {
     renderEditButton() {
         if(this.role === UserRole.Admin) {
             return(
-                <button
-                    onClick={() => this.toggleAddOrUpdateWord()}>
-                    Отредактировать
-                </button>
+                <CardFooter className="text-center">
+                    <button
+                        onClick={() => this.toggleAddOrUpdateWord()}>
+                        Отредактировать
+                    </button>
+                </CardFooter>
             );
         }
     }
@@ -138,9 +140,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
                             <CardBody className="text-center">
                                 {this.renderWordDetails(word)}
                             </CardBody>
-                            <CardFooter className="text-center">
-                                {this.renderEditButton()}
-                            </CardFooter>
+                            {this.renderEditButton()}
                             {this.renderAnswerToWordOfADay()}
                         </Card>
                     </Col>
@@ -231,7 +231,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         this.setWordOfADay(this.props.date);
     };
 
-    toggleComments() {
+    toggleComments = () => {
         this.showComments = !this.showComments;
     }
 

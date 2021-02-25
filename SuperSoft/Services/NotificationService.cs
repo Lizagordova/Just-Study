@@ -32,6 +32,7 @@ namespace SuperSoft.Services
 				Date = DateTime.Now,
 				CreatedBy = createdBy
 			};
+			userForIds.Remove(createdBy);
 			_notificationEditor.AddOrUpdateNotification(userForIds, notification);
 		}
 

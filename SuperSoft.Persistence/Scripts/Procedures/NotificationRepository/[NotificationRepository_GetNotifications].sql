@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [NotificationRepository_GetNotifications]
+﻿CREATE PROCEDURE [dbo].[NotificationRepository_GetNotifications]
 	@userId INT
 AS
 BEGIN
@@ -13,7 +13,7 @@ BEGIN
 		[NotificationId]
 	FROM [User_Notification]
 	WHERE [UserId] = @userId
-	    AND [Seen] = 0;
+		AND [Seen] = 0 OR [Seen] IS NULL;
 
 	INSERT
 	INTO @notifications (

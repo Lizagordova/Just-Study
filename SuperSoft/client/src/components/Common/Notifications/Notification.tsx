@@ -31,11 +31,11 @@ class Notification extends Component<INotificationProps> {
     }
 
     renderNotification(notification: NotificationViewModel) {
-        let message = this.generateMessage(notification.createdBy, notification.message);
+        let message = this.generateMessage(notification.createdBy, notification.message);//todo: пока упраздним
         return(
             <div className="row justify-content-center" style={{marginTop:'2px'}}>
                 <div className="col-11">
-                    <span>{message}</span>
+                    <span>{notification.message}</span>
                 </div>
                 <div className="col-1">
                     <Input type="checkbox" onClick={(e) => this.changeSeen(e)}/>

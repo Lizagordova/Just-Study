@@ -58,6 +58,12 @@
     }
 }
 
+@media (max-width: 895px) {
+    .mainMenuHeader {
+        height: 130px;
+    }
+}
+
 @media (max-width: 900px) {
     .materialContent {
         width: 600px;

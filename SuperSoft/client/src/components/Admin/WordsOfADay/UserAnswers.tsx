@@ -5,7 +5,7 @@ import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { Accordion } from "react-bootstrap";
 import UserAnswer from "./UserAnswer";
 import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {renderSpinner} from "../../../functions/renderSpinner";
 
 class IUserAnswersProps {
@@ -36,7 +36,10 @@ class UserAnswers extends Component<IUserAnswersProps> {
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
                     let userWord = this.getUserWord(user.id);
-                    return <UserAnswer user={user} store={this.props.store} userWord={userWord} />
+                    console.log("userWord by user id", toJS(userWord));
+                    if(userWord.userId !== this.props.store.userStore.currentUser.id) {
+                        return <UserAnswer user={user} store={this.props.store} userWord={userWord}/>
+                    }
                 })}
             </Accordion>
         );
@@ -63,13 +66,21 @@ class UserAnswers extends Component<IUserAnswersProps> {
     getUserWords() {
         this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId, this.props.store.courseStore.choosenCourse.id)
             .then((userWords) => {
+                console.log("userWords", toJS(userWords));
                 this.userWords = userWords;
                 this.loaded = true;
             });
     }
 
     getUserWord(userId: number): UserWordViewModel {
-        return this.userWords.filter(uw => uw.userId === userId)[0];
+        console.log("this.user.words", toJS(this.userWords), "userId", userId);
+        let userWord = this.userWords.filter(uw => uw.userId === userId)[0];
+        if(userWord === undefined) {
+            userWord = new UserWordViewModel();
+            userWord.userId = userId;
+        }
+        
+        return userWord;
     }
 }
 

@@ -34,7 +34,8 @@ BEGIN
 	FROM [User_Word]
 	WHERE [UserId] IN (
 		SELECT [Id] 
-		FROM @userIds);
+		FROM @userIds)
+		AND [WordId] = @wordId;
 
 	SELECT * FROM @userWords;
 END

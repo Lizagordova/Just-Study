@@ -1,7 +1,7 @@
 ﻿import React, { Component } from "react";
 import { CardFooter, Button, Input, Alert } from "reactstrap";
 import WordStore from "../../../stores/WordStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { observer } from "mobx-react";
 import { UserWordReadModel } from "../../../Typings/readModels/UserWordReadModel";
 import { mapToUserAnswerReadModel } from "../../../functions/mapper";
@@ -18,21 +18,23 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     addOrUpdateAnswer: boolean;
     notSaved: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IAnswerToWordOfADayProps) {
+        super(props);
         makeObservable(this, {
             userAnswer: observable,
             addOrUpdateAnswer: observable,
             notSaved: observable
         });
+        this.setUserAnswerProgress();
     }
 
-    componentDidMount(): void {
+    setUserAnswerProgress() {
         this.props.wordStore.getUserWordsProgress(this.props.wordId, this.props.userId)
             .then((userAnswer) => {
                 this.userAnswer = mapToUserAnswerReadModel(userAnswer);
-                this.addOrUpdateAnswer = userAnswer.answer === "";
+                this.userAnswer.userId = this.props.userId;
+                this.userAnswer.word.id = this.props.wordId;
+                this.addOrUpdateAnswer = userAnswer.answer === "" || userAnswer.answer === null;
             });
     }
 
@@ -48,8 +50,19 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
         if(this.addOrUpdateAnswer) {
             return (
                 <>
-                    <Input type="text" value={this.userAnswer.answer} onChange={(e) => this.handleChange(e)}/>
-                    <Button onClick={() => this.handleSave()}>Сохранить</Button>
+                    <div className="row justify-content-center">
+                        <Input type="text"
+                            style={{width: "85%"}}
+                            value={this.userAnswer.answer} onChange={(e) => this.handleChange(e)}/>
+                    </div>
+                    <div className="row justify-content-center">
+                        <Button
+                            outline color="success"
+                            style={{width: "80%", marginTop: "10px", marginBottom: "10px"}}
+                            onClick={() => this.handleSave()}>
+                            Сохранить
+                        </Button>
+                    </div>
                 </>
             );
         }
@@ -58,11 +71,10 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     renderAnswer() {
         if(!this.addOrUpdateAnswer) {
             return (
-                <CardFooter
-                    className="text-center"
+                <div className="row justify-content-center"
                     onClick={() => this.addOrUpdateAnswerToggle()}>
                     {this.userAnswer.answer}
-                </CardFooter>
+                </div>
             );
         }
     }
@@ -86,13 +98,15 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     }
 
     handleSave() {
+        console.log("userANswer", toJS(this.userAnswer));
         this.props.wordStore.addOrUpdateUserWordProgress(this.userAnswer)
             .then((status) => {
                 this.notSaved = status !== 200;
+                if(status === 200) {
+                    this.setUserAnswerProgress();
+                }
             });
     }
-
-    
 }
 
 export default AnswerToWordOfADay;

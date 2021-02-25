@@ -86,7 +86,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
         );
     }
 
-    toggleComments() {
+    toggleComments = () => {
         this.showComments = !this.showComments;
     }
 }

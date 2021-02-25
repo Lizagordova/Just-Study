@@ -147,7 +147,9 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			var param = GetUserWordProgressParam(userId, wordId);
-			var userWordUdt = conn.Query<UserWordUdt>(GetUserWordProgressSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			var userWordUdt = conn.Query<UserWordUdt>(GetUserWordProgressSp, param, commandType: CommandType.StoredProcedure)
+				.FirstOrDefault() ??
+				new UserWordUdt();
 			var userWord = _mapper.Map<UserWordUdt, UserWord>(userWordUdt);
 			DatabaseHelper.CloseConnection(conn);
 
