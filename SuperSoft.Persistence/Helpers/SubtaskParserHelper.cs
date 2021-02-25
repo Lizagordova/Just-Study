@@ -41,13 +41,14 @@ namespace SuperSoft.Persistence.Helpers
 		{
 			var answers = text.Replace("[", "").Replace("]", "").Split("/");
 			var subtaskAnswers = new List<SubtaskAnswer>();
-			for (var i = 0; i < answers.Length; i++)
+			foreach (var answer in answers)
 			{
 				var subtaskAnswer = new SubtaskAnswer();
-				subtaskAnswer.Explanation = _explanationPattern.Match(answers[i]).Value.Replace("(", "").Replace(")", "");
-				subtaskAnswer.Answer = _explanationPattern.Replace(answers[i], "");
-				subtaskAnswer.IsRight = i == 1;
-				subtaskAnswer.IsInfinitive = i == 0;
+				subtaskAnswer.Explanation = _explanationPattern.Match(answer).Value.Replace("(", "").Replace(")", "");
+				subtaskAnswer.Answer = _explanationPattern.Replace(answer, "");
+				subtaskAnswer.IsRight = subtaskAnswer.Answer.Contains("*");
+				subtaskAnswer.Answer = subtaskAnswer.Answer.Replace("*", "");
+				subtaskAnswer.IsInfinitive = !subtaskAnswer.Answer.Contains("*");
 				subtaskAnswers.Add(subtaskAnswer);
 			}
 

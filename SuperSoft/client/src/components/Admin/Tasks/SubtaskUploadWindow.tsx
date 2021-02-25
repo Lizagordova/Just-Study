@@ -1,23 +1,25 @@
-﻿import React, { Component } from "react";
-import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
-import { Input, Label, Tooltip } from "reactstrap";
-import { makeObservable, observable } from "mobx";
-import { IUploadSubtaskProps } from "./IUploadSubtaskProps";
-import { SubtaskType } from "../../../Typings/enums/SubtaskType";
-import { getTooltipText } from "../../../functions/getTooltipText";
-import { observer } from "mobx-react";
+﻿import React, {Component} from "react";
+import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
+import { Input, Label, Tooltip, Fade } from "reactstrap";
+import {makeObservable, observable} from "mobx";
+import {IUploadSubtaskProps} from "./IUploadSubtaskProps";
+import {SubtaskType} from "../../../Typings/enums/SubtaskType";
+import {getTooltipText} from "../../../functions/getTooltipText";
+import {observer} from "mobx-react";
 
 @observer
 class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     subtask: SubtaskReadModel = new SubtaskReadModel();
     tooltipOpen: boolean = false;
+    renderWarning: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             subtask: observable,
-            tooltipOpen: observable
+            tooltipOpen: observable,
+            renderWarning: observable
         });
     }
 
@@ -57,13 +59,17 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
                     className="taskInput"
                     defaultValue={this.subtask.text}
                     onChange={(e) => this.inputText(e)}/>
+                <Fade in={this.renderWarning}
+                      style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
+                    Введённый текст пока не соответствует нужному формату(см. подсказку выше)
+                </Fade>
             </>
         );
     }
 
     renderInputFile() {
         let subtaskType = this.subtask.subtaskType;
-        if(subtaskType === SubtaskType.LoadAudio || subtaskType || SubtaskType.DetailedAnswer) {
+        if(subtaskType === SubtaskType.LoadAudio || subtaskType === SubtaskType.DetailedAnswer || subtaskType === SubtaskType.LoadFile) {
             return(
                 <Input
                     style={{marginTop: "5px"}}
@@ -112,9 +118,21 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
 
     inputText(event: React.FormEvent<HTMLInputElement>) {
         this.subtask.text = event.currentTarget.value;
+        this.validateInput();
         this.updateParentSubtask();
     }
 
+    validateInput() {
+        let text = this.props.subtask.text;
+        let regExp = /\[(\w+?\D*?)\]/g;
+        let groups = text.match(regExp);
+        if(this.props.subtask.subtaskType === SubtaskType.RightVerbForm) {
+            this.renderWarning = groups === null || groups.length === 0;
+        } else if(this.props.subtask.subtaskType === SubtaskType.FillGaps) {
+            this.renderWarning = groups === null || groups.length === 0;
+        }
+    }
+ 
     inputOrder(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
         if(parseInt(value)) {

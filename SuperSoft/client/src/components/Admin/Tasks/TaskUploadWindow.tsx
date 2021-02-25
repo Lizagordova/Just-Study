@@ -20,6 +20,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     notSaved: boolean;
     saved: boolean;
     loaded: boolean;
+    notValid: boolean;
 
     constructor() {
         // @ts-ignore
@@ -30,7 +31,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             loaded: observable,
             subtasks: observable,
             tags: observable,
-            saved: observable
+            saved: observable,
+            notValid: observable
         });
     }
 
@@ -53,7 +55,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     deleteSubtask = (i: number) => {
         this.subtasks = this.subtasks.filter((s,ind) => ind !== i);
     };
-
+    
     renderInputForSubtasks() {
         return(
             <>
@@ -64,7 +66,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         s.order = i;
                     }
                     return (
-                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} index={i}/>
+                        <SubtaskUploadWindow key={i} updateSubtask={this.updateSubtask} subtask={s} deleteSubtask={this.deleteSubtask} index={i} />
                     );
                 })}
             </>
@@ -203,6 +205,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });
+    }
+
+    allValidatedToggle = (validated: boolean) => {
     }
 }
 

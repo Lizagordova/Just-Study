@@ -215,8 +215,8 @@ class Gap extends Component<IGapProps> {
         let rightAnswers = this.answerGroup.answers
             .filter(ans => ans.isRight)
             .filter(ans => ans.answer.toLowerCase());
-        let userRightAnswer = rightAnswers.filter(ans => ans.answer === lastAnswer);
-        if(userRightAnswer === null) {//todo: возможно здесь undefined или length = 0
+       let userRightAnswer = rightAnswers.filter(ans => ans.answer === lastAnswer);
+        if(userRightAnswer === null || userRightAnswer.length === 0) {//todo: возможно здесь undefined или length = 0
             this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
         } else {
             this.userAnswerGroup.status = 4;
@@ -234,7 +234,7 @@ class Gap extends Component<IGapProps> {
                 disabled={status === 4 || status === 2}
                 onChange={(e) => this.inputChange(e)}
                 /* onBlur={() => this.checkAnswer()}*/
-                value={this.userAnswerGroup.lastAnswer !== undefined ? this.userAnswerGroup.lastAnswer : ""}
+                defaultValue={this.userAnswerGroup.lastAnswer !== undefined ? this.userAnswerGroup.lastAnswer : ""}
                 onKeyPress={(e) => this.handleKeyPress(e)}
             />
         );

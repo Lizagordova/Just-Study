@@ -2,7 +2,7 @@
 
 export function getTooltipText(subtaskType: SubtaskType): string {
     if(subtaskType === SubtaskType.FillGaps) {
-        return "Подсказка\n \"Поставить слово в нужную форму\": запишите в квадратных скобках начальную форму слова, слэш, затем правильную форму слова. \"Заполнить пропуски\": запишите в квадратных скобках только правильное слово (выражение). \"Заполнить пропуски любым текстом без проверки\": просто запишите пустые квадратные скобки на месте пропуска (без пробела).\n Пример:\n 1. I [to play/am playing] tennis.\n 2. This flower is [better] than that.";
+        return "Подсказка\n \"Поставить слово в нужную форму\": запишите в квадратных скобках начальную форму слова, слэш, затем правильную форму слова и пометьте её знаком *. Если есть несколько правильных вариантов ответа. то их надо записать все через слэш со знаком *.\n Пример:\n 1. I [to play/am playing*] tennis.\n 2. This flower is [better] than that. \n 3. I [do not/did not*/didn't*]";
     } else if(subtaskType === SubtaskType.RightVerbForm) {
         return "Подсказка\n Запишите варианты ответа в квадратных скобках и отметьте правильный вариант звездочкой *.\n Если вы хотите добавить объяснение, то напишите его в скобочках сразу после ответа\n Пример:\n They [is(because bla-bla-bla)/are/was/were*(it is right!because...)] on holiday yesterday";
     } else if(subtaskType === SubtaskType.InsertWordsIntoGaps) {
