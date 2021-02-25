@@ -145,13 +145,15 @@ class WordStore {
 
     async getWordOfADay(date: Date | Date[], courseId: number): Promise<WordViewModel> {
         let wordOfADay = new WordViewModel();
+        let dateWithTime = new Date(date.toLocaleString());
+        dateWithTime.setHours(12);
         const response = await fetch("/getwordofaday", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                courseId: courseId, date: date
+                courseId: courseId, date: dateWithTime
             })
         });
         if(response.status === 200) {
