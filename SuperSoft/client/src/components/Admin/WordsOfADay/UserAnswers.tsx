@@ -36,7 +36,6 @@ class UserAnswers extends Component<IUserAnswersProps> {
             <Accordion defaultActiveKey="0">
                 {users.map((user) => {
                     let userWord = this.getUserWord(user.id);
-                    console.log("userWord by user id", toJS(userWord));
                     if(userWord.userId !== this.props.store.userStore.currentUser.id) {
                         return <UserAnswer user={user} store={this.props.store} userWord={userWord}/>
                     }
@@ -66,14 +65,12 @@ class UserAnswers extends Component<IUserAnswersProps> {
     getUserWords() {
         this.props.store.wordStore.getAnswersToWordOfADayByWord(this.props.wordId, this.props.store.courseStore.choosenCourse.id)
             .then((userWords) => {
-                console.log("userWords", toJS(userWords));
                 this.userWords = userWords;
                 this.loaded = true;
             });
     }
 
     getUserWord(userId: number): UserWordViewModel {
-        console.log("this.user.words", toJS(this.userWords), "userId", userId);
         let userWord = this.userWords.filter(uw => uw.userId === userId)[0];
         if(userWord === undefined) {
             userWord = new UserWordViewModel();

@@ -216,7 +216,6 @@ class WordStore {
 
     async getAnswersToWordOfADayByWord(wordId: number, courseId: number): Promise<UserWordViewModel[]> {
         let userWords = new Array<UserWordViewModel>();
-        console.log("wordId", wordId, "courseId", courseId);
         const response = await fetch("/getanswerstowordofadaybyword", {
             method: "POST",
             headers: {

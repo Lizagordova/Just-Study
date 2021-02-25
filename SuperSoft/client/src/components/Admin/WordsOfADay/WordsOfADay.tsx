@@ -42,11 +42,11 @@ class WordsOfADay extends Component<IWordsOfADayProps> {
     render() {
         return(
             <div className="container-fluid">
-                <div className="row justify-content-center">
+                <div className="row justify-content-center" style={{marginTop: "15px"}}>
                     <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                         {this.renderCalendar()}
                     </div>
-                    <div className="col-lg-9 col-md-6 col-sm-12 col-xs-12">
+                    <div className="col-lg-9 col-md-6 col-sm-12 col-xs-12" style={{marginTop: "15px"}}>
                         {this.renderWordOfADay()}
                     </div>
                 </div>

@@ -98,7 +98,6 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     }
 
     handleSave() {
-        console.log("userANswer", toJS(this.userAnswer));
         this.props.wordStore.addOrUpdateUserWordProgress(this.userAnswer)
             .then((status) => {
                 this.notSaved = status !== 200;

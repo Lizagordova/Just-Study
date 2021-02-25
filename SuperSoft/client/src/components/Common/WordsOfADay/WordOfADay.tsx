@@ -29,9 +29,8 @@ class WordOfADay extends Component<IWordOfADayProps> {
     showUserAnswers: boolean;
     alreadyExists: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IWordOfADayProps) {
+        super(props);
         makeObservable(this, {
             word: observable,
             addOrUpdate: observable,
@@ -42,23 +41,25 @@ class WordOfADay extends Component<IWordOfADayProps> {
             showUserAnswers: observable,
             alreadyExists: observable
         });
-    }
-
-    componentDidMount(): void {
-       this.role = this.props.store.userStore.currentUser.role;
-       this.props.store.wordStore
-            .getWordOfADay(this.props.date, this.props.store.courseStore.choosenCourse.id)
-            .then((word) => {
-                this.word = word;
-                this.showCautions = word.word === null;
-                this.alreadyExists = word.word !== null;
-            });
+        this.setWordOfADay(this.props.date);
+        this.role = this.props.store.userStore.currentUser.role;
     }
 
     componentDidUpdate(prevProps: Readonly<IWordOfADayProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.date !== this.props.date) {
             this.setWordOfADay(this.props.date);
         }
+    }
+
+    setWordOfADay(date: Date | Date[]) {
+        let courseId = this.props.store.courseStore.choosenCourse.id;
+        this.showCautions = true;
+        this.props.store.wordStore.getWordOfADay(date, courseId)
+            .then((word) => {
+                this.word = word;
+                this.showCautions = word.word === null;
+                this.alreadyExists = word.word !== null;
+            });
     }
 
     renderCautions() {
@@ -119,6 +120,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         if (this.role === UserRole.User) {
             return(
                 <Button
+                    style={{marginTop: "10px"}}
                     outline color="primary"
                     onClick={() => this.toggleComments()}>
                     Комментарии
@@ -203,12 +205,12 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     render() {
         return(
-            <>
+            <div className="container">
                 {this.showCautions && this.renderCautions()}
                 {!this.showCautions && this.renderWordOfADay(this.word)}
                 {this.addOrUpdate && this.renderAddOrUpdateWordOfADay()}
                 {!this.alreadyExists && this.renderButton()}
-            </>
+            </div>
         );
     }
 
@@ -233,14 +235,6 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     toggleComments = () => {
         this.showComments = !this.showComments;
-    }
-
-    setWordOfADay(date: Date | Date[]) {
-        let courseId = this.props.store.courseStore.choosenCourse.id;
-        this.props.store.wordStore.getWordOfADay(date, courseId)
-            .then((word) => {
-                this.word = word;
-            });
     }
 
     toggleUserAnswers() {
