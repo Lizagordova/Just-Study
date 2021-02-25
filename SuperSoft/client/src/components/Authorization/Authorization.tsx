@@ -103,6 +103,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
                 .then(() => {
                     this.props.store.userStore.authorizationRequire(false);
                     this.props.store.userStore.wrongCredetianalsToggle(false);
+                    this.props.store.userStore.getUsers();
                 });
         } else {
             this.props.store.userStore.authorizationRequire(true);
