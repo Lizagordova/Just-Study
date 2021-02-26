@@ -77,11 +77,14 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         let tags = this.props.store.tags;
         if(tags !== undefined && tags.length !== 0) {
             return(
-                <div className="row justify-content-center">
+                <div className="row justify-content-center" style={{marginTop: "15px", fontSize: "1.2em" }}>
                     <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
                         {tags.map((tag) => {
+                            let backgroundColor = (this.tags.find(t => t.id === tag.id) !== undefined) ? "lightgrey" : "white";
                             return(
-                                <option key={tag.id} onClick={() => this.addTag(tag)}>
+                                <option 
+                                    style={{backgroundColor: backgroundColor, marginTop: "5px" }}
+                                    key={tag.id} onClick={() => this.addTag(tag)}>
                                     {tag.name}
                                 </option>
                             );
@@ -100,7 +103,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                 </Label>
                 <Input
                     style={{width: "70%"}}
-                    value={this.task.instruction}
+                    defaultValue={this.task.instruction}
                     onChange={(e) => this.inputInstruction(e)}/>
             </div>
         );
@@ -116,7 +119,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         return(
             <div className="row justify-content-center">
                 <Button 
-                    style={{width: "70%", marginTop: "10px"}}
+                    style={{width: "70%", marginTop: "15px"}}
                     onClick={() => this.addSubtask()}
                     outline color="secondary">
                     <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
@@ -161,7 +164,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         {this.renderTags()}
                     </div>
                 </ModalBody>
-                <div className="row justify-content-center" style={{marginTop: "10px"}}>
+                <div className="row justify-content-center" style={{marginTop: "15px"}}>
                     {this.renderSaveButton()}
                 </div>
             </>
@@ -205,9 +208,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });
-    }
-
-    allValidatedToggle = (validated: boolean) => {
     }
 }
 

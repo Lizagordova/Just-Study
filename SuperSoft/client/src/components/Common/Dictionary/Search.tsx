@@ -66,8 +66,8 @@ class Search extends Component<ISearchProps> {
                 <div className="col-lg-6 col-md-6 col-sm-12">
                     <div className="searchbar searchForm">
                         {this.renderSearchBox()}
+                        {this.selectOpen && this.renderWords()}
                     </div>
-                    {this.selectOpen && this.renderWords()}
                 </div>
             </div>
         );

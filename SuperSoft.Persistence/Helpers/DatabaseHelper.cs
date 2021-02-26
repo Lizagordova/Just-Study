@@ -9,8 +9,8 @@ namespace SuperSoft.Persistence.Helpers
 		{
 			var connectionString = "";
 			connectionString = ConfigurationManager.AppSettings["production"] == "true" 
-				? ConfigurationManager.ConnectionStrings["JustStudy"].ConnectionString
-				: ConfigurationManager.ConnectionStrings["JustStudyProduction"].ConnectionString;
+				? ConfigurationManager.ConnectionStrings["JustStudyProduction"].ConnectionString
+				: ConfigurationManager.ConnectionStrings["JustStudy"].ConnectionString;
 			var connection = new SqlConnection(connectionString);
 			connection.Open();
 

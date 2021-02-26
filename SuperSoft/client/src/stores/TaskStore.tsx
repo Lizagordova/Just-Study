@@ -83,7 +83,8 @@ class TaskStore {
             formData.append("subtasks", task.subtasks);
         }
         if(task.tags !== undefined && task.tags !== null) {
-            formData.append("tags", task.tags.toString());
+            // @ts-ignore
+            formData.append("tags", task.tags);
         }
 
         return formData;
