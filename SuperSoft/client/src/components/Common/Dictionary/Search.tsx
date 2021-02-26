@@ -17,17 +17,23 @@ class ISearchProps {
 class Search extends Component<ISearchProps> {
     foundWords: WordViewModel[] = new Array<WordViewModel>();
     selectOpen: boolean;
+    firstFoundWordsSettled: boolean;
 
     constructor(props: ISearchProps) {
         super(props);
         makeObservable(this, {
             foundWords: observable,
-            selectOpen: observable
+            selectOpen: observable,
+            firstFoundWordsSettled: observable
         });
-        this.foundWords = this.props.wordStore.dictionary;
+        this.computeFoundWords(this.props.wordStore.dictionary);
     }
 
     renderSearchBox() {
+       if(this.props.wordStore.userDictionary.length !== 0 && !this.firstFoundWordsSettled) {
+            this.computeFoundWords(this.props.wordStore.dictionary);
+            this.firstFoundWordsSettled = true;
+        }
         return(
             <>
                 <Input type="text"
@@ -74,8 +80,20 @@ class Search extends Component<ISearchProps> {
     }
 
     onChange(event: React.FormEvent<HTMLInputElement>) {
-        this.foundWords =  this.props.wordStore.dictionary
-            .filter(w => w.word.includes(event.currentTarget.value));//todo: ЗДЕСЬ ЛУЧШЕ ОТФИЛЬТРОВЫВАТЬ ТЕ СЛОВА, КОТОРЫЕ УЖЕ ЕСТЬ В ЮЗЕРСКОМ СЛОВАРЕ
+        let foundWords =  this.props.wordStore.dictionary
+            .filter(w => w.word.toLowerCase()
+                .includes(event.currentTarget.value.toLowerCase()));
+        this.computeFoundWords(foundWords);
+    }
+
+    computeFoundWords(foundWords: WordViewModel[]) {
+        let usersDictionary = this.props.wordStore.userDictionary
+            .map(uw => {
+                return uw.wordId
+            });
+        this.foundWords = foundWords.filter((w) => {
+            return !usersDictionary.includes(w.id)
+        });
     }
 
     addWordToDictionary(word: WordViewModel) {
