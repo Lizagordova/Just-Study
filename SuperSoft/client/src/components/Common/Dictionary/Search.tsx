@@ -51,15 +51,14 @@ class Search extends Component<ISearchProps> {
             <select className="searchSelect" size={4}>
                 {this.foundWords.map((word) => {
                     return(
-                        <>
                             <option
+                                key={word.id}
                                 value={word.word}
                                 id={word.id.toString()}
                                 onClick={() => this.addWordToDictionary(word)}
                             >
                                 {word.word}
                             </option>
-                        </>
                     )
                 })}
             </select>
