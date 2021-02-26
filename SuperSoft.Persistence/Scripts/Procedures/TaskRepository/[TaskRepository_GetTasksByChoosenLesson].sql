@@ -2,7 +2,7 @@
 	@lessonId INT
 AS
 BEGIN
-	DECLARE @tasfks [UDT_Task];
+	DECLARE @tasks [UDT_Task];
 	DECLARE @subtasks [UDT_Subtask];
 	DECLARE @tags [UDT_Tag];
 	DECLARE @taskTags [UDT_Task_Tag];

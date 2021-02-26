@@ -7,8 +7,10 @@ namespace SuperSoft.Persistence.Helpers
 	{
 		public static SqlConnection OpenConnection()
 		{
-			//var connectionString = ConfigurationManager.ConnectionStrings["JustStudy"].ConnectionString;
-			var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Just-Study; User ID=JL;Password=berlindream;Connect Timeout=5;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;Integrated Security=True";
+			var connectionString = "";
+			connectionString = ConfigurationManager.AppSettings["production"] == "true" 
+				? ConfigurationManager.ConnectionStrings["JustStudy"].ConnectionString
+				: ConfigurationManager.ConnectionStrings["JustStudyProduction"].ConnectionString;
 			var connection = new SqlConnection(connectionString);
 			connection.Open();
 

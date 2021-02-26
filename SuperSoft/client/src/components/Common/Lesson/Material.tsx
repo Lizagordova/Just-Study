@@ -36,8 +36,14 @@ export class Material extends Component<IMaterialProps> {
     }
 
     renderMaterial(material: LessonMaterialViewModel) {
-        if(material.path.includes("pptx")) {
+        if(material.path.includes("pptx") || material.path.includes("pdf")) {
             let path = material.path.replace("client/build", ".");
+            console.log("path", path);
+            return (
+                <iframe
+                    src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://localhost:5001/${path}]`}
+                    width='100%' height='600px' frameBorder='0'/>
+            );
             /*return (
                 <iframe src={path} width='962px' height='565px' frameBorder='0' />
             );*/
