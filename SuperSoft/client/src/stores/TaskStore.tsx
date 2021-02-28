@@ -46,7 +46,7 @@ class TaskStore {
         }
     }
 
-    async addOrUpdateTask(task: TaskReadModel, lessonId: number): Promise<number> {
+    async addOrUpdateTask(task: TaskReadModel, lessonId: number | null): Promise<number> {
         const formData = this.getFormDataForTask(task, lessonId);
         const response = await fetch("/addorupdatetask", {
             method: "POST",
@@ -54,6 +54,7 @@ class TaskStore {
         });
         if(response.status === 200) {
             let taskId = await response.json();
+            this.attachTagsToTask(taskId, task.tagIds);
             task.subtasks.forEach((sub, i) => {
                 sub.taskId = taskId;
                 this.addOrUpdateSubtask(sub);
@@ -63,9 +64,22 @@ class TaskStore {
         return response.status;
     }
 
-    getFormDataForTask(task: TaskReadModel, lessonId: number): FormData {
+    async attachTagsToTask(taskId: number, tagIds: number[])
+    {
+        const response = await fetch("/attachtagstotask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({taskId: taskId, tagIds: tagIds})
+        });
+    }
+
+    getFormDataForTask(task: TaskReadModel, lessonId: number | null): FormData {
         let formData = new FormData();
-        formData.append("lessonId", lessonId.toString());
+        if(lessonId !== null) {
+            formData.append("lessonId", lessonId.toString());
+        }
         if(task.id !== undefined && task.id !== null) {
             formData.append("id", task.id.toString());
         }
@@ -82,9 +96,9 @@ class TaskStore {
             // @ts-ignore
             formData.append("subtasks", task.subtasks);
         }
-        if(task.tags !== undefined && task.tags !== null) {
+        if(task.tagIds !== undefined && task.tagIds !== null) {
             // @ts-ignore
-            formData.append("tags", task.tags);
+            formData.append("tagIds", task.tagIds);
         }
 
         return formData;

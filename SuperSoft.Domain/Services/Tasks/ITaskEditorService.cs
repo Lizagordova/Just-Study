@@ -1,4 +1,5 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System.Collections.Generic;
+using SuperSoft.Domain.Models;
 
 namespace SuperSoft.Domain.Services.Tasks
 {
@@ -9,5 +10,6 @@ namespace SuperSoft.Domain.Services.Tasks
 		int AddOrUpdateSubtask(Subtask subtask, int taskId);
 		void DeleteTask(int taskId);
 		void DeleteSubtask(int subtaskId);
+		void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds);
 	}
 }

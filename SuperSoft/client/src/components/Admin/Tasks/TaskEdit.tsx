@@ -24,10 +24,8 @@ export class TaskEdit extends Component<ITaskEditProps> {
     }
 
     renderBody() {
-        let taskReadModel = mapToTaskReadModel(this.props.task);
-        taskReadModel.lessonId = this.props.lessonId;
         return(
-            <TaskUploadWindow store={this.props.taskStore} lessonId={this.props.lessonId} toggle={this.props.toggle} task={taskReadModel} />
+            <TaskUploadWindow store={this.props.taskStore} lessonId={this.props.lessonId} task={this.props.task} />
         );
     }
 

@@ -15,6 +15,6 @@ namespace SuperSoft.ReadModels
 		public int Order { get; set; }//todo: сейчас никак не заполняется, надо чтобы заполнялось!!!
 		public TaskType TaskType { get; set; }
 		public SubtaskReadModel[] Subtasks { get; set; }
-		public TagReadModel[] Tags { get; set; }
+		public IReadOnlyCollection<int> TagIds { get; set; }
 	}
 }

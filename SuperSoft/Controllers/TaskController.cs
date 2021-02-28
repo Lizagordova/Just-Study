@@ -71,12 +71,6 @@ namespace SuperSoft.Controllers
 		[Route("/gettags")]
 		public ActionResult GetTags()
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var tags = _tagReader.GetTags();
@@ -103,10 +97,14 @@ namespace SuperSoft.Controllers
 			}
 
 			var task = _mapper.Map<TaskReadModel, Task>(taskReadModel);
+			task.Tags = taskReadModel.TagIds.Select(tId => new Tag()
+			{
+				Id = tId
+			}).ToList();
 			try
 			{
 				var taskId = _taskEditor.AddOrUpdateTask(task);
-				if (taskReadModel.LessonId != 0)
+				if (taskReadModel.LessonId != 0 )
 				{
 					_taskEditor.AttachTaskToLesson(taskId, taskReadModel.LessonId, taskReadModel.Order);
 				}
@@ -214,6 +212,30 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogGetTaskByIdException(_logger, e, taskReadModel.Id);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/attachtagstotask")]
+		public ActionResult GetTaskById([FromBody]TaskTagReadModel taskTagReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_taskEditor.AttachTagsToTask(taskTagReadModel.TaskId, taskTagReadModel.TagIds);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAttachTagsToTaskException(_logger, e, taskTagReadModel.TaskId);
 
 				return new StatusCodeResult(500);
 			}

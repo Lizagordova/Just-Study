@@ -10,7 +10,7 @@ import SubtaskUploadWindow from "./SubtaskUploadWindow";
 import { getTaskTitle } from "../../../functions/getTaskTitle";
 import {subtaskTranspiler} from "../../../functions/subtaskTranspiler";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
-import {mapToTagReadModel} from "../../../functions/mapper";
+import {mapToSubtaskReadModel, mapToTagReadModel, mapToTaskReadModel} from "../../../functions/mapper";
 
 @observer
 class TaskUploadWindow extends Component<IUploadTaskProps> {
@@ -39,12 +39,12 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     componentDidMount(): void {
         let task = this.props.task;
         if(task.subtasks !== undefined) {
-            this.subtasks = task.subtasks;
+            this.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
         }
         if(task.tags !== undefined) {
             this.tags = task.tags;
         }
-        this.task = task;
+        this.task = mapToTaskReadModel(task);
         this.loaded = true;
     }
 
@@ -199,12 +199,15 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     saveTask() {
         let task = this.task;
         task.subtasks = this.subtasks;
-        task.tags = this.tags;
+        task.tagIds = this.tags.map(t => t.id);
         this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
-                if(status === 200) {
-                    this.props.store.getTasksByLesson(this.props.lessonId);
+                if(this.props.lessonId !== null) {
+                    if(status === 200) {
+                        this.props.store.getTasksByLesson(this.props.lessonId);
+                    }
                 }
+                //todo: иначе задания для тренировок надо обновлять!
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
@@ -47,6 +48,11 @@ namespace SuperSoft.Persistence.Services.Tasks
 		public void DeleteSubtask(int subtaskId)
 		{
 			_taskRepository.DeleteSubtask(subtaskId);
+		}
+
+		public void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds)
+		{
+			_taskRepository.AttachTagsToTask(taskId, tagIds);
 		}
 
 		private Subtask PreHandleSubtask(Subtask subtask, int taskId)

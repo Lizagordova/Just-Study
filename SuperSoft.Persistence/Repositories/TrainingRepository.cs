@@ -26,8 +26,8 @@ namespace SuperSoft.Persistence.Repositories
 		public IReadOnlyCollection<Task> GetTasks(TrainingTaskQuery query)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetGetTasksParam(query);
-			var response = conn.QueryMultiple(GetTasksSp, param, commandType: CommandType.StoredProcedure);
+			//var param = GetGetTasksParam(query);
+			var response = conn.QueryMultiple(GetTasksSp, commandType: CommandType.StoredProcedure);
 			var data = GetTaskData(response);
 			var tasks = MapTaskCollection(data);
 			DatabaseHelper.CloseConnection(conn);

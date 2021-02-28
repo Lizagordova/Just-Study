@@ -7,9 +7,11 @@ import { TaskType } from "../../../Typings/enums/TaskType";
 import { observer } from "mobx-react";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
 import TaskUploadWindow from "./TaskUploadWindow";
+import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 
 class ITaskUploadProps {
     store: RootStore;
+    isTraining: boolean;
 }
 
 @observer
@@ -66,11 +68,17 @@ class TaskUpload extends Component<ITaskUploadProps> {
     }
 
     renderTaskUploadWindowByType() {
-        let task = new TaskReadModel();
+        let task = new TaskViewModel();
         task.taskType = this.taskType;
-       return(
-           <TaskUploadWindow store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} toggle={this.toggleTaskUploadWindow} task={task} />
-       );
+        if(this.props.isTraining) {
+            return(
+                <TaskUploadWindow store={this.props.store.taskStore} lessonId={null} task={task} />
+            );
+        } else {
+            return(
+                <TaskUploadWindow store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} task={task} />
+            ); 
+        }
     }
 
     renderButton() {

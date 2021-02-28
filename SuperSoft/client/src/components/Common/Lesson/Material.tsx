@@ -41,7 +41,7 @@ export class Material extends Component<IMaterialProps> {
             console.log("path", path);
             return (
                 <iframe
-                    src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://localhost:5001/${path}]`}
+                    src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://juststudy.ru.com/${path}]`}
                     width='100%' height='600px' frameBorder='0'/>
             );
             /*return (

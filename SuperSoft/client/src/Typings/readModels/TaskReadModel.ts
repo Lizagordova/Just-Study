@@ -4,7 +4,6 @@
 
 import { TaskType } from '../enums/TaskType';
 import { SubtaskReadModel } from './SubtaskReadModel';
-import { TagReadModel } from './TagReadModel';
 
 export class TaskReadModel
 {
@@ -15,5 +14,5 @@ export class TaskReadModel
 	public order: number;
 	public taskType: TaskType;
 	public subtasks: SubtaskReadModel[];
-	public tags: TagReadModel[];
+	public tagIds: number[];
 }

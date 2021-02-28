@@ -15,5 +15,6 @@ namespace SuperSoft.Domain.Repositories
 		List<SubtaskAnswerGroup> GetSubtaskAnswerGroups(int subtaskId);
 		int AddOrUpdateAnswerGroup(int subtaskId, SubtaskAnswerGroup answerGroup);
 		Subtask GetSubtaskById(int subtaskId);
+		void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds);
 	}
 }

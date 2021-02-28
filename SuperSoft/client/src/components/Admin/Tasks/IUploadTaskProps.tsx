@@ -1,9 +1,8 @@
 ﻿import TaskStore from "../../../stores/TaskStore";
-import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
+import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 
 export class IUploadTaskProps {
     store: TaskStore;
-    lessonId: number;
-    toggle: any;
-    task: TaskReadModel;
+    lessonId: number | null;
+    task: TaskViewModel;
 }

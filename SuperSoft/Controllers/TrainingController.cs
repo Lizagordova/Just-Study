@@ -51,7 +51,7 @@ namespace SuperSoft.Controllers
 				var tasks = _trainingReader.GetTasks(query);
 				var tasksViewModels = tasks.Select(_mapper.Map<Task, TaskViewModel>).ToList();
 
-				return new JsonResult(tasks);
+				return new JsonResult(tasksViewModels);
 			}
 			catch (Exception e)
 			{

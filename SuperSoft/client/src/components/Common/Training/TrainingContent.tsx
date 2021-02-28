@@ -1,12 +1,13 @@
 ﻿import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, Alert } from "reactstrap";
 import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { Task } from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
 import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
+import TaskUpload from "../../Admin/Tasks/TaskUpload";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -17,54 +18,95 @@ class ITrainingContentProps {
 class TrainingContent extends Component<ITrainingContentProps> {
     choosenTags: TagViewModel[] = new Array<TagViewModel>();
     relatedTasks: TaskViewModel[] = new Array<TaskViewModel>();
+    taskUploadWindowOpen: boolean = false;
+    update: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             choosenTags: observable,
-            relatedTasks: observable
+            relatedTasks: observable,
+            taskUploadWindowOpen: observable,
+            update: observable
         });
+    }
+
+    updateToggle() {
+        this.update = !this.update;
     }
 
     renderApplyButton() {
         return (
-            <Button
-                color="primary"
-                style={{width: '100%'}}
-                onClick={() => this.applyTags()}>
-                ПРИМЕНИТЬ
-            </Button>
+            <div className="row justify-content-center" style={{marginTop: "10px", marginBottom: "10px"}}>
+                <Button
+                    color="primary"
+                    style={{width: '50%'}}
+                    onClick={() => this.applyTags()}>
+                    ПРИМЕНИТЬ
+                </Button>
+            </div>
+        );
+    }
+
+    renderTags(tags: TagViewModel[], update: boolean) {
+        return (
+            <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
+                {tags.map((tag, i) => {
+                    let outline = !this.choosenTags.includes(tag);
+                    if(tag.id !== 1 && tag.id !== 2 && tag.id !== 3) {//todo: неприятный хардкод 
+                        return (
+                            <Button
+                                outline={outline} color="primary"
+                                style={{
+                                    marginLeft: "10px",
+                                    marginBottom: "10px",
+                                    height: "auto",
+                                    width: "auto",
+                                    fontSize: "0.8em"
+                                }}
+                                active={false}
+                                key={i}
+                                onClick={() => this.toggleTag(tag)}>
+                                {tag.name}
+                            </Button>
+                        );
+                    }
+                })}
+            </div>
         );
     }
 
     renderFilters(tags: TagViewModel[]) {
-        return(
-            <div className="row">
-                {tags.map((tag) => {
-                    return(
-                        <Button
-                            outline color="primary"
-                            style={{width: '15%'}}
-                            onClick={() => this.toggleTag(tag)}>
-                            {tag.name}
-                        </Button>
-                    );
-                })}
-            </div>
-        );
+        if(tags.length > 0) {
+            return(
+                <>
+                    {this.renderTags(tags, this.update)}
+                    {this.renderApplyButton()}
+                </>
+            );
+        }
     }
 
     renderTasks(tasks: TaskViewModel[]) {
-        return(
-            <div className="row">
-                {tasks.map((task) => {
-                    return(
-                        <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>
-                    );
-                })}
-            </div>
-        );
+        if(tasks.length >  0) {
+            return(
+                <div className="row">
+                    {tasks.map((task) => {
+                        return(
+                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>
+                        );
+                    })}
+                </div>
+            );
+        } else {
+            return (
+                <div className="row justify-content-center">
+                    <Alert color="primary" style={{width: "80%"}}>К сожалению, пока нет заданий в этом разделе</Alert>
+                </div>
+            )
+        }
+        
     }
 
     render() {
@@ -72,20 +114,21 @@ class TrainingContent extends Component<ITrainingContentProps> {
         return(
             <>
                 {this.renderFilters(tags)}
-                {this.renderApplyButton()}
                 {this.renderTasks(this.relatedTasks)}
-                {this.addTask()}
+                {<TaskUpload store={this.props.store} isTraining={true}/>}
             </>
         )
     }
 
     toggleTag(tag: TagViewModel) {
         if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
-            let index = this.choosenTags.indexOf(tag);
-            this.choosenTags = this.choosenTags.splice(index, 1);
+            let choosenTags = this.choosenTags
+                .filter(t => t !== tag);
+            this.choosenTags = choosenTags;
         } else {
             this.choosenTags.push(tag);
         }
+        this.updateToggle();
     }
 
     applyTags() {
@@ -93,6 +136,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
         mainTag.id = this.props.mainTag;
         let choosenTags = this.choosenTags;
         choosenTags.push(mainTag);
+        console.log("this.props", this.props);
         this.props.store.taskStore
             .getTasks(choosenTags)
             .then((tasks) => {
@@ -100,8 +144,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
             });
     }
 
-    addTask() {
-        
+    toggleTaskUploadWindow() {
+        this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
     }
 }
 

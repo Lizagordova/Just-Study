@@ -25,6 +25,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetSubtaskAnswerGroupsSp = "TaskRepository_GetSubtaskAnswerGroups";
 		private const string AddOrUpdateAnswerGroupSp = "TaskRepository_AddOrUpdateAnswerGroup";
 		private const string GetSubtaskByIdSp = "TaskRepository_GetSubtaskById";
+		private const string AttachTagsToTaskSp = "TaskRepository_AttachTagsToTask";
 
 		public TaskRepository(
 			MapperService mapper
@@ -132,6 +133,26 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 
 			return subtask;
+		}
+
+		public void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAttachTagsToTaskParam(taskId, tagIds);
+			conn.Query(AttachTagsToTaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
+		private DynamicTvpParameters GetAttachTagsToTaskParam(int taskId, IReadOnlyCollection<int> tagIds)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			var tvp = new TableValuedParameter("tagIds", "UDT_Integer");
+			var udt = tagIds.Select(tId => new IntegerUdt() { Id = tId }).ToList();
+			tvp.AddGenericList(udt);
+			param.Add(tvp);
+
+			return param;
 		}
 
 		private DynamicTvpParameters GetAnswerGroupParam(int subtaskId, SubtaskAnswerGroup answerGroup)

@@ -17,7 +17,7 @@ namespace SuperSoft.Services.MapperService
 					.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
 					.ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType))
 					.ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.Order))
-					.ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags))
+					.ForMember(dest => dest.Tags, opt => opt.Ignore())
 					.ForMember(dest => dest.Subtasks, opt => opt.MapFrom(src => src.Subtasks));
 			});
 			

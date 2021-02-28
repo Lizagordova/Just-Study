@@ -48,7 +48,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
     
     renderCoursesMenu(courses: CourseViewModel[]) {
-        let rowHeight = this.isNavOpen ? courses.length * 100 : 40;
+        let rowHeight = this.isNavOpen ? courses.length * 130 : 40;
             return (
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                     {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
@@ -62,19 +62,15 @@ class CoursesPage extends Component<ICoursesPageProps> {
                                             return (
                                                 <Nav.Item key={course.id}>
                                                     <div className="row" key={course.id}>
-                                                        <div className="col-8">
+                                                        <i style={{marginLeft: '96%', width: '2%'}}
+                                                           onClick={() => this.deleteCourse(course.id)}
+                                                           className="fa fa-window-close" aria-hidden="true"/>
                                                             <Nav.Link
                                                                 eventKey={course.id}
                                                                 className="nav-link lesson"
                                                                 onClick={() => this.changeCourse(course)}>
                                                                 {course.name}
                                                             </Nav.Link>
-                                                        </div>
-                                                        <div className="col-2 col-lg-offset-10">
-                                                            <i className="fa fa-window-close"
-                                                               aria-hidden="true"
-                                                               onClick={() => this.deleteCourse(course.id)}/>
-                                                        </div>
                                                     </div>
                                                 </Nav.Item>
                                             );

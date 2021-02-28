@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { observer } from  "mobx-react";
-import { Card, CardHeader, Nav, NavItem, Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from "reactstrap";
+import { Card, CardHeader, Nav, NavItem, Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, CardFooter } from "reactstrap";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { IUserMainProps } from "./IUserMainProps";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";

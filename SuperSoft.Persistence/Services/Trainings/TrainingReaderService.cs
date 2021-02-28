@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Repositories;
@@ -17,9 +18,18 @@ namespace SuperSoft.Persistence.Services.Trainings
 
 		public IReadOnlyCollection<Task> GetTasks(TrainingTaskQuery query)
 		{
-			var tasks = _trainingRepository.GetTasks(query);
+			var tasks = _trainingRepository.GetTasks(query);//todo: очень плохо, особенно если заданий будет очень много
+			var finalTasks = new List<Task>();
+			if (query.TagIds.Count > 0)
+			{
+				finalTasks.AddRange(tasks.Where(task => task.Tags.Any(tag => query.TagIds.Contains(tag.Id))));
+			}
+			else
+			{
+				finalTasks = tasks.Take(15).ToList();
+			}
 
-			return tasks;
+			return finalTasks;
 		}
 	}
 }

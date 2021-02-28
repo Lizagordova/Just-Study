@@ -129,7 +129,7 @@ export function mapToTaskReadModel(task: TaskViewModel): TaskReadModel {
     taskReadModel.text = task.text;
     taskReadModel.taskType = task.taskType;
     taskReadModel.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
-    taskReadModel.tags = task.tags;
+    taskReadModel.tagIds = task.tags.map(t => t.id);
 
     return taskReadModel;
 }

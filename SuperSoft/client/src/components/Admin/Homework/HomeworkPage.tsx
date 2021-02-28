@@ -33,7 +33,7 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
                 {tasks === undefined && renderSpinner()}
                 {tasks.length === 0 && <Alert style={{marginTop: "10px"}} color="primary">Пока нет домашнего задания для этого урока</Alert>}
                 {(tasks !== undefined && tasks.length > 0) && this.renderTasks(tasks)}
-                <TaskUpload store={this.props.store}/>
+                <TaskUpload store={this.props.store} isTraining={false}/>
             </>
         );
     }

@@ -12,7 +12,7 @@ class ITrainingPageProps {
 @observer
 class TrainingPage extends Component<ITrainingPageProps> {
     filtersOpen: boolean;
-    mainTag: number;
+    mainTag: number = 1;
 
     constructor() {
         // @ts-ignore
@@ -27,43 +27,37 @@ class TrainingPage extends Component<ITrainingPageProps> {
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row>
-                    <Col sm={2}>
+                    <Col sm={2} style={{height: "160px"}}>
                         <Nav  variant="pills" className="flex-column">
                             <div className="container-fluid">
                                 <Nav.Item key={1}>
                                     <div className="row" key={1}>
-                                        <div className="col-8">
                                             <Nav.Link
                                                 eventKey={1}
                                                 className="nav-link lesson"
                                                 onClick={() => this.changeMainTag(1)}>
                                                 ГРАММАТИКА
                                             </Nav.Link>
-                                        </div>
                                     </div>
                                 </Nav.Item>
-                                <Nav.Item key={1}>
+                                <Nav.Item key={2}>
                                     <div className="row" key={2}>
-                                        <div className="col-8">
                                             <Nav.Link
                                                 eventKey={2}
                                                 className="nav-link lesson"
                                                 onClick={() => this.changeMainTag(2)}>
                                                 ЧТЕНИЕ
                                             </Nav.Link>
-                                        </div>
                                     </div>
                                 </Nav.Item>
-                                <Nav.Item key={1}>
+                                <Nav.Item key={3}>
                                     <div className="row" key={3}>
-                                        <div className="col-8">
                                             <Nav.Link
                                                 eventKey={3}
                                                 className="nav-link lesson"
                                                 onClick={() => this.changeMainTag(3)}>
                                                 АУДИРОВАНИЕ
                                             </Nav.Link>
-                                        </div>
                                     </div>
                                 </Nav.Item>
                             </div>
