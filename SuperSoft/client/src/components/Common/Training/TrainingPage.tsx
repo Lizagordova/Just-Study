@@ -25,15 +25,15 @@ class TrainingPage extends Component<ITrainingPageProps> {
 
     renderMenu() {
         return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Tab.Container id="left-tabs-example" defaultActiveKey={1}>
                 <Row>
                     <Col sm={2} style={{height: "160px"}}>
                         <Nav  variant="pills" className="flex-column">
                             <div className="container-fluid">
                                 <Nav.Item key={1}>
                                     <div className="row" key={1}>
-                                            <Nav.Link
-                                                eventKey={1}
+                                        <Nav.Link
+                                            eventKey={1}
                                                 className="nav-link lesson"
                                                 onClick={() => this.changeMainTag(1)}>
                                                 ГРАММАТИКА

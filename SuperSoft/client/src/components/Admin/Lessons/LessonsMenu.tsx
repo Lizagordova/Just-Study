@@ -54,7 +54,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     renderLessonsMenu(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
         return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Tab.Container id="left-tabs-example">
                 {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
                 <Row>
                     <Col sm={3} style={{height: `${rowHeight}px`}}>

@@ -27,8 +27,13 @@ class App extends Component<Props> {
         let role = this.props.store.userStore.currentUser.role;
         return(
             <>
-                {role === UserRole.Admin && <AdminMain store={store}/>}
-                {role === UserRole.User && <UserMain store={store}/>}
+                <main>
+                    {role === UserRole.Admin && <AdminMain store={store}/>}
+                    {role === UserRole.User && <UserMain store={store}/>}
+                </main>
+                <footer>
+                    низу
+                </footer>
             </>
         );
     }
