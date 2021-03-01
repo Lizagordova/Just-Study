@@ -41,18 +41,19 @@ class App extends Component<Props> {
         return(
             <div className="container-fluid">
                 <div className="row rowAuth justify-content-center">
-                    <Nav tabs>
+                    <Nav tabs defaultValue={1}>
                         <NavItem>
                             <NavLink to={"#"}
                                   style={{color: 'white'}}
-                                  onClick={() => this.props.store.userStore.registrationToggle()}
+                                  onClick={() => this.props.store.userStore.registrationToggle("authorization")}
                                   className="nav-link"
-                                  activeClassName="selected">ВХОД</NavLink>
+                                  activeClassName="selected"
+                                >ВХОД</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink to={"#"} 
                                   style={{color: 'white'}}
-                                  onClick={() => this.props.store.userStore.registrationToggle()}
+                                  onClick={() => this.props.store.userStore.registrationToggle("registration")}
                                   className="nav-link"
                                   activeClassName="selected">РЕГИСТРАЦИЯ</NavLink>
                         </NavItem>

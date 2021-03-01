@@ -54,9 +54,14 @@ class UserStore {
     }
 
     @action
-    registrationToggle() {
-        this.registrationRequired = !this.registrationRequired;
-        this.authorizationRequired = !this.authorizationRequired;
+    registrationToggle(type: string) {
+        if(type === "authorization") {
+            this.authorizationRequired = true;
+            this.registrationRequired = false;
+        } else if(type === "registration") {
+            this.authorizationRequired = false;
+            this.registrationRequired = true;
+        }
     }
 
     @action
