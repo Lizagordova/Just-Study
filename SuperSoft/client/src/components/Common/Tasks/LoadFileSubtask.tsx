@@ -9,6 +9,7 @@ import { UserSubtaskReadModel } from "../../../Typings/readModels/UserSubtaskRea
 import { UserSubtaskViewModel } from "../../../Typings/viewModels/UserSubtaskViewModel";
 import {renderSpinner} from "../../../functions/renderSpinner";
 import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
+import {getFileName} from "../../../functions/getFileName";
 
 @observer
 export class LoadFileSubtask extends Component<ISubtaskProps> {
@@ -84,21 +85,9 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
         }
     }
 
-    getFileName(path: string): string {
-        let pathParts = path.split("/");
-        let fileName = "";
-        if(pathParts.length > 0) {
-            fileName = pathParts[pathParts.length - 1];
-        } else {
-            fileName = path;
-        }
-
-        return fileName;
-    }
-
     renderFile(subtaskPath: string) {
         let path = subtaskPath.replace('client/build', './');
-        let fileName = this.getFileName(path);
+        let fileName = getFileName(path);
         return(
             <>
                 <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>

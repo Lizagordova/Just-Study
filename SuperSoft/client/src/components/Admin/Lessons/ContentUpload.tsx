@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import LessonStore from "../../../stores/LessonStore";
-import { Alert, Button } from "reactstrap";
+import { Alert, Button, Fade } from "reactstrap";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
 import {renderSpinner} from "../../../functions/renderSpinner";
@@ -56,6 +56,30 @@ export class ContentUpload extends Component<IContentProps> {
         );
     }
 
+    renderInput() {
+        return(
+            <>
+            <input className="fileInput"
+                   type="file"
+                   onChange={(e) => this.handleChange(e)} />
+            <Fade in={true}
+                style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
+                Допустимые форматы: pdf, mp4, doc, docx
+            </Fade>
+        </>
+        );
+    }
+
+    renderSubmitButton() {
+        return (
+            <Button outline color="primary"
+                    type="submit"
+                    onClick={(e) => this.addOrUpdateMaterial(e)}>
+                <i className="fa fa-plus" aria-hidden="true"/>
+            </Button>
+        );
+    }
+
     render() {
         return(
             <>
@@ -63,16 +87,10 @@ export class ContentUpload extends Component<IContentProps> {
                 <div className="row justify-content-center">
                     {this.renderCautions()}
                     <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <input className="fileInput"
-                            type="file"
-                            onChange={(e) => this.handleChange(e)} />
+                        {this.renderInput()}
                     </div>
                     <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                        <Button outline color="primary"
-                             type="submit"
-                             onClick={(e) => this.addOrUpdateMaterial(e)}>
-                            <i className="fa fa-plus" aria-hidden="true"/>
-                        </Button>
+                        {this.renderSubmitButton()}
                     </div>
                 </div>
             </>

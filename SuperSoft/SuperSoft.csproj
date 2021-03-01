@@ -98,6 +98,7 @@
 		<None Include="client\src\components\User\Tracker\Tracker.tsx" />
 		<None Include="client\src\components\User\Tracker\Types\NaStarteTracker.tsx" />
 		<None Include="client\src\functions\formatDate.tsx" />
+		<None Include="client\src\functions\getFileName.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
 		<None Include="client\src\functions\mapper.tsx" />
 		<None Include="client\src\functions\renderLoadingProgress.tsx" />

@@ -6,6 +6,7 @@ import {makeObservable, observable} from "mobx";
 import LessonStore from "../../../stores/LessonStore";
 import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 import {UserRole} from "../../../Typings/enums/UserRole";
+import {getFileName} from "../../../functions/getFileName";
 
 class IMaterialProps {
     lessonStore: LessonStore;
@@ -36,18 +37,26 @@ export class Material extends Component<IMaterialProps> {
     }
 
     renderMaterial(material: LessonMaterialViewModel) {
-        if(material.path.includes("pptx") || material.path.includes("pdf")) {
+        if(material.path.includes("pptx")) {
             let path = material.path.replace("client/build", ".");
-            console.log("path", path);
             return (
-                <iframe
-                    src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://juststudy.ru.com/${path}]`}
-                    width='100%' height='600px' frameBorder='0'/>
+                <>
+                    {this.renderDeleteButton()}
+                    <iframe
+                        src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://juststudy.ru.com/${path}]`}
+                        width='100%' height='600px' frameBorder='0'/>
+                </>
             );
-            /*return (
-                <iframe src={path} width='962px' height='565px' frameBorder='0' />
-            );*/
-        } else if(material.path.includes("mp4")) {
+        } else if(material.path.includes("pdf")) {
+            let path = material.path.replace("client/build", ".");
+            return (
+                <>
+                    {this.renderDeleteButton()}
+                    <embed src={path} type="application/pdf" width="100%" height="600px" />);
+                 </>
+            );
+        } 
+        else if(material.path.includes("mp4")) {
             let path = material.path.replace("client/build", ".");
             return (
                 <>
@@ -55,10 +64,14 @@ export class Material extends Component<IMaterialProps> {
                     <iframe src={path} className="materialContent" />
                 </>
             );
-        } else {
+        } else if(material.path.includes("docx") || material.path.includes("doc")) {
+            let path = material.path.replace("client/build", ".");
+            let fileName = getFileName(path);
             return(
                 <>
-                    {material.id} {material.path} {material.url}
+                    {this.renderDeleteButton()}
+                    <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
+
                 </>
             );
         }
