@@ -17,11 +17,15 @@ import {UserTaskViewModel} from "../../../Typings/viewModels/UserTaskViewModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import AddSubtask from "../../Admin/Tasks/AddSubtask";
 import {TaskType} from "../../../Typings/enums/TaskType";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
+import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 
 class ITaskProps {
     store: RootStore;
     task: TaskViewModel;
     userId: number;
+    isTraining: boolean;
+    tags: TagReadModel[] | null;
 }
 
 @observer
@@ -216,8 +220,18 @@ export class Task extends Component<ITaskProps> {
         let result = window.confirm('Вы уверены, что хотите удалить ВСЁ задание?');
         if(result) {
             this.props.store.taskStore
-                .deleteTask(this.props.task.id, this.props.store.lessonStore.choosenLesson.id)
+                .deleteTask(this.props.task.id)
                     .then((status) => {
+                        console.log("props", this.props);
+                        if(this.props.isTraining) {
+                            if(this.props.tags !== null) {
+                                this.props.store.taskStore.getTasks(this.props.tags);
+                            } else {
+                                this.props.store.taskStore.getTasks(new Array<TagReadModel>(0));
+                            }
+                        } else {
+                            this.props.store.taskStore.getTasksByLesson(this.props.store.lessonStore.choosenLesson.id);
+                        }
                         this.notDeleted = status !== 200;
                     });
             }

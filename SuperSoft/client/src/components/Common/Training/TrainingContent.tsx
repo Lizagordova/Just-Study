@@ -1,13 +1,14 @@
-﻿import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
-import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
-import { observer } from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
-import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
-import { Task } from "../Tasks/Task";
+﻿import React, {Component} from "react";
+import {Alert, Button} from "reactstrap";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
+import {observer} from "mobx-react";
+import {makeObservable, observable} from "mobx";
+import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
+import {Task} from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
-import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
+import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import TaskUpload from "../../Admin/Tasks/TaskUpload";
+import {UserRole} from "../../../Typings/enums/UserRole";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -92,9 +93,9 @@ class TrainingContent extends Component<ITrainingContentProps> {
         if(tasks.length >  0) {
             return(
                 <div className="row">
-                    {tasks.map((task) => {
+                    {tasks.map((task, i) => {
                         return(
-                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>
+                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTraining={true} tags={this.choosenTags}/>
                         );
                     })}
                 </div>
@@ -104,9 +105,16 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 <div className="row justify-content-center">
                     <Alert color="primary" style={{width: "80%"}}>К сожалению, пока нет заданий в этом разделе</Alert>
                 </div>
-            )
+            );
         }
-        
+    }
+
+    renderTaskUpload() {
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return (
+                <TaskUpload store={this.props.store} isTraining={true}/>
+            );
+        }
     }
 
     render() {
@@ -115,7 +123,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
             <>
                 {this.renderFilters(tags)}
                 {this.renderTasks(this.relatedTasks)}
-                {<TaskUpload store={this.props.store} isTraining={true}/>}
+                {this.renderTaskUpload()}
             </>
         )
     }

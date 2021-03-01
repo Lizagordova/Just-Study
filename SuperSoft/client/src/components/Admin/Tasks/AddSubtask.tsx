@@ -66,7 +66,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
         return (
             <>
                 <Input type="select" id="exampleSelect" onClick={(e) => this.handleSubtaskType(e)}>
-                    <option value="InsertWordsIntoGaps">{translateSubtaskType(SubtaskType.InsertWordsIntoGaps)}</option>
+                    <option disabled value="InsertWordsIntoGaps">{translateSubtaskType(SubtaskType.InsertWordsIntoGaps)}</option>
                     <option value="RightVerbForm">{translateSubtaskType(SubtaskType.RightVerbForm)}</option>
                     <option value="LoadAudio">{translateSubtaskType(SubtaskType.LoadAudio)}</option>
                     <option value="FillGaps">{translateSubtaskType(SubtaskType.FillGaps)}</option>

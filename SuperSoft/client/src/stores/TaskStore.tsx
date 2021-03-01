@@ -142,7 +142,7 @@ class TaskStore {
         return formData;
     }
 
-    async deleteTask(taskId: number, lessonId: number) {
+    async deleteTask(taskId: number) {
         const response = await fetch("/deletetask", {
             method: "POST",
             headers: {
@@ -152,10 +152,6 @@ class TaskStore {
                 id: taskId
             })
         });
-        if(response.status === 200) {
-            this.getTasksByLesson(lessonId);
-        }
-
         return response.status;
     }
 

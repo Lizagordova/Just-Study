@@ -78,7 +78,7 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
 
     renderTask() {
         return(
-            <Task store={this.props.store} task={this.props.task} userId={this.props.userId}/>
+            <Task store={this.props.store} task={this.props.task} userId={this.props.userId} isTraining={false} tags={null}/>
         );
     }
 
