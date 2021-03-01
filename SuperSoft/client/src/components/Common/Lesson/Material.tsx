@@ -52,7 +52,7 @@ export class Material extends Component<IMaterialProps> {
             return (
                 <>
                     {this.renderDeleteButton()}
-                    <embed src={path} type="application/pdf" width="100%" height="600px" />);
+                    <embed src={path} type="application/pdf" width="100%" height="600px"  contentEditable={false}/>
                  </>
             );
         } 
@@ -73,6 +73,10 @@ export class Material extends Component<IMaterialProps> {
                     <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
 
                 </>
+            );
+        } else {
+            return (
+                <Alert color="primary">Пока данный формат не поддерживается.</Alert>
             );
         }
     }

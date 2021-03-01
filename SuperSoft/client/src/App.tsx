@@ -32,7 +32,6 @@ class App extends Component<Props> {
                     {role === UserRole.User && <UserMain store={store}/>}
                 </main>
                 <footer>
-                    низу
                 </footer>
             </>
         );
