@@ -20,19 +20,22 @@ namespace SuperSoft.Controllers
 		private readonly ITrainingReaderService _trainingReader;
 		private readonly ILogger<TrainingController> _logger;
 		private readonly LogService _logService;
+		private readonly MapHelper _mapHelper;
 
 		public TrainingController(
 			MapperService mapper,
 			ITrainingEditorService trainingEditor,
 			ITrainingReaderService trainingReader,
 			ILogger<TrainingController> logger,
-			LogService logService)
+			LogService logService,
+			MapHelper mapHelper)
 		{
 			_mapper = mapper;
 			_trainingEditor = trainingEditor;
 			_trainingReader = trainingReader;
 			_logger = logger;
 			_logService = logService;
+			_mapHelper = mapHelper;
 		}
 
 		[HttpPost]
@@ -45,11 +48,11 @@ namespace SuperSoft.Controllers
 				return new BadRequestResult();
 			}
 
-			var query = new TrainingTaskQuery {TagIds = tasksQuery.TagIds};
+			var query = new TrainingTaskQuery { TagIds = tasksQuery.TagIds };
 			try
 			{
 				var tasks = _trainingReader.GetTasks(query);
-				var tasksViewModels = tasks.Select(_mapper.Map<Task, TaskViewModel>).ToList();
+				var tasksViewModels = tasks.Select(_mapHelper.MapTaskViewModel).ToList();
 
 				return new JsonResult(tasksViewModels);
 			}

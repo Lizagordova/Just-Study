@@ -110,9 +110,10 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     renderTextField() {
+       /* if(this.task.taskType)
         return(
             <></>
-        );
+        );*/
     }
 
     renderAddSubtaskButton() {
