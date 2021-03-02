@@ -49,6 +49,10 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и слово не сохранилось!</Alert>}

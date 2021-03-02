@@ -47,13 +47,6 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
         this.userAnswerReadModel.answer = userSubtask.answer;
     }
 
-    setInitialState() {
-        this.notSaved = false;
-        this.saved = false;
-        this.loading = false;
-        this.notDeleted = false;
-    }
-
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
@@ -104,6 +97,11 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
@@ -140,7 +138,6 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     }
 
     renderInputFile() {
-        this.setInitialState();
         return(
             <div className="col-9">
                 <Input className="fileInput"

@@ -48,6 +48,10 @@ class Participant extends Component<IParticipantProps> {
     }
 
     renderWarnings() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}

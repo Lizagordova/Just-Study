@@ -100,10 +100,20 @@ class User extends Component<IUserProps> {
         );
     }
 
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и не удалось удалить пользователя :(</Alert>}
+            </>
+        );
+    }
+
     render() {
         return(
             <>
-                {this.notDeleted && <Alert color="danger">Что-то пошло не так и не удалось удалить пользователя :(</Alert>}
                 {this.editUser && this.renderEditUserWindow()}
                 {this.renderUser(this.props.user)}
             </>

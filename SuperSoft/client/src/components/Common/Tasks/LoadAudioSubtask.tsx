@@ -38,13 +38,6 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         }
     }
 
-    setInitialState() {
-        this.notSaved = false;
-        this.saved = false;
-        this.loading = false;
-        this.notDeleted = false;
-    }
-
     setUserAnswer() {
         this.userAnswerReadModel.userId = this.props.userId;
         this.userAnswerReadModel.subtaskId = this.props.subtask.id;
@@ -92,6 +85,11 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
@@ -176,7 +174,6 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     inputAnswer(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setInitialState();
         // @ts-ignore
         this.userAnswerReadModel.file = event.target.files[0];
     }

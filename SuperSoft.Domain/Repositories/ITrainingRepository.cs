@@ -6,6 +6,6 @@ namespace SuperSoft.Domain.Repositories
 {
 	public interface ITrainingRepository
 	{
-		IReadOnlyCollection<Task> GetTasks(TrainingTaskQuery query);
+		List<Task> GetTasks(TrainingTaskQuery query);
 	}
 }

@@ -102,9 +102,12 @@ class Comment extends Component<ICommentProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
-                {this.notDeleted && <Alert color="danger">Что-то пошло не так и комментарий не удалился</Alert>}
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и комментарий не удалился. Попробуйте ещё раз.</Alert>}
             </>
         );
     }

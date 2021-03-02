@@ -51,11 +51,22 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         this.props.store.taskStore.getTasksByLesson(lesson.id);
     }
 
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
+            </>
+        );
+    }
+
     renderLessonsMenu(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
         return(
             <Tab.Container id="left-tabs-example">
-                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
+                {this.renderCautions()}
                 <Row>
                     <Col sm={3} style={{height: `${rowHeight}px`}}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>

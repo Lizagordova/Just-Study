@@ -129,6 +129,10 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
  
     renderCaution() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
@@ -206,8 +210,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                     if(status === 200) {
                         this.props.store.getTasksByLesson(this.props.lessonId);
                     }
+                } else {
+                    this.props.store.getTasks(new Array<TagReadModel>());
                 }
-                //todo: иначе задания для тренировок надо обновлять!
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });

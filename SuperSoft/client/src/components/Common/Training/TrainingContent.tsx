@@ -1,8 +1,8 @@
 ﻿import React, {Component} from "react";
-import {Alert, Button} from "reactstrap";
+import { Alert, Button } from "reactstrap";
 import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {observer} from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Task} from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
@@ -18,18 +18,18 @@ class ITrainingContentProps {
 @observer
 class TrainingContent extends Component<ITrainingContentProps> {
     choosenTags: TagViewModel[] = new Array<TagViewModel>();
-    relatedTasks: TaskViewModel[] = new Array<TaskViewModel>();
     taskUploadWindowOpen: boolean = false;
     update: boolean = false;
+    notReceived: boolean;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             choosenTags: observable,
-            relatedTasks: observable,
             taskUploadWindowOpen: observable,
-            update: observable
+            update: observable,
+            notReceived: observable
         });
     }
 
@@ -90,6 +90,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     renderTasks(tasks: TaskViewModel[]) {
+        console.log("tasks", toJS(tasks));
         if(tasks.length >  0) {
             return(
                 <div className="row">
@@ -109,10 +110,19 @@ class TrainingContent extends Component<ITrainingContentProps> {
         }
     }
 
+    renderCautions() {
+        setTimeout(() => { this.notReceived = false }, 3000);
+        return(
+            <>
+                {this.notReceived && <Alert color="danger">Что-то пошло не так и не удалось получить задания по выбранным тегам. Попробуйте ещё раз.</Alert>}
+            </>
+        );
+    }
+    
     renderTaskUpload() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return (
-                <TaskUpload store={this.props.store} isTraining={true}/>
+                <TaskUpload store={this.props.store} isTraining={true} />
             );
         }
     }
@@ -121,8 +131,9 @@ class TrainingContent extends Component<ITrainingContentProps> {
         let tags = this.props.store.taskStore.tags;
         return(
             <>
+                {this.renderCautions()}
                 {this.renderFilters(tags)}
-                {this.renderTasks(this.relatedTasks)}
+                {this.renderTasks(this.props.store.taskStore.tasksByTags)}
                 {this.renderTaskUpload()}
             </>
         )
@@ -144,11 +155,10 @@ class TrainingContent extends Component<ITrainingContentProps> {
         mainTag.id = this.props.mainTag;
         let choosenTags = this.choosenTags;
         choosenTags.push(mainTag);
-        console.log("this.props", this.props);
         this.props.store.taskStore
             .getTasks(choosenTags)
-            .then((tasks) => {
-                this.relatedTasks = tasks;
+            .then((status) => {
+                this.notReceived = status !== 200;
             });
     }
 

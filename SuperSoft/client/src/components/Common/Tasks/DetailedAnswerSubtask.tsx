@@ -39,12 +39,6 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         this.update = !this.update;
     }
 
-    setInitialState() {
-        this.notDeleted = false;
-        this.saved = false;
-        this.notSaved = false;
-    }
-
     setUserAnswer(userId: number, subtaskId: number, userSubtask: UserSubtaskViewModel) {
         this.userAnswer.userId = userId;
         this.userAnswer.subtaskId = subtaskId;
@@ -106,6 +100,11 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и задание не сохранилось</Alert>}
@@ -143,7 +142,6 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
 
     inputAnswer(event: React.FormEvent<HTMLTextAreaElement>) {
-        this.setInitialState();
         this.userAnswer.answer = event.currentTarget.value;
     }
 

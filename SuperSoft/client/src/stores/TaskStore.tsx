@@ -13,11 +13,13 @@ import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
     tags: TagViewModel[] = new Array<TagViewModel>();
+    tasksByTags: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         makeObservable(this, {
             tasksByChoosenLesson: observable,
-            tags: observable
+            tags: observable,
+            tasksByTags: observable
         });
         this.setInitialData();
     }
@@ -271,7 +273,7 @@ class TaskStore {
         return userTask;
     }
 
-    async getTasks(tags: TagReadModel[]): Promise<TaskViewModel[]> {
+    async getTasks(tags: TagReadModel[]): Promise<number> {
         let tagIds = tags.map(t => t.id);
         let tasks = new Array<TaskViewModel>();
         const response = await fetch("/gettasks", {
@@ -284,10 +286,10 @@ class TaskStore {
             })
         });
         if(response.status === 200) {
-            tasks = await response.json();
+            this.tasksByTags = await response.json();
         }
 
-        return tasks;
+        return response.status;
     }
 
     async updateTaskByTaskId(taskId: number) {

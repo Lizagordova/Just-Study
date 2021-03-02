@@ -32,7 +32,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
             <>
                 <Label>Номер</Label>
                 <Input
-                    value={this.subtask.order}
+                    defaultValue={this.subtask.order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
         );

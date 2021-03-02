@@ -44,6 +44,9 @@ class AddSubtask extends Component<IAddSubtaskProps> {
     }
 
     renderWarnings() {
+        setTimeout(() => {
+            this.notSaved = false;
+        }, 6000);
         return(
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и подзадание не сохранилось</Alert>}

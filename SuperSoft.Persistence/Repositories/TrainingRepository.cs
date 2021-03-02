@@ -23,7 +23,7 @@ namespace SuperSoft.Persistence.Repositories
 			_mapper = mapper;
 		}
 
-		public IReadOnlyCollection<Task> GetTasks(TrainingTaskQuery query)
+		public List<Task> GetTasks(TrainingTaskQuery query)
 		{
 			var conn = DatabaseHelper.OpenConnection();
 			//var param = GetGetTasksParam(query);
@@ -59,7 +59,7 @@ namespace SuperSoft.Persistence.Repositories
 			return taskData;
 		}
 
-		private IReadOnlyCollection<Task> MapTaskCollection(TaskData taskData)
+		private List<Task> MapTaskCollection(TaskData taskData)
 		{
 			var tasks = taskData.Tasks
 				.GroupJoin(

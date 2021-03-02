@@ -43,15 +43,27 @@ class CoursesPage extends Component<ICoursesPageProps> {
             );
         }
     }
+
     toggleNav() {
         this.isNavOpen = !this.isNavOpen;
     }
-    
+
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
+            </>
+        );
+    }
+
     renderCoursesMenu(courses: CourseViewModel[]) {
         let rowHeight = this.isNavOpen ? courses.length * 130 : 40;
             return (
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                    {this.notDeleted && <Alert>Что-то пошло не так и курс не удалился</Alert>}
+                    {this.renderCautions()}
                     <Row>
                         <Col sm={3} style={{height: `${rowHeight}px`}}>
                             <Button color="primary" onClick={() => this.toggleNav()}>КУРСЫ</Button>

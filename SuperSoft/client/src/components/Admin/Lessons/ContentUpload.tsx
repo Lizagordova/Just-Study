@@ -28,15 +28,8 @@ export class ContentUpload extends Component<IContentProps> {
         });
     }
 
-    setInitialState() {
-        this.notLoaded = false;
-        this.loaded = false;
-        this.loading = false;
-    }
-
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault();
-        this.setInitialState();
         let reader = new FileReader();
         // @ts-ignore
         let file = event.target.files[0];
@@ -47,6 +40,10 @@ export class ContentUpload extends Component<IContentProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notLoaded = false;
+            this.loaded = false;
+        }, 6000);
         return(
             <>
                 {this.loading && renderSpinner()}

@@ -81,11 +81,21 @@ export class Material extends Component<IMaterialProps> {
         }
     }
 
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и материал не удалился</Alert>}
+            </>
+        );
+    }
+
     render() {
         return(
             <>
                 {this.renderMaterial(this.props.material)}
-                {this.notDeleted && <Alert color="danger">Что-то пошло не так и материал не удалился</Alert>}
             </>
         );
     }

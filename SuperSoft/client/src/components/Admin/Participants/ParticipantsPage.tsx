@@ -85,6 +85,11 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     }
 
     renderSavedDetails() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
                 {this.saved && <Alert color="success">Список успешно обновлён!</Alert>}

@@ -39,9 +39,12 @@ class AnswerToWordOfADay extends Component <IAnswerToWordOfADayProps> {
     }
 
     renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+        }, 6000);
         return(
             <>
-                {this.notSaved && <Alert color="danger">Не удалось сохранить ответ:(</Alert>}
+                {this.notSaved && <Alert color="danger">Не удалось сохранить ответ:( Попробуйте ещё раз!</Alert>}
             </>
         );
     }

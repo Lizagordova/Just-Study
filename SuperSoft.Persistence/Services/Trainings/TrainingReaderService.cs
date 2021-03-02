@@ -10,10 +10,13 @@ namespace SuperSoft.Persistence.Services.Trainings
 	public class TrainingReaderService : ITrainingReaderService
 	{
 		private readonly ITrainingRepository _trainingRepository;
+		private readonly ITaskRepository _taskRepository;
 		public TrainingReaderService(
-			ITrainingRepository trainingRepository)
+			ITrainingRepository trainingRepository,
+			ITaskRepository taskRepository)
 		{
 			_trainingRepository = trainingRepository;
+			_taskRepository = taskRepository;
 		}
 
 		public IReadOnlyCollection<Task> GetTasks(TrainingTaskQuery query)
@@ -28,8 +31,21 @@ namespace SuperSoft.Persistence.Services.Trainings
 			{
 				finalTasks = tasks.Take(15).ToList();
 			}
+			AddAnswerGroups(finalTasks);
 
 			return finalTasks;
+		}
+		
+		private void AddAnswerGroups(List<Task> tasks)
+		{
+			tasks.ForEach(task =>
+			{
+				task.Subtasks.ForEach(subtask =>
+				{
+					subtask.AnswerGroups = _taskRepository.GetSubtaskAnswerGroups(subtask.Id);
+				});
+			});
+
 		}
 	}
 }

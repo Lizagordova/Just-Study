@@ -149,11 +149,22 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
         );
     }
 
+    renderCautions() {
+        setTimeout(() => {
+            this.notSaved = false;
+        }, 6000);
+        return (
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и пользователь не сохранился :(</Alert>}
+            </>
+        );
+    }
+
     renderBody(user: UserViewModel) {
         return(
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и пользователь не сохранился :(</Alert>}
+                    {this.renderCautions()}
                     <div className="row justify-content-center">
                         {this.renderFirstNameInput(user)}
                     </div>

@@ -76,6 +76,10 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     }
 
     renderWarnings() {
+        setTimeout(() => {
+            this.notSaved = false;
+            this.saved = false;
+        }, 6000);
         return (
             <>
                 {this.notSaved && <Alert color="danger">Что-то пошло не так и курс не сохранилось</Alert>}

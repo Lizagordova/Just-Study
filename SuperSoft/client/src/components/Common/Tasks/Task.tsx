@@ -3,7 +3,7 @@ import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Alert, Button, Card, CardBody, CardTitle} from 'reactstrap';
 import {UserRole} from "../../../Typings/enums/UserRole";
 import RootStore from "../../../stores/RootStore";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {observer} from "mobx-react";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
@@ -207,10 +207,13 @@ export class Task extends Component<ITaskProps> {
 
     render() {
         let task = this.props.task;
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
         return(
             <>
                 {this.renderTask(task)}
-                {this.notDeleted &&  <Alert className="alertSaved" color="danger">Что-то пошло не так, задание не удалилось:(</Alert>}
+                {this.notDeleted &&  <Alert className="alertSaved" color="danger">Что-то пошло не так, задание не удалилось:( Попробуйте ещё раз</Alert>}
                 {this.editTaskWindowOpen && <TaskEdit task={task} taskStore={this.props.store.taskStore} toggle={this.editTaskToggle} lessonId={this.props.store.lessonStore.choosenLesson.id}/>}
             </>
         );
@@ -222,7 +225,7 @@ export class Task extends Component<ITaskProps> {
             this.props.store.taskStore
                 .deleteTask(this.props.task.id)
                     .then((status) => {
-                        console.log("props", this.props);
+                        console.log("props", toJS(this.props));
                         if(this.props.isTraining) {
                             if(this.props.tags !== null) {
                                 this.props.store.taskStore.getTasks(this.props.tags);
