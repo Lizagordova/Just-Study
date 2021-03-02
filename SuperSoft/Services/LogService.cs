@@ -330,6 +330,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddFeedbackException(ILogger logger, Exception e, string email, string name, string message)
+		{
+			var customMessage = $"Не удалось добавить фидбек c email={email}, name={name}, message={message}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

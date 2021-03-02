@@ -13,6 +13,7 @@ using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
 using SuperSoft.Domain.Services.Comments;
 using SuperSoft.Domain.Services.Courses;
+using SuperSoft.Domain.Services.Feedbacks;
 using SuperSoft.Domain.Services.Lessons;
 using SuperSoft.Domain.Services.Notifications;
 using SuperSoft.Domain.Services.Progress;
@@ -27,6 +28,7 @@ using SuperSoft.Helpers;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services.Comments;
 using SuperSoft.Persistence.Services.Courses;
+using SuperSoft.Persistence.Services.Feedbacks;
 using SuperSoft.Persistence.Services.Lessons;
 using SuperSoft.Persistence.Services.MapperService;
 using SuperSoft.Persistence.Services.Notifications;
@@ -97,6 +99,7 @@ namespace SuperSoft
 			services.AddSingleton<IUserRepository, UserRepository>();
 			services.AddSingleton<IWordRepository, WordRepository>();
 			services.AddSingleton<IUserTaskRepository, UserTaskRepository>();
+			services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
 		}
 
 		private void AddServices(IServiceCollection services)
@@ -124,6 +127,7 @@ namespace SuperSoft
 			services.AddSingleton<IUserEditorService, UserEditorService>();
 			services.AddSingleton<IWordEditorService, WordEditorService>();
 			services.AddSingleton<IWordReaderService, WordReaderService>();
+			services.AddSingleton<IFeedbackEditorService, FeedbackEditorService>();
 			services.AddSingleton<LogService>();
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();

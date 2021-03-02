@@ -17,6 +17,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 			CreateTrackerMappings();
 			CreateUserMappings();
 			CreateLogMappings();
+			CreateFeedbackMappings();
 		}
 	}
 }
