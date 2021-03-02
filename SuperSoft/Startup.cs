@@ -128,6 +128,7 @@ namespace SuperSoft
 			services.AddSingleton<IWordEditorService, WordEditorService>();
 			services.AddSingleton<IWordReaderService, WordReaderService>();
 			services.AddSingleton<IFeedbackEditorService, FeedbackEditorService>();
+			services.AddSingleton<IFeedbackReaderService, FeedbackReaderService>();
 			services.AddSingleton<LogService>();
 			services.AddSingleton<MainMapperService>();
 			services.AddSingleton<MapperService>();

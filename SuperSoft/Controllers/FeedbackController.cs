@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -7,6 +8,7 @@ using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
+using SuperSoft.ViewModels;
 
 namespace SuperSoft.Controllers
 {
@@ -14,18 +16,21 @@ namespace SuperSoft.Controllers
 	{
 		private readonly MapperService _mapper;
 		private readonly IFeedbackEditorService _feedbackEditor;
+		private readonly IFeedbackReaderService _feedbackReader;
 		private readonly ILogger<FeedbackController> _logger;
 		private readonly LogService _logService;
 
 		public FeedbackController(
 			MapperService mapper,
 			IFeedbackEditorService feedbackEditor,
+			IFeedbackReaderService feedbackReader,
 			ILogger<FeedbackController> logger,
 			LogService logService
 			)
 		{
 			_mapper = mapper;
 			_feedbackEditor = feedbackEditor;
+			_feedbackReader = feedbackReader;
 			_logger = logger;
 			_logService = logService;
 		}
@@ -50,6 +55,31 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogAddFeedbackException(_logger, e, feedbackReadModel.Email, feedbackReadModel.Name, feedbackReadModel.Message);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/getfeedbacks")]
+		public ActionResult GetFeedbacks([FromBody]FeedbackReadModel feedbackReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role == null)
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var feedbacks = _feedbackReader.GetFeedbacks(feedbackReadModel.Old);
+				var feedbacksViewModels = feedbacks.Select(_mapper.Map<Feedback, FeedbackViewModel>).ToList();
+
+				return new JsonResult(feedbacksViewModels);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetFeedbacksException(_logger, e);
 
 				return new StatusCodeResult(500);
 			}

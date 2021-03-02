@@ -1,0 +1,8 @@
+﻿CREATE TABLE [Feedback]
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[Name] NVARCHAR(50),
+	[Email] NVARCHAR(100),
+	[Message] NVARCHAR(MAX),
+	[Old] BIT
+);

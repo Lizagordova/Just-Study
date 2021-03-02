@@ -12,6 +12,7 @@ namespace SuperSoft.Services.MapperService
 			AddMapping<FeedbackReadModel, Feedback>(cfg =>
 			{
 				cfg.CreateMap<FeedbackReadModel, Feedback>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
@@ -20,6 +21,7 @@ namespace SuperSoft.Services.MapperService
 			AddMapping<Feedback, FeedbackViewModel>(cfg =>
 			{
 				cfg.CreateMap<Feedback, FeedbackViewModel>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));

@@ -1,9 +1,10 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System.Collections.Generic;
+using SuperSoft.Domain.Models;
 
 namespace SuperSoft.Domain.Services.Feedbacks
 {
-	public interface IFeedbackEditorService
+	public interface IFeedbackReaderService
 	{
-		void AddFeedback(Feedback feedback);
+		List<Feedback> GetFeedbacks(bool old);
 	}
 }

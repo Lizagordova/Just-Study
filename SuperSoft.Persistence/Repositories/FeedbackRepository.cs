@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Dapper;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
@@ -12,7 +14,8 @@ namespace SuperSoft.Persistence.Repositories
 	public class FeedbackRepository : IFeedbackRepository
 	{
 		private readonly MapperService _mapper;
-		private const string AddFeedBackSp = "FeedbackRepository_AddFeedBack";
+		private const string AddFeedBackSp = "FeedbackRepository_AddFeedback";
+		private const string GetFeedbacksSp = "FeedbackRepository_GetFeedbacks";
 
 		public FeedbackRepository(
 			MapperService mapper)
@@ -26,6 +29,18 @@ namespace SuperSoft.Persistence.Repositories
 			var param = GetFeedbackParam(feedback);
 			conn.Query(AddFeedBackSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
+		}
+
+		public List<Feedback> GetFeedbacks(bool old)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = new DynamicTvpParameters();
+			param.Add("old", old);
+			var feedbacksUdt = conn.Query<FeedbackUdt>(GetFeedbacksSp, param, commandType: CommandType.StoredProcedure);
+			var feedbacks = feedbacksUdt.Select(_mapper.Map<FeedbackUdt, Feedback>).ToList();
+			DatabaseHelper.CloseConnection(conn);
+
+			return feedbacks;
 		}
 
 		private DynamicTvpParameters GetFeedbackParam(Feedback feedback)
