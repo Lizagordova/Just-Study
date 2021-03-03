@@ -97,6 +97,9 @@ export class Registration extends React.Component<IRegistrationProps> {
     }
 
     renderWarnings() {
+        setTimeout(() => {
+            this.notRegistered = false;
+        }, 6000);
         return(
             <>
             {this.notRegistered && <Alert color="danger">Что-то пошло не так и не удалось зарегистрироваться :(</Alert>}

@@ -23,6 +23,9 @@ export class Authorization extends React.Component<IAuthorizationProps> {
     }
 
     renderWarnings() {
+        setTimeout(() => {
+            this.props.store.userStore.wrongCredetianalsToggle(false);
+        }, 6000);
         return(
             <>
                 {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
