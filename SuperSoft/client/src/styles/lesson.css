@@ -58,7 +58,7 @@
     }
 }
 
-@media (max-width: 852px) {
+@media (max-width: 931px) {
     .mainMenuHeader {
         height: 130px;
     }
@@ -80,7 +80,7 @@
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 501px) {
     .mainMenuHeader {
         height: 195px;
     }

@@ -181,7 +181,6 @@ class AddFeedbackWindow extends Component<IAddFeedbackProps> {
         this.props.feedbackStore
             .addOrUpdateFeedback(feedbackReadModel)
             .then((status) => {
-                console.log("status", status);
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
             });

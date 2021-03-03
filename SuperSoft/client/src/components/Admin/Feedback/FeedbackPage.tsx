@@ -1,10 +1,11 @@
 ﻿import React, { Component } from "react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import FeedbackStore from "../../../stores/FeedbackStore";
-import { Nav, Card, CardHeader, NavItem } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import {  Card, Alert, NavItem, NavLink } from "reactstrap";
+import { Nav } from "react-bootstrap";
 import {observer} from "mobx-react";
 import {FeedbackViewModel} from "../../../Typings/viewModels/FeedbackViewModel";
+import Feedback from "../../Common/Feedback/Feedback";
 
 class IFeedbackPageProps {
     feedbackStore: FeedbackStore;
@@ -14,6 +15,7 @@ class IFeedbackPageProps {
 class FeedbackPage extends Component<IFeedbackPageProps> {
     showNew: boolean;
     showOld: boolean;
+    activeKey: string;
 
     constructor(props: IFeedbackPageProps) {
         super(props);
@@ -27,37 +29,47 @@ class FeedbackPage extends Component<IFeedbackPageProps> {
     renderMenu() {
         return (
             <Card>
-                <CardHeader>
-                    <Nav tabs className="nav">
-                        <NavItem>
-                            <NavLink to={"#"} exact className="nav-link" style={{fontSize: "1.5em"}}
-                                onClick={() =>  this.feedbackToggle(ShowType.New)}
-                                >Новые</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink to={"#"}
-                                exact className="nav-link" style={{fontSize: "1.5em"}}
-                                onClick={() =>  this.feedbackToggle(ShowType.Old)}>Старые</NavLink>
-                        </NavItem>
-                    </Nav>
-                </CardHeader>
+                <div className="container-fluid">
+                    <div className="row justify-content-center">
+                        <Nav variant="tabs" defaultActiveKey="new" activeKey={this.activeKey} style={{marginTop: "10px"}}>
+                            <Nav.Item>
+                                <Nav.Link
+                                    eventKey="new"
+                                    className="nav-link" style={{fontSize: "1.5em"}}
+                                    onClick={() =>  this.feedbackToggle(ShowType.New)}
+                                >Новые</Nav.Link>
+                            </Nav.Item>
+                            <NavItem>
+                                <NavLink
+                                    eventKey="old"
+                                    className="nav-link"
+                                    style={{fontSize: "1.5em"}}
+                                    onClick={() =>  this.feedbackToggle(ShowType.Old)}>Старые</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </div>
+                 </div>
             </Card>
         );
     }
 
     renderFeedbacks(feedbacks: FeedbackViewModel[]) {
-        return(
-            <>
-                {feedbacks.map((f) => {
-                    return (
-                        <div className="row" style={{border: "1px solid black", marginTop: "5px"}}>
-                            <span style={{fontSize: "1.2em"}}><b>{f.name} {f.email}</b></span>
-                            <span style={{fontSize: "0.8em"}}>{f.message}</span>
-                        </div>
-                    );
-                })}
-            </>
-        );
+        if(feedbacks.length === 0) {
+            return (
+                <Alert style={{marginTop: "10px"}}>
+                    Пока нет никаких фидбеков.
+                </Alert>
+            );
+        } else {
+            return(
+                <>
+                    {feedbacks.map((f) => {
+                        return (
+                            <Feedback key={f.id} feedback={f} feedbackStore={this.props.feedbackStore} old={this.showOld}/>
+                        )})}
+                </>
+            );
+        }
     }
 
     render() {
@@ -73,10 +85,12 @@ class FeedbackPage extends Component<IFeedbackPageProps> {
         if(type === ShowType.New) {
             this.showNew = true;
             this.showOld = false;
+            this.activeKey = "new";
             this.props.feedbackStore.getFeedbacks(false);
         } else if(type === ShowType.Old) {
             this.showNew = false;
             this.showOld = true;
+            this.activeKey = "old";
             this.props.feedbackStore.getFeedbacks(true);
         }
     }

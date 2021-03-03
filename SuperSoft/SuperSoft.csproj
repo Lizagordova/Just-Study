@@ -66,6 +66,7 @@
 		<None Include="client\src\components\Common\Dictionary\Word.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Words.tsx" />
 		<None Include="client\src\components\Common\Feedback\AddFeedbackWindow.tsx" />
+		<None Include="client\src\components\Common\Feedback\Feedback.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />

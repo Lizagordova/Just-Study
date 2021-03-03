@@ -90,7 +90,6 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     renderTasks(tasks: TaskViewModel[]) {
-        console.log("tasks", toJS(tasks));
         if(tasks.length >  0) {
             return(
                 <div className="row">

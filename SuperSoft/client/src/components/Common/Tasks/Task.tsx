@@ -225,7 +225,6 @@ export class Task extends Component<ITaskProps> {
             this.props.store.taskStore
                 .deleteTask(this.props.task.id)
                     .then((status) => {
-                        console.log("props", toJS(this.props));
                         if(this.props.isTraining) {
                             if(this.props.tags !== null) {
                                 this.props.store.taskStore.getTasks(this.props.tags);
