@@ -65,6 +65,7 @@
 		<None Include="client\src\components\Common\Dictionary\Search.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Word.tsx" />
 		<None Include="client\src\components\Common\Dictionary\Words.tsx" />
+		<None Include="client\src\components\Common\Feedback\AddFeedbackWindow.tsx" />
 		<None Include="client\src\components\Common\Lesson\Content.tsx" />
 		<None Include="client\src\components\Common\Lesson\Lesson.tsx" />
 		<None Include="client\src\components\Common\Lesson\Material.tsx" />
@@ -109,6 +110,7 @@
 		<None Include="client\src\functions\transformer.tsx" />
 		<None Include="client\src\NavigationType.tsx" />
 		<None Include="client\src\stores\CourseStore.tsx" />
+		<None Include="client\src\stores\FeedbackStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\NotificationStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />

@@ -36,7 +36,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Route("/addfeedback")]
+		[Route("/addorupdatefeedback")]
 		public ActionResult AddFeedback([FromBody]FeedbackReadModel feedbackReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);

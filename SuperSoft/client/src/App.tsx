@@ -16,6 +16,7 @@ import { UserRole } from "./Typings/enums/UserRole";
 import { AdminMain } from "./components/Admin/Main/AdminMain";
 import { UserMain } from "./components/User/Main/UserMain";
 import  "../src/styles/lesson.css";
+import AddFeedbackWindow from "./components/Common/Feedback/AddFeedbackWindow";
 
 interface Props {
     store: RootStore;
@@ -23,6 +24,29 @@ interface Props {
 
 @observer
 class App extends Component<Props> {
+    renderFooter() {
+        return (
+            <div className="container-fluid">
+                <div className="row justify-content-center">
+                    <div className="col-lg-6 col-md-6 col-sm-12">
+                        <div className="row justify-content-center">
+                            <b style={{fontSize: "1em"}}>Контакты:</b>
+                        </div>
+                        {/*<div className="row justify-content-center">
+                            <a href="tel:+79190754485" style={{fontSize: "0.8em"}}>Гоша Кунаев</a>
+                        </div>*/}
+                        <div className="row justify-content-center" style={{fontSize: "0.8em"}}>
+                            Тех. поддержка: <a href="tel:+79016957927">Лиза Гордова</a>
+                        </div>
+                    </div>
+                    <div className="col-lg-6 col-md-6 col-sm-12">
+                        <AddFeedbackWindow  feedbackStore={this.props.store.feedbackStore}/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     renderMain(store: RootStore) {
         let role = this.props.store.userStore.currentUser.role;
         return(
@@ -32,6 +56,7 @@ class App extends Component<Props> {
                     {role === UserRole.User && <UserMain store={store}/>}
                 </main>
                 <footer>
+                    {this.renderFooter()}
                 </footer>
             </>
         );

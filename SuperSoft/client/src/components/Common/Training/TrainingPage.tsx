@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { makeObservable, observable } from "mobx";
-import { Nav, Tab, Row, Col, Button }  from "react-bootstrap";
+import { Nav, Tab, Row, Col }  from "react-bootstrap";
 import { observer } from "mobx-react";
 import TrainingContent from "./TrainingContent";
 import RootStore from "../../../stores/RootStore";

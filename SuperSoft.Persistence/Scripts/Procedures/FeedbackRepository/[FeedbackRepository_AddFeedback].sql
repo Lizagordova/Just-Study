@@ -11,15 +11,18 @@ BEGIN
 		SET
 			[dest].[Name] = [src].[Name],
 			[dest].[Email] = [src].[Email],
-			[dest].[Message] = [src].[Message]
+			[dest].[Message] = [src].[Message],
+			[dest].[Old] = [src].[Old]
 	WHEN NOT MATCHED THEN
 		INSERT (
 			[Name],
 			[Email],
-			[Message]
+			[Message],
+			[old]
 		) VALUES (
 			[src].[Name],
 			[src].[Email],
-			[src].[Message]
+			[src].[Message],
+			[src].[Old]
 		);
 END

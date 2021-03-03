@@ -153,12 +153,20 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         );
     }
  
+    renderCautions() {
+        return (
+            <>
+                {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранился</Alert>}
+                {this.saved && <Alert color="success">Урок успешно сохранился!</Alert>}
+            </>
+        );
+    }
+
     renderBody() {
         return(
             <>
                 <ModalBody>
-                    {this.notSaved && <Alert color="danger">Что-то пошло не так и урок не сохранился</Alert>}
-                    {this.saved && <Alert color="success">Урок успешно сохранился!</Alert>}
+                    {this.renderCautions()}
                     <div className="row justify-content-center">
                         {this.renderNameDescription()}
                     </div>

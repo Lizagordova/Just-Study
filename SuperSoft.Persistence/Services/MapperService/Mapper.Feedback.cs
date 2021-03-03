@@ -14,6 +14,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
+					.ForMember(dest => dest.Old, opt => opt.MapFrom(src => src.Old))
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 			});
 
@@ -21,6 +22,7 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<FeedbackUdt, Feedback>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Old, opt => opt.MapFrom(src => src.Old))
 					.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
 					.ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message))
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
