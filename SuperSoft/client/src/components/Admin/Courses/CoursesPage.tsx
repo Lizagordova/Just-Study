@@ -76,7 +76,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
                                                     <div className="row" key={course.id}>
                                                         <i style={{marginLeft: '96%', width: '2%'}}
                                                            onClick={() => this.deleteCourse(course.id)}
-                                                           className="fa fa-window-close" aria-hidden="true"/>
+                                                           className="fa fa-window-close fa-2x" aria-hidden="true"/>
                                                             <Nav.Link
                                                                 eventKey={course.id}
                                                                 className="nav-link lesson"

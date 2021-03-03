@@ -1,8 +1,9 @@
 ﻿import { makeObservable, observable } from "mobx";
 import { FeedbackReadModel } from "../Typings/readModels/FeedbackReadModel";
+import {FeedbackViewModel} from "../Typings/viewModels/FeedbackViewModel";
 
 class FeedbackStore {
-    feedbacks: FeedbackReadModel[] = new Array<FeedbackReadModel>();
+    feedbacks: FeedbackViewModel[] = new Array<FeedbackViewModel>();
 
     constructor() {
         makeObservable(this, {

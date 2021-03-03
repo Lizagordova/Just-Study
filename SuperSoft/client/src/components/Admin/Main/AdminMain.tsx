@@ -7,6 +7,7 @@ import CoursesPage from "../Courses/CoursesPage";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
 import TrainingPage from "../../Common/Training/TrainingPage";
 import UsersPage from "../Users/UsersPage";
+import FeedbackPage from "../Feedback/FeedbackPage";
 
 
 @observer
@@ -53,6 +54,14 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                                      textDecoration: 'none'
                                      }}>ТРЕНИРОВКИ</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink to="/feedbacks" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                         activeStyle={{
+                                             color: '#ffffff',
+                                             backgroundColor: '#4169E1',
+                                             textDecoration: 'none'
+                                         }}>ОБРАТНАЯ СВЯЗЬ</NavLink>
+                            </NavItem>
                             <Button
                                 outline color="primary"
                                 onClick={() => this.exit()}>
@@ -70,6 +79,8 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                            render={(props) => <DictionaryPage store={this.props.store} />} />
                     {<Route exact path="/trainings"
                            render={(props) => <TrainingPage store={this.props.store} />} />}
+                    {<Route exact path="/feedbacks"
+                            render={(props) => <FeedbackPage feedbackStore={this.props.store.feedbackStore}/>} />}
                     <Redirect to="/courses" />
                 </Switch>
             </>

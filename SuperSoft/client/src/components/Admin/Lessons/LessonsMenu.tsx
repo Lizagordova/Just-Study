@@ -89,10 +89,10 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                                                             </Nav.Link>
                                                         </div>
                                                         <div className="col-2 col-lg-offset-10">
-                                                            <i className="fa fa-window-close"
+                                                            <i className="fa fa-window-close fa-2x"
                                                                aria-hidden="true"
                                                                onClick={() => this.deleteLesson(lesson.id)}/>
-                                                            <i className="fa fa-edit"
+                                                            <i className="fa fa-edit fa-2x"
                                                                aria-hidden="true"
                                                                onClick={() => this.editLessonToggle(lesson)}/>
                                                         </div>

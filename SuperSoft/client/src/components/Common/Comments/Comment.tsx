@@ -78,7 +78,7 @@ class Comment extends Component<ICommentProps> {
                     <i
                         style={{marginLeft: "5px", height: "10px"}}
                        onClick={() => this.remove()}
-                       className="fa fa-window-close" aria-hidden="true"/>
+                       className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 </>
             );
         }

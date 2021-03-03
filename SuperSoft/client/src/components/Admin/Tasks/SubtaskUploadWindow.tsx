@@ -85,7 +85,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
             <div className="row justify-content-center">
                 <i style={{marginLeft: '95%', width: '3%'}}
                    onClick={() => this.handleDelete()}
-                   className="fa fa-window-close" aria-hidden="true" />
+                   className="fa fa-window-close fa-2x" aria-hidden="true" />
                 <div className="col-2">
                     {this.renderOrderInput()}
                 </div>

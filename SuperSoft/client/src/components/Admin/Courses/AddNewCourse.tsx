@@ -127,7 +127,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
             >
                 <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.addNewCourseToggle()}
-                   className="fa fa-window-close" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
                     СОЗДАНИЕ НОВОГО КУРСА
                 </div>
