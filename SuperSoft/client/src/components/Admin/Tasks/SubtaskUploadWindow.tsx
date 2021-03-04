@@ -75,7 +75,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
                     style={{marginTop: "5px"}}
                     className="fileInput"
                     type="file"
-                    onChange={(e) => this.inputFile(e)}/>
+                    onChange={(e) => this.inputFile(e)} />
             );
         }
     }

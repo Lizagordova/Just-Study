@@ -7,6 +7,7 @@ import { Task } from "../../Common/Tasks/Task";
 import { Alert } from "reactstrap";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
+import TaskFromPoolUpload from "../../Common/Tasks/TaskFromPoolUpload";
 
 class IHomeworkPageProps {
     store: RootStore;
@@ -14,12 +15,18 @@ class IHomeworkPageProps {
 
 @observer
 class HomeworkPage extends Component<IHomeworkPageProps> {
+    renderAddTaskFromPoolBank() {
+        return (
+            <TaskFromPoolUpload store={this.props.store}/>
+        );
+    }
+
     renderTasks(tasks: TaskViewModel[]) {
         return (
             <>
                 {tasks.map((task) => {
                     return(
-                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id} key={task.id} isTraining={false} tags={null}/>
+                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id} key={task.id} isTrainingOrPool={false} tags={null}/>
                     );
                 })}
             </>
@@ -30,10 +37,11 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
         let tasks = this.props.store.taskStore.tasksByChoosenLesson;
         return(
             <>
+                {this.renderAddTaskFromPoolBank()}
                 {tasks === undefined && renderSpinner()}
                 {tasks.length === 0 && <Alert style={{marginTop: "10px"}} color="primary">Пока нет домашнего задания для этого урока</Alert>}
                 {(tasks !== undefined && tasks.length > 0) && this.renderTasks(tasks)}
-                <TaskUpload store={this.props.store} isTraining={false}/>
+                <TaskUpload store={this.props.store} isTrainingOrPool={false}/>
             </>
         );
     }

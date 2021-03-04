@@ -52,7 +52,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
             return(
                 <i style={{marginLeft: '98%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
             );
         }
     }
@@ -79,13 +79,15 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     }
 
     renderFile(subtaskPath: string) {
-        let path = subtaskPath.replace('client/build', './');
-        let fileName = getFileName(path);
-        return(
-            <>
-                <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
-            </>
-        );
+        if(subtaskPath !== null) {
+            let path = subtaskPath.replace('client/build', './');
+            let fileName = getFileName(path);
+            return(
+                <>
+                    <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
+                </>
+            );
+        }
     }
 
     renderSaveButton() {
@@ -117,7 +119,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
             return(
                 <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.deleteAnswer()}
-                   className="fa fa-window-close" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
             );
         }
     }

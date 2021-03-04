@@ -204,6 +204,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAttachTaskToLessonException(ILogger logger, Exception e, int taskId, int lessonId)
+		{
+			var customMessage = $"Не удалось прикрепить задание taskId={taskId} к lessonId={lessonId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateSubtaskException(ILogger logger, Exception e)
 		{
 			var customMessage = $"Не удалось добавить подзадание.";

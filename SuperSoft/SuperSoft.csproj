@@ -80,6 +80,7 @@
 		<None Include="client\src\components\Common\Tasks\LoadFileSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\RightVerbFormSubtask.tsx" />
 		<None Include="client\src\components\Common\Tasks\Task.tsx" />
+		<None Include="client\src\components\Common\Tasks\TaskFromPoolUpload.tsx" />
 		<None Include="client\src\components\Common\Training\TrainingContent.tsx" />
 		<None Include="client\src\components\Common\Training\TrainingPage.tsx" />
 		<None Include="client\src\components\Common\WordsOfADay\AddOrUpdateWordOfADay.tsx" />

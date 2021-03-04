@@ -75,7 +75,7 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
             return(
                 <i style={{marginLeft: '98%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
             );
         }
     }

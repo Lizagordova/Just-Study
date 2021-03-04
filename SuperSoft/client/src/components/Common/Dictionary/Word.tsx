@@ -77,7 +77,7 @@ class Word extends Component<IWordProps> {
                      <i className="fa fa-window-close" aria-hidden="true"/>
                 </div>
                 <div className="row justify-content-center" onClick={() => this.editToggle()}>
-                     <i className="fa fa-edit" aria-hidden="true"/>
+                     <i className="fa fa-edit fa-2x" aria-hidden="true"/>
                 </div>
             </>
         );

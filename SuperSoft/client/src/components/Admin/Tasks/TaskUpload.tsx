@@ -11,7 +11,7 @@ import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 
 class ITaskUploadProps {
     store: RootStore;
-    isTraining: boolean;
+    isTrainingOrPool: boolean;
 }
 
 @observer
@@ -70,7 +70,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
     renderTaskUploadWindowByType() {
         let task = new TaskViewModel();
         task.taskType = this.taskType;
-        if(this.props.isTraining) {
+        if(this.props.isTrainingOrPool) {
             return(
                 <TaskUploadWindow store={this.props.store.taskStore} lessonId={null} task={task} />
             );

@@ -17,14 +17,13 @@ import {UserTaskViewModel} from "../../../Typings/viewModels/UserTaskViewModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import AddSubtask from "../../Admin/Tasks/AddSubtask";
 import {TaskType} from "../../../Typings/enums/TaskType";
-import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 
 class ITaskProps {
     store: RootStore;
     task: TaskViewModel;
     userId: number;
-    isTraining: boolean;
+    isTrainingOrPool: boolean;
     tags: TagReadModel[] | null;
 }
 
@@ -75,7 +74,7 @@ export class Task extends Component<ITaskProps> {
             return (
                 <i style={{marginLeft: '98%', width: '2%'}}
                    onClick={() => this.editTaskToggle()}
-                   className="fa fa-edit" aria-hidden="true"/>
+                   className="fa fa-edit fa-2x" aria-hidden="true"/>
             );
         }
     }
@@ -84,7 +83,7 @@ export class Task extends Component<ITaskProps> {
         return (
             <i style={{marginLeft: '98%', width: '2%'}}
                onClick={() => this.deleteTask()}
-               className="fa fa-window-close" aria-hidden="true"/>
+               className="fa fa-window-close fa-2x" aria-hidden="true"/>
         );
     }
 
@@ -225,7 +224,7 @@ export class Task extends Component<ITaskProps> {
             this.props.store.taskStore
                 .deleteTask(this.props.task.id)
                     .then((status) => {
-                        if(this.props.isTraining) {
+                        if(this.props.isTrainingOrPool) {
                             if(this.props.tags !== null) {
                                 this.props.store.taskStore.getTasks(this.props.tags);
                             } else {

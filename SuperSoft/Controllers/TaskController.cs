@@ -120,6 +120,30 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Route("/attachtasktolesson")]
+		public ActionResult AttachTaskToLesson([FromBody]TaskReadModel taskReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_taskEditor.AttachTaskToLesson(taskReadModel.Id, taskReadModel.LessonId, taskReadModel.Order);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAttachTaskToLessonException(_logger, e, taskReadModel.Id, taskReadModel.LessonId);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
 		[Route("/addorupdatesubtask")]
 		public ActionResult AddOrUpdateSubtask([FromForm]SubtaskReadModel subtaskReadModel)
 		{

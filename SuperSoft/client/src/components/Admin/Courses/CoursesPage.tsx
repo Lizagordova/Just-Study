@@ -103,10 +103,10 @@ class CoursesPage extends Component<ICoursesPageProps> {
     render() {
         let courses = this.props.store.courseStore.coursesForTeacher;
         return (
-            <>
+            <div style={{marginTop: "5px"}}>
                 {courses !== undefined && this.renderCoursesMenu(courses)}
                 {courses === undefined && renderSpinner()}
-            </>
+            </div>
         );
     }
 

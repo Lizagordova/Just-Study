@@ -5,4 +5,5 @@
 export class TrainingTasksQuery
 {
 	public tagIds: number[];
+	public ignoreIds: number[];
 }

@@ -8,5 +8,6 @@ namespace SuperSoft.ReadModels.Queries
 	public class TrainingTasksQuery
 	{
 		public IReadOnlyCollection<int> TagIds { get; set; } = Array.Empty<int>();
+		public IReadOnlyCollection<int> IgnoreIds { get; set; } = Array.Empty<int>();
 	}
 }

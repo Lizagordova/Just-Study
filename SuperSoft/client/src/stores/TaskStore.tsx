@@ -13,13 +13,13 @@ import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
     tags: TagViewModel[] = new Array<TagViewModel>();
-    tasksByTags: TaskViewModel[] = new Array<TaskViewModel>();
+    tasksByQuery: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         makeObservable(this, {
             tasksByChoosenLesson: observable,
             tags: observable,
-            tasksByTags: observable
+            tasksByQuery: observable
         });
         this.setInitialData();
     }
@@ -35,7 +35,7 @@ class TaskStore {
         }
     }
 
-    async getTasksByLesson(lessonId: number) {
+    async getTasksByLesson(lessonId: number): Promise<number> {
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {
@@ -46,6 +46,8 @@ class TaskStore {
         if(response.status === 200) {
             this.tasksByChoosenLesson  = await response.json();
         }
+
+        return response.status;
     }
 
     async addOrUpdateTask(task: TaskReadModel, lessonId: number | null): Promise<number> {
@@ -273,7 +275,7 @@ class TaskStore {
         return userTask;
     }
 
-    async getTasks(tags: TagReadModel[]): Promise<number> {
+    async getTasks(tags: TagReadModel[], ignoreIds: number[] = new Array<number>(0)): Promise<number> {
         let tagIds = tags.map(t => t.id);
         let tasks = new Array<TaskViewModel>();
         const response = await fetch("/gettasks", {
@@ -282,11 +284,12 @@ class TaskStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                tagIds: tagIds
+                tagIds: tagIds,
+                ignoreIds: ignoreIds
             })
         });
         if(response.status === 200) {
-            this.tasksByTags = await response.json();
+            this.tasksByQuery = await response.json();
         }
 
         return response.status;
@@ -306,6 +309,20 @@ class TaskStore {
             let taskIndex = this.tasksByChoosenLesson.findIndex(t => t.id === taskId);
             this.tasksByChoosenLesson[taskIndex] =  await response.json();
         }
+    }
+
+    async attachTaskToLesson(taskId: number, lessonId: number): Promise<number> {
+        const response = await fetch("/attachtasktolesson", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: taskId, lessonId: lessonId
+            })
+        });
+
+        return response.status;
     }
 }
 

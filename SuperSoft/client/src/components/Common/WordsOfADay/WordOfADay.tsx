@@ -73,7 +73,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
             return(
                 <i style={{marginLeft: '95%', width: '3%'}}
                    onClick={() => this.handleDelete()}
-                   className="fa fa-window-close" aria-hidden="true" />
+                   className="fa fa-window-close fa-2x" aria-hidden="true" />
             );
         }
     }

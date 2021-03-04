@@ -8,10 +8,6 @@ class TrainingStore {
             tasks: observable
         });
     }
-    
-    getTasksByTags(tagIds: number[]) {
-        
-    }
 }
 
 export default TrainingStore;

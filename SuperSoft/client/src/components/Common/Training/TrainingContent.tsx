@@ -95,7 +95,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 <div className="row">
                     {tasks.map((task, i) => {
                         return(
-                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTraining={true} tags={this.choosenTags}/>
+                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTrainingOrPool={true} tags={this.choosenTags}/>
                         );
                     })}
                 </div>
@@ -121,7 +121,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     renderTaskUpload() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return (
-                <TaskUpload store={this.props.store} isTraining={true} />
+                <TaskUpload store={this.props.store} isTrainingOrPool={true} />
             );
         }
     }
@@ -132,7 +132,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
             <>
                 {this.renderCautions()}
                 {this.renderFilters(tags)}
-                {this.renderTasks(this.props.store.taskStore.tasksByTags)}
+                {this.renderTasks(this.props.store.taskStore.tasksByQuery)}
                 {this.renderTaskUpload()}
             </>
         )

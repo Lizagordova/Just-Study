@@ -31,6 +31,8 @@ namespace SuperSoft.Persistence.Services.Trainings
 			{
 				finalTasks = tasks.Take(15).ToList();
 			}
+
+			finalTasks = finalTasks.Where(task => !query.IgnoreIds.Contains(task.Id)).ToList();
 			AddAnswerGroups(finalTasks);
 
 			return finalTasks;

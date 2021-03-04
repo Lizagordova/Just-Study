@@ -63,7 +63,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
+        let rowHeight = this.isNavOpen ? lessons.length * 80 + 40 : 40;
         return(
             <Tab.Container id="left-tabs-example">
                 {this.renderCautions()}
