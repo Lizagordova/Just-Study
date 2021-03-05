@@ -35,6 +35,12 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         this.updateTasksPool();
     }
 
+    componentDidUpdate(prevProps: Readonly<ITaskFromPoolUploadProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(this.ignoreIds !== this.props.store.taskStore.tasksByChoosenLesson.map(t => t.id)) {
+            this.setIgnoreIds();
+        }
+    }
+
     updateTasksPool() {
         this.props.store.taskStore.getTasks(new Array<TagReadModel>(0), this.ignoreIds);
     }
