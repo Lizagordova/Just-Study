@@ -146,14 +146,16 @@ class TaskStore {
         return formData;
     }
 
-    async deleteTask(taskId: number) {
+    async deleteTask(taskId: number, deleteOnlyFromLesson: boolean, lessonId: number = 0) {
         const response = await fetch("/deletetask", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                id: taskId
+                id: taskId,
+                deleteOnlyFromLesson: deleteOnlyFromLesson,
+                lessonId: lessonId
             })
         });
         return response.status;

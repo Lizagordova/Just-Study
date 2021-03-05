@@ -16,5 +16,6 @@ namespace SuperSoft.Domain.Repositories
 		int AddOrUpdateAnswerGroup(int subtaskId, SubtaskAnswerGroup answerGroup);
 		Subtask GetSubtaskById(int subtaskId);
 		void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds);
+		void DeleteTaskFromLesson(int taskId, int lessonId);
 	}
 }

@@ -222,7 +222,7 @@ export class Task extends Component<ITaskProps> {
         let result = window.confirm('Вы уверены, что хотите удалить ВСЁ задание?');
         if(result) {
             this.props.store.taskStore
-                .deleteTask(this.props.task.id)
+                .deleteTask(this.props.task.id, !this.props.isTrainingOrPool, this.props.store.lessonStore.choosenLesson.id)
                     .then((status) => {
                         if(this.props.isTrainingOrPool) {
                             if(this.props.tags !== null) {

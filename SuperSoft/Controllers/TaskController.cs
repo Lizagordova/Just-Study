@@ -180,7 +180,14 @@ namespace SuperSoft.Controllers
 
 			try
 			{
-				_taskEditor.DeleteTask(taskReadModel.Id);
+				if (taskReadModel.DeleteOnlyFromLesson)
+				{
+					_taskEditor.DeleteTaskFromLesson(taskReadModel.Id, taskReadModel.LessonId);
+				}
+				else
+				{
+					_taskEditor.DeleteTask(taskReadModel.Id);
+				}
 
 				return new OkResult();
 			}

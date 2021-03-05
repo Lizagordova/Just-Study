@@ -45,6 +45,11 @@ namespace SuperSoft.Persistence.Services.Tasks
 			_taskRepository.DeleteTask(taskId);
 		}
 
+		public void DeleteTaskFromLesson(int taskId, int lessonId)
+		{
+			_taskRepository.DeleteTaskFromLesson(taskId, lessonId);
+		}
+
 		public void DeleteSubtask(int subtaskId)
 		{
 			_taskRepository.DeleteSubtask(subtaskId);

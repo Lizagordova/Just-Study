@@ -6,6 +6,7 @@ import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
 import { Task } from "./Task";
 import RootStore from "../../../stores/RootStore";
 import { Modal, ModalBody, Button, Alert } from  "reactstrap";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 
 class ITaskFromPoolUploadProps {
     store: RootStore;
@@ -13,18 +14,22 @@ class ITaskFromPoolUploadProps {
 
 @observer
 class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
-    tasks: TaskViewModel[] = new Array<TaskViewModel>();
+    choosenTags: TagViewModel[] = new Array<TagViewModel>();
     ignoreIds: number[] = new Array<number>(0);
     tasksPoolOpen: boolean;
     notAttached: boolean;
+    notReceived: boolean;
+    update: boolean = false;
 
     constructor(props: ITaskFromPoolUploadProps) {
         super(props);
         makeObservable(this, {
-            tasks: observable,
             ignoreIds: observable,
             tasksPoolOpen: observable,
-            notAttached: observable
+            notAttached: observable,
+            choosenTags: observable,
+            update: observable,
+            notReceived: observable
         });
         this.updateTasksPool();
         this.setIgnoreIds();
@@ -88,8 +93,61 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
             </ModalBody>
         )
     }
-    
+
+    renderApplyButton() {
+        return (
+            <div className="row justify-content-center" style={{marginTop: "10px", marginBottom: "10px"}}>
+                <Button
+                    color="primary"
+                    style={{width: '50%'}}
+                    onClick={() => this.applyTags()}>
+                    ПРИМЕНИТЬ
+                </Button>
+            </div>
+        );
+    }
+
+    renderTags(tags: TagViewModel[], update: boolean) {
+        return (
+            <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
+                {tags.map((tag, i) => {
+                    let outline = !this.choosenTags.includes(tag);
+                    if(tag.id !== 1 && tag.id !== 2 && tag.id !== 3) {//todo: неприятный хардкод 
+                        return (
+                            <Button
+                                outline={outline} color="primary"
+                                style={{
+                                    marginLeft: "10px",
+                                    marginBottom: "10px",
+                                    height: "auto",
+                                    width: "auto",
+                                    fontSize: "0.8em"
+                                }}
+                                active={false}
+                                key={i}
+                                onClick={() => this.toggleTag(tag)}>
+                                {tag.name}
+                            </Button>
+                        );
+                    }
+                })}
+            </div>
+        );
+    }
+
+    renderFilters(tags: TagViewModel[]) {
+        if(tags.length > 0) {
+            return(
+                <>
+                    {this.renderTags(tags, this.update)}
+                    {this.renderApplyButton()}
+                </>
+            );
+        }
+    }
+
     renderTaskFromPoolWindow() {
+        let tags = this.props.store.taskStore.tags;
         return (
             <Modal
                 centered={true}
@@ -103,6 +161,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                 <div className="row justify-content-center">
                     БАНК ЗАДАНИЙ
                 </div>
+                {this.renderFilters(tags)}
                 {this.renderBody()}
             </Modal>
         )
@@ -153,6 +212,29 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                     }
                     this.notAttached = status !== 200;
                 });
+    }
+
+    applyTags() {
+        this.props.store.taskStore
+            .getTasks(this.choosenTags)
+            .then((status) => {
+                this.notReceived = status !== 200;
+            });
+    }
+
+    updateToggle() {
+        this.update = !this.update;
+    }
+
+    toggleTag(tag: TagViewModel) {
+        if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
+            let choosenTags = this.choosenTags
+                .filter(t => t !== tag);
+            this.choosenTags = choosenTags;
+        } else {
+            this.choosenTags.push(tag);
+        }
+        this.updateToggle();
     }
 }
 

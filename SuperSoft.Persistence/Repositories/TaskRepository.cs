@@ -26,6 +26,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string AddOrUpdateAnswerGroupSp = "TaskRepository_AddOrUpdateAnswerGroup";
 		private const string GetSubtaskByIdSp = "TaskRepository_GetSubtaskById";
 		private const string AttachTagsToTaskSp = "TaskRepository_AttachTagsToTask";
+		private const string DeleteTaskFromLessonSp = "TaskRepository_DeleteTaskFromLesson";
 
 		public TaskRepository(
 			MapperService mapper
@@ -141,6 +142,23 @@ namespace SuperSoft.Persistence.Repositories
 			var param = GetAttachTagsToTaskParam(taskId, tagIds);
 			conn.Query(AttachTagsToTaskSp, param, commandType: CommandType.StoredProcedure);
 			DatabaseHelper.CloseConnection(conn);
+		}
+
+		public void DeleteTaskFromLesson(int taskId, int lessonId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetDeleteTaskFromLessonParam(taskId, lessonId);
+			conn.Query(DeleteTaskFromLessonSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
+		private DynamicTvpParameters GetDeleteTaskFromLessonParam(int taskId, int lessonId)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			param.Add("lessonId", lessonId);
+
+			return param;
 		}
 
 		private DynamicTvpParameters GetAttachTagsToTaskParam(int taskId, IReadOnlyCollection<int> tagIds)

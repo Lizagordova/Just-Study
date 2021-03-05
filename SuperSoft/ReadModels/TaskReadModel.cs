@@ -16,5 +16,6 @@ namespace SuperSoft.ReadModels
 		public TaskType TaskType { get; set; }
 		public SubtaskReadModel[] Subtasks { get; set; }
 		public IReadOnlyCollection<int> TagIds { get; set; }
+		public bool DeleteOnlyFromLesson { get; set; }
 	}
 }
