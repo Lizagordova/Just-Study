@@ -10,13 +10,13 @@ import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 
 class ITaskFromPoolUploadProps {
     store: RootStore;
+    toggle: any;
 }
 
 @observer
 class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     choosenTags: TagViewModel[] = new Array<TagViewModel>();
     ignoreIds: number[] = new Array<number>(0);
-    tasksPoolOpen: boolean;
     notAttached: boolean;
     notReceived: boolean;
     update: boolean = false;
@@ -25,7 +25,6 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         super(props);
         makeObservable(this, {
             ignoreIds: observable,
-            tasksPoolOpen: observable,
             notAttached: observable,
             choosenTags: observable,
             update: observable,
@@ -38,12 +37,6 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     setIgnoreIds() {
         this.ignoreIds = this.props.store.taskStore.tasksByChoosenLesson.map(t => t.id);
         this.updateTasksPool();
-    }
-
-    componentDidUpdate(prevProps: Readonly<ITaskFromPoolUploadProps>, prevState: Readonly<{}>, snapshot?: any): void {
-        if(this.ignoreIds !== this.props.store.taskStore.tasksByChoosenLesson.map(t => t.id)) {
-            this.setIgnoreIds();
-        }
     }
 
     updateTasksPool() {
@@ -153,10 +146,10 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                 centered={true}
                 size="lg"
                 isOpen={true}
-                toggle={() => this.toggleTasksPoolOpen()}
+                toggle={() => this.props.toggle()}
             >
                 <i style={{marginLeft: '92%', width: '2%'}}
-                   onClick={() => this.toggleTasksPoolOpen()}
+                   onClick={() => this.props.toggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
                     БАНК ЗАДАНИЙ
@@ -167,36 +160,12 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         )
     }
 
-    renderButton() {
-        return (
-            <div className="row justify-content-end" style={{marginLeft: "10%", marginTop: "10px"}}>
-                <Button
-                    style={{
-                        marginLeft: "10px",
-                        marginBottom: "10px",
-                        height: "auto",
-                        width: "30%",
-                        fontSize: "0.8em"
-                    }}
-                    onClick={() => this.toggleTasksPoolOpen()}
-                    outline color="secondary">
-                    ДОБАВИТЬ ЗАДАНИЕ ИЗ БАНКА ЗАДАНИЙ
-                </Button>
-            </div>
-        );
-    }
-
     render() {
         return (
             <>
-                {this.tasksPoolOpen && this.renderTaskFromPoolWindow()}
-                {this.renderButton()}
+                {this.renderTaskFromPoolWindow()}
             </>
         );
-    }
-
-    toggleTasksPoolOpen() {
-        this.tasksPoolOpen = !this.tasksPoolOpen;
     }
 
     attachTaskToLesson(taskId: number) {

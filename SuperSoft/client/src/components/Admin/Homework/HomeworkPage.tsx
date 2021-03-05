@@ -4,9 +4,10 @@ import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import TaskUpload from "../Tasks/TaskUpload";
 import { Task } from "../../Common/Tasks/Task";
-import { Alert } from "reactstrap";
+import { Alert, Button } from "reactstrap";
 import { observer } from "mobx-react";
 import TaskFromPoolUpload from "../../Common/Tasks/TaskFromPoolUpload";
+import { makeObservable, observable } from "mobx";
 
 class IHomeworkPageProps {
     store: RootStore;
@@ -14,13 +15,45 @@ class IHomeworkPageProps {
 
 @observer
 class HomeworkPage extends Component<IHomeworkPageProps> {
+    tasksPoolOpen: boolean = false;
+
+    constructor() {
+        // @ts-ignore
+        super();
+        makeObservable(this, {
+            tasksPoolOpen: observable
+        });
+    }
+
     componentDidMount(): void {
         this.props.store.taskStore.getTasksByLesson(this.props.store.lessonStore.choosenLesson.id);
     }
 
+    renderAddTaskFromPoolBankButton() {
+        return (
+            <div className="row justify-content-end" style={{marginLeft: "10%", marginTop: "10px"}}>
+                <Button
+                    style={{
+                        marginLeft: "10px",
+                        marginBottom: "10px",
+                        height: "auto",
+                        width: "30%",
+                        fontSize: "0.8em"
+                    }}
+                    onClick={() => this.toggleTasksPoolOpen()}
+                    outline color="secondary">
+                    ДОБАВИТЬ ЗАДАНИЕ ИЗ БАНКА ЗАДАНИЙ
+                </Button>
+            </div>
+        );
+    }
+
     renderAddTaskFromPoolBank() {
         return (
-            <TaskFromPoolUpload store={this.props.store}/>
+            <>
+                {this.renderAddTaskFromPoolBankButton()}
+                {this.tasksPoolOpen && <TaskFromPoolUpload store={this.props.store} toggle={this.toggleTasksPoolOpen}/>}
+            </>
         );
     }
 
@@ -47,6 +80,10 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
                 <TaskUpload store={this.props.store} isTrainingOrPool={false}/>
             </>
         );
+    }
+
+    toggleTasksPoolOpen = () => {
+        this.tasksPoolOpen = !this.tasksPoolOpen;
     }
 }
 
