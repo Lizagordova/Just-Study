@@ -6,7 +6,6 @@ import TaskUpload from "../Tasks/TaskUpload";
 import { Task } from "../../Common/Tasks/Task";
 import { Alert } from "reactstrap";
 import { observer } from "mobx-react";
-import { toJS } from "mobx";
 import TaskFromPoolUpload from "../../Common/Tasks/TaskFromPoolUpload";
 
 class IHomeworkPageProps {
@@ -15,6 +14,10 @@ class IHomeworkPageProps {
 
 @observer
 class HomeworkPage extends Component<IHomeworkPageProps> {
+    componentDidMount(): void {
+        this.props.store.taskStore.getTasksByLesson(this.props.store.lessonStore.choosenLesson.id);
+    }
+
     renderAddTaskFromPoolBank() {
         return (
             <TaskFromPoolUpload store={this.props.store}/>

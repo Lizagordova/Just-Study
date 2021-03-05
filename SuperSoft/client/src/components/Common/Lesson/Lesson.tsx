@@ -42,6 +42,6 @@ export class Lesson extends Component<ILessonProps> {
                 <Content lessonStore={this.props.store.lessonStore} courseId={this.props.store.courseStore.choosenCourse.id} currentUser={this.props.store.userStore.currentUser}/>
                 {this.renderContentUpload()}
             </div>
-        )
+        );
     }
 }

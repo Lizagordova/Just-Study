@@ -31,7 +31,10 @@ class LessonStore {
         if(response.status === 200) {
             const data = await response.json();
             this.lessonsByChoosenCourse = data;
-            this.choosenLesson = data[0];
+            if(data[0] !== undefined) {
+                this.choosenLesson = data[0];
+                this.getMaterialsByLesson(this.choosenLesson.id);
+            }
         }
     }
 

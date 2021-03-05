@@ -51,22 +51,28 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     renderTasks(tasks: TaskViewModel[]) {
-        return (
-            <>
-                {tasks.map(task => {
-                   return (
-                        <div className="row justify-content-center">
-                            <div className="col-lg-10 col-md-10 col-sm-12">
-                                <Task key={task.id} isTrainingOrPool={true} store={this.props.store} tags={null} task={task} userId={this.props.store.userStore.currentUser.id}/>
+        if(tasks.length > 0) {
+            return (
+                <>
+                    {tasks.map(task => {
+                        return (
+                            <div className="row justify-content-center" style={{marginTop: "10px"}}>
+                                <div className="col-lg-10 col-md-10 col-sm-12">
+                                    <Task key={task.id} isTrainingOrPool={true} store={this.props.store} tags={null} task={task} userId={this.props.store.userStore.currentUser.id}/>
+                                </div>
+                                <div className="col-lg-2 col-md-2 col-sm-2">
+                                    <i className="fa fa-plus fa-2x" aria-hidden="true" onClick={() => this.attachTaskToLesson(task.id)} />
+                                </div>
                             </div>
-                            <div className="col-lg-2 col-md-2 col-sm-2">
-                                <i className="fa fa-plus fa-2x" aria-hidden="true" onClick={() => this.attachTaskToLesson(task.id)} />
-                            </div>
-                        </div>
-                    );
-                })}
-            </>
-        );
+                        );
+                    })}
+                </>
+            );
+        } else {
+            return (
+                <Alert color="primary">Пока нет заданий по заданным критериям в банке заданий.</Alert>
+            );
+        }
     }
 
     renderBody() {

@@ -10,6 +10,7 @@ import { CompletedHomeworkPage } from "../CompletedHomework/CompletedHomeworkPag
 
 class ILessonPageProps {
     store: RootStore;
+    lessonActive: boolean;
 }
 
 @observer
@@ -18,22 +19,28 @@ export class LessonPage extends Component<ILessonPageProps> {
     homeworkActive: boolean;
     completedHomeworkActive: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ILessonPageProps) {
+        super(props);
         makeObservable(this, {
             lessonActive: observable,
             homeworkActive: observable,
             completedHomeworkActive: observable,
         });
+        this.lessonActive = this.props.lessonActive;
+    }
+
+    componentDidUpdate(prevProps: Readonly<ILessonPageProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(prevProps.lessonActive !== this.props.lessonActive) {
+            this.lessonActive = this.props.lessonActive;
+        }
     }
 
     renderLessonMenu() {
         return(
-            <Tab.Container>
+            <Tab.Container defaultActiveKey="lesson">
                 <Card>
                     <CardHeader className="menuHeader">
-                        <Nav variant="pills">
+                        <Nav variant="pills" defaultActiveKey="lesson">
                             <Nav.Item>
                                 <Nav.Link
                                      className="nav-link"

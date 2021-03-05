@@ -6,6 +6,7 @@ import { renderSpinner } from "../../../functions/renderSpinner";
 import { Alert } from "reactstrap";
 import { observer } from "mobx-react";
 import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
+import {toJS} from "mobx";
 
 class IContentProps {
     lessonStore: LessonStore;

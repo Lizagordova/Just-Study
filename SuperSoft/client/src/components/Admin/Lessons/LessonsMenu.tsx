@@ -2,7 +2,7 @@
 import RootStore from "../../../stores/RootStore";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { Tab, Nav } from "react-bootstrap";
 import { Alert, Button, Col, Collapse, Row } from "reactstrap";
 import { renderSpinner } from "../../../functions/renderSpinner";
@@ -64,14 +64,15 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 + 40 : 40;
+        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
-            <Tab.Container id="left-tabs-example">
+            <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
                 {this.renderCautions()}
                 <Row>
                     <Col sm={3} style={{height: `${rowHeight}px`}}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
-                            <Nav variant="pills" className="flex-column">
+                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey}>
                                 <div className="container-fluid">
                                     {lessons.map((lesson) => {
                                         // @ts-ignore
@@ -118,7 +119,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessonChoosen = this.props.store.lessonStore.choosenLesson !== undefined;
         return(
             <>
-                {lessonChoosen && <LessonPage store={this.props.store}/>}
+                {lessonChoosen && <LessonPage store={this.props.store} lessonActive={true}/>}
                 {!lessonChoosen && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
@@ -128,7 +129,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <>
-                {lessons !== undefined && this.renderLessonsMenu(lessons)}
+                {lessons !== undefined && lessons.length > 0 && this.renderLessonsMenu(lessons)}
                 {lessons === undefined && renderSpinner()}
             </>
         );

@@ -72,7 +72,7 @@ export class Task extends Component<ITaskProps> {
     renderEditButton() {
         if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
             return (
-                <i style={{marginLeft: '98%', width: '2%'}}
+                <i style={{marginLeft: '92%', width: '2%'}}
                    onClick={() => this.editTaskToggle()}
                    className="fa fa-edit fa-2x" aria-hidden="true"/>
             );
@@ -81,7 +81,7 @@ export class Task extends Component<ITaskProps> {
     
     renderDeleteButton() {
         return (
-            <i style={{marginLeft: '98%', width: '2%'}}
+            <i style={{marginLeft: '92%', width: '2%'}}
                onClick={() => this.deleteTask()}
                className="fa fa-window-close fa-2x" aria-hidden="true"/>
         );
