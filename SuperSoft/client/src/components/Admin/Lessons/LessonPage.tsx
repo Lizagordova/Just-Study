@@ -18,13 +18,12 @@ export class LessonPage extends Component<ILessonPageProps> {
     lessonActive: boolean;
     homeworkActive: boolean;
     completedHomeworkActive: boolean;
-
     constructor(props: ILessonPageProps) {
         super(props);
         makeObservable(this, {
             lessonActive: observable,
             homeworkActive: observable,
-            completedHomeworkActive: observable,
+            completedHomeworkActive: observable
         });
         this.lessonActive = this.props.lessonActive;
     }

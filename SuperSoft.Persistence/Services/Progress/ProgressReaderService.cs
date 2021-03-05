@@ -19,5 +19,12 @@ namespace SuperSoft.Persistence.Services.Progress
 
 			return progress;
 		}
+
+		public int GetProgressByLesson(int lessonId)
+		{
+			var progress = _progressRepository.GetProgressByLesson(lessonId);
+
+			return progress;
+		}
 	}
 }

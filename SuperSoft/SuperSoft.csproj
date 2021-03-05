@@ -43,6 +43,8 @@
 		<None Include="client\src\components\Admin\Participants\Participant.tsx" />
 		<None Include="client\src\components\Admin\Participants\Participants.tsx" />
 		<None Include="client\src\components\Admin\Participants\ParticipantsPage.tsx" />
+		<None Include="client\src\components\Admin\Progress\CourseProgress.tsx" />
+		<None Include="client\src\components\Admin\Progress\LessonProgress.tsx" />
 		<None Include="client\src\components\Admin\Tasks\AddSubtask.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadSubtaskProps.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadTaskProps.tsx" />

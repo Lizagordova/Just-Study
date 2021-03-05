@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import { LessonsMenu } from "../Lessons/LessonsMenu";
 import WordsOfADay from "../WordsOfADay/WordsOfADay";
 import ParticipantsPage from "../Participants/ParticipantsPage";
+import CourseProgress from "../Progress/CourseProgress";
 
 class ICourseProps {
     store: RootStore;
@@ -17,6 +18,7 @@ export class Course extends Component<ICourseProps> {
     lessonsActive: boolean = true;
     wordsOfADay: boolean = false;
     participants: boolean = false;
+    courseProgress: boolean = false;
 
     constructor() {
         // @ts-ignore
@@ -25,6 +27,7 @@ export class Course extends Component<ICourseProps> {
             lessonsActive: observable,
             wordsOfADay: observable,
             participants: observable,
+            courseProgress: observable
         });
     }
 
@@ -39,6 +42,7 @@ export class Course extends Component<ICourseProps> {
                     {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
                     {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
                     {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
+                    {this.courseProgress && <CourseProgress store={this.props.store} />}
                 </>
             );
     }
@@ -73,6 +77,14 @@ export class Course extends Component<ICourseProps> {
                                     УЧАСТНИКИ
                                 </Nav.Link>
                             </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    onClick={() => this.menuToggle("progress")}
+                                    className="nav-link"
+                                    eventKey="participants">
+                                    ПРОГРЕСС
+                                </Nav.Link>
+                            </Nav.Item>
                         </Nav>
                     </CardHeader>
                 </Card>
@@ -95,12 +107,15 @@ export class Course extends Component<ICourseProps> {
         this.lessonsActive = false;
         this.wordsOfADay = false;
         this.participants = false;
+        this.courseProgress = false;
         if(turnOn === "lessons") {
             this.lessonsActive = true;
         } else if(turnOn === "wordsOfADay") {
             this.wordsOfADay = true;
         } else if(turnOn === "participants") {
             this.participants = true;
+        } else if(turnOn === "progress") {
+            this.courseProgress = true;
         }
     }
 }

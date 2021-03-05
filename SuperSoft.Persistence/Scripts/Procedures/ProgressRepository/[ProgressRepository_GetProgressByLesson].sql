@@ -1,10 +1,26 @@
-﻿CREATE PROCEDURE [dbo].[ProgressRepository_GetUserCourseProgress]
-	@userId INT,
-	@courseId INT
+﻿CREATE PROCEDURE [ProgressRepository_GetProgressByLesson]	
+	@lessonId INT
 AS
 BEGIN
 	DECLARE @subtaskIds TABLE ([Id] INT);
 	DECLARE @answerGroupIds TABLE ([Id] INT);
+	DECLARE @courseId INT = (
+		SELECT TOP 1
+		[CourseId] 
+		FROM [Lesson_Course]
+		WHERE [LessonId] = @lessonId
+	);
+	
+	DECLARE @userIds TABLE ([Id] INT);
+
+	INSERT
+	INTO @userIds (
+		[Id]
+	)
+	SELECT
+		[UserId]
+	FROM [User_Course]
+	WHERE [CourseId] = @courseId;
 
 	INSERT
 	INTO @subtaskIds (
@@ -24,14 +40,14 @@ BEGIN
 		FROM [User_Subtask] 
 		WHERE [SubtaskId] IN (SELECT [Id] FROM @subtaskIds)
 			AND [Status] = 4
-			AND [UserId] = @userId
+			AND [UserId] IN (SELECT [Id] FROM @userIds)
 		);
 
 	DECLARE @allSubtasks INT = (
 		SELECT COUNT(*)
 		FROM [User_Subtask] 
 		WHERE [SubtaskId] IN (SELECT [Id] FROM @subtaskIds)
-			AND [UserId] = @userId
+			AND [UserId] IN (SELECT [Id] FROM @userIds)
 		);
 
 	INSERT
@@ -51,14 +67,14 @@ BEGIN
 		FROM [User_SubtaskAnswerGroup] 
 		WHERE [AnswerGroupId] IN (SELECT [Id] FROM @answerGroupIds)
 			AND [Status] = 4
-			AND [UserId] = @userId
+			AND [UserId] IN (SELECT [Id] FROM @userIds)
 		);
 
 	DECLARE @allUserSubtaskGroups INT = (
 		SELECT COUNT(*)
 		FROM [User_SubtaskAnswerGroup] 
 		WHERE [AnswerGroupId] IN (SELECT [Id] FROM @answerGroupIds)
-		AND [UserId] = @userId
+		AND [UserId] IN (SELECT [Id] FROM @userIds)
 		);
 	DECLARE @progress FLOAT;
 	IF (@allSubtasks + @allUserSubtaskGroups > 0)

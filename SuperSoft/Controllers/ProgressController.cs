@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services.Progress;
 using SuperSoft.Helpers;
@@ -46,6 +47,30 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogGetUserCourseProgressException(_logger, e, userCourse.UserId, userCourse.CourseId);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/getprogressbylesson")]
+		public ActionResult GetProgressByLesson([FromBody]LessonReadModel lessonReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				var progress = _progressReader.GetProgressByLesson(lessonReadModel.Id);
+
+				return new JsonResult(progress);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogGetProgressByLessonException(_logger, e, lessonReadModel.Id);
 
 				return new StatusCodeResult(500);
 			}
