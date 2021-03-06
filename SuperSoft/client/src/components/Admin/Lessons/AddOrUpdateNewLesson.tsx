@@ -70,7 +70,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     renderButton() {
         return(
-            <Button outline color="primary" onClick={() => this.addOrUpdateNewLessonToggle()}>
+            <Button 
+                style={{marginTop: "10px"}}
+                outline color="primary" onClick={() => this.addOrUpdateNewLessonToggle()}>
                 Добавить урок
             </Button>
         );

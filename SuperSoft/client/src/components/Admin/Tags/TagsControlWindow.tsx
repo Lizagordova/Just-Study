@@ -35,11 +35,12 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
                 {tags.map((tag) => {
                     return(
                         <div className="row justify-content-center" key={tag.id}>
-                            <i style={{marginLeft: '96%', width: '2%'}}
+                            <i style={{marginLeft: '88%', width: '2%'}}
                                onClick={() => this.deleteTag(tag.id)}
                                className="fa fa-window-close fa-2x" aria-hidden="true"/>
                             <Button
-                                style={{width: "70%"}}>
+                                outline color="secondary"
+                                style={{width: "70%", fontSize: "0.8em"}}>
                                 {tag.name}
                             </Button>
                         </div>
@@ -51,11 +52,16 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
 
     renderAddTagButton() {
         return (
-            <Button
-                outline color="secondary"
-                onClick={() => this.addTagInputOpenToggle()}>
-                Добавить тег
-            </Button>
+            <div className="container-fluid">
+                <div className="row justify-content-center">
+                    <Button
+                        style={{marginTop: "10px"}}
+                        outline color="secondary"
+                        onClick={() => this.addTagInputOpenToggle()}>
+                        Добавить тег
+                    </Button>
+                </div>
+            </div>
         );
     }
 
@@ -68,10 +74,16 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
                 <Input style={{width: "90%"}}
                     placeholder="Введите название тега"
                     onChange={(e) => this.handleChange(e)}/>
-                <Button
-                    onClick={() => this.saveNewTag()}>
-                    Сохранить
-                </Button>
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <Button
+                                color="success"
+                                style={{marginTop: "10px", width: "80%"}}
+                                onClick={() => this.saveNewTag()}>
+                                Сохранить
+                            </Button>
+                        </div>
+                    </div>
             </>
         );
     }
@@ -102,10 +114,10 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
                 isOpen={true}
                 toggle={() => this.props.toggle()}
             >
-                <i style={{marginLeft: '96%', width: '2%'}}
+                <i style={{marginLeft: '93%', width: '2%'}}
                    onClick={() => this.props.toggle()}
-                   className="fa fa-window-close" aria-hidden="true"/>
-                <div className="row justify-content-center">
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                <div className="row justify-content-center" style={{fontSize: "1.3em"}}>
                    ТЕГИ
                 </div>
                 {this.renderBody()}

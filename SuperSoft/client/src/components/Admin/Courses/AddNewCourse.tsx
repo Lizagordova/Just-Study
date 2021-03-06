@@ -33,7 +33,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     renderButton() {
         return(
             <>
-                <Button outline color="primary" onClick={() => this.addNewCourseToggle()}>
+                <Button
+                    style={{marginTop: "10px"}}
+                    outline color="primary" onClick={() => this.addNewCourseToggle()}>
                     Добавить курс
                 </Button>
             </>

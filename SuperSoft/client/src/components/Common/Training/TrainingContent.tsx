@@ -134,7 +134,9 @@ class TrainingContent extends Component<ITrainingContentProps> {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return (
                 <>
-                    {<Button outline color="secondary" onClick={() => this.toggleTagsControlWindowOpen()}>
+                    {<Button 
+                        style={{marginBottom: "10px"}}
+                        outline color="secondary" onClick={() => this.toggleTagsControlWindowOpen()}>
                         Редактировать теги
                     </Button>}
                     {this.tagsControlWindowOpen && <TagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleTagsControlWindowOpen} />}

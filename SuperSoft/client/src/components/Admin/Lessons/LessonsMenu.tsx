@@ -62,46 +62,54 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
+    renderLessonsList(lessons: LessonViewModel[]) {
+        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
+        return (
+           <>
+               {lessons.map((lesson) => {
+                   // @ts-ignore
+                   let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
+                   return (
+                       <Nav.Item key={lesson.id}>
+                           <div className="row" key={lesson.id} style={{height: "auto"}}>
+                               <div className="col-8" style={{height: "auto"}}>
+                                   <Nav.Link
+                                       style={{height: "auto"}}
+                                       eventKey={lesson.id}
+                                       className="nav-link lesson"
+                                       onClick={() => this.lessonToggle(lesson)}>
+                                       {lesson.name}
+                                   </Nav.Link>
+                               </div>
+                               <div className="col-2 col-lg-offset-10">
+                                   <i className="fa fa-window-close fa-2x"
+                                      aria-hidden="true"
+                                      onClick={() => this.deleteLesson(lesson.id)}/>
+                                   <i className="fa fa-edit fa-2x"
+                                      aria-hidden="true"
+                                      onClick={() => this.editLessonToggle(lesson)}/>
+                               </div>
+                           </div>
+                       </Nav.Item>
+                   );
+               })}
+           </>
+        );
+    }
+    
     renderLessonsMenu(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 + 40 : 40;
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
-        console.log("ready....");
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
                 {this.renderCautions()}
                 <Row>
-                    <Col sm={3} style={{height: `${rowHeight}px`}}>
+                    <Col sm={3} style={{height: `${rowHeight}px`, marginTop: "10px"}}>
                         <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey}>
                                 <div className="container-fluid">
-                                    {lessons.map((lesson) => {
-                                        // @ts-ignore
-                                        let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
-                                        return (
-                                                <Nav.Item key={lesson.id}>
-                                                    <div className="row" key={lesson.id} style={{height: "auto"}}>
-                                                        <div className="col-8" style={{height: "auto"}}>
-                                                            <Nav.Link
-                                                                style={{height: "auto"}}
-                                                                eventKey={lesson.id}
-                                                                className="nav-link lesson"
-                                                                onClick={() => this.lessonToggle(lesson)}>
-                                                                {lesson.name}
-                                                            </Nav.Link>
-                                                        </div>
-                                                        <div className="col-2 col-lg-offset-10">
-                                                            <i className="fa fa-window-close fa-2x"
-                                                               aria-hidden="true"
-                                                               onClick={() => this.deleteLesson(lesson.id)}/>
-                                                            <i className="fa fa-edit fa-2x"
-                                                               aria-hidden="true"
-                                                               onClick={() => this.editLessonToggle(lesson)}/>
-                                                        </div>
-                                                    </div>
-                                                </Nav.Item>
-                                        );
-                                    })}
+                                    {lessons.length > 0 && this.renderLessonsList(lessons)}
                                     <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
                                 </div>
                             </Nav>
@@ -130,7 +138,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <>
-                {lessons !== undefined && lessons.length > 0 && this.renderLessonsMenu(lessons)}
+                {lessons !== undefined && this.renderLessonsMenu(lessons)}
                 {lessons === undefined && renderSpinner()}
             </>
         );

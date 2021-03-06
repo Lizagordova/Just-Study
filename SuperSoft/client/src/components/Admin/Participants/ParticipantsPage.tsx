@@ -7,6 +7,7 @@ import UserStore from "../../../stores/UserStore";
 import { Button, Alert, Label } from "reactstrap";
 import Participants from "./Participants";
 import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
+import {renderSpinner} from "../../../functions/renderSpinner";
 
 class IParticipantsPageProps {
     courseStore: CourseStore;
@@ -20,21 +21,33 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     saved: boolean;
     notSaved: boolean;
     notDeleted: boolean;
+    currentCourseId: number;
+    loading: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IParticipantsPageProps) {
+        super(props);
         makeObservable(this, {
             participants: observable,
             saved: observable,
             notSaved: observable,
             restUsers: observable,
-            notDeleted: observable
+            notDeleted: observable,
+            currentCourseId: observable,
+            loading: observable
         });
+        this.currentCourseId = this.props.courseStore.choosenCourse.id;
     }
 
     componentDidMount(): void {
         this.setUsers();
+    }
+
+    componentDidUpdate(prevProps: Readonly<IParticipantsPageProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(this.currentCourseId !== this.props.courseStore.choosenCourse.id) {
+            this.currentCourseId = this.props.courseStore.choosenCourse.id;
+            this.loading = true;
+            this.setUsers();
+        }
     }
 
     setUsers() {
@@ -47,6 +60,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             return !participants.includes(u);
         });
         this.participants = participants;
+        this.loading = false;
     }
 
     renderCurrentParticipants(participants: UserViewModel[]) {
@@ -110,14 +124,23 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         );
     }
 
-    render() {
-        return(
+    renderParticipants() {
+        return (
             <>
-                {this.renderSavedDetails()}
                 {this.renderCurrentParticipants(this.participants)}
                 {this.renderSaveButton()}
                 {this.renderDividingLine()}
                 {this.renderRestUsers(this.restUsers)}
+            </>
+        );
+    }
+
+    render() {
+        return(
+            <>
+                {this.renderSavedDetails()}
+                {this.loading && renderSpinner()}
+                {!this.loading && this.renderParticipants()}
             </>
         );
     }

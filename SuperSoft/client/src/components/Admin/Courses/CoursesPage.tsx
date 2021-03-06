@@ -124,6 +124,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
         this.props.store.courseStore.setChoosenCourse(course);
         this.props.store.courseStore.getUsersByCourse(course.id);
         this.props.store.lessonStore.getLessonsByCourse(course.id);
+        this.props.store.courseStore.getUsersByCourse(course.id);
     }
 }
 
