@@ -8,5 +8,6 @@ export enum TaskType {
 	RightVerbForm = 2, 
 	LoadAudio = 3, 
 	DetailedAnswer = 4, 
-	LoadFile = 5
+	LoadFile = 5, 
+	ReadText = 6
 }
