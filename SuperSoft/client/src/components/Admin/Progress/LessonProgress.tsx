@@ -3,9 +3,9 @@ import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import Circle from "react-circle";
 import { makeObservable, observable } from "mobx";
-import {Accordion} from "react-bootstrap";
+import {Accordion, Button} from "react-bootstrap";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
-import { Card, CardHeader, CardBody, Button } from "reactstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 
 class ICourseProgress {
     store: RootStore;

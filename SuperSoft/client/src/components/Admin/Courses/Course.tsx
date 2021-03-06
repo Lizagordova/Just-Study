@@ -81,7 +81,7 @@ export class Course extends Component<ICourseProps> {
                                 <Nav.Link
                                     onClick={() => this.menuToggle("progress")}
                                     className="nav-link"
-                                    eventKey="participants">
+                                    eventKey="progress">
                                     ПРОГРЕСС
                                 </Nav.Link>
                             </Nav.Item>

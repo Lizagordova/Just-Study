@@ -120,7 +120,7 @@ class LessonStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                lessonId: lessonId
+                id: lessonId
             })
         });
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ProgressRepository_GetProgressByLesson]	
+﻿CREATE PROCEDURE [ProgressRepository_GetProgressByLesson]
 	@lessonId INT
 AS
 BEGIN
@@ -21,6 +21,8 @@ BEGIN
 		[UserId]
 	FROM [User_Course]
 	WHERE [CourseId] = @courseId;
+
+	DECLARE @userCount INT = (SELECT COUNT(*) FROM @userIds);
 
 	INSERT
 	INTO @subtaskIds (
@@ -45,9 +47,7 @@ BEGIN
 
 	DECLARE @allSubtasks INT = (
 		SELECT COUNT(*)
-		FROM [User_Subtask] 
-		WHERE [SubtaskId] IN (SELECT [Id] FROM @subtaskIds)
-			AND [UserId] IN (SELECT [Id] FROM @userIds)
+		FROM @subtaskIds
 		);
 
 	INSERT
@@ -72,13 +72,12 @@ BEGIN
 
 	DECLARE @allUserSubtaskGroups INT = (
 		SELECT COUNT(*)
-		FROM [User_SubtaskAnswerGroup] 
-		WHERE [AnswerGroupId] IN (SELECT [Id] FROM @answerGroupIds)
-		AND [UserId] IN (SELECT [Id] FROM @userIds)
-		);
+		FROM @answerGroupIds
+	);
+
 	DECLARE @progress FLOAT;
 	IF (@allSubtasks + @allUserSubtaskGroups > 0)
-		SET @progress = (CAST(@completedSubtasks AS FLOAT) + CAST(@completedUserSubtaskGroups AS FLOAT)) / (CAST(@allSubtasks AS FLOAT) + CAST(@allUserSubtaskGroups AS FLOAT))
+		SET @progress = (CAST(@completedSubtasks AS FLOAT) + CAST(@completedUserSubtaskGroups AS FLOAT)) / (CAST(@allSubtasks * @userCount AS FLOAT) + CAST(@allUserSubtaskGroups * @userCount AS FLOAT))
 	ELSE
 		SET @progress = 0;
 

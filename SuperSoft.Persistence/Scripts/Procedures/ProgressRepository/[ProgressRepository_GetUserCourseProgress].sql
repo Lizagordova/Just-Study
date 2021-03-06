@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[ProgressRepository_GetUserCourseProgress]
+﻿CREATE PROCEDURE [ProgressRepository_GetUserCourseProgress]
 	@userId INT,
 	@courseId INT
 AS
@@ -29,9 +29,7 @@ BEGIN
 
 	DECLARE @allSubtasks INT = (
 		SELECT COUNT(*)
-		FROM [User_Subtask] 
-		WHERE [SubtaskId] IN (SELECT [Id] FROM @subtaskIds)
-			AND [UserId] = @userId
+		FROM @subtaskIds
 		);
 
 	INSERT
@@ -56,10 +54,9 @@ BEGIN
 
 	DECLARE @allUserSubtaskGroups INT = (
 		SELECT COUNT(*)
-		FROM [User_SubtaskAnswerGroup] 
-		WHERE [AnswerGroupId] IN (SELECT [Id] FROM @answerGroupIds)
-		AND [UserId] = @userId
+		FROM @answerGroupIds
 		);
+
 	DECLARE @progress FLOAT;
 	IF (@allSubtasks + @allUserSubtaskGroups > 0)
 		SET @progress = (CAST(@completedSubtasks AS FLOAT) + CAST(@completedUserSubtaskGroups AS FLOAT)) / (CAST(@allSubtasks AS FLOAT) + CAST(@allUserSubtaskGroups AS FLOAT))

@@ -15,7 +15,7 @@ class IParticipantsProps {
 class Participants extends Component<IParticipantsProps>{
     renderParticipants(participants: UserViewModel[]) {
         return(
-            <Table>
+            <Table style={{marginTop: "10px"}}>
                 <thead>
                     <tr>
                         <td>ФИО</td>

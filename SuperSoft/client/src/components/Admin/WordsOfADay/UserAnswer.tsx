@@ -1,9 +1,9 @@
 ﻿import React, {Component} from 'react';
-import { Accordion, Card } from "react-bootstrap";
+import { Accordion, Card, Button as ButtonR } from "react-bootstrap";
 import { Button } from "reactstrap";
 import {observer} from "mobx-react";
-import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
-import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
+import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
+import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import {makeObservable, observable} from "mobx";
 import CommentGroup from "../../Common/Comments/CommentGroup";
 import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
@@ -32,7 +32,7 @@ class UserAnswer extends Component<IUserAnswerProps> {
 
     renderUserName(user: UserViewModel) {
         return (
-            <Accordion.Toggle style={{width: "90%"}} as={Button} variant="link" eventKey={user.id.toString()} onClick={() => this.setState({userAnswersLoad: true})}>
+            <Accordion.Toggle style={{width: "90%"}} as={ButtonR} variant="link" eventKey={user.id.toString()} onClick={() => this.setState({userAnswersLoad: true})}>
                 <span>{user.firstName + ' ' + user.lastName}</span>
             </Accordion.Toggle>
         );

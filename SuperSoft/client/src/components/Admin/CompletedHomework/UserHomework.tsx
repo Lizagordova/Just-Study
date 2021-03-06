@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
-import { Accordion } from "react-bootstrap";
-import { Button, Card, CardHeader, CardBody, Alert } from "reactstrap";
+import { Accordion, Button } from "react-bootstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import { makeObservable, observable } from "mobx";
