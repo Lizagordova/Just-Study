@@ -65,6 +65,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     renderLessonsMenu(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 + 40 : 40;
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
+        console.log("ready....");
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
                 {this.renderCautions()}

@@ -72,11 +72,11 @@ class TaskUpload extends Component<ITaskUploadProps> {
         task.taskType = this.taskType;
         if(this.props.isTrainingOrPool) {
             return(
-                <TaskUploadWindow store={this.props.store.taskStore} lessonId={null} task={task} />
+                <TaskUploadWindow taskStore={this.props.store.taskStore} lessonId={null} task={task}  tagStore={this.props.store.tagStore}/>
             );
         } else {
             return(
-                <TaskUploadWindow store={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} task={task} />
+                <TaskUploadWindow taskStore={this.props.store.taskStore} lessonId={this.props.store.lessonStore.choosenLesson.id} task={task} tagStore={this.props.store.tagStore}/>
             ); 
         }
     }

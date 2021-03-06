@@ -115,6 +115,7 @@ namespace SuperSoft
 			//services.AddSingleton<IProgressEditorService, ProgressEd>();
 			services.AddSingleton<IProgressReaderService, ProgressReaderService>();
 			services.AddSingleton<ITagReaderService, TagReaderService>();
+			services.AddSingleton<ITagEditorService, TagEditorService>();
 			services.AddSingleton<ITaskEditorService, TaskEditorService>();
 			services.AddSingleton<ITaskReaderService, TaskReaderService>();
 			services.AddSingleton<IUserTaskEditorService, UserTaskEditorService>();

@@ -23,11 +23,15 @@ namespace SuperSoft.Controllers
 		public TagController(
 			MapperService mapper,
 			ILogger<TagController> logger,
+			ITagReaderService tagReader,
+			ITagEditorService tagEditor,
 			LogService logService)
 		{
 			_mapper = mapper;
 			_logger = logger;
 			_logService = logService;
+			_tagEditor = tagEditor;
+			_tagReader = tagReader;
 		}
 
 		[HttpGet]

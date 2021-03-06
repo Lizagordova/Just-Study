@@ -7,9 +7,11 @@ import TaskUploadWindow from "./TaskUploadWindow";
 import { mapToTaskReadModel } from "../../../functions/mapper";
 import {toJS} from "mobx";
 import LessonStore from "../../../stores/LessonStore";
+import TagStore from "../../../stores/TagStore";
 
 class ITaskEditProps {
     taskStore: TaskStore;
+    tagStore: TagStore;
     task: TaskViewModel;
     toggle: any;
     lessonId: number;
@@ -25,7 +27,7 @@ export class TaskEdit extends Component<ITaskEditProps> {
 
     renderBody() {
         return(
-            <TaskUploadWindow store={this.props.taskStore} lessonId={this.props.lessonId} task={this.props.task} />
+            <TaskUploadWindow taskStore={this.props.taskStore} lessonId={this.props.lessonId} task={this.props.task}  tagStore={this.props.tagStore}/>
         );
     }
 

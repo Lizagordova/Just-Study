@@ -74,7 +74,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     renderTags() {
-        let tags = this.props.store.tags;
+        let tags = this.props.tagStore.tags;
         if(tags !== undefined && tags.length !== 0) {
             return(
                 <div className="row justify-content-center" style={{marginTop: "15px", fontSize: "1.2em" }}>
@@ -205,14 +205,14 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         let task = this.task;
         task.subtasks = this.subtasks;
         task.tagIds = this.tags.map(t => t.id);
-        this.props.store.addOrUpdateTask(this.task, this.props.lessonId)
+        this.props.taskStore.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(this.props.lessonId !== null) {
                     if(status === 200) {
-                        this.props.store.getTasksByLesson(this.props.lessonId);
+                        this.props.taskStore.getTasksByLesson(this.props.lessonId);
                     }
                 } else {
-                    this.props.store.getTasks(new Array<TagReadModel>());
+                    this.props.taskStore.getTasks(new Array<TagReadModel>());
                 }
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
