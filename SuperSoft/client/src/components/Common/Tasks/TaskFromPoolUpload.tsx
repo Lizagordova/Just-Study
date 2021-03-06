@@ -140,7 +140,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     renderTaskFromPoolWindow() {
-        let tags = this.props.store.taskStore.tags;
+        let tags = this.props.store.tagStore.tags;
         return (
             <Modal
                 centered={true}

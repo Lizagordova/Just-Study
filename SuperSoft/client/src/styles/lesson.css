@@ -90,10 +90,13 @@
     }
 }
 
-@media (max-width: 370px) {
+@media (max-width: 650px) {
     .menuCourseHeader {
         height: 130px;
     }
+}
+
+@media (max-width: 370px) {
     .materialContent {
         width: 250px;
         height: 250px;

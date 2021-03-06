@@ -66,25 +66,6 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
-		
-		[HttpGet]
-		[Route("/gettags")]
-		public ActionResult GetTags()
-		{
-			try
-			{
-				var tags = _tagReader.GetTags();
-				var tagViewModels = tags.Select(_mapper.Map<Tag, TagViewModel>).ToList();
-
-				return new JsonResult(tagViewModels);
-			}
-			catch (Exception e)
-			{
-				_logService.AddLogGetTagsException(_logger, e);
-
-				return new StatusCodeResult(500);
-			}
-		}
 
 		[HttpPost]
 		[Route("/addorupdatetask")]

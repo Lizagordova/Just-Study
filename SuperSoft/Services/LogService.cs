@@ -198,6 +198,18 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogDeleteTagException(ILogger logger, Exception e, int tagId)
+		{
+			var customMessage = $"Не удалось удалить тег tagId={tagId}.";
+			AddLog(logger, e, customMessage);
+		}
+
+		public void AddLogAddOrUpdateTagException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить тег";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddOrUpdateTaskException(ILogger logger, Exception e)
 		{
 			var customMessage = $"Не удалось добавить задание.";

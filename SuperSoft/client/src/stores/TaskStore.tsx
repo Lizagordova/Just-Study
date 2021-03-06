@@ -12,27 +12,13 @@ import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
-    tags: TagViewModel[] = new Array<TagViewModel>();
     tasksByQuery: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         makeObservable(this, {
             tasksByChoosenLesson: observable,
-            tags: observable,
             tasksByQuery: observable
         });
-        this.setInitialData();
-    }
-
-    setInitialData() {
-        this.getTags();
-    }
-
-    async getTags() {
-        const response = await fetch("/gettags");
-        if(response.status === 200) {
-            this.tags = await response.json();
-        }
     }
 
     async getTasksByLesson(lessonId: number): Promise<number> {

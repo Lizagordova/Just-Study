@@ -45,6 +45,7 @@
 		<None Include="client\src\components\Admin\Participants\ParticipantsPage.tsx" />
 		<None Include="client\src\components\Admin\Progress\CourseProgress.tsx" />
 		<None Include="client\src\components\Admin\Progress\LessonProgress.tsx" />
+		<None Include="client\src\components\Admin\Tags\TagsControlWindow.tsx" />
 		<None Include="client\src\components\Admin\Tasks\AddSubtask.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadSubtaskProps.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadTaskProps.tsx" />
@@ -118,6 +119,7 @@
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\NotificationStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
+		<None Include="client\src\stores\TagStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
 		<None Include="client\src\stores\TrackerStore.tsx" />
 		<None Include="client\src\stores\TrainingStore.tsx" />

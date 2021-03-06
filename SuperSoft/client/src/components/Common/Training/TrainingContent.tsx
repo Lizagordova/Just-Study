@@ -9,6 +9,7 @@ import RootStore from "../../../stores/RootStore";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import TaskUpload from "../../Admin/Tasks/TaskUpload";
 import {UserRole} from "../../../Typings/enums/UserRole";
+import TagsControlWindow from "../../Admin/Tags/TagsControlWindow";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -21,6 +22,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     taskUploadWindowOpen: boolean = false;
     update: boolean = false;
     notReceived: boolean;
+    tagsControlWindowOpen: boolean;
 
     constructor() {
         // @ts-ignore
@@ -29,7 +31,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
             choosenTags: observable,
             taskUploadWindowOpen: observable,
             update: observable,
-            notReceived: observable
+            notReceived: observable,
+            tagsControlWindowOpen: observable
         });
     }
 
@@ -84,6 +87,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 <>
                     {this.renderTags(tags, this.update)}
                     {this.renderApplyButton()}
+                    {this.renderTagsControl()}
                 </>
             );
         }
@@ -126,8 +130,21 @@ class TrainingContent extends Component<ITrainingContentProps> {
         }
     }
 
+    renderTagsControl() {
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return (
+                <>
+                    {<Button outline color="secondary" onClick={() => this.toggleTagsControlWindowOpen()}>
+                        Редактировать теги
+                    </Button>}
+                    {this.tagsControlWindowOpen && <TagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleTagsControlWindowOpen} />}
+                </>
+            );
+        }
+    }
+
     render() {
-        let tags = this.props.store.taskStore.tags;
+        let tags = this.props.store.tagStore.tags;
         return(
             <>
                 {this.renderCautions()}
@@ -163,6 +180,10 @@ class TrainingContent extends Component<ITrainingContentProps> {
 
     toggleTaskUploadWindow() {
         this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
+    }
+
+    toggleTagsControlWindowOpen = () => {
+        this.tagsControlWindowOpen = !this.tagsControlWindowOpen;
     }
 }
 

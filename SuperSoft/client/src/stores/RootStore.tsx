@@ -8,6 +8,7 @@ import TrainingStore from "./TrainingStore";
 import TrackerStore from "./TrackerStore";
 import NotificationStore from "./NotificationStore";
 import FeedbackStore from "./FeedbackStore";
+import TagStore from "./TagStore";
 
 export class RootStore {
     userStore: UserStore;
@@ -19,6 +20,7 @@ export class RootStore {
     trackerStore: TrackerStore;
     notificationStore: NotificationStore;
     feedbackStore: FeedbackStore;
+    tagStore: TagStore;
 
     constructor() {
         makeObservable(this, {
@@ -30,7 +32,8 @@ export class RootStore {
             trainingStore: observable,
             trackerStore: observable,
             notificationStore: observable,
-            feedbackStore: observable
+            feedbackStore: observable,
+            tagStore: observable
         });
         this.userStore = new UserStore();
         this.courseStore = new CourseStore();
@@ -41,6 +44,7 @@ export class RootStore {
         this.trackerStore = new TrackerStore();
         this.notificationStore = new NotificationStore();
         this.feedbackStore = new FeedbackStore();
+        this.tagStore = new TagStore();
     }
 
     reset() {
@@ -55,6 +59,7 @@ export class RootStore {
                 this.trackerStore = new TrackerStore();
                 this.notificationStore = new NotificationStore();
                 this.feedbackStore = new FeedbackStore();
+                this.tagStore = new TagStore();
             });
     }
 
