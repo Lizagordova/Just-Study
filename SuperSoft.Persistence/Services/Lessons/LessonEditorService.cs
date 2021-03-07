@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
@@ -55,6 +56,7 @@ namespace SuperSoft.Persistence.Services.Lessons
 			{
 				if (File.Exists(path))
 				{
+					stream.Dispose();
 					File.Delete(path);
 				}
 			}
