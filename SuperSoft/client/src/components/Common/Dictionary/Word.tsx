@@ -70,11 +70,24 @@ class Word extends Component<IWordProps> {
         );
     }
 
+    renderExamples() {
+        let examples = this.word.examples;
+        if(examples.length > 0) {
+            return(
+                <div className="row">
+                    <div className="col-10">
+                        <span style={{marginLeft: "0px", paddingLeft: "10px"}}>Пример: {examples[0].example}</span>
+                    </div>
+                </div>
+            );
+        }
+    }
+
     renderControlButtons() {
         return(
             <>
                 <div className="row justify-content-center" onClick={() => this.handleDelete()}>
-                     <i className="fa fa-window-close" aria-hidden="true"/>
+                     <i className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 </div>
                 <div className="row justify-content-center" onClick={() => this.editToggle()}>
                      <i className="fa fa-edit fa-2x" aria-hidden="true"/>
@@ -86,7 +99,11 @@ class Word extends Component<IWordProps> {
     renderProgress() {
         if(this.props.userStore.currentUser.role != UserRole.Admin) {
             return(
-                <Progress color="success" value={this.props.userWord.rightAnswers / 0.05}>выучено на {this.computeProgress()} %</Progress>
+                <Progress
+                    style={{width: "100%"}}
+                    color="success" value={this.props.userWord.rightAnswers / 0.05}>
+                    выучено на {this.computeProgress()} %
+                </Progress>
             );
         }
     }
@@ -94,20 +111,21 @@ class Word extends Component<IWordProps> {
     renderWordCard() {
         return(
             <Card className="cardWord">
-                    <div className="row">
-                        <div className="col-10">
-                            <div className="row justify-content-center">
-                                {this.renderWord()}
-                                {this.renderPartOfSpeech()}
-                                {this.renderEnglishMeaning()}
-                                {this.renderRussianMeaning()}
-                            </div>
+                <div className="row">
+                    <div className="col-10">
+                        <div className="row justify-content-center">
+                            {this.renderWord()}
+                            {this.renderPartOfSpeech()}
+                            {this.renderEnglishMeaning()}
+                            {this.renderRussianMeaning()}
                         </div>
-                        <div className="col-2">
-                            {this.renderControlButtons()}
-                        </div>
+                        {this.renderExamples()}
                     </div>
-                <CardText style={{marginTop: '25px'}}>
+                    <div className="col-2">
+                        {this.renderControlButtons()}
+                    </div>
+                </div>
+                <CardText style={{marginTop: '5px', width: "100%"}}>
                     {this.renderProgress()}
                 </CardText>
             </Card>

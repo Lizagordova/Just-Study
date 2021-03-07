@@ -1,6 +1,6 @@
 ﻿.cardWord {
     background-color: #adb5bd;
-    height: 65px;
+    height: 75px;
     font-size: 0.8em;
     margin-top: 5px;
 }
@@ -11,13 +11,13 @@
 
 @media (max-width : 600px) {
     .cardWord {
-        height: 100px;
+        height: 105px;
     }
 }
 
 @media (max-width : 600px) {
     .cardWord {
-        height: 120px;
+        height: 125px;
     }
 }
 

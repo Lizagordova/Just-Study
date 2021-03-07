@@ -208,7 +208,7 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
                 isOpen={true}
                 toggle={() => this.props.cancelEdit()}
             >
-                <i style={{marginLeft: '96%', width: '2%'}}
+                <i style={{marginLeft: '94%', width: '2%'}}
                    onClick={() => this.props.cancelEdit()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">

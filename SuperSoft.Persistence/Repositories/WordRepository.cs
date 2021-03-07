@@ -261,9 +261,11 @@ namespace SuperSoft.Persistence.Repositories
 			return words;
 		}
 
-		private Word MapWord(WordUdt wordUdt, IEnumerable<ExampleUdt> exampleUdt)
+		private Word MapWord(WordUdt wordUdt, IEnumerable<ExampleUdt> exampleUdts)
 		{
 			var word = _mapper.Map<WordUdt, Word>(wordUdt);
+			word.Examples = exampleUdts.Select(_mapper.Map<ExampleUdt, Example>).ToList();
+
 			return word;
 		}
 	}
