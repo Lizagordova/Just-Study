@@ -8,11 +8,13 @@ import {WordOfADayReadModel} from "../Typings/readModels/WordOfADayReadModel";
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
     userDictionary: UserWordViewModel[] = new Array<UserWordViewModel>();
+    wordOfADay: WordViewModel = new WordViewModel();
 
     constructor() {
         makeObservable(this, {
             dictionary: observable,
             userDictionary: observable,
+            wordOfADay: observable
         });
     }
 
@@ -145,7 +147,7 @@ class WordStore {
 
     async getWordOfADay(date: Date | Date[], courseId: number): Promise<WordViewModel> {
         let wordOfADay = new WordViewModel();
-        let dateWithTime = new Date(date.toLocaleString());
+        let dateWithTime = new Date(date.toString());
         dateWithTime.setHours(12);
         const response = await fetch("/getwordofaday", {
             method: "POST",
@@ -158,6 +160,7 @@ class WordStore {
         });
         if(response.status === 200) {
             wordOfADay = await response.json();
+            this.wordOfADay = wordOfADay;
         }
 
         return wordOfADay;

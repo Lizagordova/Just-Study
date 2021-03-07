@@ -20,7 +20,6 @@ class IWordOfADayProps {
 
 @observer
 class WordOfADay extends Component<IWordOfADayProps> {
-    word: WordViewModel = new WordViewModel();
     addOrUpdate: boolean = false;
     role: UserRole;
     showComments: boolean;
@@ -28,20 +27,22 @@ class WordOfADay extends Component<IWordOfADayProps> {
     itIsNotAllowedToWatchNextWords: boolean;
     showUserAnswers: boolean;
     alreadyExists: boolean;
+    currentCourseId: number;
 
     constructor(props: IWordOfADayProps) {
         super(props);
         makeObservable(this, {
-            word: observable,
             addOrUpdate: observable,
             role: observable,
             showCautions: observable,
             showComments: observable,
             itIsNotAllowedToWatchNextWords: observable,
             showUserAnswers: observable,
-            alreadyExists: observable
+            alreadyExists: observable,
+            currentCourseId: observable
         });
         this.setWordOfADay(this.props.date);
+        this.currentCourseId = this.props.store.courseStore.choosenCourse.id;
         this.role = this.props.store.userStore.currentUser.role;
     }
 
@@ -56,7 +57,6 @@ class WordOfADay extends Component<IWordOfADayProps> {
         this.showCautions = true;
         this.props.store.wordStore.getWordOfADay(date, courseId)
             .then((word) => {
-                this.word = word;
                 this.showCautions = word.word === null;
                 this.alreadyExists = word.word !== null;
             });
@@ -111,7 +111,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         if(this.role === UserRole.User) {
             let userId = this.props.store.userStore.currentUser.id;
             return(
-                <AnswerToWordOfADay wordId={this.word.id} userId={userId} wordStore={this.props.store.wordStore}/>
+                <AnswerToWordOfADay wordId={this.props.store.wordStore.wordOfADay.id} userId={userId} wordStore={this.props.store.wordStore}/>
             );
         }
     }
@@ -125,43 +125,48 @@ class WordOfADay extends Component<IWordOfADayProps> {
                     onClick={() => this.toggleComments()}>
                     Комментарии
                     {this.showComments &&
-                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.word.id} onToggle={this.toggleComments} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
+                    <CommentGroup commentedEntityType={CommentedEntityType.WordOfADay} commentedEntityId={this.props.store.wordStore.wordOfADay.id} onToggle={this.toggleComments} store={this.props.store} userId={this.props.store.userStore.currentUser.id}/>}
                 </Button>
             );
         }
     }
 
     renderWordOfADay(word: WordViewModel) {
-        return(
-            <>
-                <Row className="justify-content-center">
-                    <Col sm="9">
-                        <Card>
-                            {this.renderDeleteButton()}
-                            {this.renderWord(word)}
-                            <CardBody className="text-center">
-                                {this.renderWordDetails(word)}
-                            </CardBody>
-                            {this.renderEditButton()}
-                            {this.renderAnswerToWordOfADay()}
-                        </Card>
-                    </Col>
-                </Row>
-                <Row className="justify-content-center">
-                    {this.renderComments()}
-                </Row>
-                <Row className="row justify-content-center" style={{marginTop: "10px"}}>
-                    {this.renderUserAnswersControl()}
-                </Row>
-            </>
-        );
+        if(this.props.store.wordStore.wordOfADay.word === null) {
+            this.showCautions = true;
+        } else {
+            this.showCautions = false;
+            return(
+                <>
+                    <Row className="justify-content-center">
+                        <Col sm="9">
+                            <Card>
+                                {this.renderDeleteButton()}
+                                {this.renderWord(word)}
+                                <CardBody className="text-center">
+                                    {this.renderWordDetails(word)}
+                                </CardBody>
+                                {this.renderEditButton()}
+                                {this.renderAnswerToWordOfADay()}
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row className="justify-content-center">
+                        {this.renderComments()}
+                    </Row>
+                    <Row className="row justify-content-center" style={{marginTop: "10px"}}>
+                        {this.renderUserAnswersControl()}
+                    </Row>
+                </>
+            );
+        }
     }
 
     renderAddOrUpdateWordOfADay() {
         let courseId = this.props.store.courseStore.choosenCourse.id;
         let currentUser = this.props.store.userStore.currentUser;
         return (
-            <AddOrUpdateWord word={this.word} cancelEdit={this.toggleAddOrUpdateWord} courseId={courseId} currentUser={currentUser} date={this.props.date} isWordOfADay={true} wordStore={this.props.store.wordStore} />
+            <AddOrUpdateWord word={this.props.store.wordStore.wordOfADay} cancelEdit={this.toggleAddOrUpdateWord} courseId={courseId} currentUser={currentUser} date={this.props.date} isWordOfADay={true} wordStore={this.props.store.wordStore} />
         );
     }
 
@@ -177,7 +182,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     renderUserAnswers() {
         return (
-            <UserAnswers store={this.props.store}  wordId={this.word.id}/>
+            <UserAnswers store={this.props.store}  wordId={this.props.store.wordStore.wordOfADay.id}/>
         );
     }
 
@@ -186,7 +191,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         if(role === UserRole.Admin) {
             return(
                 <>
-                    {!this.showUserAnswers && this.renderGetUserAnswersButton()}
+                    {this.renderGetUserAnswersButton()}
                     {this.showUserAnswers && this.renderUserAnswers()}
                 </>
             );
@@ -207,7 +212,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
         return(
             <div className="container">
                 {this.showCautions && this.renderCautions()}
-                {!this.showCautions && this.renderWordOfADay(this.word)}
+                {this.renderWordOfADay(this.props.store.wordStore.wordOfADay)}
                 {this.addOrUpdate && this.renderAddOrUpdateWordOfADay()}
                 {!this.alreadyExists && this.renderButton()}
             </div>
@@ -218,10 +223,10 @@ class WordOfADay extends Component<IWordOfADayProps> {
         let result = window.confirm('Вы уверены, что хотите удалить слово дня?');
         if(result) {
             let wordStore = this.props.store.wordStore;
-                wordStore.deleteWordOfADay(this.word.id)
+                wordStore.deleteWordOfADay(this.props.store.wordStore.wordOfADay.id)
                     .then((status) => {
                         if(status === 200) {
-                            this.word = new WordReadModel();
+                            this.setWordOfADay(this.props.date);
                             this.addOrUpdate = true;
                     }
             })
@@ -235,7 +240,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     toggleComments = () => {
         this.showComments = !this.showComments;
-    }
+    };
 
     toggleUserAnswers() {
         this.showUserAnswers = !this.showUserAnswers;
