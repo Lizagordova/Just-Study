@@ -60,7 +60,7 @@ export function translateSubtaskType(subtaskType: SubtaskType): string {
     } else if(subtaskType === SubtaskType.LoadFile) {
         return "Задание на загрузку файла"
     } else if(subtaskType === SubtaskType.InsertWordsIntoGaps) {
-        return "Задание вставить слова в пропуски"
+        return "Задание расставить слова в нужном порядке"
     }
 
     return "";

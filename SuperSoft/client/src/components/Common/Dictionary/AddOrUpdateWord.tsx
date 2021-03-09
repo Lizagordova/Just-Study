@@ -261,6 +261,7 @@ class AddOrUpdateWord extends Component<IAddOrUpdateWordOfADayProps> {
                 if(this.props.courseId !== undefined) {
                     wordOfADay.courseId = this.props.courseId;
                 }
+                console.log("date from props", this.props.date);
                 wordOfADay.date = this.props.date;
                 this.props.wordStore.addOrUpdateWordOfADay(wordOfADay)
                     .then((status) => {

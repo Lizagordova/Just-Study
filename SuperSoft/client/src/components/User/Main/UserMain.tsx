@@ -163,6 +163,7 @@ export class UserMain extends React.Component<IUserMainProps> {
         this.props.store.lessonStore.getLessonsByCourse(course.id);
         let choosenLessonId = this.props.store.lessonStore.choosenLesson.id;
         this.props.store.taskStore.getTasksByLesson(choosenLessonId);
+        this.props.store.wordStore.getWordOfADay(new Date(), course.id);
     }
 
     toggleNotifications = () => {

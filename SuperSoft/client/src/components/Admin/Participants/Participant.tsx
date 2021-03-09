@@ -158,7 +158,7 @@ class Participant extends Component<IParticipantProps> {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem id="1" key="1" onClick={() => this.roleCourseChange(CourseRole.Teacher)}>{translateCourseRole(CourseRole.Teacher)}</DropdownItem>
-                    <DropdownItem id="2" key="1" onClick={() => this.roleCourseChange(CourseRole.Pupil)}>{translateCourseRole(CourseRole.Pupil)}</DropdownItem>
+                    <DropdownItem id="2" key="2" onClick={() => this.roleCourseChange(CourseRole.Pupil)}>{translateCourseRole(CourseRole.Pupil)}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );

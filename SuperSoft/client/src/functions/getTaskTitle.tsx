@@ -12,7 +12,7 @@ export function getTaskTitle(taskType: TaskType): string {
     } else if(taskType === TaskType.LoadFile) {
         return "Задание на загрузку файла";
     } else if(taskType === TaskType.InsertWordsIntoGaps) {
-        return "Задание вставить слова в пропуски";
+        return "Задание расставить слова в нужном порядке";
     }
     return "";
 }

@@ -167,6 +167,9 @@ class WordStore {
     }
 
     async addOrUpdateWordOfADay(wordOfADay: WordOfADayReadModel): Promise<number> {
+        let dateWithTime = new Date(wordOfADay.date.toString());
+        dateWithTime.setHours(12);
+        wordOfADay.date = dateWithTime;
         const response = await fetch("/addorupdatewordofaday", {
             method: "POST",
             headers: {

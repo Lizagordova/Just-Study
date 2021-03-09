@@ -34,6 +34,8 @@ class LessonStore {
             if(data[0] !== undefined) {
                 this.choosenLesson = data[0];
                 this.getMaterialsByLesson(this.choosenLesson.id);
+            } else {
+                this.materialsByChoosenLesson = new Array<LessonMaterialViewModel>();
             }
         }
     }

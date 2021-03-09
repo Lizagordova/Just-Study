@@ -42,7 +42,7 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 : 40;
+        let rowHeight = this.isNavOpen ? lessons.length * 80 + 50  : 60;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row>

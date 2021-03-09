@@ -8,6 +8,9 @@ BEGIN
 	INTO [CommentGroup] AS [dest]
 	USING @group AS [src]
 	ON [dest].[Id] = [src].[Id]
+	    OR ([dest].[CommentedEntityType] = [src].[CommentedEntityType]
+	    AND [dest].[CommentedEntityId] = [src].[CommentedEntityId]
+	    AND [dest].[UserId] = [src].[UserId])
 	WHEN MATCHED THEN
 		UPDATE
 		SET

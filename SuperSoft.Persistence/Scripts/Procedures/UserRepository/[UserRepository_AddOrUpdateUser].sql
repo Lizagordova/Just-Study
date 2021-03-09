@@ -18,8 +18,7 @@ BEGIN
 		[Role],
 		[Token],
 		[Email]
-		)
-		VALUES (
+		) VALUES (
 			[src].[Login],
 			[src].[FirstName],
 			[src].[LastName],
@@ -34,7 +33,6 @@ BEGIN
 		[dest].[Login] = [src].[Login],
 		[dest].[FirstName] = [src].[FirstName],
 		[dest].[LastName] = [src].[LastName],
-		[dest].[PasswordHash] = [src].[PasswordHash],
 		[dest].[Role] = [src].[Role],
 		[dest].[Token] = [src].[Token],
 		[dest].[Email] = [src].[Email]

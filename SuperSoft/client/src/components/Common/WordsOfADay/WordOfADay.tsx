@@ -7,7 +7,6 @@ import {makeObservable, observable, toJS} from "mobx";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import CommentGroup from "../Comments/CommentGroup";
 import {CommentedEntityType} from "../../../Typings/enums/CommentedEntityType";
-import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
 import AnswerToWordOfADay from "./AnswerToWordOfADay";
 import UserAnswers from "../../Admin/WordsOfADay/UserAnswers";
 import {translatePartOfSpeech} from "../../../functions/translater";
@@ -23,26 +22,19 @@ class WordOfADay extends Component<IWordOfADayProps> {
     addOrUpdate: boolean = false;
     role: UserRole;
     showComments: boolean;
-    showCautions: boolean = true;
     itIsNotAllowedToWatchNextWords: boolean;
     showUserAnswers: boolean;
-    alreadyExists: boolean;
-    currentCourseId: number;
 
     constructor(props: IWordOfADayProps) {
         super(props);
         makeObservable(this, {
             addOrUpdate: observable,
             role: observable,
-            showCautions: observable,
             showComments: observable,
             itIsNotAllowedToWatchNextWords: observable,
-            showUserAnswers: observable,
-            alreadyExists: observable,
-            currentCourseId: observable
+            showUserAnswers: observable
         });
         this.setWordOfADay(this.props.date);
-        this.currentCourseId = this.props.store.courseStore.choosenCourse.id;
         this.role = this.props.store.userStore.currentUser.role;
     }
 
@@ -54,12 +46,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
 
     setWordOfADay(date: Date | Date[]) {
         let courseId = this.props.store.courseStore.choosenCourse.id;
-        this.showCautions = true;
-        this.props.store.wordStore.getWordOfADay(date, courseId)
-            .then((word) => {
-                this.showCautions = word.word === null;
-                this.alreadyExists = word.word !== null;
-            });
+        this.props.store.wordStore.getWordOfADay(date, courseId);
     }
 
     renderCautions() {
@@ -71,7 +58,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     renderDeleteButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '95%', width: '3%'}}
+                <i style={{marginLeft: '90%', width: '2%'}}
                    onClick={() => this.handleDelete()}
                    className="fa fa-window-close fa-2x" aria-hidden="true" />
             );
@@ -79,9 +66,11 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderWord(word: WordViewModel) {
-        return(
-            <CardHeader className="text-center">{word.word.toUpperCase()}</CardHeader>
-        );
+        if(word !== undefined && word.word !== undefined && word !== null && word.word !== null) {
+            return(
+                <CardHeader className="text-center">{word.word.toUpperCase()}</CardHeader>
+            );
+        }
     }
 
     renderWordDetails(word: WordViewModel) {
@@ -132,10 +121,11 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderWordOfADay(word: WordViewModel) {
-        if(this.props.store.wordStore.wordOfADay.word === null) {
-            this.showCautions = true;
+        if(word === undefined || word.word === undefined || word === null || word.word === null) {
+            return (
+                <>{this.renderCautions()}</>
+            )
         } else {
-            this.showCautions = false;
             return(
                 <>
                     <Row className="justify-content-center">
@@ -198,23 +188,26 @@ class WordOfADay extends Component<IWordOfADayProps> {
         }
     }
 
-    renderButton() {
+    renderAddWordButton(word: WordViewModel) {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
-            return(
-                <Button outline color="primary" onClick={() => this.toggleAddOrUpdateWord()}>
-                    Добавить слово
-                </Button>
-            );
+            if(word.word === null || word === undefined || word.word === undefined || word === null) {
+                return(
+                    <Button
+                        style={{marginTop: "10px"}}
+                        outline color="primary" onClick={() => this.toggleAddOrUpdateWord()}>
+                        Добавить слово
+                    </Button>
+                );
+            }
         }
     }
 
     render() {
         return(
             <div className="container">
-                {this.showCautions && this.renderCautions()}
                 {this.renderWordOfADay(this.props.store.wordStore.wordOfADay)}
                 {this.addOrUpdate && this.renderAddOrUpdateWordOfADay()}
-                {!this.alreadyExists && this.renderButton()}
+                {this.renderAddWordButton(this.props.store.wordStore.wordOfADay)}
             </div>
         );
     }
