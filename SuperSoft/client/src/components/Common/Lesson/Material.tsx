@@ -71,7 +71,6 @@ export class Material extends Component<IMaterialProps> {
                 <>
                     {this.renderDeleteButton()}
                     <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
-
                 </>
             );
         } else {

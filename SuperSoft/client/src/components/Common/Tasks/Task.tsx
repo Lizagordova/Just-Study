@@ -105,6 +105,7 @@ export class Task extends Component<ITaskProps> {
         if(role === UserRole.Admin && !this.props.reviewMode) {
             return(
                 <Button className="addTask"
+                     style={{fontSize: "0.6em", height: "auto"}}
                      onClick={() => this.addSubtaskToggle()}
                      outline color="secondary">
                     <span className="addTaskText">

@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
-import { Alert, Button, ModalBody, ModalFooter, Input, Label } from "reactstrap";
+import { Alert, Button, ModalBody, Fade, Input, Label } from "reactstrap";
 import { observer } from "mobx-react";
 import {makeObservable, observable, toJS} from "mobx";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
@@ -20,7 +20,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     notSaved: boolean;
     saved: boolean;
     loaded: boolean;
-    notValid: boolean;
+    renderEmptyWarning: boolean = true;
 
     constructor() {
         // @ts-ignore
@@ -32,7 +32,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             subtasks: observable,
             tags: observable,
             saved: observable,
-            notValid: observable
+            renderEmptyWarning: observable
         });
     }
 
@@ -96,6 +96,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     renderInstructionField() {
+        console.log("this.task.instruction", this.task.instruction);
         return(
             <div className="row justify-content-center">
                 <Label className="inputLabel" align="center">
@@ -105,6 +106,10 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                     style={{width: "70%"}}
                     defaultValue={this.task.instruction}
                     onChange={(e) => this.inputInstruction(e)}/>
+                <Fade in={this.renderEmptyWarning}
+                      style={{fontSize: "0.7em", color: "red", marginTop: "0px", width: "70%"}}>
+                    это поле не может быть пустое
+                </Fade>
             </div>
         );
     }
@@ -198,7 +203,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
     
     inputInstruction(event: React.FormEvent<HTMLInputElement>) {
-        this.task.instruction = event.currentTarget.value;
+        let value = event.currentTarget.value;
+        this.renderEmptyWarning = value === "" || value === null || value === undefined;
+        this.task.instruction = value;
     }
 
     saveTask() {

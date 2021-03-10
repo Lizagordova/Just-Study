@@ -7,6 +7,7 @@ import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
+import {getFileName} from "../../../functions/getFileName";
 
 @observer
 export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
@@ -66,13 +67,18 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderImage(subtask: SubtaskViewModel) {
-        return (
-            <>
-                {subtask.path !== null &&
-                <CardImg src={subtask.path.replace('client/build', './')} alt="Loading..."/>}
-            </>
-        );
+    renderContent(path: string) {
+        path = path.replace('client/build', './');
+        if(path.includes("jpg") || path.includes("jpeg") || path.includes("png")) {
+            return (
+                <CardImg src={path} alt="Loading..."/>
+            );
+        } else if(path.includes("doc") || path.includes("docx")) {
+            let fileName = getFileName(path);
+            return (
+                <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
+            );
+        }
     }
 
     renderInputAnswerArea() {
@@ -127,7 +133,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         return(
             <>
                 {this.renderSubtaskText(subtask)}
-                {this.renderImage(subtask)}
+                {subtask.path !== null && this.renderContent(subtask.path)}
                 <CardText>
                     <div className="row justify-content-center">
                         {this.renderInputAnswerArea()}

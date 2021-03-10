@@ -1,6 +1,6 @@
 ﻿import React, {Component} from "react";
 import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
-import { Input, Label, Tooltip, Fade } from "reactstrap";
+import {Fade, Input, Label, Tooltip} from "reactstrap";
 import {makeObservable, observable} from "mobx";
 import {IUploadSubtaskProps} from "./IUploadSubtaskProps";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
@@ -12,6 +12,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     subtask: SubtaskReadModel = new SubtaskReadModel();
     tooltipOpen: boolean = false;
     renderWarning: boolean = false;
+    renderEmptyWarning: boolean = false;
 
     constructor() {
         // @ts-ignore
@@ -19,7 +20,8 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
         makeObservable(this, {
             subtask: observable,
             tooltipOpen: observable,
-            renderWarning: observable
+            renderWarning: observable,
+            renderEmptyWarning: observable,
         });
     }
 
@@ -63,19 +65,42 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
                       style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
                     Введённый текст пока не соответствует нужному формату(см. подсказку выше)
                 </Fade>
+                <Fade in={this.renderEmptyWarning}
+                      style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
+                    Это поле не может быть пустым
+                </Fade>
             </>
         );
+    }
+
+    getFadeText(subtaskType: SubtaskType): string {
+        let text = "";
+        if(subtaskType === SubtaskType.LoadAudio) {
+            text = "Допустимые форматы: pdf, mp4, doc, docx";
+        } else if(subtaskType === SubtaskType.DetailedAnswer) {
+            text = "Допустимые форматы: jpg, png, jpeg, doc, docx";
+        } else if(subtaskType === SubtaskType.LoadFile) {
+            text = "Допустимые форматы: pdf, mp4, doc, docx";
+        }
+
+        return text;
     }
 
     renderInputFile() {
         let subtaskType = this.subtask.subtaskType;
         if(subtaskType === SubtaskType.LoadAudio || subtaskType === SubtaskType.DetailedAnswer || subtaskType === SubtaskType.LoadFile) {
             return(
-                <Input
-                    style={{marginTop: "5px"}}
-                    className="fileInput"
-                    type="file"
-                    onChange={(e) => this.inputFile(e)} />
+                <>
+                    <Input
+                        style={{marginTop: "5px"}}
+                        className="fileInput"
+                        type="file"
+                        onChange={(e) => this.inputFile(e)} />
+                    <Fade in={true}
+                          style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
+                        {this.getFadeText(subtaskType)}
+                    </Fade>
+                </>
             );
         }
     }
@@ -131,6 +156,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
         } else if(this.props.subtask.subtaskType === SubtaskType.FillGaps) {
             this.renderWarning = groups === null || groups.length === 0;
         }
+        this.renderEmptyWarning = this.props.subtask.text === "";
     }
  
     inputOrder(event: React.FormEvent<HTMLInputElement>) {
