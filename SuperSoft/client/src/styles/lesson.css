@@ -52,7 +52,7 @@
     height: 700px;
 }
 
-@media (max-width: 1037px) {
+@media (max-width: 1215px) {
     .menuHeader {
         height: 130px;
     }
