@@ -99,7 +99,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 <div className="row">
                     {tasks.map((task, i) => {
                         return(
-                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTrainingOrPool={true} tags={this.choosenTags}/>
+                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTrainingOrPool={true} tags={this.choosenTags} reviewMode={false}/>
                         );
                     })}
                 </div>

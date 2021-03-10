@@ -10,4 +10,5 @@ export class ISubtaskProps {
     taskId: number;
     order: number;
     updateUserTask: any;
+    reviewMode: boolean;
 }
