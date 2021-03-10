@@ -9,6 +9,7 @@ import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadM
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import {renderSpinner} from "../../../functions/renderSpinner";
 import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
+import {renderContent} from "../../../functions/renderContent";
 
 @observer
 export class LoadAudioSubtask extends Component<ISubtaskProps> {
@@ -67,15 +68,6 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderImage(subtask: SubtaskViewModel) {
-        return (
-            <>
-                {subtask.path !== null &&
-                <CardImg src={subtask.path.replace('client/build', './')} alt="Loading..."/>}
-            </>
-        );
-    }
-
     renderSaveButton() {
         return(
             <div className="col-3">
@@ -114,13 +106,10 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         return(
             <CardText>
                 {this.userAnswer.answerFiles.map(ans => {
-                    let answerPath = ans.replace('client/build', '.');
                     return(
                         <div className="row justify-content-center">
                             {this.renderDeleteButton()}
-                            <audio className="audio" controls>
-                                <source src={answerPath} type="audio/mpeg"/>
-                            </audio>
+                            {renderContent(ans)}
                         </div>
                     );
                 })}
@@ -158,7 +147,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
             <>
                 {this.renderControlButton()}
                 {this.renderSubtaskText(subtask)}
-                {this.renderImage(subtask)}
+                {subtask.path !== null && renderContent(subtask.path)}
                 {this.renderUserAnswers()}
                 {this.renderAnswerInput()}
             </>

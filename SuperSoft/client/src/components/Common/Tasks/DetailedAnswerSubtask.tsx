@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {Alert, Button, CardImg, CardText} from "reactstrap";
+import {Alert, Button, CardText} from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {makeObservable, observable} from "mobx";
@@ -7,7 +7,7 @@ import {observer} from "mobx-react";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
-import {getFileName} from "../../../functions/getFileName";
+import {renderContent} from "../../../functions/renderContent";
 
 @observer
 export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
@@ -67,20 +67,6 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderContent(path: string) {
-        path = path.replace('client/build', './');
-        if(path.includes("jpg") || path.includes("jpeg") || path.includes("png")) {
-            return (
-                <CardImg src={path} alt="Loading..."/>
-            );
-        } else if(path.includes("doc") || path.includes("docx")) {
-            let fileName = getFileName(path);
-            return (
-                <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
-            );
-        }
-    }
-
     renderInputAnswerArea() {
         let role = this.props.store.userStore.currentUser.role;
         if(role !== UserRole.Admin) {
@@ -133,7 +119,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
         return(
             <>
                 {this.renderSubtaskText(subtask)}
-                {subtask.path !== null && this.renderContent(subtask.path)}
+                {subtask.path !== null && renderContent(subtask.path)}
                 <CardText>
                     <div className="row justify-content-center">
                         {this.renderInputAnswerArea()}

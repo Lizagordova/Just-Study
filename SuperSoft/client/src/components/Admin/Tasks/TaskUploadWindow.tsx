@@ -96,7 +96,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     renderInstructionField() {
-        console.log("this.task.instruction", this.task.instruction);
         return(
             <div className="row justify-content-center">
                 <Label className="inputLabel" align="center">

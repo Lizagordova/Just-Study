@@ -3,6 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import CompletedTask from "./CompletedTask";
 import { TaskViewModel } from "../../../Typings/viewModels/TaskViewModel";
+import { Alert } from "reactstrap";
 
 class ICompletedHomeworkProps {
     store: RootStore;
@@ -12,20 +13,26 @@ class ICompletedHomeworkProps {
 @observer
 class CompletedHomework  extends Component<ICompletedHomeworkProps> {
     renderTasks(tasks: TaskViewModel[]) {
-        return(
-            <div className="container-fluid">
-                {tasks.map((task) => {
-                    return (
-                        <>
-                            <div className="row">
-                                <CompletedTask task={task} userId={this.props.userId} store={this.props.store} key={task.id}/>
-                            </div>
-                            <hr />
-                        </>
-                    );
-                })}
-            </div>
-        );
+        if(tasks.length === 0) {
+            return (
+                <Alert color="secondary">Пока нет заданий в этом разделе</Alert>
+            );
+        } else {
+            return(
+                <div className="container-fluid">
+                    {tasks.map((task) => {
+                        return (
+                            <>
+                                <div className="row">
+                                    <CompletedTask task={task} userId={this.props.userId} store={this.props.store} key={task.id}/>
+                                </div>
+                                <hr />
+                            </>
+                        );
+                    })}
+                </div>
+            );
+        }
     }
 
     render() {

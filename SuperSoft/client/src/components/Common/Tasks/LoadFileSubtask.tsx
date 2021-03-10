@@ -10,6 +10,7 @@ import { UserSubtaskViewModel } from "../../../Typings/viewModels/UserSubtaskVie
 import {renderSpinner} from "../../../functions/renderSpinner";
 import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
 import {getFileName} from "../../../functions/getFileName";
+import {renderContent} from "../../../functions/renderContent";
 
 @observer
 export class LoadFileSubtask extends Component<ISubtaskProps> {
@@ -67,29 +68,6 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderImage(subtask: SubtaskViewModel) {
-        if(subtask.path !== null && (subtask.path.includes("img") || subtask.path.includes("png" || subtask.path.includes("jpeg")))) {
-            return (
-                <>
-                    {subtask.path !== null &&
-                    <CardImg src={subtask.path.replace('client/build', './')} alt="Loading..."/>}
-                </>
-            );
-        }
-    }
-
-    renderFile(subtaskPath: string) {
-        if(subtaskPath !== null) {
-            let path = subtaskPath.replace('client/build', './');
-            let fileName = getFileName(path);
-            return(
-                <>
-                    <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
-                </>
-            );
-        }
-    }
-
     renderSaveButton() {
         return(
             <div className="col-3">
@@ -128,12 +106,14 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
         return(
             <CardText>
                 {this.userAnswer.answerFiles.map(ans => {
-                    return(
-                        <div className= "row justify-content-center">
-                            {this.renderDeleteButton()}
-                            {this.renderFile(ans)}
-                        </div>
-                    );
+                    if(ans !== null) {
+                        return(
+                            <div className= "row justify-content-center">
+                                {this.renderDeleteButton()}
+                                {renderContent(ans)}
+                            </div>
+                        );
+                    }
                 })}
             </CardText>
         );
@@ -156,8 +136,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
                 <CardText style={{border: "1px solid grey"}}>
                     {this.renderControlButton()}
                     {this.renderSubtaskText(subtask)}
-                    {this.renderImage(subtask)}
-                    {this.renderFile(subtask.path)}
+                    {subtask.path !== null && renderContent(subtask.path)}
                 </CardText>
                 <CardText>
                     <div className="row justify-content-center">

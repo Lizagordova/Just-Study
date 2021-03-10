@@ -108,6 +108,7 @@
 		<None Include="client\src\functions\getFileName.tsx" />
 		<None Include="client\src\functions\getTaskTitle.tsx" />
 		<None Include="client\src\functions\mapper.tsx" />
+		<None Include="client\src\functions\renderContent.tsx" />
 		<None Include="client\src\functions\renderLoadingProgress.tsx" />
 		<None Include="client\src\functions\renderSpinner.tsx" />
 		<None Include="client\src\functions\shuffle.tsx" />
