@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import { Lesson } from "../../Common/Lesson/Lesson";
 import HomeworkPage from "../Homework/HomeworkPage";
 import { CompletedHomeworkPage } from "../CompletedHomework/CompletedHomeworkPage";
+import ProgressByLesson from "../ProgressByLesson/ProgressByLesson";
 
 class ILessonPageProps {
     store: RootStore;
@@ -18,12 +19,15 @@ export class LessonPage extends Component<ILessonPageProps> {
     lessonActive: boolean;
     homeworkActive: boolean;
     completedHomeworkActive: boolean;
+    progressActive: boolean;
+
     constructor(props: ILessonPageProps) {
         super(props);
         makeObservable(this, {
             lessonActive: observable,
             homeworkActive: observable,
-            completedHomeworkActive: observable
+            completedHomeworkActive: observable,
+            progressActive: observable
         });
         this.lessonActive = this.props.lessonActive;
     }
@@ -64,11 +68,20 @@ export class LessonPage extends Component<ILessonPageProps> {
                                     ВЫПОЛНЕННЫЕ ДОМАШНИЕ РАБОТЫ
                                 </Nav.Link>
                             </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="nav-link"
+                                    eventKey="progress"
+                                    onClick={() => this.toggleMenu("progress")}>
+                                    ПРОГРЕСС
+                                </Nav.Link>
+                            </Nav.Item>
                         </Nav>
                     </CardHeader>
                     {this.lessonActive && <Lesson store={this.props.store}/>}
                     {this.homeworkActive && <HomeworkPage store={this.props.store}/>}
                     {this.completedHomeworkActive && <CompletedHomeworkPage store={this.props.store}/>}
+                    {this.progressActive && <ProgressByLesson store={this.props.store} />}
                 </Card>
             </Tab.Container>
         );

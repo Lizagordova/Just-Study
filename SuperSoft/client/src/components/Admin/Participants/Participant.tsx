@@ -27,6 +27,7 @@ class Participant extends Component<IParticipantProps> {
     tarifOpen: boolean;
     startDateCalendarOpen: boolean;
     expireDateCalendarOpen: boolean;
+    startDateExceedExpireDate: boolean;
 
     constructor() {
         // @ts-ignore
@@ -38,7 +39,8 @@ class Participant extends Component<IParticipantProps> {
             roleMenuOpen: observable,
             tarifOpen: observable,
             startDateCalendarOpen: observable,
-            expireDateCalendarOpen: observable
+            expireDateCalendarOpen: observable,
+            startDateExceedExpireDate: observable
         });
     }
 
@@ -56,6 +58,7 @@ class Participant extends Component<IParticipantProps> {
             <>
                 {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}
                 {this.saved && <Alert color="success">Данные успешно обновились :)</Alert>}
+                {this.startDateExceedExpireDate && <Alert color="danger">Дата начала курса превышает дату конца окончания...</Alert>}
             </>
         );
     }
@@ -185,17 +188,20 @@ class Participant extends Component<IParticipantProps> {
         return (
             <>
                 {this.details !== undefined && this.renderParticipant(this.props.participant, this.details)}
-                {this.details === undefined && renderSpinner()}
+                {/*this.details === undefined && renderSpinner()*/}
             </>
         );
     }
 
     updateParticipant() {
-        this.props.courseStore.addOrUpdateUserCourseDetails(this.details)
-            .then((status) => {
-                this.notSaved = status !== 200;
-                this.saved = status === 200;
-            });
+        this.startDateExceedExpireDate = new Date(this.details.startDate.toLocaleString()) > new Date(this.details.expireDate.toLocaleString());
+        if(!this.startDateExceedExpireDate) {
+            this.props.courseStore.addOrUpdateUserCourseDetails(this.details)
+                .then((status) => {
+                    this.notSaved = status !== 200;
+                    this.saved = status === 200;
+                });
+        }
     }
 
     inputDate(date: Date | Date[], type: string) {

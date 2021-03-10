@@ -17,13 +17,15 @@ class ICoursesPageProps {
 class CoursesPage extends Component<ICoursesPageProps> {
     notDeleted: boolean = false;
     isNavOpen: boolean = true;
+    updateParticipants: boolean = true;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
             notDeleted: observable,
-            isNavOpen: observable
+            isNavOpen: observable,
+            updateParticipants: observable
         });
     }
 
@@ -39,7 +41,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
             );
         } else {
             return (
-                <Course store={this.props.store}/>
+                <Course store={this.props.store} update={this.updateParticipants}/>
             );
         }
     }
@@ -122,7 +124,10 @@ class CoursesPage extends Component<ICoursesPageProps> {
 
     changeCourse(course: CourseViewModel) {
         this.props.store.courseStore.setChoosenCourse(course);
-        this.props.store.courseStore.getUsersByCourse(course.id);
+        this.props.store.courseStore.getUsersByCourse(course.id)
+            .then(() => {
+                this.updateParticipants = !this.updateParticipants;
+            });
         this.props.store.lessonStore.getLessonsByCourse(course.id);
         this.props.store.courseStore.getUsersByCourse(course.id);
         this.props.store.wordStore.getWordOfADay(new Date(), course.id);

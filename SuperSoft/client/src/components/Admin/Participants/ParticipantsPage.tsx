@@ -1,7 +1,7 @@
-﻿import React, { Component }from 'react';
+﻿import React, { Component } from 'react';
 import { observer } from "mobx-react";
 import CourseStore from "../../../stores/CourseStore";
-import {makeObservable, observable, toJS} from "mobx";
+import { makeObservable, observable } from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
 import { Button, Alert, Label } from "reactstrap";
@@ -12,6 +12,7 @@ import {renderSpinner} from "../../../functions/renderSpinner";
 class IParticipantsPageProps {
     courseStore: CourseStore;
     userStore: UserStore;
+    update: boolean;
 }
 
 @observer
@@ -21,8 +22,8 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     saved: boolean;
     notSaved: boolean;
     notDeleted: boolean;
-    currentCourseId: number;
     loading: boolean;
+    update: boolean;
 
     constructor(props: IParticipantsPageProps) {
         super(props);
@@ -32,19 +33,16 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             notSaved: observable,
             restUsers: observable,
             notDeleted: observable,
-            currentCourseId: observable,
-            loading: observable
+            loading: observable,
+            update: observable
         });
-        this.currentCourseId = this.props.courseStore.choosenCourse.id;
-    }
-
-    componentDidMount(): void {
+        this.update = this.props.update;
         this.setUsers();
     }
 
+
     componentDidUpdate(prevProps: Readonly<IParticipantsPageProps>, prevState: Readonly<{}>, snapshot?: any): void {
-        if(this.currentCourseId !== this.props.courseStore.choosenCourse.id) {
-            this.currentCourseId = this.props.courseStore.choosenCourse.id;
+        if(this.props.update !== this.update) {
             this.loading = true;
             this.setUsers();
         }
@@ -61,11 +59,12 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         });
         this.participants = participants;
         this.loading = false;
+        this.update = this.props.update;
     }
 
     renderCurrentParticipants(participants: UserViewModel[]) {
         return(
-            <Participants participants={participants} deleteParticipant={this.deleteParticipant} courseStore={this.props.courseStore} />
+            <Participants participants={participants} deleteParticipant={this.deleteParticipant} courseStore={this.props.courseStore} update={this.update} />
         );
     }
 
@@ -74,7 +73,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             <>
                 {users.map(u => {
                     return(
-                        <div className="row justify-content-center" style={{border: "1px solid black"}}>
+                        <div className="row justify-content-center" style={{border: "1px solid black"}} key={u.id}>
                             <Label>
                                 {u.lastName} {u.firstName}
                             </Label>
@@ -124,11 +123,11 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
         );
     }
 
-    renderParticipants() {
+    renderParticipants(update: boolean) {
         return (
             <>
                 {this.renderCurrentParticipants(this.participants)}
-                {this.renderSaveButton()}
+                {/*this.renderSaveButton()*/}
                 {this.renderDividingLine()}
                 {this.renderRestUsers(this.restUsers)}
             </>
@@ -140,7 +139,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             <>
                 {this.renderSavedDetails()}
                 {this.loading && renderSpinner()}
-                {!this.loading && this.renderParticipants()}
+                {!this.loading && this.renderParticipants(this.update)}
             </>
         );
     }

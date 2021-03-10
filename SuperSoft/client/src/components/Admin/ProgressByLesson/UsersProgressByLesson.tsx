@@ -6,17 +6,19 @@ import {makeObservable, observable, toJS} from "mobx";
 import {Accordion, Button} from "react-bootstrap";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { Card, CardHeader, CardBody } from "reactstrap";
+import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 
-class ILessonProgress {
+class IUsersProgressByLessonProps {
     store: RootStore;
-    lesson: LessonViewModel;
+    lessonId: number;
+    userId: number;
 }
 
 @observer
-class LessonProgress extends Component<ILessonProgress> {
+class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     progress: number = 0;
 
-    constructor(props: ILessonProgress) {
+    constructor(props: IUsersProgressByLessonProps) {
         super(props);
         makeObservable(this, {
             progress: observable
@@ -33,12 +35,12 @@ class LessonProgress extends Component<ILessonProgress> {
         );
     }
 
-    renderLesson(lesson: LessonViewModel) {
+    renderUserProgress(user: UserViewModel) {
         return (
             <>
                 {<Card>
                     <CardHeader style={{backgroundColor: 'white'}}>
-                        <span>{lesson.name}</span>
+                        <span>{user.firstName} {user.lastName}</span>
                     </CardHeader>
                     <div className="row justify-content-center">
                         {this.renderProgress()}
@@ -49,19 +51,23 @@ class LessonProgress extends Component<ILessonProgress> {
     }
 
     render() {
+        let user = this.props.store.userStore.users.find(u => u.id === this.props.userId);
+        if(user === undefined) {
+            user = new UserViewModel();
+        }
         return(
             <>
-                {this.renderLesson(this.props.lesson)}
+                {this.renderUserProgress(user)}
             </>
         );
     }
 
     getProgress() {
-        this.props.store.lessonStore.getProgressByLesson(this.props.lesson.id)
+        this.props.store.lessonStore.getUsersProgressByLesson(this.props.lessonId)
             .then((progress) => {
                 this.progress = progress;
             });
     }
 }
 
-export default LessonProgress;
+export default UsersProgressByLesson;

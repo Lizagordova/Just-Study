@@ -42,6 +42,8 @@
 		<None Include="client\src\components\Admin\Participants\Participant.tsx" />
 		<None Include="client\src\components\Admin\Participants\Participants.tsx" />
 		<None Include="client\src\components\Admin\Participants\ParticipantsPage.tsx" />
+		<None Include="client\src\components\Admin\ProgressByLesson\ProgressByLesson.tsx" />
+		<None Include="client\src\components\Admin\ProgressByLesson\UsersProgressByLesson.tsx" />
 		<None Include="client\src\components\Admin\Progress\CourseProgress.tsx" />
 		<None Include="client\src\components\Admin\Progress\LessonProgress.tsx" />
 		<None Include="client\src\components\Admin\Tags\TagsControlWindow.tsx" />

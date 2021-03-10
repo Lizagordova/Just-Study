@@ -4,11 +4,13 @@ import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import CourseStore from "../../../stores/CourseStore";
 import Participant from "./Participant";
 import { Table } from "reactstrap";
+import {toJS} from "mobx";
 
 class IParticipantsProps {
     participants: UserViewModel[];
     deleteParticipant: any;
     courseStore: CourseStore;
+    update: boolean;
 }
 
 @observer

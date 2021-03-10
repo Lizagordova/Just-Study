@@ -11,6 +11,7 @@ import CourseProgress from "../Progress/CourseProgress";
 
 class ICourseProps {
     store: RootStore;
+    update: boolean;
 }
 
 @observer
@@ -41,7 +42,7 @@ export class Course extends Component<ICourseProps> {
                 <>
                     {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
                     {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
-                    {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} />}
+                    {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} update={this.props.update}/>}
                     {this.courseProgress && <CourseProgress store={this.props.store} />}
                 </>
             );

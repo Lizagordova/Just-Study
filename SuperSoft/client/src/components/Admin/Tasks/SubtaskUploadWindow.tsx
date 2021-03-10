@@ -151,14 +151,19 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
         let text = this.props.subtask.text;
         let regExp = /\[(\w+?\D*?)\]/g;
         let groups = text.match(regExp);
-        if(this.props.subtask.subtaskType === SubtaskType.RightVerbForm) {
-            this.renderWarning = groups === null || groups.length === 0;
-        } else if(this.props.subtask.subtaskType === SubtaskType.FillGaps) {
-            this.renderWarning = groups === null || groups.length === 0;
+        if(groups === null || groups.length === 0) {
+            this.renderWarning = true;
+        } else {
+            this.renderWarning = true;
+            groups.map(g => {
+                if(g.includes("*")) {
+                    this.renderWarning = false;
+                }
+            })
         }
         this.renderEmptyWarning = this.props.subtask.text === "";
     }
- 
+
     inputOrder(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
         if(parseInt(value)) {
