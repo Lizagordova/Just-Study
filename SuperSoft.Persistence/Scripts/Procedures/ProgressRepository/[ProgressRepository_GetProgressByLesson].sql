@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [ProgressRepository_GetProgressByLesson]
+﻿CREATE PROCEDURE [dbo].[ProgressRepository_GetProgressByLesson]	
 	@lessonId INT
 AS
 BEGIN
@@ -35,7 +35,8 @@ BEGIN
 	ON [s].[TaskId] = [lt].[TaskId]
 	JOIN [Lesson_Course] AS [lc]
 	ON [lc].[LessonId] = [lt].[LessonId]
-	WHERE [lc].[CourseId] = @courseId;
+	WHERE [lc].[CourseId] = @courseId
+		AND [lt].[LessonId] = @lessonId;
 
 	DECLARE @completedSubtasks INT = (
 		SELECT COUNT(*)

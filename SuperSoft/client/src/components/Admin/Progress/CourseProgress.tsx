@@ -24,13 +24,13 @@ class CourseProgress extends Component<ICourseProgress> {
 
     renderLessons(lessons: LessonViewModel[]) {
         return (
-            <Accordion>
-                {lessons.map((lesson) => {
+            <>
+                {lessons.map((lesson, i) => {
                     return (
-                       <LessonProgress store={this.props.store} lesson={lesson} />
+                       <LessonProgress store={this.props.store} lesson={lesson} key={i} />
                     );
                 })}
-            </Accordion>
+            </>
         );
     }
 

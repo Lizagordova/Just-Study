@@ -2,7 +2,7 @@
 import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
 import Circle from "react-circle";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {Accordion, Button} from "react-bootstrap";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { Card, CardHeader, CardBody } from "reactstrap";
@@ -15,19 +15,13 @@ class ICourseProgress {
 @observer
 class LessonProgress extends Component<ICourseProgress> {
     progress: number = 0;
-    loadProgress: boolean = false;
 
     constructor(props: ICourseProgress) {
         super(props);
         makeObservable(this, {
-            progress: observable,
-            loadProgress: observable
+            progress: observable
         });
         this.getProgress();
-    }
-
-    loadProgressToggle() {
-        this.loadProgress = !this.loadProgress;
     }
 
     renderProgress() {
@@ -44,15 +38,11 @@ class LessonProgress extends Component<ICourseProgress> {
             <>
                 {<Card>
                     <CardHeader style={{backgroundColor: 'white'}}>
-                        <Accordion.Toggle as={Button} variant="link" eventKey={lesson.id.toString()} onClick={() => this.loadProgressToggle()}>
-                            <span>{lesson.name}</span>
-                        </Accordion.Toggle>
+                        <span>{lesson.name}</span>
                     </CardHeader>
-                    <Accordion.Collapse eventKey={lesson.id.toString()} key={lesson.id.toString()}>
-                        <CardBody>
-                            {this.loadProgress && this.renderProgress()}
-                        </CardBody>
-                    </Accordion.Collapse>
+                    <div className="row justify-content-center">
+                        {this.renderProgress()}
+                    </div>
                 </Card>}
             </>
         );
