@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {observer} from "mobx-react";
+import { observer} from "mobx-react";
 import {Alert, Button, Card, CardBody, CardFooter, CardHeader, CardText, CardTitle, Col, Row} from "reactstrap";
 import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
 import RootStore from "../../../stores/RootStore";

@@ -52,6 +52,7 @@ class Comment extends Component<ICommentProps> {
     handleSave() {
         let comment = this.getCommentReadModel();
         this.props.saveComment(comment);
+        this.editCommentToggle();
     }
     
     renderEditInput() {
@@ -72,9 +73,9 @@ class Comment extends Component<ICommentProps> {
             return(
                 <>
                     <i
-                        style={{marginLeft: "5px", height: "10px"}}
+                        style={{marginLeft: "5px", height: "10px", marginTop: "10px"}}
                         onClick={() => this.editCommentToggle()}
-                        className="fa fa-edit" aria-hidden="true"/>
+                        className="fa fa-edit fa-2x" aria-hidden="true"/>
                     <i
                         style={{marginLeft: "5px", height: "10px"}}
                        onClick={() => this.remove()}

@@ -101,7 +101,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
                 isOpen={this.taskUploadWindowOpen}
                 toggle={() => this.toggleTaskUploadWindow()}
             >
-                <i style={{marginLeft: '95%', width: '3%'}}
+                <i style={{marginLeft: '94%', width: '3%'}}
                    onClick={() => this.toggleTaskUploadWindow()}
                    className="fa fa-window-close fa-2x" aria-hidden="true" />
                 <div className="row justify-content-center">

@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Button, Input, Modal, ModalFooter, ModalHeader, ModalBody, Alert } from "reactstrap";
-import { CommentGroupViewModel } from "../../../Typings/viewModels/CommentGroupViewModel";
+import { Button, Input, Modal, ModalHeader, ModalBody, Alert } from "reactstrap";
 import { CommentedEntityType } from "../../../Typings/enums/CommentedEntityType";
 import {makeObservable, observable, toJS} from "mobx";
 import { observer } from "mobx-react";
@@ -19,7 +18,6 @@ class ICommentGroupProps {
 
 @observer
 class CommentGroup extends Component<ICommentGroupProps> {
-    commentGroup: CommentGroupViewModel = new CommentGroupViewModel();
     notReceived: boolean;
     windowOpen: boolean = true;
     notSaved: boolean;
@@ -28,7 +26,6 @@ class CommentGroup extends Component<ICommentGroupProps> {
     constructor(props: ICommentGroupProps) {
         super(props);
         makeObservable(this, {
-            commentGroup: observable,
             notReceived: observable,
             windowOpen: observable,
             notSaved: observable,
@@ -38,14 +35,7 @@ class CommentGroup extends Component<ICommentGroupProps> {
     }
     
     setCommentGroup() {
-        this.getCommentGroup()
-            .then((status) => {
-                if(status !== 200) {
-                    this.commentGroup.commentedEntityId = this.props.commentedEntityId;
-                    this.commentGroup.commentedEntityType = this.props.commentedEntityType;
-                    this.commentGroup.userId = this.props.userId;
-                }
-            });
+        this.props.store.commentStore.getCommentGroup(this.props.commentedEntityType, this.props.commentedEntityId, this.props.userId);
     }
 
     renderCaution() {
@@ -96,7 +86,7 @@ class CommentGroup extends Component<ICommentGroupProps> {
     }
 
     renderBody() {
-        let comments = this.commentGroup.comments;
+        let comments = this.props.store.commentStore.commentGroup.comments;
         return (
             <Modal toggle={() => this.handleToggle()} isOpen={this.windowOpen} size="lg">
                 {this.renderCaution()}
@@ -131,11 +121,11 @@ class CommentGroup extends Component<ICommentGroupProps> {
         this.props.onToggle();
     }
 
-    handleSave(comment: CommentReadModel = this.getCommentReadModel()) {
-        this.saveComment(comment)
+    handleSave = (comment: CommentReadModel = this.getCommentReadModel()) => {
+        this.props.store.commentStore.saveComment(comment)
             .then((status) => {
                 if(status === 200) {
-                    this.getCommentGroup();
+                    this.props.store.commentStore.getCommentGroup(this.props.commentedEntityType, this.props.commentedEntityId, this.props.userId);
                 }
                 this.notSaved = status !== 200;
         });
@@ -146,43 +136,11 @@ class CommentGroup extends Component<ICommentGroupProps> {
     }
 
     updateCommentGroup = () => {
-        this.getCommentGroup();
-    }
-
-    async getCommentGroup(): Promise<number> {
-        const response = await fetch("/getcommentgroup", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({commentedEntityType: this.props.commentedEntityType, commentedEntityId: this.props.commentedEntityId, userId: this.props.userId})
-        });
-        if(response.status === 200) {
-            this.commentGroup = await response.json();
-        }
-        this.notReceived = response.status !== 200;
-
-        return response.status;
-    }
-
-    async saveComment(comment: CommentReadModel): Promise<number> {
-        const response = await fetch(`/addorupdatecomment`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                comment: comment,
-                groupId: this.commentGroup.id,
-                commentedEntityType: this.commentGroup.commentedEntityType,
-                commentedEntityId: this.commentGroup.commentedEntityId,
-                userId: this.commentGroup.userId,
-                id: this.commentGroup.id
-            })
-        });
-
-        return response.status;
-    }
+        this.props.store.commentStore.getCommentGroup(this.props.commentedEntityType, this.props.commentedEntityId, this.props.userId)
+            .then((status) => {
+                this.notReceived = status !== 200;
+         });
+    };
 
     getCommentReadModel(): CommentReadModel {
         let myId = this.props.store.userStore.currentUser.id;
