@@ -1,9 +1,6 @@
 ﻿import React, { Component } from 'react';
-import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import {Accordion, Button} from "react-bootstrap";
-import { CardHeader, Card } from "reactstrap";
-import CompletedHomework from "../CompletedHomework/CompletedHomework";
 import RootStore from "../../../stores/RootStore";
 import UsersProgressByLesson from "./UsersProgressByLesson";
 

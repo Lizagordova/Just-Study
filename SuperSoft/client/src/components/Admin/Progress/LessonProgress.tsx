@@ -57,7 +57,7 @@ class LessonProgress extends Component<ILessonProgress> {
     }
 
     getProgress() {
-        this.props.store.lessonStore.getProgressByLesson(this.props.lesson.id)
+        this.props.store.progressStore.getProgressByLesson(this.props.lesson.id)
             .then((progress) => {
                 this.progress = progress;
             });

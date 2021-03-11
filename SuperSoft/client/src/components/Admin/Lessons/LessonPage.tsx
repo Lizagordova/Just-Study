@@ -99,12 +99,15 @@ export class LessonPage extends Component<ILessonPageProps> {
         this.lessonActive = false;
         this.homeworkActive = false;
         this.completedHomeworkActive = false;
+        this.progressActive = false;
         if(turnOn === "lesson") {
             this.lessonActive = true;
         } else if (turnOn === "homework") {
             this.homeworkActive = true;
         } else if (turnOn === "completedHomework") {
             this.completedHomeworkActive = true;
+        } else if (turnOn === "progress") {
+            this.progressActive = true;
         }
     }
 }

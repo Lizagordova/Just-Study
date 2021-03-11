@@ -2,11 +2,13 @@
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import Circle from "react-circle";
 import CourseStore from "../../../stores/CourseStore";
-import {observer} from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import { observer } from "mobx-react";
+import { makeObservable, observable } from "mobx";
+import ProgressStore from "../../../stores/ProgressStore";
 
 class IOverallProgressProps {
     courseStore: CourseStore;
+    progressStore: ProgressStore;
     currentUser: UserViewModel;
 }
 
@@ -42,7 +44,7 @@ class OverallProgress extends Component<IOverallProgressProps> {
     computeProgress() {
         let userId = this.props.currentUser.id;
         let courseId = this.props.courseStore.choosenCourse.id;
-        this.props.courseStore
+        this.props.progressStore
             .getUserCourseProgress(userId, courseId)
             .then((progress) => {
                 this.progress =  progress;

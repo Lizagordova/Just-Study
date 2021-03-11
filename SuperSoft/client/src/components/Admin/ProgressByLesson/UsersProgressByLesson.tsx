@@ -29,7 +29,7 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     renderProgress() {
         return (
             <Circle
-                size="300"
+                size="150"
                 progress={this.progress}
             />
         );

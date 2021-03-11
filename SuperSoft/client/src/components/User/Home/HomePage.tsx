@@ -40,7 +40,7 @@ class HomePage extends Component<IHomePageProps> {
 
     renderOverallProgress() {
         return(
-            <OverallProgress courseStore={this.props.store.courseStore} currentUser={this.props.store.userStore.currentUser}/>
+            <OverallProgress courseStore={this.props.store.courseStore} currentUser={this.props.store.userStore.currentUser} progressStore={this.props.store.progressStore} />
         );
     }
 

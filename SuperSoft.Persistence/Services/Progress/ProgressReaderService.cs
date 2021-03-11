@@ -12,7 +12,7 @@ namespace SuperSoft.Persistence.Services.Progress
 		{
 			_progressRepository = progressRepository;
 		}
-		
+
 		public int GetUserCourseProgress(int userId, int courseId)
 		{
 			var progress = _progressRepository.GetUserCourseProgress(userId, courseId);
@@ -23,6 +23,13 @@ namespace SuperSoft.Persistence.Services.Progress
 		public int GetProgressByLesson(int lessonId)
 		{
 			var progress = _progressRepository.GetProgressByLesson(lessonId);
+
+			return progress;
+		}
+
+		public int GetUserProgressByLesson(int userId, int lessonId)
+		{
+			var progress = _progressRepository.GetUserProgressByLesson(userId, lessonId);
 
 			return progress;
 		}

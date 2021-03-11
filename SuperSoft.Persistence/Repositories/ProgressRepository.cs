@@ -11,10 +11,12 @@ namespace SuperSoft.Persistence.Repositories
 	{
 		private const string AddOrUpdateCourseSp = "ProgressRepository_GetUserCourseProgress";
 		private const string GetProgressByLessonSp = "ProgressRepository_GetProgressByLesson";
+		private const string GetUserProgressByLessonSp = "ProgressRepository_GetUserProgressByLesson";
+
 		public int GetUserCourseProgress(int userId, int courseId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
-			var param = GetUserCourseProgressParam(userId, courseId);
+			var param = GetUserProgressParam(userId, courseId);
 			var progress = conn.Query<int>(AddOrUpdateCourseSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
 			DatabaseHelper.CloseConnection(conn);
 
@@ -31,6 +33,16 @@ namespace SuperSoft.Persistence.Repositories
 			return progress;
 		}
 
+		public int GetUserProgressByLesson(int userId, int lessonId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetUserProgressParam(userId, lessonId: lessonId);
+			var progress = conn.Query<int>(GetUserProgressByLessonSp, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+			DatabaseHelper.CloseConnection(conn);
+
+			return progress;
+		}
+
 		private DynamicTvpParameters GetLessonParam(int lessonId)
 		{
 			var param = new DynamicTvpParameters();
@@ -39,11 +51,18 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 		
-		private DynamicTvpParameters GetUserCourseProgressParam(int userId, int courseId)
+		private DynamicTvpParameters GetUserProgressParam(int userId, int? courseId = null, int? lessonId = null)
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("userId", userId);
-			param.Add("courseId", courseId);
+			if (courseId != null)
+			{
+				param.Add("courseId", courseId);
+			}
+			if (lessonId != null)
+			{
+				param.Add("lessonId", courseId);
+			}
 
 			return param;
 		}

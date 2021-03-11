@@ -115,20 +115,6 @@ class LessonStore {
         return response.status;
     }
 
-    async getProgressByLesson(lessonId: number): Promise<number> {
-        const response = await fetch("/getprogressbylesson", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                id: lessonId
-            })
-        });
-
-        return await response.json();
-    }
-
     async getUsersProgressByLesson(lessonId: number): Promise<number> {//todo: создать
         const response = await fetch("/getUsersProgressByLesson", {
             method: "POST",

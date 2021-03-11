@@ -354,6 +354,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogGetUserProgressByLessonException(ILogger logger, Exception e, int userId, int lessonId)
+		{
+			var customMessage = $"Не удалось получить прогресс для userId={userId} в lessonId={lessonId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogAddFeedbackException(ILogger logger, Exception e, string email, string name, string message)
 		{
 			var customMessage = $"Не удалось добавить фидбек c email={email}, name={name}, message={message}.";

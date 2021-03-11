@@ -121,6 +121,7 @@
 		<None Include="client\src\stores\FeedbackStore.tsx" />
 		<None Include="client\src\stores\LessonStore.tsx" />
 		<None Include="client\src\stores\NotificationStore.tsx" />
+		<None Include="client\src\stores\ProgressStore.tsx" />
 		<None Include="client\src\stores\RootStore.tsx" />
 		<None Include="client\src\stores\TagStore.tsx" />
 		<None Include="client\src\stores\TaskStore.tsx" />
