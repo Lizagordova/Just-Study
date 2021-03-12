@@ -61,7 +61,7 @@ export class ContentUpload extends Component<IContentProps> {
                    onChange={(e) => this.handleChange(e)} />
             <Fade in={true}
                 style={{fontSize: "0.7em", color: "red", marginTop: "0px"}}>
-                Допустимые форматы: pdf, mp4, doc, docx
+                Допустимые форматы: pdf, mp4, mov, doc, docx
             </Fade>
         </>
         );

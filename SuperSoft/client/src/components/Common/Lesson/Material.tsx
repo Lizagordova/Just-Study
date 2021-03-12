@@ -29,16 +29,16 @@ export class Material extends Component<IMaterialProps> {
     renderDeleteButton() {
         if(this.props.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '95%', width: '3%'}}
+                <i style={{marginLeft: '94%', width: '3%'}}
                    onClick={() => this.delete()}
-                   className="fa fa-window-close" aria-hidden="true" />
+                   className="fa fa-window-close fa-2x" aria-hidden="true" />
             );
         }
     }
 
     renderMaterial(material: LessonMaterialViewModel) {
-        if(material.path.includes("pptx")) {
-            let path = material.path.replace("client/build", ".");
+        let path = material.path.replace("client/build", ".");
+        if(path.includes("pptx")) {
             return (
                 <>
                     {this.renderDeleteButton()}
@@ -47,8 +47,7 @@ export class Material extends Component<IMaterialProps> {
                         width='100%' height='600px' frameBorder='0'/>
                 </>
             );
-        } else if(material.path.includes("pdf")) {
-            let path = material.path.replace("client/build", ".");
+        } else if(path.includes("pdf")) {
             return (
                 <>
                     {this.renderDeleteButton()}
@@ -56,16 +55,21 @@ export class Material extends Component<IMaterialProps> {
                  </>
             );
         } 
-        else if(material.path.includes("mp4")) {
-            let path = material.path.replace("client/build", ".");
+        else if(path.includes("mp4")) {
             return (
                 <>
                     {this.renderDeleteButton()}
                     <iframe src={path} className="materialContent" />
                 </>
             );
-        } else if(material.path.includes("docx") || material.path.includes("doc")) {
-            let path = material.path.replace("client/build", ".");
+        } else if(path.includes("mov")) {
+            return (
+                <>
+                    {this.renderDeleteButton()}
+                    <video controls={true} width="800" height="600" src={path}/>
+                </>
+            );
+        } else if(path.includes("docx") || path.includes("doc")) {
             let fileName = getFileName(path);
             return(
                 <>
@@ -75,7 +79,10 @@ export class Material extends Component<IMaterialProps> {
             );
         } else {
             return (
-                <Alert color="primary">Пока данный формат не поддерживается.</Alert>
+                <>
+                    {this.renderDeleteButton()}
+                    <Alert color="primary">Пока данный формат не поддерживается.</Alert>
+                </>
             );
         }
     }

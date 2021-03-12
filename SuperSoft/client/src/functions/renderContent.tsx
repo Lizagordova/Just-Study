@@ -26,6 +26,10 @@ export function renderContent(path: string) {
                 <iframe src={path} className="materialContent" />
             </>
         );
+    } else if(path.includes("mov")) {
+        return (
+            <video controls={true} width="800" height="600" src={path}/>
+        );
     } else {
         return (
             <Alert color="secondary">

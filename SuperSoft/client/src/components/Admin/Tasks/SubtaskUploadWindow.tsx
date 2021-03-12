@@ -76,7 +76,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     getFadeText(subtaskType: SubtaskType): string {
         let text = "";
         if(subtaskType === SubtaskType.LoadAudio) {
-            text = "Допустимые форматы: jpg, png, jpeg, mp3, doc, docx, mp4";
+            text = "Допустимые форматы: jpg, png, jpeg, mp3, doc, docx, mp4, mov";
         } else if(subtaskType === SubtaskType.DetailedAnswer) {
             text = "Допустимые форматы: jpg, png, jpeg, doc, docx";
         } else if(subtaskType === SubtaskType.LoadFile) {
