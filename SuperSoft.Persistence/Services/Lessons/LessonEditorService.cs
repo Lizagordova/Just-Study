@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.Models;
@@ -11,11 +12,15 @@ namespace SuperSoft.Persistence.Services.Lessons
 	public class LessonEditorService : ILessonEditorService
 	{
 		private readonly ILessonRepository _lessonRepository;
+		private readonly IGarbageRepository _garbageRepository;
 
 		public LessonEditorService(
-			ILessonRepository lessonRepository)
+			ILessonRepository lessonRepository,
+			IGarbageRepository garbageRepository
+			)
 		{
 			_lessonRepository = lessonRepository;
+			_garbageRepository = garbageRepository;
 		}
 
 		public int AddOrUpdateLesson(Lesson lesson, int courseId)
@@ -52,14 +57,16 @@ namespace SuperSoft.Persistence.Services.Lessons
 		{
 			var lessonMaterial = _lessonRepository.GetLessonMaterial(materialId);
 			var path = lessonMaterial.Path;
-			using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+			_garbageRepository.FileToDelete(path);
+			/* надо сделать какое-то более умное удаление, а то сейчас у тебя удаляется даже если файл ещё где то юзается
+			 using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				if (File.Exists(path))
 				{
 					stream.Dispose();
 					File.Delete(path);
 				}
-			}
+			}*/
 			_lessonRepository.DeleteMaterial(materialId);
 		}
 

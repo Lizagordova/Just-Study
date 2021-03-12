@@ -1,0 +1,5 @@
+﻿CREATE TABLE [QueueToDelete]
+(
+	[Id] INT PRIMARY KEY IDENTITY,
+	[Path] NVARCHAR(MAX)
+);

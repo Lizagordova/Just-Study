@@ -89,6 +89,7 @@ namespace SuperSoft
 			services.AddSingleton<ICommentRepository, CommentRepository>();
 			services.AddSingleton<ICourseRepository, CourseRepository>();
 			services.AddSingleton<ILessonRepository, LessonRepository>();
+			services.AddSingleton<IGarbageRepository, GarbageRepository>();
 			services.AddSingleton<ILogRepository, LogRepository>();
 			services.AddSingleton<INotificationRepository, NotificationRepository>();
 			services.AddSingleton<ITagRepository, TagRepository>();
