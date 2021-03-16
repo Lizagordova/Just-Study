@@ -8,7 +8,7 @@ BEGIN
 
 	DECLARE @existLessonWithTheOrder INT = (SELECT TOP 1 [LessonId] FROM [Lesson_Course] WHERE [Order] = @order AND [CourseId] = @courseId);
 
-	IF (@existLessonWithTheOrder IS NULL)
+	IF (@existLessonWithTheOrder IS NOT NULL)
 		UPDATE [Lesson_Course]
 		SET
 			[Order] = [Order] + 1
