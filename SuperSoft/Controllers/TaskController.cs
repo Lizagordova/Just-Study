@@ -143,7 +143,7 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				_logService.AddLogAddOrUpdateSubtaskException(_logger, e);
+				_logService.AddLogAddOrUpdateSubtaskException(_logger, e,subtaskReadModel.Text, subtask.Order);
 
 				return new StatusCodeResult(500);
 			}

@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Input } from "reactstrap";
 import { observer } from "mobx-react";
 import Calendar from "react-calendar";
@@ -25,9 +25,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     saved: boolean = false;
     name: string = "";
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IAddOrUpdateNewLessonProps) {
+        super(props);
         makeObservable(this, {
             addOrUpdateNewLesson: observable,
             id: observable,
@@ -39,13 +38,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             saved: observable,
             name: observable,
         });
-    }
-
-    componentDidMount(): void {
         if(this.props.edit) {
-            this.fillData()
-        } else {
-            this.order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
+            this.fillData();
         }
     }
 
@@ -112,7 +106,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
                 <Input
                     style={{width: "70%"}}
-                    value={this.order}
+                    defaultValue={this.props.store.lessonStore.lessonsByChoosenCourse.length + 1}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
         );
@@ -212,7 +206,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 isOpen={this.addOrUpdateNewLesson}
                 toggle={() => this.addOrUpdateNewLessonToggle()}
             >
-                <i style={{marginLeft: '96%', width: '2%'}}
+                <i style={{marginLeft: '92%', width: '2%'}}
                    onClick={() => this.addOrUpdateNewLessonToggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
             <div className="row justify-content-center">

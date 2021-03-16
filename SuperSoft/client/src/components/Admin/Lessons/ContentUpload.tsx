@@ -41,7 +41,6 @@ export class ContentUpload extends Component<IContentProps> {
 
     renderCautions() {
         setTimeout(() => {
-            this.notLoaded = false;
             this.loaded = false;
         }, 6000);
         return(

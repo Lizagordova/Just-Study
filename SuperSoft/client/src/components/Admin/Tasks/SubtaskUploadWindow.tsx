@@ -1,7 +1,7 @@
 ﻿import React, {Component} from "react";
 import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
 import {Fade, Input, Label, Tooltip} from "reactstrap";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {IUploadSubtaskProps} from "./IUploadSubtaskProps";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
 import {getTooltipText} from "../../../functions/getTooltipText";
@@ -14,18 +14,14 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     renderWarning: boolean = false;
     renderEmptyWarning: boolean = false;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IUploadSubtaskProps) {
+        super(props);
         makeObservable(this, {
             subtask: observable,
             tooltipOpen: observable,
             renderWarning: observable,
             renderEmptyWarning: observable,
         });
-    }
-
-    componentDidMount(): void {
         this.subtask = this.props.subtask;
     }
 
@@ -148,18 +144,20 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
     }
 
     validateInput() {
-        let text = this.props.subtask.text;
-        let regExp = /\[(\w+?\D*?)\]/g;
-        let groups = text.match(regExp);
-        if(groups === null || groups.length === 0) {
-            this.renderWarning = true;
-        } else {
-            this.renderWarning = true;
-            groups.map(g => {
-                if(g.includes("*")) {
-                    this.renderWarning = false;
-                }
-            })
+        if(this.subtask.subtaskType === SubtaskType.FillGaps || this.subtask.subtaskType === SubtaskType.RightVerbForm) {
+            let text = this.props.subtask.text;
+            let regExp = /\[(\w+?\D*?)\]/g;
+            let groups = text.match(regExp);
+            if(groups === null || groups.length === 0) {
+                this.renderWarning = true;
+            } else {
+                this.renderWarning = true;
+                groups.map(g => {
+                    if(g.includes("*")) {
+                        this.renderWarning = false;
+                    }
+                });
+            }
         }
         this.renderEmptyWarning = this.props.subtask.text === "";
     }

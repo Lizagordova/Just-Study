@@ -127,8 +127,16 @@ class TaskUpload extends Component<ITaskUploadProps> {
     }
 
     toggleTaskUploadWindow = () => {
-        this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
-        this.showMenu = true;
+        if(this.taskUploadWindowOpen) {
+            let result = window.confirm('Вы уверены, что хотите закрыть это окно?');
+            if(result) {
+                this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
+                this.showMenu = true;
+            }
+        } else {
+            this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
+            this.showMenu = true;
+        }
     }
 }
 

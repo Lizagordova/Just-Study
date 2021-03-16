@@ -6,6 +6,7 @@ import { Button, Col, Collapse, Row, Alert } from "reactstrap";
 import {makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import LessonPage from "./LessonPage";
+import {renderSpinner} from "../../../functions/renderSpinner";
 
 class IMyLessonsPageProps {
     store: RootStore;
@@ -92,7 +93,7 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
         let courseAvailable = this.choosenCourseIsAvailable();
         return(
             <>
-                
+                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
                 {courseAvailable && this.renderLessonsMenu(lessons)}
                 {!courseAvailable && this.renderCautions()}
             </>

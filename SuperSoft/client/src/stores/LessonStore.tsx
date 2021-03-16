@@ -16,6 +16,7 @@ class LessonStore {
     }
 
     setChoosenLesson(lesson: LessonViewModel) {
+        this.materialsByChoosenLesson = new Array<LessonMaterialViewModel>(0);
         this.choosenLesson = lesson;
         this.getMaterialsByLesson(lesson.id);
     }
@@ -46,7 +47,7 @@ class LessonStore {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({id: id, courseId: courseId, name: name, description: description, startDate: startDate, expireDate: expireDate})
+            body: JSON.stringify({id: id, courseId: courseId, name: name, description: description, startDate: startDate, expireDate: expireDate, order: order})
         });
         if(response.status === 200) {
             this.getLessonsByCourse(courseId);

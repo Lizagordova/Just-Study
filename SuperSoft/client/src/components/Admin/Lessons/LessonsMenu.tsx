@@ -20,6 +20,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     notDeleted: boolean = false;
     deleted: boolean = false;
     isNavOpen: boolean = true;
+    loading: boolean = true;
 
     constructor() {
         // @ts-ignore
@@ -29,7 +30,8 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             lessonToEdit: observable,
             notDeleted: observable,
             deleted: observable,
-            isNavOpen: observable
+            isNavOpen: observable,
+            loading: observable,
         });
     }
 
@@ -98,7 +100,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 + 50 : 60;
+        let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
@@ -139,7 +141,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         return(
             <>
                 {lessons !== undefined && this.renderLessonsMenu(lessons)}
-                {lessons === undefined && renderSpinner()}
+                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
             </>
         );
     }

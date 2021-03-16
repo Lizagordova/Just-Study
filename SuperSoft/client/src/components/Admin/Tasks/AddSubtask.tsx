@@ -3,7 +3,7 @@ import {Button} from "reactstrap";
 import SubtaskUploadWindow from "./SubtaskUploadWindow";
 import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
 import TaskStore from "../../../stores/TaskStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { observer } from "mobx-react";
 import { SubtaskType } from "../../../Typings/enums/SubtaskType";
 import { translateSubtaskType} from "../../../functions/translater";
@@ -22,12 +22,14 @@ class IAddSubtaskProps {
 class AddSubtask extends Component<IAddSubtaskProps> {
     subtask: SubtaskReadModel = new SubtaskReadModel();
     notSaved: boolean;
+    update: boolean;
 
     constructor(props: IAddSubtaskProps) {
         super(props);
         makeObservable(this, {
             subtask: observable,
-            notSaved: observable
+            notSaved: observable,
+            update: observable
         });
         this.subtask.taskId = this.props.taskId;
         this.subtask.subtaskType = SubtaskType.InsertWordsIntoGaps;
@@ -37,7 +39,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
         this.subtask = subtask;
     };
 
-    renderSubtaskForm() {
+    renderSubtaskForm(update: boolean) {
         return(
             <SubtaskUploadWindow subtask={this.subtask} updateSubtask={this.updateSubtask} deleteSubtask={this.props.toggle} index={0} />
         );
@@ -85,7 +87,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
             <>
                 {this.renderWarnings()}
                 {this.renderSelectSubtaskTypeButton()}
-                {this.renderSubtaskForm()}
+                {this.renderSubtaskForm(this.update)}
                 {this.renderSaveButton()}
             </>
         );
@@ -93,6 +95,7 @@ class AddSubtask extends Component<IAddSubtaskProps> {
 
     handleSubtaskType(event: React.MouseEvent<HTMLInputElement, MouseEvent>) {
         this.subtask.subtaskType = transformValueToSubtaskType(event.currentTarget.value);
+        this.update = !this.update;
     }
 
     saveSubtask() {

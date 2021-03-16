@@ -202,17 +202,17 @@ namespace SuperSoft.Persistence.Repositories
 
 		private List<Lesson> MapLessonsList(LessonData data)
 		{
-			var lessons = data.Lessons
-				.Join(data.LessonsCourses,
-					l => l.Id,
-					lc => lc.LessonId,
+			var lessons = data.LessonsCourses
+				.Join(data.Lessons,
+					l => l.LessonId,
+					lc => lc.Id,
 					MapLesson)
 				.ToList();
 
 			return lessons;
 		}
 
-		private Lesson MapLesson(LessonUdt lessonUdt, LessonCourseUdt lessonCourseUdt)
+		private Lesson MapLesson(LessonCourseUdt lessonCourseUdt, LessonUdt lessonUdt)
 		{
 			var lesson = _mapper.Map<LessonCourseUdt, Lesson>(lessonCourseUdt);
 			lesson.Name = lessonUdt.Name;

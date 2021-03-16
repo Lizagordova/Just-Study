@@ -22,6 +22,7 @@ class TaskStore {
     }
 
     async getTasksByLesson(lessonId: number): Promise<number> {
+        this.tasksByChoosenLesson = new Array<TaskViewModel>();
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {

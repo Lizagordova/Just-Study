@@ -39,6 +39,6 @@ BEGIN
 	);
 
 	SELECT * FROM @lessons;
-	SELECT * FROM @lessonCourses;
+	SELECT * FROM @lessonCourses ORDER BY [Order];
 
 END

@@ -222,9 +222,9 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
-		public void AddLogAddOrUpdateSubtaskException(ILogger logger, Exception e)
+		public void AddLogAddOrUpdateSubtaskException(ILogger logger, Exception e, string text, int order)
 		{
-			var customMessage = $"Не удалось добавить подзадание.";
+			var customMessage = $"Не удалось добавить подзадание. text={text};order={order}";
 			AddLog(logger, e, customMessage);
 		}
 
@@ -375,7 +375,7 @@ namespace SuperSoft.Services
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
-			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = e.Message, LogLevel = LogLevel.Error, Date = DateTime.Now });
+			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = customMessage, LogLevel = LogLevel.Error, Date = DateTime.Now });
 		}
 	}
 }
