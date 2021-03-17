@@ -64,6 +64,11 @@
     }
 }
 
+@media (max-width: 750px) {
+    .menuHeader {
+        height: 180px;
+    }
+}
 @media (max-width: 900px) {
     .materialContent {
         width: 600px;

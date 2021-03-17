@@ -109,7 +109,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                     return (
                         <>
                             <span style={{clear: 'both'}} key={i * i}>{p}</span>
-                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])} key={i}/>}
+                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[i])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[i])} key={i}/>}
                         </>
                     )
                 })}
@@ -176,6 +176,7 @@ class Gap extends Component<IGapProps> {
             update: observable
         });
         this.setUserAnswerGroup();
+        console.log("this props answerGroup", toJS(this.props.answerGroup));
         this.answerGroup = this.props.answerGroup;
     }
 
@@ -183,6 +184,10 @@ class Gap extends Component<IGapProps> {
     componentDidUpdate(prevProps: Readonly<IGapProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.userAnswerGroup !== this.props.userAnswerGroup) {
             this.setUserAnswerGroup();
+        }
+        if(prevProps.answerGroup !== this.props.answerGroup) {
+            console.log("да детка");
+            this.answerGroup = this.props.answerGroup;
         }
     }
 
