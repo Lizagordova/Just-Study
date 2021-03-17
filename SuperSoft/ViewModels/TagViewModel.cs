@@ -1,4 +1,5 @@
-﻿using SuperSoft.Configuration.Typings.Attributes;
+﻿using System.Collections.Generic;
+using SuperSoft.Configuration.Typings.Attributes;
 
 namespace SuperSoft.ViewModels
 {
@@ -7,5 +8,6 @@ namespace SuperSoft.ViewModels
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public List<SubtagViewModel> Subtags { get; set; }
 	}
 }

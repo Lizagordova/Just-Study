@@ -210,6 +210,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddLogAddOrUpdateSubtagsException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось добавить подтеги";
+			AddLog(logger, e, customMessage);
+		}
+		
 		public void AddLogAddOrUpdateTaskException(ILogger logger, Exception e)
 		{
 			var customMessage = $"Не удалось добавить задание.";

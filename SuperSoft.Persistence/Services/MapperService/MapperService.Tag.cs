@@ -19,6 +19,22 @@ namespace SuperSoft.Persistence.Services.MapperService
 			{
 				cfg.CreateMap<TagUdt, Tag>()
 					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Subtags, opt => opt.Ignore())
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+			});
+
+			AddMapping<SubtagUdt, Subtag>(cfg =>
+			{
+				cfg.CreateMap<SubtagUdt, Subtag>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+			});
+
+			AddMapping<Subtag, SubtagUdt>(cfg =>
+			{
+				cfg.CreateMap<Subtag, SubtagUdt>()
+					.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+					.ForMember(dest => dest.TagId, opt => opt.Ignore())
 					.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 			});
 		}

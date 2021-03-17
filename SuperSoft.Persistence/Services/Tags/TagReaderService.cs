@@ -20,5 +20,12 @@ namespace SuperSoft.Persistence.Services.Tags
 
 			return tags;
 		}
+
+		public List<Subtag> GetSubtagsByTag(int tagId)
+		{
+			var subtags = _tagRepository.GetSubtagsByTag(tagId);
+
+			return subtags;
+		}
 	}
 }

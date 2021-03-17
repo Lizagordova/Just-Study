@@ -6,5 +6,6 @@ namespace SuperSoft.Domain.Services.Tags
 	public interface ITagReaderService
 	{
 		List<Tag> GetTags();
+		List<Subtag> GetSubtagsByTag(int tagId);
 	}
 }

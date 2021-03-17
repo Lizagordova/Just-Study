@@ -1,4 +1,5 @@
-﻿using SuperSoft.Configuration.Typings.Attributes;
+﻿using System.Collections.Generic;
+using SuperSoft.Configuration.Typings.Attributes;
 
 namespace SuperSoft.ReadModels
 {
@@ -7,5 +8,6 @@ namespace SuperSoft.ReadModels
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public List<SubtagReadModel> Subtags { get; set; }
 	}
 }

@@ -98,5 +98,13 @@ namespace SuperSoft.Helpers
 
 			return userSubtaskViewModel;
 		}
+		
+		public TagViewModel MapTagViewModel(Tag tag)
+		{
+			var tagViewModel = _mapper.Map<Tag, TagViewModel>(tag);
+			tagViewModel.Subtags = tag.Subtags.Select(_mapper.Map<Subtag, SubtagViewModel>).ToList();
+
+			return tagViewModel;
+		}
 	}
 }

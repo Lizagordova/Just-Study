@@ -24,9 +24,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
     notReceived: boolean;
     tagsControlWindowOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITrainingContentProps) {
+        super(props);
         makeObservable(this, {
             choosenTags: observable,
             taskUploadWindowOpen: observable,
@@ -34,6 +33,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
             notReceived: observable,
             tagsControlWindowOpen: observable
         });
+        this.getTasks(this.choosenTags);
     }
 
     updateToggle() {
@@ -173,8 +173,12 @@ class TrainingContent extends Component<ITrainingContentProps> {
         mainTag.id = this.props.mainTag;
         let choosenTags = this.choosenTags;
         choosenTags.push(mainTag);
+        this.getTasks(choosenTags);
+    }
+
+    getTasks(tags: TagViewModel[]) {
         this.props.store.taskStore
-            .getTasks(choosenTags)
+            .getTasks(tags)
             .then((status) => {
                 this.notReceived = status !== 200;
             });

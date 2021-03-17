@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services.Tags;
 using SuperSoft.Helpers;
@@ -19,19 +20,23 @@ namespace SuperSoft.Controllers
 		private readonly ITagReaderService _tagReader;
 		private readonly ITagEditorService _tagEditor;
 		private readonly LogService _logService;
+		private readonly MapHelper _mapHelper;
 
 		public TagController(
 			MapperService mapper,
 			ILogger<TagController> logger,
 			ITagReaderService tagReader,
 			ITagEditorService tagEditor,
-			LogService logService)
+			LogService logService,
+			MapHelper mapHelper
+			)
 		{
 			_mapper = mapper;
 			_logger = logger;
 			_logService = logService;
 			_tagEditor = tagEditor;
 			_tagReader = tagReader;
+			_mapHelper = mapHelper;
 		}
 
 		[HttpGet]
@@ -41,7 +46,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var tags = _tagReader.GetTags();
-				var tagViewModels = tags.Select(_mapper.Map<Tag, TagViewModel>).ToList();
+				var tagViewModels = tags.Select(_mapHelper.MapTagViewModel).ToList();
 
 				return new JsonResult(tagViewModels);
 			}
@@ -82,7 +87,7 @@ namespace SuperSoft.Controllers
 		public ActionResult AddOrUpdateTag([FromBody]TagReadModel tagReadModel)
 		{
 			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
+			if (role != UserRole.Admin.ToString())
 			{
 				return new BadRequestResult();
 			}
@@ -97,6 +102,31 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				_logService.AddLogAddOrUpdateTagException(_logger, e);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
+		[Route("/addorupdatesubtags")]
+		public ActionResult AddOrUpdateSubtags([FromBody]TagReadModel tagReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			var subtags = tagReadModel.Subtags.Select(_mapper.Map<SubtagReadModel, Subtag>).ToList();
+			try
+			{
+				_tagEditor.AddOrUpdateSubtags(subtags, tagReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateSubtagsException(_logger, e);
 
 				return new StatusCodeResult(500);
 			}

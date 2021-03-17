@@ -1,4 +1,5 @@
-﻿using SuperSoft.Domain.Models;
+﻿using System.Collections.Generic;
+using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Tags;
 
@@ -22,6 +23,16 @@ namespace SuperSoft.Persistence.Services.Tags
 		public void DeleteTag(int tagId)
 		{
 			_tagRepository.DeleteTag(tagId);
+		}
+
+		public void AddOrUpdateSubtags(List<Subtag> subtags, int tagId)
+		{
+			_tagRepository.AddOrUpdateSubtags(subtags, tagId);
+		}
+
+		public void DeleteSubtag(int subtagId)
+		{
+			_tagRepository.DeleteSubtag(subtagId);
 		}
 	}
 }
