@@ -62,7 +62,7 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
             <>
                 {tasks.map((task) => {
                     return(
-                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id} key={task.id} isTrainingOrPool={false} tags={null} reviewMode={false} />
+                        <Task store={this.props.store} task={task}  userId={this.props.store.userStore.currentUser.id} key={task.id} isTrainingOrPool={false} subtags={null} reviewMode={false} />
                     );
                 })}
             </>

@@ -19,6 +19,8 @@ import {UserSubtaskAnswerGroupReadModel} from "../Typings/readModels/UserSubtask
 import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 import {FeedbackViewModel} from "../Typings/viewModels/FeedbackViewModel";
 import {FeedbackReadModel} from "../Typings/readModels/FeedbackReadModel";
+import {SubtagViewModel} from "../Typings/viewModels/SubtagViewModel";
+import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -154,4 +156,12 @@ export function mapToFeedbackReadModel(feedback: FeedbackViewModel, old: boolean
     feedbackReadModel.old = old;
 
     return feedbackReadModel;
+}
+
+export function mapToSubtagReadModel(subtag: SubtagViewModel) {
+    let subtagReadModel = new SubtagReadModel();
+    subtagReadModel.id = subtag.id;
+    subtagReadModel.name = subtag.name;
+
+    return subtagReadModel;
 }

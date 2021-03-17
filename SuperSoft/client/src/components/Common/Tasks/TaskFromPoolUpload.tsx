@@ -7,6 +7,9 @@ import { Task } from "./Task";
 import RootStore from "../../../stores/RootStore";
 import { Modal, ModalBody, Button, Alert } from  "reactstrap";
 import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
+import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
+import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
+import {mapToSubtagReadModel} from "../../../functions/mapper";
 
 class ITaskFromPoolUploadProps {
     store: RootStore;
@@ -15,7 +18,7 @@ class ITaskFromPoolUploadProps {
 
 @observer
 class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
-    choosenTags: TagViewModel[] = new Array<TagViewModel>();
+    choosenTags: SubtagViewModel[] = new Array<SubtagViewModel>();
     ignoreIds: number[] = new Array<number>(0);
     notAttached: boolean;
     notReceived: boolean;
@@ -40,7 +43,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     updateTasksPool() {
-        this.props.store.taskStore.getTasks(new Array<TagReadModel>(0), this.ignoreIds);
+        this.props.store.taskStore.getTasks(new Array<SubtagReadModel>(0), new Array<TagReadModel>(0), this.ignoreIds);
     }
 
     renderCautions() {
@@ -62,7 +65,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                         return (
                             <div className="row justify-content-center" style={{marginTop: "10px"}}>
                                 <div className="col-lg-10 col-md-10 col-sm-12">
-                                    <Task key={task.id} isTrainingOrPool={true} store={this.props.store} tags={null} task={task} userId={this.props.store.userStore.currentUser.id} reviewMode={false} />
+                                    <Task key={task.id} isTrainingOrPool={true} store={this.props.store} subtags={null} task={task} userId={this.props.store.userStore.currentUser.id} reviewMode={false} />
                                 </div>
                                 <div className="col-lg-2 col-md-2 col-sm-2">
                                     <i className="fa fa-plus fa-2x" aria-hidden="true" onClick={() => this.attachTaskToLesson(task.id)} />
@@ -100,7 +103,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         );
     }
 
-    renderTags(tags: TagViewModel[], update: boolean) {
+    renderTags(tags: SubtagViewModel[], update: boolean) {
         return (
             <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
                 {tags.map((tag, i) => {
@@ -185,7 +188,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
 
     applyTags() {
         this.props.store.taskStore
-            .getTasks(this.choosenTags)
+            .getTasks(this.choosenTags.map(mapToSubtagReadModel))
             .then((status) => {
                 this.notReceived = status !== 200;
             });
@@ -195,7 +198,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         this.update = !this.update;
     }
 
-    toggleTag(tag: TagViewModel) {
+    toggleTag(tag: SubtagViewModel) {
         if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
             let choosenTags = this.choosenTags
                 .filter(t => t !== tag);

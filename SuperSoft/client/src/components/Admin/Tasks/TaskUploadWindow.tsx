@@ -11,6 +11,7 @@ import { getTaskTitle } from "../../../functions/getTaskTitle";
 import {subtaskTranspiler} from "../../../functions/subtaskTranspiler";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import {mapToSubtaskReadModel, mapToTagReadModel, mapToTaskReadModel} from "../../../functions/mapper";
+import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
 
 @observer
 class TaskUploadWindow extends Component<IUploadTaskProps> {
@@ -42,7 +43,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             this.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
         }
         if(task.tags !== undefined) {
-            this.tags = task.tags;
+            this.tags = task.tags.map(t =>  mapToTagReadModel(t));
         }
         this.task = mapToTaskReadModel(task);
         this.loaded = true;
@@ -218,7 +219,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         this.props.taskStore.getTasksByLesson(this.props.lessonId);
                     }
                 } else {
-                    this.props.taskStore.getTasks(new Array<TagReadModel>());
+                    this.props.taskStore.getTasks(new Array<SubtagReadModel>(0));
                 }
                 this.notSaved = status !== 200;
                 this.saved = status === 200;

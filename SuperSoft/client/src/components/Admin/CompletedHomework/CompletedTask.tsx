@@ -32,7 +32,7 @@ class CompletedTask extends Component<ICompletedTaskProps> {
 
     renderTask() {
         return (
-            <Task task={this.props.task} store={this.props.store} userId={this.props.userId} isTrainingOrPool={false} tags={null} reviewMode={true}/>
+            <Task task={this.props.task} store={this.props.store} userId={this.props.userId} isTrainingOrPool={false} subtags={null} reviewMode={true}/>
         );
     }
 

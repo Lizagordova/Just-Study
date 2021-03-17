@@ -11,6 +11,7 @@ import TaskUpload from "../../Admin/Tasks/TaskUpload";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import TagsControlWindow from "../../Admin/Tags/TagsControlWindow";
 import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
+import {mapToSubtagReadModel, mapToSubtaskReadModel} from "../../../functions/mapper";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -54,11 +55,11 @@ class TrainingContent extends Component<ITrainingContentProps> {
         );
     }
 
-    renderTags(tags: TagViewModel[], update: boolean) {
+    renderTags(tags: SubtagViewModel[], update: boolean) {
         return (
             <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
                 {tags.map((tag, i) => {
-                    let outline = !this.choosenTags.includes(tag);
+                    let outline = !this.choosenSubtags.includes(tag);
                     if(tag.id !== 1 && tag.id !== 2 && tag.id !== 3) {//todo: неприятный хардкод 
                         return (
                             <Button
@@ -100,7 +101,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                 <div className="row">
                     {tasks.map((task, i) => {
                         return(
-                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTrainingOrPool={true} tags={this.choosenTags} reviewMode={false}/>
+                            <Task task={task} store={this.props.store} userId={this.props.store.userStore.currentUser.id} key={i}  isTrainingOrPool={true} subtags={this.choosenSubtags.map(mapToSubtagReadModel)} reviewMode={false}/>
                         );
                     })}
                 </div>
@@ -158,12 +159,12 @@ class TrainingContent extends Component<ITrainingContentProps> {
         )
     }
 
-    toggleTag(tag: TagViewModel) {
-        if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
-            this.choosenTags = this.choosenTags
+    toggleTag(tag: SubtagViewModel) {
+        if(this.choosenSubtags.filter(t => t.id === tag.id).length > 0) {
+            this.choosenSubtags = this.choosenSubtags
                 .filter(t => t !== tag);
         } else {
-            this.choosenTags.push(tag);
+            this.choosenSubtags.push(tag);
         }
         this.updateToggle();
     }
@@ -171,14 +172,14 @@ class TrainingContent extends Component<ITrainingContentProps> {
     applyTags() {
         let mainTag = new TagReadModel();
         mainTag.id = this.props.mainTag;
-        let choosenTags = this.choosenTags;
+        let choosenTags = this.choosenSubtags;
         choosenTags.push(mainTag);
         this.getTasks(choosenTags);
     }
 
     getTasks(subtags: SubtagViewModel[]) {
         this.props.store.taskStore
-            .getTasks(subtags)
+            .getTasks(subtags.map(mapToSubtagReadModel))
             .then((status) => {
                 this.notReceived = status !== 200;
             });

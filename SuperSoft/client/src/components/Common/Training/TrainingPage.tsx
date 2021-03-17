@@ -71,10 +71,10 @@ class TrainingPage extends Component<ITrainingPageProps> {
     }
 
     renderAddTagWindow() {
-        if(this.props.store.userStore.choosenUser.role !== UserRole.Admin) {
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             return (
                 <>
-                    {this.addTagWindowOpen && <AddTagWindow tagStore={this.props.tag} toggle={this.toggleAddTagWindow} />}
+                    {this.addTagWindowOpen && <AddTagWindow tagStore={this.props.store.tagStore} toggle={this.toggleAddTagWindow} />}
                 </>
             );
         }
