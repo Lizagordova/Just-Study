@@ -1,0 +1,5 @@
+﻿CREATE TABLE [Subtag_Tag]
+(
+	[TagId] INT REFERENCES [Tag]([Id]) ON DELETE CASCADE,
+	[SubtagId] INT REFERENCES [Subtag]([Id]) ON DELETE CASCADE
+);
