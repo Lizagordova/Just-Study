@@ -17,14 +17,14 @@ import {UserTaskViewModel} from "../../../Typings/viewModels/UserTaskViewModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import AddSubtask from "../../Admin/Tasks/AddSubtask";
 import {TaskType} from "../../../Typings/enums/TaskType";
-import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
+import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
 
 class ITaskProps {
     store: RootStore;
     task: TaskViewModel;
     userId: number;
     isTrainingOrPool: boolean;
-    tags: TagReadModel[] | null;
+    subtags: SubtagReadModel[] | null;
     reviewMode: boolean;
 }
 
@@ -227,10 +227,10 @@ export class Task extends Component<ITaskProps> {
                 .deleteTask(this.props.task.id, !this.props.isTrainingOrPool, this.props.store.lessonStore.choosenLesson.id)
                     .then((status) => {
                         if(this.props.isTrainingOrPool) {
-                            if(this.props.tags !== null) {
-                                this.props.store.taskStore.getTasks(this.props.tags);
+                            if(this.props.subtags !== null) {
+                                this.props.store.taskStore.getTasks(this.props.subtags);
                             } else {
-                                this.props.store.taskStore.getTasks(new Array<TagReadModel>(0));
+                                this.props.store.taskStore.getTasks(new Array<SubtagReadModel>(0));
                             }
                         } else {
                             this.props.store.taskStore.getTasksByLesson(this.props.store.lessonStore.choosenLesson.id);

@@ -5,10 +5,12 @@ import { makeObservable, observable } from "mobx";
 import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
 import { Button, Modal, ModalBody, Input } from "reactstrap";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
+import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
 
 class ITagsControlWindowProps {
     tagStore: TagStore;
     toggle: any;
+    tagId: number;
 }
 
 @observer
@@ -133,10 +135,10 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
     }
 
     saveNewTag() {
-        let tagReadModel = new TagReadModel();
-        tagReadModel.name = this.newTagName;
+        let subtagReadModel = new SubtagReadModel();
+        subtagReadModel.name = this.newTagName;
         this.props.tagStore
-            .addOrUpdateTag(tagReadModel)
+            .addOrUpdateSubtag(subtagReadModel, this.props.tagId)
             .then((status) => {
                 this.notAdded = status !== 200;
                 if(status === 200) {

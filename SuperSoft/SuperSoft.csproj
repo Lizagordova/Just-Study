@@ -46,6 +46,7 @@
 		<None Include="client\src\components\Admin\ProgressByLesson\UsersProgressByLesson.tsx" />
 		<None Include="client\src\components\Admin\Progress\CourseProgress.tsx" />
 		<None Include="client\src\components\Admin\Progress\LessonProgress.tsx" />
+		<None Include="client\src\components\Admin\Tags\AddTagWindow.tsx" />
 		<None Include="client\src\components\Admin\Tags\TagsControlWindow.tsx" />
 		<None Include="client\src\components\Admin\Tasks\AddSubtask.tsx" />
 		<None Include="client\src\components\Admin\Tasks\IUploadSubtaskProps.tsx" />

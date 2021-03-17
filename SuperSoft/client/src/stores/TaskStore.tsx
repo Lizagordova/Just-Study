@@ -9,6 +9,7 @@ import {UserSubtaskViewModel} from "../Typings/viewModels/UserSubtaskViewModel";
 import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 import {TagReadModel} from "../Typings/readModels/TagReadModel";
 import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
+import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
 
 class TaskStore {
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
@@ -264,7 +265,8 @@ class TaskStore {
         return userTask;
     }
 
-    async getTasks(tags: TagReadModel[], ignoreIds: number[] = new Array<number>(0)): Promise<number> {
+    async getTasks(subtags: SubtagReadModel[], tags: TagReadModel[] = new Array<TagReadModel>(0), ignoreIds: number[] = new Array<number>(0)): Promise<number> {
+        let subtagIds = subtags.map(t => t.id);
         let tagIds = tags.map(t => t.id);
         let tasks = new Array<TaskViewModel>();
         const response = await fetch("/gettasks", {
@@ -273,8 +275,7 @@ class TaskStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                tagIds: tagIds,
-                ignoreIds: ignoreIds
+                subtagIds: subtagIds, ignoreIds: ignoreIds, tagIds: tagIds
             })
         });
         if(response.status === 200) {

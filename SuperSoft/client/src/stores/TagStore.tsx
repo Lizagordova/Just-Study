@@ -1,6 +1,7 @@
 ﻿import { makeObservable, observable } from "mobx";
 import { TagViewModel } from "../Typings/viewModels/TagViewModel";
 import {TagReadModel} from "../Typings/readModels/TagReadModel";
+import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
 
 class TagStore {
     tags: TagViewModel[] = new Array<TagViewModel>();
@@ -48,6 +49,23 @@ class TagStore {
             },
             body: JSON.stringify({
                 id: tag.id, name: tag.name
+            })
+        });
+        if(response.status === 200) {
+            this.getTags();
+        }
+
+        return response.status;
+    }
+
+    async addOrUpdateSubtag(subtag: SubtagReadModel, tagId: number): Promise<number> {
+        const response = await fetch("/addorupdatesubtag", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                tagId: tagId, id: subtag.id, name: subtag.name
             })
         });
         if(response.status === 200) {

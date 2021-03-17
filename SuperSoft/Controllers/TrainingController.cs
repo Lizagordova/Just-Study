@@ -48,7 +48,7 @@ namespace SuperSoft.Controllers
 				return new BadRequestResult();
 			}
 
-			var query = new TrainingTaskQuery { TagIds = tasksQuery.TagIds, IgnoreIds = tasksQuery.IgnoreIds};
+			var query = new TrainingTaskQuery { TagIds = tasksQuery.TagIds, IgnoreIds = tasksQuery.IgnoreIds, SubtagIds = tasksQuery.SubtagIds };
 			try
 			{
 				var tasks = _trainingReader.GetTasks(query);

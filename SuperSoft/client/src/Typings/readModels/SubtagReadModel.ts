@@ -2,11 +2,9 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
-import { SubtagReadModel } from './SubtagReadModel';
-
-export class TagReadModel
+export class SubtagReadModel
 {
 	public id: number;
+	public tagId: number;
 	public name: string;
-	public subtags: SubtagReadModel[];
 }

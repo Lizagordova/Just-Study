@@ -2,8 +2,11 @@
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 
+import { SubtagViewModel } from './SubtagViewModel';
+
 export class TagViewModel
 {
 	public id: number;
 	public name: string;
+	public subtags: SubtagViewModel[] = [];
 }

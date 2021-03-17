@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -121,6 +122,31 @@ namespace SuperSoft.Controllers
 			try
 			{
 				_tagEditor.AddOrUpdateSubtags(subtags, tagReadModel.Id);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAddOrUpdateSubtagsException(_logger, e);
+
+				return new StatusCodeResult(500);
+			}
+		}
+
+		[HttpPost]
+		[Route("/addorupdatesubtag")]
+		public ActionResult AddOrUpdateSubtags([FromBody]SubtagReadModel subtagReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			var subtag = _mapper.Map<SubtagReadModel, Subtag>(subtagReadModel);
+			try
+			{
+				_tagEditor.AddOrUpdateSubtags(new List<Subtag>() { subtag }, subtagReadModel.TagId);
 
 				return new OkResult();
 			}

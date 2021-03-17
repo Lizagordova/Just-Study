@@ -1,8 +1,8 @@
 ﻿import React, {Component} from "react";
-import { Alert, Button } from "reactstrap";
+import {Alert, Button} from "reactstrap";
 import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {observer} from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable} from "mobx";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Task} from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
@@ -10,6 +10,7 @@ import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import TaskUpload from "../../Admin/Tasks/TaskUpload";
 import {UserRole} from "../../../Typings/enums/UserRole";
 import TagsControlWindow from "../../Admin/Tags/TagsControlWindow";
+import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -18,7 +19,7 @@ class ITrainingContentProps {
 
 @observer
 class TrainingContent extends Component<ITrainingContentProps> {
-    choosenTags: TagViewModel[] = new Array<TagViewModel>();
+    choosenSubtags: SubtagViewModel[] = new Array<SubtagViewModel>();
     taskUploadWindowOpen: boolean = false;
     update: boolean = false;
     notReceived: boolean;
@@ -27,13 +28,13 @@ class TrainingContent extends Component<ITrainingContentProps> {
     constructor(props: ITrainingContentProps) {
         super(props);
         makeObservable(this, {
-            choosenTags: observable,
+            choosenSubtags: observable,
             taskUploadWindowOpen: observable,
             update: observable,
             notReceived: observable,
             tagsControlWindowOpen: observable
         });
-        this.getTasks(this.choosenTags);
+        this.getTasks(this.choosenSubtags);
     }
 
     updateToggle() {
@@ -139,7 +140,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                         outline color="secondary" onClick={() => this.toggleTagsControlWindowOpen()}>
                         Редактировать теги
                     </Button>}
-                    {this.tagsControlWindowOpen && <TagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleTagsControlWindowOpen} />}
+                    {this.tagsControlWindowOpen && <TagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleTagsControlWindowOpen} tagId={this.props.mainTag} />}
                 </>
             );
         }
@@ -159,9 +160,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
 
     toggleTag(tag: TagViewModel) {
         if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
-            let choosenTags = this.choosenTags
+            this.choosenTags = this.choosenTags
                 .filter(t => t !== tag);
-            this.choosenTags = choosenTags;
         } else {
             this.choosenTags.push(tag);
         }
@@ -176,9 +176,9 @@ class TrainingContent extends Component<ITrainingContentProps> {
         this.getTasks(choosenTags);
     }
 
-    getTasks(tags: TagViewModel[]) {
+    getTasks(subtags: SubtagViewModel[]) {
         this.props.store.taskStore
-            .getTasks(tags)
+            .getTasks(subtags)
             .then((status) => {
                 this.notReceived = status !== 200;
             });

@@ -4,6 +4,10 @@ import { Nav, Tab, Row, Col }  from "react-bootstrap";
 import { observer } from "mobx-react";
 import TrainingContent from "./TrainingContent";
 import RootStore from "../../../stores/RootStore";
+import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
+import { Button } from "reactstrap";
+import AddTagWindow from "../../Admin/Tags/AddTagWindow";
+import { UserRole } from "../../../Typings/enums/UserRole";
 
 class ITrainingPageProps {
     store: RootStore;
@@ -13,55 +17,50 @@ class ITrainingPageProps {
 class TrainingPage extends Component<ITrainingPageProps> {
     filtersOpen: boolean;
     mainTag: number = 1;
+    addTagWindowOpen: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITrainingPageProps) {
+        super(props);
         makeObservable(this, {
             filtersOpen: observable,
-            mainTag: observable
+            mainTag: observable,
+            addTagWindowOpen: observable
         });
     }
 
-    renderMenu() {
+    renderAddTagButton() {
+        return (
+            <Button
+                onClick={() => this.toggleAddTagWindow()}>
+                Добавить тег
+            </Button>
+        );
+    }
+
+    renderMenu(tags: TagViewModel[]) {
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={1}>
                 <Row>
                     <Col sm={2} style={{height: "160px"}}>
                         <Nav  variant="pills" className="flex-column">
                             <div className="container-fluid">
-                                <Nav.Item key={1}>
-                                    <div className="row" key={1}>
-                                        <Nav.Link
-                                            eventKey={1}
-                                                className="nav-link lesson"
-                                                onClick={() => this.changeMainTag(1)}>
-                                                ГРАММАТИКА
-                                            </Nav.Link>
-                                    </div>
-                                </Nav.Item>
-                                <Nav.Item key={2}>
-                                    <div className="row" key={2}>
-                                            <Nav.Link
-                                                eventKey={2}
-                                                className="nav-link lesson"
-                                                onClick={() => this.changeMainTag(2)}>
-                                                ЧТЕНИЕ
-                                            </Nav.Link>
-                                    </div>
-                                </Nav.Item>
-                                <Nav.Item key={3}>
-                                    <div className="row" key={3}>
-                                            <Nav.Link
-                                                eventKey={3}
-                                                className="nav-link lesson"
-                                                onClick={() => this.changeMainTag(3)}>
-                                                АУДИРОВАНИЕ
-                                            </Nav.Link>
-                                    </div>
-                                </Nav.Item>
+                                {tags.map(t => {
+                                    return (
+                                        <Nav.Item key={t.id}>
+                                            <div className="row" key={1}>
+                                                <Nav.Link
+                                                    eventKey={1}
+                                                    className="nav-link lesson"
+                                                    onClick={() => this.changeMainTag(t.id)}>
+                                                    {t.name}
+                                                </Nav.Link>
+                                            </div>
+                                        </Nav.Item>
+                                    );
+                                })}
                             </div>
                         </Nav>
+                        {this.renderAddTagButton()}
                     </Col>
                     <Col sm={10}>
                         <TrainingContent store={this.props.store} mainTag={this.mainTag}/>
@@ -71,16 +70,31 @@ class TrainingPage extends Component<ITrainingPageProps> {
         );
     }
 
+    renderAddTagWindow() {
+        if(this.props.store.userStore.choosenUser.role !== UserRole.Admin) {
+            return (
+                <>
+                    {this.addTagWindowOpen && <AddTagWindow tagStore={this.props.tag} toggle={this.toggleAddTagWindow} />}
+                </>
+            );
+        }
+    }
+
     render() {
         return(
             <div className="container-fluid">
-                 {this.renderMenu()}
+                 {this.renderMenu(this.props.store.tagStore.tags)}
+                {this.renderAddTagWindow()}
             </div>
         );
     }
 
     changeMainTag(tagId: number) {
         this.mainTag = tagId;
+    }
+
+    toggleAddTagWindow = () => {
+        this.addTagWindowOpen = !this.addTagWindowOpen;
     }
 }
 
