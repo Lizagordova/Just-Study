@@ -62,7 +62,7 @@ export class Material extends Component<IMaterialProps> {
                     <iframe src={path} className="materialContent" />
                 </>
             );
-        } else if(path.toLowerCase().includes("mov")) {
+        } else if(path.includes("mov")) {
             return (
                 <>
                     {this.renderDeleteButton()}
