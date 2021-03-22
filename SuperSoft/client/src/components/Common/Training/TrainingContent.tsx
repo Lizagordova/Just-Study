@@ -6,12 +6,11 @@ import {makeObservable, observable} from "mobx";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Task} from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
-import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import TaskUpload from "../../Admin/Tasks/TaskUpload";
 import {UserRole} from "../../../Typings/enums/UserRole";
-import TagsControlWindow from "../../Admin/Tags/TagsControlWindow";
 import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
-import {mapToSubtagReadModel, mapToSubtaskReadModel} from "../../../functions/mapper";
+import {mapToSubtagReadModel, mapToTagReadModel} from "../../../functions/mapper";
+import SubtagsControlWindow from "../../Admin/Tags/SubtagsControlWindow";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -24,7 +23,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
     taskUploadWindowOpen: boolean = false;
     update: boolean = false;
     notReceived: boolean;
-    tagsControlWindowOpen: boolean;
+    subtagsControlWindowOpen: boolean;
+    mainTag: TagViewModel = new TagViewModel();
 
     constructor(props: ITrainingContentProps) {
         super(props);
@@ -33,9 +33,22 @@ class TrainingContent extends Component<ITrainingContentProps> {
             taskUploadWindowOpen: observable,
             update: observable,
             notReceived: observable,
-            tagsControlWindowOpen: observable
+            subtagsControlWindowOpen: observable,
         });
         this.getTasks(this.choosenSubtags);
+        this.setMainTag();
+    }
+
+    componentDidUpdate(prevProps: Readonly<ITrainingContentProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(this.props.mainTag !== prevProps.mainTag) {
+            this.setMainTag();
+        }
+    }
+
+    setMainTag() {
+        let foundTag = this.props.store.tagStore.tags.filter(t => t.id === this.props.mainTag)[0];
+        this.mainTag = foundTag !== undefined ? foundTag : new TagViewModel();
+        this.updateToggle();
     }
 
     updateToggle() {
@@ -55,41 +68,38 @@ class TrainingContent extends Component<ITrainingContentProps> {
         );
     }
 
-    renderTags(tags: SubtagViewModel[], update: boolean) {
+    renderSubtags(subtags: SubtagViewModel[], update: boolean) {
         return (
             <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
-                {tags.map((tag, i) => {
-                    let outline = !this.choosenSubtags.includes(tag);
-                    if(tag.id !== 1 && tag.id !== 2 && tag.id !== 3) {//todo: неприятный хардкод 
-                        return (
-                            <Button
-                                outline={outline} color="primary"
-                                style={{
-                                    marginLeft: "10px",
-                                    marginBottom: "10px",
-                                    height: "auto",
-                                    width: "auto",
-                                    fontSize: "0.8em"
-                                }}
-                                active={false}
-                                key={i}
-                                onClick={() => this.toggleTag(tag)}>
-                                {tag.name}
-                            </Button>
-                        );
-                    }
+                {subtags.map((subtag, i) => {
+                    let outline = !this.choosenSubtags.includes(subtag);
+                    return (
+                        <Button
+                            outline={outline} color="primary"
+                            style={{
+                                marginLeft: "10px",
+                                marginBottom: "10px",
+                                height: "auto",
+                                width: "auto",
+                                fontSize: "0.8em"
+                            }}
+                            active={false}
+                            key={i}
+                            onClick={() => this.toggleTag(subtag)}>
+                            {subtag.name}
+                        </Button>
+                    );
                 })}
             </div>
         );
     }
 
-    renderFilters(tags: TagViewModel[]) {
-        if(tags.length > 0) {
+    renderFilters(subtags: SubtagViewModel[], update: boolean) {
+        if(subtags.length > 0) {
             return(
                 <>
-                    {this.renderTags(tags, this.update)}
+                    {this.renderSubtags(subtags, this.update)}
                     {this.renderApplyButton()}
-                    {this.renderTagsControl()}
                 </>
             );
         }
@@ -132,27 +142,27 @@ class TrainingContent extends Component<ITrainingContentProps> {
         }
     }
 
-    renderTagsControl() {
+    renderSubtagsControl() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return (
                 <>
                     {<Button 
-                        style={{marginBottom: "10px"}}
-                        outline color="secondary" onClick={() => this.toggleTagsControlWindowOpen()}>
-                        Редактировать теги
+                        style={{marginBottom: "10px", marginTop: "10px"}}
+                        outline color="secondary" onClick={() => this.toggleSubtagsControlWindowOpen()}>
+                        Редактировать подтеги
                     </Button>}
-                    {this.tagsControlWindowOpen && <TagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleTagsControlWindowOpen} tagId={this.props.mainTag} />}
+                    {this.subtagsControlWindowOpen && <SubtagsControlWindow tagStore={this.props.store.tagStore} toggle={this.toggleSubtagsControlWindowOpen} tagId={this.props.mainTag} />}
                 </>
             );
         }
     }
 
     render() {
-        let tags = this.props.store.tagStore.tags;
         return(
             <>
                 {this.renderCautions()}
-                {this.renderFilters(tags)}
+                {this.renderFilters(this.mainTag.subtags, this.update)}
+                {this.renderSubtagsControl()}
                 {this.renderTasks(this.props.store.taskStore.tasksByQuery)}
                 {this.renderTaskUpload()}
             </>
@@ -170,11 +180,10 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     applyTags() {
-        let mainTag = new TagReadModel();
-        mainTag.id = this.props.mainTag;
-        let choosenTags = this.choosenSubtags;
-        choosenTags.push(mainTag);
-        this.getTasks(choosenTags);
+        let mainTag = mapToTagReadModel(this.mainTag);
+        let chooseenSubtags = this.choosenSubtags;
+        chooseenSubtags.push(mainTag);
+        this.getTasks(chooseenSubtags);
     }
 
     getTasks(subtags: SubtagViewModel[]) {
@@ -189,8 +198,8 @@ class TrainingContent extends Component<ITrainingContentProps> {
         this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
     }
 
-    toggleTagsControlWindowOpen = () => {
-        this.tagsControlWindowOpen = !this.tagsControlWindowOpen;
+    toggleSubtagsControlWindowOpen = () => {
+        this.subtagsControlWindowOpen = !this.subtagsControlWindowOpen;
     }
 }
 

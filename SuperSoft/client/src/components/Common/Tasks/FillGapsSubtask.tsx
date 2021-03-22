@@ -108,7 +108,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                 {partsOfSentence.map((p, i ) => {
                     return (
                         <>
-                            <span style={{clear: 'both'}} key={i * i}>{p}</span>
+                            <span style={{clear: 'both'}} key={i * 40}>{p}</span>
                             {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[i])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[i])} key={i}/>}
                         </>
                     )
