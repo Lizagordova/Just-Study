@@ -52,7 +52,7 @@ class SubtagsControlWindow extends Component<ITagsControlWindowProps> {
                     return(
                         <div className="row justify-content-center" key={subtag.id}>
                             <i style={{marginLeft: '88%', width: '2%'}}
-                               onClick={() => this.deleteTag(subtag.id)}
+                               onClick={() => this.deleteSubtag(subtag.id)}
                                className="fa fa-window-close fa-2x" aria-hidden="true"/>
                             <Button
                                 outline color="secondary"
@@ -147,8 +147,8 @@ class SubtagsControlWindow extends Component<ITagsControlWindowProps> {
         );
     }
 
-    deleteTag(tagId: number) {
-        this.props.tagStore.deleteTag(tagId)
+    deleteSubtag(subtagId: number) {
+        this.props.tagStore.deleteTag(subtagId)
             .then((status) => {
                 this.notDeleted = status !== 200;
             });
