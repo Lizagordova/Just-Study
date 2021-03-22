@@ -17,7 +17,7 @@ class IAddOrUpdateNewLessonProps {
 export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> {
     addOrUpdateNewLesson: boolean;
     id: number = 0;
-    order: number = 0;
+    order: number = -1;
     description: string = "";
     startDate: Date | Date[] = new Date();
     expireDate: Date | Date[] = new Date();
@@ -248,8 +248,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     addOrUpdateLesson() {
         let courseId = this.props.store.courseStore.choosenCourse.id;
+        let order = this.order !== -1 ? this.order : this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
         this.props.store.lessonStore
-            .addOrUpdateLesson(this.id, this.order, courseId, this.name, this.description, this.startDate, this.expireDate)
+            .addOrUpdateLesson(this.id, order, courseId, this.name, this.description, this.startDate, this.expireDate)
             .then((status) => {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;

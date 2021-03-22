@@ -27,7 +27,6 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
         if(this.props.store.courseStore.choosenCourse.id !== undefined) {
             this.getLessons();
         }
-        
     }
 
     getLessons() {
@@ -93,7 +92,7 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
         let courseAvailable = this.choosenCourseIsAvailable();
         return(
             <>
-                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
+                {(lessons === undefined || lessons.length === 0) && courseAvailable && renderSpinner()}
                 {courseAvailable && this.renderLessonsMenu(lessons)}
                 {!courseAvailable && this.renderCautions()}
             </>
