@@ -29,6 +29,7 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     }
 
     renderProgress(update: boolean) {
+        console.log("update in progress", update, "progress", this.progress);
         return (
             <Circle
                 size="150"
@@ -53,6 +54,7 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     }
 
     render() {
+        console.log("update in render", this.update, "progress", this.progress);
         let user = this.props.store.userStore.users.find(u => u.id === this.props.userId);
         if(user === undefined) {
             user = new UserViewModel();
@@ -65,7 +67,7 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     }
 
     getProgress() {
-        this.props.store.lessonStore.getUsersProgressByLesson(this.props.lessonId)
+        this.props.store.lessonStore.getUserProgressByLesson(this.props.lessonId, this.props.userId)
             .then((progress) => {
                 console.log("perceived", progress);
                 this.progress = progress;

@@ -61,7 +61,7 @@ namespace SuperSoft.Persistence.Repositories
 			}
 			if (lessonId != null)
 			{
-				param.Add("lessonId", courseId);
+				param.Add("lessonId", lessonId);
 			}
 
 			return param;

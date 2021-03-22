@@ -116,14 +116,14 @@ class LessonStore {
         return response.status;
     }
 
-    async getUsersProgressByLesson(lessonId: number): Promise<number> {//todo: создать
+    async getUserProgressByLesson(lessonId: number, userId: number): Promise<number> {
         const response = await fetch("/getuserprogressbylesson", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                id: lessonId
+                lessonId: lessonId, userId: userId
             })
         });
 

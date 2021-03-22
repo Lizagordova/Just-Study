@@ -11,6 +11,7 @@ import {UserRole} from "../../../Typings/enums/UserRole";
 import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
 import {mapToSubtagReadModel, mapToTagReadModel} from "../../../functions/mapper";
 import SubtagsControlWindow from "../../Admin/Tags/SubtagsControlWindow";
+import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -185,8 +186,10 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     getTasks(subtags: SubtagViewModel[]) {
+        let tags = new Array<TagReadModel>(1);
+        tags[0] = mapToTagReadModel(this.mainTag);
         this.props.store.taskStore
-            .getTasks(subtags.map(mapToSubtagReadModel))
+            .getTasks(subtags.map(mapToSubtagReadModel), tags)
             .then((status) => {
                 this.notReceived = status !== 200;
             });
