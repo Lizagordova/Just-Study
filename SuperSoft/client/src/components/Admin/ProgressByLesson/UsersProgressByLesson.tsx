@@ -17,16 +17,18 @@ class IUsersProgressByLessonProps {
 @observer
 class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     progress: number = 0;
+    update: boolean;
 
     constructor(props: IUsersProgressByLessonProps) {
         super(props);
         makeObservable(this, {
-            progress: observable
+            progress: observable,
+            update: observable
         });
         this.getProgress();
     }
 
-    renderProgress() {
+    renderProgress(update: boolean) {
         return (
             <Circle
                 size="150"
@@ -43,7 +45,7 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
                         <span>{user.firstName} {user.lastName}</span>
                     </CardHeader>
                     <div className="row justify-content-center">
-                        {this.renderProgress()}
+                        {this.renderProgress(this.update)}
                     </div>
                 </Card>}
             </>
@@ -65,8 +67,14 @@ class UsersProgressByLesson extends Component<IUsersProgressByLessonProps> {
     getProgress() {
         this.props.store.lessonStore.getUsersProgressByLesson(this.props.lessonId)
             .then((progress) => {
+                console.log("perceived", progress);
                 this.progress = progress;
+                this.toggleUpdate();
             });
+    }
+    
+    toggleUpdate() {
+        this.update = !this.update;
     }
 }
 

@@ -20,7 +20,6 @@ class ITrainingContentProps {
 @observer
 class TrainingContent extends Component<ITrainingContentProps> {
     choosenSubtags: SubtagViewModel[] = new Array<SubtagViewModel>();
-    taskUploadWindowOpen: boolean = false;
     update: boolean = false;
     notReceived: boolean;
     subtagsControlWindowOpen: boolean;
@@ -30,7 +29,6 @@ class TrainingContent extends Component<ITrainingContentProps> {
         super(props);
         makeObservable(this, {
             choosenSubtags: observable,
-            taskUploadWindowOpen: observable,
             update: observable,
             notReceived: observable,
             subtagsControlWindowOpen: observable,
@@ -192,10 +190,6 @@ class TrainingContent extends Component<ITrainingContentProps> {
             .then((status) => {
                 this.notReceived = status !== 200;
             });
-    }
-
-    toggleTaskUploadWindow() {
-        this.taskUploadWindowOpen = !this.taskUploadWindowOpen;
     }
 
     toggleSubtagsControlWindowOpen = () => {

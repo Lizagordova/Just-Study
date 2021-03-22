@@ -17,7 +17,7 @@ class ProgressByLesson extends Component<IProgressByLesson> {
                 {users.map((userCourse) => {
                     if(userCourse.userId !== this.props.store.userStore.currentUser.id) {
                         return(
-                            <UsersProgressByLesson store={this.props.store}  lessonId={this.props.store.lessonStore.choosenLesson.id} userId={userCourse.userId}/>
+                            <UsersProgressByLesson store={this.props.store} lessonId={this.props.store.lessonStore.choosenLesson.id} userId={userCourse.userId}/>
                         );
                     }
                 })}
