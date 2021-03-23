@@ -56,12 +56,13 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     }
 
     parseSubtask(subtask: SubtaskViewModel) {
-        let regExp = /\d+/g;
+        let regExp = /\[\d+/g;
         let text = subtask.text;
         let groupIds = text.match(regExp);
         let partsOfSentence = new Array<string>();
         if (groupIds !== null) {
             for(let i = 0; i < groupIds.length; i++) {
+                groupIds[i] = groupIds[i].replace("[", "");
                 text = text.replace(groupIds[i], "-").replace("[", "").replace("]", "");
             }
             partsOfSentence = text.split("-");
@@ -217,6 +218,7 @@ class Dropdown extends Component<IDropdownProps> {
 
     renderMenu() {
         let answers = this.answerGroup.answers;
+        console.log("answetGroup", toJS(answers))
         return(
             <>
                 <ButtonDropdown isOpen={this.isOpen} toggle={() => this.toggle()}>

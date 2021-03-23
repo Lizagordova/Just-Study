@@ -101,12 +101,16 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     renderOrderInput() {
+        let order = this.order;
+        if(order === -1) {
+            order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
+        }
         return(
             <>
                 <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
                 <Input
                     style={{width: "70%"}}
-                    defaultValue={this.props.store.lessonStore.lessonsByChoosenCourse.length + 1}
+                    defaultValue={order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
         );
@@ -237,7 +241,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     initialState() {
         this.id = 0;
-        this.order = 0;
+        this.order = -1;
         this.description = "";
         this.startDate = new Date();
         this.expireDate = new Date();

@@ -33,7 +33,7 @@ namespace SuperSoft.Persistence.Services.Trainings
 			}
 			if (query.SubtagIds.Count > 0)
 			{
-				finalTasks.AddRange(tasks.Where(task => task.Tags.Any(t => t.Subtags.Any(tag => query.SubtagIds.Contains(tag.Id)))));
+				finalTasks.AddRange(tasks.Where(task => task.Subtags.Any(subtag => query.SubtagIds.Contains(subtag.Id))));
 			}
 
 			finalTasks = finalTasks.Where(task => !query.IgnoreIds.Contains(task.Id)).Distinct().ToList();

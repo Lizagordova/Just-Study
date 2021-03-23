@@ -184,6 +184,7 @@ namespace SuperSoft.Persistence.Repositories
 
 			return param;
 		}
+
 		private TaskData GetTaskData(SqlMapper.GridReader reader)
 		{
 			var taskData = new TaskData
@@ -191,7 +192,9 @@ namespace SuperSoft.Persistence.Repositories
 				Tasks = reader.Read<TaskUdt>().ToList(),
 				Subtasks = reader.Read<SubtaskUdt>().ToList(),
 				Tags = reader.Read<TagUdt>().ToList(),
-				TagTasks = reader.Read<TaskTagUdt>().ToList()
+				TagTasks = reader.Read<TaskTagUdt>().ToList(),
+				Subtags = reader.Read<SubtagUdt>().ToList(),
+				TaskSubtags = reader.Read<TaskSubtagUdt>().ToList(),
 			};
 
 			return taskData;
@@ -233,6 +236,7 @@ namespace SuperSoft.Persistence.Repositories
 			var task = _mapper.Map<TaskUdt, Task>(taskData.Tasks.FirstOrDefault());
 			task.Subtasks = taskData.Subtasks.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList();
 			task.Tags = taskData.Tags.Select(_mapper.Map<TagUdt, Tag>).ToList();
+			task.Subtags = taskData.Subtags.Select(_mapper.Map<SubtagUdt, Subtag>).ToList();
 
 			return task;
 		}
@@ -249,6 +253,10 @@ namespace SuperSoft.Persistence.Repositories
 					t => t.Id,
 					tag => tag.TaskId,
 					MapTaskWithTags)
+				.GroupJoin(taskData.TaskSubtags,
+					t => t.Id,
+					s => s.TaskId,
+					MapTaskWithSubtags)
 				.ToList();
 			
 			tasks.ForEach(t =>
@@ -266,7 +274,7 @@ namespace SuperSoft.Persistence.Repositories
 
 		private Task MapTaskWithTags(Task task, IEnumerable<TaskTagUdt> tagTaskUdts)
 		{
-			task.Tags = tagTaskUdts.Select(t => new Tag() {Id = t.TagId}).ToList();
+			task.Tags = tagTaskUdts.Select(t => new Tag() { Id = t.TagId }).ToList();
 
 			return task;
 		}
@@ -279,9 +287,9 @@ namespace SuperSoft.Persistence.Repositories
 			return task;
 		}
 
-		private Task MapTaskWithTags(Task task, IEnumerable<TagUdt> tagUdts)
+		private Task MapTaskWithSubtags(Task task, IEnumerable<TaskSubtagUdt> subtagUdts)
 		{
-			task.Tags = tagUdts.Select(_mapper.Map<TagUdt, Tag>).ToList();
+			task.Subtags = subtagUdts.Select(ts => new Subtag() { Id = ts.SubtagId }).ToList();
 
 			return task;
 		}

@@ -176,7 +176,6 @@ class Gap extends Component<IGapProps> {
             update: observable
         });
         this.setUserAnswerGroup();
-        console.log("this props answerGroup", toJS(this.props.answerGroup));
         this.answerGroup = this.props.answerGroup;
     }
 
@@ -186,7 +185,6 @@ class Gap extends Component<IGapProps> {
             this.setUserAnswerGroup();
         }
         if(prevProps.answerGroup !== this.props.answerGroup) {
-            console.log("да детка");
             this.answerGroup = this.props.answerGroup;
         }
     }
