@@ -15,12 +15,14 @@ import Notifications from "../../Common/Notifications/Notifications";
 export class UserMain extends React.Component<IUserMainProps> {
     courseMenuOpen: boolean;
     notificationsOpen: boolean;
+    update: boolean;
 
     constructor(props: IUserMainProps) {
         super(props);
         makeObservable(this, {
             courseMenuOpen: observable,
             notificationsOpen: observable,
+            update: observable,
         });
         this.getInitialStateOfApplication();
     }
@@ -113,7 +115,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                 </Card>
                 <Switch>
                     <Route exact path="/home"
-                           render={(props) => <HomePage store={this.props.store} />} />
+                           render={(props) => <HomePage store={this.props.store} courseChanged={this.update} />} />
                     <Route exact path="/mylessons"
                            render={(props) => <MyLessonsPage store={this.props.store} />} />
                     <Route exact path="/dictionary"
@@ -159,6 +161,7 @@ export class UserMain extends React.Component<IUserMainProps> {
     }
 
     toggleCourse(course: CourseViewModel) {
+        this.toggleUpdate();
         this.props.store.courseStore.setChoosenCourse(course);
         this.props.store.lessonStore.getLessonsByCourse(course.id);
         let choosenLessonId = this.props.store.lessonStore.choosenLesson.id;
@@ -168,5 +171,9 @@ export class UserMain extends React.Component<IUserMainProps> {
 
     toggleNotifications = () => {
         this.notificationsOpen = !this.notificationsOpen;
+    };
+
+    toggleUpdate() {
+        this.update = !this.update;
     }
 }
