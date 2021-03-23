@@ -257,7 +257,13 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось прикрепить тэги к заданию с taskId={taskId}.";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogAttachSubtagsToTaskException(ILogger logger, Exception e, int taskId)
+		{
+			var customMessage = $"Не удалось прикрепить подтеги к заданию с taskId={taskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogGetUserTaskException(ILogger logger, Exception e, int taskId, int userId)
 		{
 			var customMessage = $"Не удалось получить пользовательский ответ на  задание {taskId} {userId}.";

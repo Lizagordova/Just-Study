@@ -26,6 +26,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string AddOrUpdateAnswerGroupSp = "TaskRepository_AddOrUpdateAnswerGroup";
 		private const string GetSubtaskByIdSp = "TaskRepository_GetSubtaskById";
 		private const string AttachTagsToTaskSp = "TaskRepository_AttachTagsToTask";
+		private const string AttachSubtagsToTaskSp = "TaskRepository_AttachSubtagsToTask";
 		private const string DeleteTaskFromLessonSp = "TaskRepository_DeleteTaskFromLesson";
 
 		public TaskRepository(
@@ -144,6 +145,14 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 		}
 
+		public void AttachSubtagsToTask(int taskId, IReadOnlyCollection<int> subtagIds)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAttachSubtagsToTaskParam(taskId, subtagIds);
+			conn.Query(AttachSubtagsToTaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
 		public void DeleteTaskFromLesson(int taskId, int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
@@ -167,6 +176,18 @@ namespace SuperSoft.Persistence.Repositories
 			param.Add("taskId", taskId);
 			var tvp = new TableValuedParameter("tagIds", "UDT_Integer");
 			var udt = tagIds.Select(tId => new IntegerUdt() { Id = tId }).ToList();
+			tvp.AddGenericList(udt);
+			param.Add(tvp);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetAttachSubtagsToTaskParam(int taskId, IReadOnlyCollection<int> subtagsIds)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			var tvp = new TableValuedParameter("subtagsIds", "UDT_Integer");
+			var udt = subtagsIds.Select(tId => new IntegerUdt() { Id = tId }).ToList();
 			tvp.AddGenericList(udt);
 			param.Add(tvp);
 

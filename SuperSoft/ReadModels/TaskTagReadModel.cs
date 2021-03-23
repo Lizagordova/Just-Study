@@ -8,5 +8,6 @@ namespace SuperSoft.ReadModels
 	{
 		public int TaskId { get; set; }
 		public IReadOnlyCollection<int> TagIds { get; set; }
+		public IReadOnlyCollection<int> SubtagIds { get; set; }
 	}
 }

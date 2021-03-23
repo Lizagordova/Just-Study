@@ -47,6 +47,7 @@ class TaskStore {
         if(response.status === 200) {
             let taskId = await response.json();
             this.attachTagsToTask(taskId, task.tagIds);
+            this.attachSubtagsToTask(taskId, task.subtagIds);
             task.subtasks.forEach((sub, i) => {
                 sub.taskId = taskId;
                 this.addOrUpdateSubtask(sub);
@@ -64,6 +65,17 @@ class TaskStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({taskId: taskId, tagIds: tagIds})
+        });
+    }
+
+    async attachSubtagsToTask(taskId: number, subtagIds: number[])
+    {
+        const response = await fetch("/attachsubtagstotask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({taskId: taskId, subtagIds: subtagIds})
         });
     }
 

@@ -15,5 +15,6 @@ export class TaskReadModel
 	public taskType: TaskType;
 	public subtasks: SubtaskReadModel[];
 	public tagIds: number[];
+	public subtagIds: number[];
 	public deleteOnlyFromLesson: boolean;
 }
