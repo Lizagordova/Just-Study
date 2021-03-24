@@ -38,13 +38,13 @@ class TrainingContent extends Component<ITrainingContentProps> {
             chooseTag: observable
         });
         this.setMainTag();
-        this.getTasks(this.choosenSubtags);
+        this.getTasks(this.choosenSubtags, true);
     }
 
     componentDidUpdate(prevProps: Readonly<ITrainingContentProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(this.props.mainTag !== prevProps.mainTag) {
             this.setMainTag();
-            this.getTasks(this.choosenSubtags);
+            this.getTasks(this.choosenSubtags, true);
         }
     }
 
@@ -88,7 +88,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
                             }}
                             active={false}
                             key={i}
-                            onClick={() => this.toggleTag(subtag)}>
+                            onClick={() => this.toggleSubtag(subtag)}>
                             {subtag.name}
                         </Button>
                     );
@@ -172,7 +172,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
         )
     }
 
-    toggleTag(tag: SubtagViewModel) {
+    toggleSubtag(tag: SubtagViewModel) {
         if(this.choosenSubtags.filter(t => t.id === tag.id).length > 0) {
             this.choosenSubtags = this.choosenSubtags
                 .filter(t => t !== tag);
@@ -185,13 +185,17 @@ class TrainingContent extends Component<ITrainingContentProps> {
     applyTags() {
         let mainTag = mapToTagReadModel(this.mainTag);
         let chooseenSubtags = this.choosenSubtags;
-        chooseenSubtags.push(mainTag);
-        this.getTasks(chooseenSubtags);
+        //chooseenSubtags.push(mainTag);
+        this.getTasks(chooseenSubtags, false);
     }
 
-    getTasks(subtags: SubtagViewModel[]) {
-        let tags = new Array<TagReadModel>(1);
-        tags[0] = mapToTagReadModel(this.mainTag);
+    getTasks(subtags: SubtagViewModel[], withTags: boolean) {
+        let tags = new Array<TagReadModel>(0);
+        if(withTags) {
+            tags = new Array<TagReadModel>(1);
+            tags[0] = mapToTagReadModel(this.mainTag);
+        }
+        
         this.props.store.taskStore
             .getTasks(subtags.map(mapToSubtagReadModel), tags)
             .then((status) => {

@@ -27,13 +27,13 @@ namespace SuperSoft.Persistence.Services.Trainings
 			{
 				finalTasks.AddRange(tasks.Where(task => task.Tags.Any(tag => query.TagIds.Contains(tag.Id))));
 			}
+			else if (query.SubtagIds.Count > 0)
+			{
+				finalTasks.AddRange(tasks.Where(task => task.Subtags.Any(subtag => query.SubtagIds.Contains(subtag.Id))));
+			}
 			else
 			{
 				finalTasks = tasks.Take(15).ToList();
-			}
-			if (query.SubtagIds.Count > 0)
-			{
-				finalTasks.AddRange(tasks.Where(task => task.Subtags.Any(subtag => query.SubtagIds.Contains(subtag.Id))));
 			}
 
 			finalTasks = finalTasks.Where(task => !query.IgnoreIds.Contains(task.Id)).Distinct().ToList();

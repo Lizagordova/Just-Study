@@ -185,6 +185,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     applyTags() {
+        console.log("this.choosenSubtags", toJS(this.choosenSubtags));
         this.props.store.taskStore
             .getTasks(this.choosenSubtags.map(mapToSubtagReadModel))
             .then((status) => {
@@ -198,9 +199,9 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
 
     toggleSubtag(subtag: SubtagViewModel) {
         if(this.choosenSubtags.filter(t => t.id === subtag.id).length > 0) {
-            let choosenTags = this.choosenSubtags
+            let choosenSubtags = this.choosenSubtags
                 .filter(t => t !== subtag);
-            this.choosenSubtags = choosenTags;
+            this.choosenSubtags = choosenSubtags;
         } else {
             this.choosenSubtags.push(subtag);
         }
