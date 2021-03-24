@@ -54,6 +54,8 @@ namespace SuperSoft.Persistence.Repositories
 				Subtasks = reader.Read<SubtaskUdt>().ToList(),
 				Tags = reader.Read<TagUdt>().ToList(),
 				TagTasks = reader.Read<TaskTagUdt>().ToList(),
+				Subtags = reader.Read<SubtagUdt>().ToList(),
+				TaskSubtags = reader.Read<TaskSubtagUdt>().ToList(),
 			};
 
 			return taskData;
@@ -71,6 +73,10 @@ namespace SuperSoft.Persistence.Repositories
 					t => t.Id,
 					tag => tag.TaskId,
 					MapTaskWithTags)
+				.GroupJoin(taskData.TaskSubtags,
+					t => t.Id,
+					s => s.TaskId,
+					MapTaskWithSubtags)
 				.ToList();
 			
 			tasks.ForEach(t =>
@@ -97,6 +103,13 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var task = _mapper.Map<TaskUdt, Task>(taskUdt);
 			task.Subtasks = subtaskUdts.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList();
+
+			return task;
+		}
+
+		private Task MapTaskWithSubtags(Task task, IEnumerable<TaskSubtagUdt> subtagUdts)
+		{
+			task.Subtags = subtagUdts.Select(ts => new Subtag() { Id = ts.SubtagId }).ToList();
 
 			return task;
 		}

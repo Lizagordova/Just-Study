@@ -16,7 +16,7 @@ class ITrainingPageProps {
 @observer
 class TrainingPage extends Component<ITrainingPageProps> {
     filtersOpen: boolean;
-    mainTag: number = 1;
+    mainTag: number = 0;
     addTagWindowOpen: boolean;
     notDeleted: boolean;
 
@@ -28,6 +28,14 @@ class TrainingPage extends Component<ITrainingPageProps> {
             addTagWindowOpen: observable,
             notDeleted: observable
         });
+        this.setMainTag();
+    }
+
+    setMainTag() {
+        let mainTag = this.props.store.tagStore.tags[0];
+        if(mainTag !== undefined) {
+            this.mainTag = mainTag.id;
+        }
     }
 
     renderCautions() {
@@ -49,21 +57,31 @@ class TrainingPage extends Component<ITrainingPageProps> {
         }
     }
 
+    renderDeleteButton(tagId: number) {
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return (
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.deleteTag(tagId)}
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+
+            );
+        }
+    }
+
     renderMenu(tags: TagViewModel[]) {
+        let rowHeight = tags.length * 80 + 100;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={1}>
                 <Row>
-                    <Col sm={2}>
+                    <Col sm={2} style={{height: `${rowHeight}px`}}>
                         <Nav variant="pills" className="flex-column">
                             <div className="container-fluid">
                                 {tags.map(t => {
                                     return (
                                         <Nav.Item key={t.id}>
+                                            {this.renderDeleteButton(t.id)}
                                             <div className="row" key={t.id}>
-                                                <i style={{marginLeft: '96%', width: '2%'}}
-                                                   onClick={() => this.deleteTag(t.id)}
-                                                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
-                                                <Nav.Link
+                                                 <Nav.Link
                                                     eventKey={t.id}
                                                     className="nav-link lesson"
                                                     onClick={() => this.changeMainTag(t.id)}>

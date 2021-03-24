@@ -5,6 +5,7 @@
 import { TaskType } from '../enums/TaskType';
 import { SubtaskViewModel } from './SubtaskViewModel';
 import { TagViewModel } from './TagViewModel';
+import { SubtagViewModel } from './SubtagViewModel';
 
 export class TaskViewModel
 {
@@ -14,4 +15,5 @@ export class TaskViewModel
 	public taskType: TaskType;
 	public subtasks: SubtaskViewModel[] = [];
 	public tags: TagViewModel[] = [];
+	public subtags: SubtagViewModel[] = [];
 }

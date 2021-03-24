@@ -14,5 +14,6 @@ namespace SuperSoft.ViewModels
 		public TaskType TaskType { get; set; }
 		public IReadOnlyCollection<SubtaskViewModel> Subtasks { get; set; } = Array.Empty<SubtaskViewModel>();
 		public IReadOnlyCollection<TagViewModel> Tags { get; set; } = Array.Empty<TagViewModel>();
+		public IReadOnlyCollection<SubtagViewModel> Subtags { get; set; } = Array.Empty<SubtagViewModel>();
 	}
 }

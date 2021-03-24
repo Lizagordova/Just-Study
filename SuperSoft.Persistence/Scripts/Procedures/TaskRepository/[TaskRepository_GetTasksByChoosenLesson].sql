@@ -1,5 +1,4 @@
-﻿CREATE PROCEDURE [TaskRepository_GetTasksByChoosenLesson]
-	@lessonId INT
+﻿CREATE PROCEDURE [TrainingRepository_GetTasks]
 AS
 BEGIN
 	DECLARE @tasks [UDT_Task];
@@ -9,15 +8,6 @@ BEGIN
 	DECLARE @taskIds [UDT_Integer];
 	DECLARE @subtags [UDT_Subtag];
 	DECLARE @taskSubtags [UDT_Task_Subtag]; 
-
-	INSERT
-	INTO @taskIds (
-		[Id]
-	)
-	SELECT
-		[TaskId]
-	FROM [Lesson_Task]
-	WHERE [LessonId] = @lessonId;
 
 	INSERT
 	INTO @tasks (
@@ -31,10 +21,15 @@ BEGIN
 		[Instruction],
 		[Text],
 		[TaskType]
-	FROM [Task] 
-	WHERE [Id] IN (
-		SELECT [Id]
-		FROM @taskIds);
+	FROM [Task];
+
+	INSERT
+	INTO @taskIds (
+		[Id]
+	)
+	SELECT
+		[Id]
+	FROM @tasks;
 
 	INSERT
 	INTO @subtasks (
@@ -73,20 +68,6 @@ BEGIN
 	);
 
 	INSERT
-	INTO @taskSubtags (
-		[TaskId],
-		[SubtagId]
-	)
-	SELECT
-		[TaskId],
-		[SubtagId]
-	FROM [Task_Subtag]
-	WHERE [TaskId] IN (
-		SELECT [Id]
-		FROM @taskIds
-	);
-
-	INSERT
 	INTO @tags (
 		[Id],
 		[Name]
@@ -98,6 +79,20 @@ BEGIN
 	WHERE [Id] IN (
 		SELECT [TagId]
 		FROM @taskTags
+	);
+
+	INSERT
+	INTO @taskSubtags (
+		[TaskId],
+		[SubtagId]
+	)
+	SELECT
+		[TaskId],
+		[SubtagId]
+	FROM [Task_Subtag]
+	WHERE [TaskId] IN (
+		SELECT [Id]
+		FROM @taskIds
 	);
 
 	INSERT
@@ -115,7 +110,7 @@ BEGIN
 	);
 
 	SELECT * FROM @tasks;
-	SELECT * FROM @subtasks ORDER BY [Order] ASC;
+	SELECT * FROM @subtasks;
 	SELECT * FROM @tags;
 	SELECT * FROM @taskTags;
 	SELECT * FROM @subtags;

@@ -40,9 +40,9 @@ class TaskUpload extends Component<ITaskUploadProps> {
             <ModalBody>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
-                        {TaskTypeTranslater.map(type => {
+                        {TaskTypeTranslater.map((type, i) => {
                             return (
-                                <div className="col-6 align-items-center" style={{marginTop: "5px"}}>
+                                <div className="col-6 align-items-center" style={{marginTop: "5px"}} key={i}>
                                     <div className="row justify-content-center">
                                         <Button className="modalButton" outline color="secondary"
                                                 onClick={() => this.modalToggle(type.type)}>

@@ -2,7 +2,7 @@
 import {Alert, Button} from "reactstrap";
 import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {observer} from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Task} from "../Tasks/Task";
 import RootStore from "../../../stores/RootStore";
@@ -25,6 +25,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     notReceived: boolean;
     subtagsControlWindowOpen: boolean;
     mainTag: TagViewModel = new TagViewModel();
+    chooseTag: boolean;
 
     constructor(props: ITrainingContentProps) {
         super(props);
@@ -33,14 +34,17 @@ class TrainingContent extends Component<ITrainingContentProps> {
             update: observable,
             notReceived: observable,
             subtagsControlWindowOpen: observable,
+            mainTag: observable,
+            chooseTag: observable
         });
-        this.getTasks(this.choosenSubtags);
         this.setMainTag();
+        this.getTasks(this.choosenSubtags);
     }
 
     componentDidUpdate(prevProps: Readonly<ITrainingContentProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(this.props.mainTag !== prevProps.mainTag) {
             this.setMainTag();
+            this.getTasks(this.choosenSubtags);
         }
     }
 
@@ -191,6 +195,9 @@ class TrainingContent extends Component<ITrainingContentProps> {
         this.props.store.taskStore
             .getTasks(subtags.map(mapToSubtagReadModel), tags)
             .then((status) => {
+                if(status === 500) {
+                    this.chooseTag = true;
+                }
                 this.notReceived = status !== 200;
             });
     }

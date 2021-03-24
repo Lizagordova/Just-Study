@@ -23,6 +23,7 @@ namespace SuperSoft.Helpers
 			var taskViewModel = _mapper.Map<Task, TaskViewModel>(task);
 			taskViewModel.Subtasks = task.Subtasks.Select(MapSubtaskViewModel).ToList();
 			taskViewModel.Tags = task.Tags.Select(_mapper.Map<Tag, TagViewModel>).ToList();
+			taskViewModel.Subtags = task.Subtags.Select(_mapper.Map<Subtag, SubtagViewModel>).ToList();
 
 			return taskViewModel;
 		}

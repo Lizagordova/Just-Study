@@ -2,7 +2,7 @@
 import {TaskReadModel} from "../../../Typings/readModels/TaskReadModel";
 import {Alert, Button, Fade, Input, Label, ModalBody} from "reactstrap";
 import {observer} from "mobx-react";
-import {makeObservable, observable} from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
 import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {IUploadTaskProps} from "./IUploadTaskProps";
@@ -22,16 +22,17 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     task: TaskReadModel = new TaskReadModel();
     subtasks: SubtaskReadModel[] = new Array<SubtaskReadModel>();
     tags: TagViewModel[] = new Array<TagViewModel>();
+    choosenTags: TagViewModel[] = new Array<TagViewModel>();
     subtags: SubtagViewModel[] = new Array<SubtagViewModel>();
+    choosenSubtags: SubtagViewModel[] = new Array<SubtagViewModel>();
     notSaved: boolean;
     saved: boolean;
     loaded: boolean;
     renderEmptyWarning: boolean = true;
     update: boolean = true;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IUploadTaskProps) {
+        super(props);
         makeObservable(this, {
             task: observable,
             notSaved: observable,
@@ -39,10 +40,13 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             subtasks: observable,
             subtags: observable,
             tags: observable,
+            choosenTags: observable,
+            choosenSubtags: observable,
             saved: observable,
             update: observable,
             renderEmptyWarning: observable
         });
+        this.tags = this.props.tagStore.tags;
     }
 
     componentDidMount(): void {
@@ -51,7 +55,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             this.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
         }
         if(task.tags !== undefined) {
-            this.tags = task.tags.map(t =>  mapToTagReadModel(t));
+            this.choosenTags = task.tags.map(t =>  mapToTagReadModel(t));
         }
         this.task = mapToTaskReadModel(task);
         this.loaded = true;
@@ -83,42 +87,51 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     renderTags(tags: TagViewModel[], update: boolean) {
-        return (
-            <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
-                {tags.map((tag, i) => {
-                    let outline = !this.tags.includes(tag);
-                    return (
-                        <Button
-                            outline={outline} color="primary"
-                            style={{
-                                marginLeft: "10px",
-                                marginBottom: "10px",
-                                height: "auto",
-                                width: "auto",
-                                fontSize: "0.8em"
-                            }}
-                            active={false}
-                            key={i}
-                            onClick={() => this.toggleTag(tag)}>
-                            {tag.name}
-                        </Button>
-                    );
-                })}
-            </div>
-        );
+        if(tags.length > 0) {
+            return (
+                <>
+                    <div className="row justify-content-center" style={{marginTop: "25px"}}>
+                        <Label>
+                            Выберите теги
+                        </Label>
+                    </div>
+                    <div className="row" style={{fontSize: "1em"}}>
+                        {tags.map((tag, i) => {
+                            let outline = !this.choosenTags.includes(tag);
+                            return (
+                                <Button
+                                    outline={outline} color="primary"
+                                    style={{
+                                        marginLeft: "10px",
+                                        marginBottom: "10px",
+                                        height: "auto",
+                                        width: "auto",
+                                        fontSize: "1em"
+                                    }}
+                                    active={false}
+                                    key={i}
+                                    onClick={() => this.toggleTag(tag)}>
+                                    {tag.name}
+                                </Button>
+                            );
+                        })}
+                    </div>
+                </>
+            );
+        }
     }
 
     renderSubtags(subtags: SubtagViewModel[], update: boolean) {
         return (
             <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
                 {subtags.map((subtag, i) => {
-                    let outline = !this.subtags.includes(subtag);
+                    let outline = !this.choosenSubtags.includes(subtag);
                     return (
                         <Button
-                            outline={outline} color="primary"
+                            outline={outline} color="secondary"
                             style={{
-                                marginLeft: "10px",
-                                marginBottom: "10px",
+                                marginLeft: "8px",
+                                marginBottom: "8px",
                                 height: "auto",
                                 width: "auto",
                                 fontSize: "0.8em"
@@ -250,7 +263,9 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     saveTask() {
         let task = this.task;
         task.subtasks = this.subtasks;
-        task.tagIds = this.tags.map(t => t.id);
+        task.tagIds = this.choosenTags.map(t => t.id);
+        task.subtagIds = this.choosenSubtags.map(t => t.id);
+        console.log("task type", this.props.task.taskType);
         this.props.taskStore.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(this.props.lessonId !== null) {
@@ -266,21 +281,31 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     }
 
     toggleTag(tag: TagViewModel) {
-        if(this.tags.filter(t => t.id === tag.id).length > 0) {
-            this.tags = this.tags
+        if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
+            this.choosenTags = this.choosenTags
                 .filter(t => t !== tag);
         } else {
-            this.tags.push(tag);
+            this.choosenTags.push(tag);
         }
+        let subtags = new Array<SubtagViewModel>();
+        this.tags.forEach(t => {
+            if(this.choosenTags.includes(t)) {
+                t.subtags.forEach(s => {
+                    subtags.push(s);
+                });
+            }
+        });
+        console.log("subtags", toJS(subtags));
+        this.subtags = subtags;
         this.updateToggle();
     }
 
     toggleSubtag(subtag: SubtagViewModel) {
-        if(this.subtags.filter(t => t.id === subtag.id).length > 0) {
-            this.subtags = this.subtags
+        if(this.choosenSubtags.filter(t => t.id === subtag.id).length > 0) {
+            this.choosenSubtags = this.choosenSubtags
                 .filter(t => t !== subtag);
         } else {
-            this.subtags.push(subtag);
+            this.choosenSubtags.push(subtag);
         }
         this.updateToggle();
     }

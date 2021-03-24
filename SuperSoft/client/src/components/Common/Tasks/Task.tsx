@@ -71,6 +71,7 @@ export class Task extends Component<ITaskProps> {
     };
 
     renderEditButton() {
+        console.log("this task type....", this.props.task.taskType);
         if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
             return (
                 <i style={{marginLeft: '92%', width: '2%'}}
