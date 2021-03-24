@@ -1,29 +1,46 @@
-﻿CREATE TABLE [Task_Subtag]
-(
-	[TaskId] INT REFERENCES [Tag]([Id]) ON DELETE CASCADE,
-	[SubtagId] INT REFERENCES [Subtag]([Id]) ON DELETE CASCADE,
-	CONSTRAINT [UQ_Task_Subtag] UNIQUE([TaskId], [SubtagId])
-);
-
-CREATE TYPE [UDT_Task_Subtag] AS TABLE
-(
-	[TaskId] INT,
-	[SubtagId] INT
-);
-
-CREATE PROCEDURE [TaskRepository_GetTaskById]
-	@taskId INT
+﻿CREATE PROCEDURE [TaskRepository_AttachSubtagsToTask]
+	@taskId INT,
+	@subtagIds [UDT_Integer] READONLY
 AS
 BEGIN
-	DECLARE @task [UDT_Task];
+	MERGE
+	INTO [Task_Subtag] AS [dest]
+	USING @subtagIds AS [src]
+	ON [dest].[SubtagId] = [src].[Id]
+		AND [dest].[TaskId] = @taskId
+	WHEN NOT MATCHED THEN
+		INSERT (
+			[TaskId],
+			[SubtagId]
+		) VALUES (
+			@taskId,
+			[src].[Id]
+		);
+END
+
+ALTER PROCEDURE [TaskRepository_GetTasksByChoosenLesson]
+	@lessonId INT
+AS
+BEGIN
+	DECLARE @tasks [UDT_Task];
 	DECLARE @subtasks [UDT_Subtask];
 	DECLARE @tags [UDT_Tag];
 	DECLARE @taskTags [UDT_Task_Tag];
+	DECLARE @taskIds [UDT_Integer];
 	DECLARE @subtags [UDT_Subtag];
-	DECLARE @taskSubtags [UDT_Task_Subtag];
+	DECLARE @taskSubtags [UDT_Task_Subtag]; 
 
 	INSERT
-	INTO @task (
+	INTO @taskIds (
+		[Id]
+	)
+	SELECT
+		[TaskId]
+	FROM [Lesson_Task]
+	WHERE [LessonId] = @lessonId;
+
+	INSERT
+	INTO @tasks (
 		[Id],
 		[Instruction],
 		[Text],
@@ -34,8 +51,10 @@ BEGIN
 		[Instruction],
 		[Text],
 		[TaskType]
-	FROM [Task]
-	WHERE [Id] = @taskId;
+	FROM [Task] 
+	WHERE [Id] IN (
+		SELECT [Id]
+		FROM @taskIds);
 
 	INSERT
 	INTO @subtasks (
@@ -54,7 +73,10 @@ BEGIN
 		[Order],
 		[SubtaskType]
 	FROM [Subtask]
-	WHERE [TaskId] = @taskId;
+	WHERE [TaskId] IN (
+		SELECT [Id]
+		FROM @taskIds
+	);
 
 	INSERT
 	INTO @taskTags (
@@ -65,7 +87,10 @@ BEGIN
 		[TaskId],
 		[TagId]
 	FROM [Task_Tag]
-	WHERE [TaskId] = @taskId;
+	WHERE [TaskId] IN (
+		SELECT [Id]
+		FROM @taskIds
+	);
 
 	INSERT
 	INTO @taskSubtags (
@@ -76,7 +101,10 @@ BEGIN
 		[TaskId],
 		[SubtagId]
 	FROM [Task_Subtag]
-	WHERE [TaskId] = @taskId;
+	WHERE [TaskId] IN (
+		SELECT [Id]
+		FROM @taskIds
+	);
 
 	INSERT
 	INTO @tags (
@@ -106,30 +134,10 @@ BEGIN
 		FROM @taskSubtags
 	);
 
-	SELECT * FROM @task;
-	SELECT * FROM @subtasks;
+	SELECT * FROM @tasks;
+	SELECT * FROM @subtasks ORDER BY [Order] ASC;
 	SELECT * FROM @tags;
 	SELECT * FROM @taskTags;
 	SELECT * FROM @subtags;
 	SELECT * FROM @taskSubtags;
-END
-
-CREATE PROCEDURE [TaskRepository_AttachSubtagsToTask]
-	@taskId INT,
-	@subtagIds [UDT_Integer] READONLY
-AS
-BEGIN
-	MERGE
-	INTO [Task_Subtag] AS [dest]
-	USING @subtagIds AS [src]
-	ON [dest].[SubtagId] = [src].[Id]
-		AND [dest].[TaskId] = @taskId
-	WHEN NOT MATCHED THEN
-		INSERT (
-			[TaskId],
-			[SubtagId]
-		) VALUES (
-			@taskId,
-			[src].[Id]
-		);
 END
