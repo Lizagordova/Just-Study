@@ -105,7 +105,8 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 </NavLink>
                             </NavItem>
                             <Button
-                                outline color="primary"
+                                outline 
+                                className="exitButton"
                                 onClick={() => this.exit()}>
                                 ВЫЙТИ
                             </Button>

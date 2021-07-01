@@ -17,12 +17,13 @@ class IMaterialProps {
 @observer
 export class Material extends Component<IMaterialProps> {
     notDeleted: boolean = false;
+    videoStarted: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IMaterialProps) {
+        super(props);
         makeObservable(this, {
-            notDeleted: observable
+            notDeleted: observable,
+            videoStarted: observable
         });
     }
     
@@ -51,11 +52,10 @@ export class Material extends Component<IMaterialProps> {
             return (
                 <>
                     {this.renderDeleteButton()}
-                    <embed src={path} type="application/pdf" width="100%" height="600px"  contentEditable={false}/>
+                    <embed src={`${path}#toolbar=0`} type="application/pdf" width="100%" height="600px"  contentEditable={false}/>
                  </>
             );
-        } 
-        else if(path.includes("mp4")) {
+        } else if(path.includes("mp4")) {
             return (
                 <>
                     {this.renderDeleteButton()}
@@ -66,6 +66,7 @@ export class Material extends Component<IMaterialProps> {
             return (
                 <>
                     {this.renderDeleteButton()}
+                    <video id="videoPlayer" autoPlay={false} width="800" height="600" src={path} onClick={() => this.videoToggle()}/>
                     <video controls={true} width="800" height="600" src={path}/>
                 </>
             );
@@ -116,5 +117,18 @@ export class Material extends Component<IMaterialProps> {
                     this.notDeleted = status !== 200;
             });
         }
+    }
+
+    videoToggle() {
+        let video = document.getElementById("videoPlayer");
+        if(this.videoStarted) {
+            // @ts-ignore
+            video.play();
+        } else {
+            // @ts-ignore
+            video.pause();
+        }
+
+        this.videoStarted = !this.videoStarted;
     }
 }

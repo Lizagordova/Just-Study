@@ -50,57 +50,57 @@ export class Course extends Component<ICourseProps> {
 
     renderCourseMenu() {
         return(
-            <Tab.Container>
-                <Card>
-                    <CardHeader className="menuCourseHeader">
-                        <Nav variant="pills">
-                            <Nav.Item>
-                                <Nav.Link
-                                    onClick={() => this.menuToggle("lessons")}
-                                    className="nav-link"
-                                    eventKey="lessons">
-                                    УРОКИ
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    onClick={() => this.menuToggle("wordsOfADay")}
-                                    className="nav-link"
-                                    eventKey="wordsOfADay">
-                                    СЛОВА ДНЯ
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    onClick={() => this.menuToggle("participants")}
-                                    className="nav-link"
-                                    eventKey="participants">
-                                    УЧАСТНИКИ
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    onClick={() => this.menuToggle("progress")}
-                                    className="nav-link"
-                                    eventKey="progress">
-                                    ПРОГРЕСС
-                                </Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </CardHeader>
-                </Card>
-                {this.renderCourseContent()}
-            </Tab.Container>
+            <>
+                <div className="row" style={{marginLeft: "2%", marginTop: "1%"}}>
+                    <Nav variant="pills">
+                        <Nav.Item>
+                            <Nav.Link
+                                onClick={() => this.menuToggle("lessons")}
+                                className="nav-link"
+                                eventKey="lessons">
+                                Уроки
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link
+                                onClick={() => this.menuToggle("wordsOfADay")}
+                                className="nav-link"
+                                eventKey="wordsOfADay">
+                                Слова дня
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link
+                                onClick={() => this.menuToggle("participants")}
+                                className="nav-link"
+                                eventKey="participants">
+                                Участники
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link
+                                onClick={() => this.menuToggle("progress")}
+                                className="nav-link"
+                                eventKey="progress">
+                                Прогресс
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                </div>
+                <div className="row"  style={{marginLeft: "2%", marginTop:"5px"}}>
+                    {this.renderCourseContent()}
+                </div>
+            </>
         );
     }
 
     render() {
         let courseChoosen = this.props.store.courseStore.choosenCourse.id !== undefined;
         return(
-            <>
+            <div className="container-fluid">
                 {courseChoosen && this.renderCourseMenu()}
-                {!courseChoosen && <Alert>Выберите курс</Alert>}
-            </>
+                {!courseChoosen && <Alert style={{marginTop: "1%"}}>Выберите курс</Alert>}
+            </div>
         );
     }
 

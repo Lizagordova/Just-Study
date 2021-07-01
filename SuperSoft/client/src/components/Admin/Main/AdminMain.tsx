@@ -15,61 +15,39 @@ export class AdminMain extends React.Component<IAdminMainProps> {
     render() {
         return (
             <>
-                <Card>
-                    <CardHeader className="mainMenuHeader">
-                        <Nav tabs className="nav">
-                            <NavItem>
-                                <NavLink to="/courses" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                    activeStyle={{
-                                    color: '#ffffff',
-                                    backgroundColor: '#4169E1',
-                                    textDecoration: 'none'
-                                    }}>
-                                    КУРСЫ
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                    activeStyle={{
-                                    color: '#ffffff',
-                                    backgroundColor: '#4169E1',
-                                    textDecoration: 'none'
-                                    }}>
-                                    ПОЛЬЗОВАТЕЛИ
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                     activeStyle={{
-                                     color: '#ffffff',
-                                     backgroundColor: '#4169E1',
-                                     textDecoration: 'none'
-                                    }}>СЛОВАРЬ</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                     activeStyle={{
-                                     color: '#ffffff',
-                                     backgroundColor: '#4169E1',
-                                     textDecoration: 'none'
-                                     }}>ТРЕНИРОВКИ</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink to="/feedbacks" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#4169E1',
-                                             textDecoration: 'none'
-                                         }}>ОБРАТНАЯ СВЯЗЬ</NavLink>
-                            </NavItem>
-                            <Button
-                                outline color="primary"
-                                onClick={() => this.exit()}>
-                                ВЫЙТИ
-                            </Button>
-                        </Nav>
-                    </CardHeader>
-                </Card>
+                <Nav tabs className="nav mainMenu">
+                    <NavItem>
+                        <NavLink to="/courses" exact className="nav-link" style={{fontSize: "1.5em"}}>
+                            Курсы
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/users" exact className="nav-link" style={{fontSize: "1.5em"}}
+                                >
+                            Пользователи
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}>
+                            Словарь
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}>
+                            Тренировки</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/feedbacks" exact className="nav-link" style={{fontSize: "1.5em"}}>
+                            Обратная связь</NavLink>
+                    </NavItem>
+                    <Button
+                        outline
+                        className="exitButton"
+                        style={{color: "white", borderColor: "white", fontSize: "1.3em"}}
+                        onClick={() => this.exit()}>
+                        Выйти
+                    </Button>
+                </Nav>
                 <Switch>
                     <Route exact path="/courses"
                            render={(props) => <CoursesPage store={this.props.store} />} />

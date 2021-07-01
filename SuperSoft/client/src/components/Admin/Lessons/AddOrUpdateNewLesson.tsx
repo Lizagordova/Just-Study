@@ -17,7 +17,7 @@ class IAddOrUpdateNewLessonProps {
 export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> {
     addOrUpdateNewLesson: boolean;
     id: number = 0;
-    order: number = -1;
+    order: number = 0;
     description: string = "";
     startDate: Date | Date[] = new Date();
     expireDate: Date | Date[] = new Date();
@@ -101,16 +101,15 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     }
 
     renderOrderInput() {
-        let order = this.order;
-        if(order === -1) {
-            order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
-        }
         return(
             <>
-                <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
+                <Label className="inputLabel" align="center">
+                    Напишите номер урока(в каком порядке он должен идти)
+                </Label>
                 <Input
                     style={{width: "70%"}}
-                    defaultValue={order}
+                    defaultValue={this.props.store.lessonStore.lessonsByChoosenCourse.length + 1}
+                    value={this.order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
         );
@@ -241,7 +240,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     initialState() {
         this.id = 0;
-        this.order = -1;
+        this.order = 0;
         this.description = "";
         this.startDate = new Date();
         this.expireDate = new Date();
@@ -252,9 +251,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     addOrUpdateLesson() {
         let courseId = this.props.store.courseStore.choosenCourse.id;
-        let order = this.order !== -1 ? this.order : this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
         this.props.store.lessonStore
-            .addOrUpdateLesson(this.id, order, courseId, this.name, this.description, this.startDate, this.expireDate)
+            .addOrUpdateLesson(this.id, this.order, courseId, this.name, this.description, this.startDate, this.expireDate)
             .then((status) => {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;

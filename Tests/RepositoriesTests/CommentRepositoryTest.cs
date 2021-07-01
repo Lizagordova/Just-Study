@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using SuperSoft.Domain.Models;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services.MapperService;
 
