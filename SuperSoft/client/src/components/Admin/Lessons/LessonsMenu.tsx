@@ -106,7 +106,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
                 {this.renderCautions()}
                 <Row>
-                    <Col sm={3} style={{height: `${rowHeight}px`, marginTop: "10px", width: "25%"}}>
+                    <Col sm={3} style={{marginTop: "10px", width: "25%"}}>
                         <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px"}}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
@@ -133,7 +133,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             <>
                 {this.renderCautions()}
                 <div className="row">
-                    <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{height: `${rowHeight}px`, marginTop: "10px"}}>
+                    <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
                         <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px", width: "100%"}}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
@@ -167,10 +167,10 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     render() {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
-            <>
+            <div className="container-fluid">
                 {lessons !== undefined && this.renderLessonsMenu(lessons)}
                 {(lessons === undefined) && renderSpinner()}
-            </>
+            </div>
         );
     }
 
