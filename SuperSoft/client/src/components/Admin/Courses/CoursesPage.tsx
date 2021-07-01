@@ -1,6 +1,16 @@
 ﻿import React, { Component } from 'react';
 import  { Tab, Nav } from "react-bootstrap";
-import { Alert, Button, Col, Row, Collapse } from "reactstrap";
+import {
+    Alert,
+    Button,
+    Col,
+    Row,
+    Collapse,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from "reactstrap";
 import { observer } from "mobx-react";
 import { observable, makeObservable, action } from "mobx";
 import { CourseViewModel } from "../../../Typings/viewModels/CourseViewModel";
@@ -16,7 +26,7 @@ class ICoursesPageProps {
 @observer
 class CoursesPage extends Component<ICoursesPageProps> {
     notDeleted: boolean = false;
-    isNavOpen: boolean = true;
+    isNavOpen: boolean = false;
     updateParticipants: boolean = true;
 
     constructor() {
@@ -60,8 +70,46 @@ class CoursesPage extends Component<ICoursesPageProps> {
             </>
         );
     }
-
+    
     renderCoursesMenu(courses: CourseViewModel[]) {
+        return (
+            <>
+                <div className="row justify-content-start" style={{marginTop: "1%"}}>
+                    <div style={{marginLeft: "5%"}}>
+                        {this.renderCoursesToggler(courses)}
+                    </div>
+                   <div style={{marginLeft: "1%"}}>
+                       {<AddNewCourse courseStore={this.props.store.courseStore}/>}
+                   </div>
+                </div>
+                <div className="row justify-content-center">
+                    {this.renderCourse()}
+                </div>
+            </>
+        )
+    }
+    renderCoursesToggler(courses: CourseViewModel[]) {
+        let choosenCourse = this.props.store.courseStore.choosenCourse;
+        return(
+            <ButtonDropdown isOpen={this.isNavOpen} toggle={() => this.toggleNav()}>
+                <DropdownToggle caret outline color="primary">
+                    {choosenCourse.name === "" || choosenCourse.name === undefined ? "Курс" : choosenCourse.name}
+                </DropdownToggle>
+                <DropdownMenu>
+                    {courses.map((course) => {
+                        return(
+                            <DropdownItem
+                                onClick={(e) => this.changeCourse(course)}
+                                key={course.id.toString()}
+                            >{course.name}</DropdownItem>
+                        );
+                    })}
+                </DropdownMenu>
+            </ButtonDropdown>
+        );
+    }
+    
+    renderCoursesMenu1(courses: CourseViewModel[]) {
         let rowHeight = this.isNavOpen ? courses.length * 130 : 40;
             return (
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">

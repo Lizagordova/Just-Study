@@ -19,8 +19,13 @@ footer {
         height: 100px;
     }
 }
+.mainMenu {
+    background-color: white;
+    font-size: 1.3em;
+}
+
 .nav-link {
-    height: 60px;
+    height: 65px;
     width: 100%;
     display: block;
     padding: .7rem 15px;
@@ -28,9 +33,6 @@ footer {
     text-decoration: none;
 }
 
-.nav {
-    height: 60px;
-}
 
 .inputLabel {
     margin-top: 2px;
@@ -42,8 +44,20 @@ footer {
 }
 
 @media (max-width: 600px) {
-    .nav {
-        height: 120px;
+    .mainMenu {
+        height: 190px;
+    }
+}
+
+@media (max-width: 450px) {
+    .mainMenu {
+        height: 240px;
+    }
+}
+
+@media (max-width: 360px) {
+    .mainMenu {
+        height: 300px;
     }
 }
 

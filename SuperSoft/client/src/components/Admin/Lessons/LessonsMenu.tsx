@@ -99,17 +99,17 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
-    renderLessonsMenu(lessons: LessonViewModel[]) {
+    renderLessonsMenu1(lessons: LessonViewModel[]) {
         let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
                 {this.renderCautions()}
                 <Row>
-                    <Col sm={3} style={{height: `${rowHeight}px`, marginTop: "10px"}}>
-                        <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
+                    <Col sm={3} style={{height: `${rowHeight}px`, marginTop: "10px", width: "25%"}}>
+                        <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px"}}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
-                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey}>
+                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
                                 <div className="container-fluid">
                                     {lessons.length > 0 && this.renderLessonsList(lessons)}
                                     <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
@@ -126,6 +126,33 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
+    renderLessonsMenu(lessons: LessonViewModel[]) {
+        let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
+        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
+        return(
+            <>
+                {this.renderCautions()}
+                <div className="row">
+                    <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{height: `${rowHeight}px`, marginTop: "10px"}}>
+                        <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px", width: "100%"}}>Уроки</Button>
+                        <Collapse isOpen={this.isNavOpen}>
+                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
+                                <div className="container-fluid">
+                                    {lessons.length > 0 && this.renderLessonsList(lessons)}
+                                    <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
+                                </div>
+                            </Nav>
+                        </Collapse>
+                    </div>
+                    <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                        {this.renderLessonPage()}
+                    </div>
+                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
+                </div>
+            </>
+        );
+    }
+    
     renderLessonPage() {
         let lessonChoosen = this.props.store.lessonStore.choosenLesson;
         let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 

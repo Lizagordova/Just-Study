@@ -102,6 +102,8 @@ class LessonStore {
     }
 
     async addOrUpdateMaterial(file: File): Promise<number> {
+        var count = 0;
+        console.log("file", file);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("lessonId", this.choosenLesson.id.toString());
@@ -111,6 +113,9 @@ class LessonStore {
         });
         if(response.status === 200) {
             this.getMaterialsByLesson(this.choosenLesson.id);
+        } else if(response.status === 500 && count !== 3) {
+            count++;
+            this.addOrUpdateMaterial(file);
         }
 
         return response.status;

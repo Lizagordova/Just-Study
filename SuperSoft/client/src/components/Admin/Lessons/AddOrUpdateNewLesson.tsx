@@ -103,10 +103,13 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderOrderInput() {
         return(
             <>
-                <Label className="inputLabel" align="center">Напишите номер урока(в каком порядке он должен идти)</Label>
+                <Label className="inputLabel" align="center">
+                    Напишите номер урока(в каком порядке он должен идти)
+                </Label>
                 <Input
                     style={{width: "70%"}}
                     defaultValue={this.props.store.lessonStore.lessonsByChoosenCourse.length + 1}
+                    value={this.order}
                     onChange={(e) => this.inputOrder(e)}/>
             </>
         );
