@@ -162,14 +162,19 @@ namespace SuperSoft.Controllers
 		[Route("/addorupdatematerial")]
 		public ActionResult AddOrUpdateMaterial([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
 		{
+			_logService.AddLogAddOrUpdateMaterialException(_logger, new Exception("Всё хорошо, я сюда зашел"));
+			_logger.Log(LogLevel.Information, "Я был здесь");
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())
 			{
 				return new BadRequestResult();
 			}
+			_logger.Log(LogLevel.Information, "Я был здесь 1");
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
+			_logger.Log(LogLevel.Information, "Я был здесь 2");
 			try
 			{
+				_logger.Log(LogLevel.Information, "Я был здесь 3");
 				_lessonEditor.AddOrUpdateMaterial(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
 
 				return new OkResult();
@@ -177,7 +182,7 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				//_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
-				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
+				_logService.AddLogAddOrUpdateMaterialException(_logger, e);
 
 				return new StatusCodeResult(500);
 			}

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Lessons;
@@ -13,14 +14,17 @@ namespace SuperSoft.Persistence.Services.Lessons
 	{
 		private readonly ILessonRepository _lessonRepository;
 		private readonly IGarbageRepository _garbageRepository;
+		private readonly ILogger<LessonEditorService> _logger;
 
 		public LessonEditorService(
 			ILessonRepository lessonRepository,
-			IGarbageRepository garbageRepository
+			IGarbageRepository garbageRepository,
+			ILogger<LessonEditorService> logger
 			)
 		{
 			_lessonRepository = lessonRepository;
 			_garbageRepository = garbageRepository;
+			_logger = logger;
 		}
 
 		public int AddOrUpdateLesson(Lesson lesson, int courseId)
@@ -44,11 +48,14 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 		public int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId, IFormFile file)
 		{
+			_logger.Log(LogLevel.Information, "Я был здесь 4");
 			var bytes = FileHelper.GetBytes(file);
 			var path = GetPath(lessonId, file.FileName);
 			FileHelper.SaveContent(bytes, path);
 			lessonMaterial.Path = path;
+			_logger.Log(LogLevel.Information, "Я был здесь 5");
 			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
+			_logger.Log(LogLevel.Information, "Я был здесь 6");
 
 			return materialId;
 		}

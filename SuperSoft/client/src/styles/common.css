@@ -30,17 +30,19 @@ footer {
     width: 100%;
     display: block;
     padding: .7rem 15px;
-    color: white;
     text-decoration: none;
 }
 
+.menuNavLink {
+    color: white;
+}
 
-.nav-link:hover, .exitButton:hover {
+.menuNavLink:hover, .exitButton:hover {
     background-color: white;
     color: rgb(65, 105, 225);
 }
 
-.nav-link:active {
+.menuNavLink:active {
     background-color: white;
     color: rgb(65, 105, 225);
 }

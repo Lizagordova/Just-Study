@@ -12,7 +12,8 @@
 }
 
 .lesson {
-    text-align: center;
+    color: rgb(65, 105, 225);
+    text-align: start;
     width: 100%;
 }
 
