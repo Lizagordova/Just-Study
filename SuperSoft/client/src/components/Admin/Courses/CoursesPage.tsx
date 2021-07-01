@@ -116,7 +116,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
                     {this.renderCautions()}
                     <Row>
                         <Col sm={3} style={{height: `${rowHeight}px`}}>
-                            <Button color="primary" onClick={() => this.toggleNav()}>КУРСЫ</Button>
+                            <Button color="primary" onClick={() => this.toggleNav()}>Курсы</Button>
                             <Collapse isOpen={this.isNavOpen}>
                                 <Nav variant="pills" className="flex-column">
                                     <div className="container-fluid">

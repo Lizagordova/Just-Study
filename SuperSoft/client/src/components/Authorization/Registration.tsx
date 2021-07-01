@@ -33,7 +33,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     renderFirstNameInput() {
         return(
             <>
-                <Label className="formLabel">ИМЯ</Label>
+                <Label className="formLabel">Имя</Label>
                 <Input
                     style={{width: "80%"}}
                     onChange={(e) => this.inputFirstName(e)}/>
@@ -44,7 +44,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     renderLastNameInput() {
         return(
             <>
-                <Label className="formLabel">ФАМИЛИЯ</Label>
+                <Label className="formLabel">Фамилия</Label>
                 <Input
                     style={{width: "80%"}}
                     onChange={(e) => this.inputLastName(e)}/>
@@ -55,7 +55,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     renderLoginInput() {
         return(
             <>
-                <Label className="formLabel">ЛОГИН</Label>
+                <Label className="formLabel">Логин</Label>
                 <Input
                     style={{width: "80%"}}
                     onChange={(e) => this.inputLogin(e)}/>
@@ -77,7 +77,7 @@ export class Registration extends React.Component<IRegistrationProps> {
     renderPasswordInput() {
         return(
             <>
-                <Label className="formLabel">ПАРОЛЬ</Label>
+                <Label className="formLabel">Пароль</Label>
                 <Input
                     style={{width: "80%"}}
                     type="password"
@@ -89,9 +89,10 @@ export class Registration extends React.Component<IRegistrationProps> {
     renderRegisterButton() {
         return(
             <Button
-                style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
+                className="authButton"
+                style={{backgroundColor: "black"}}
                 onClick={() => this.register()}>
-                ЗАРЕГИСТРИРОВАТЬСЯ
+                Зарегистрироваться
             </Button>
         );
     }

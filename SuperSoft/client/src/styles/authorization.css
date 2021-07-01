@@ -1,18 +1,31 @@
 ﻿.authorizationForm {
-    color: #1b6ec2;
     border-radius: 3%;
     height: 250px;
     width: 90%;
-    margin-top: 5%;
+    margin-top: 1%;
     font-size: 1.5em;
 }
 
 .rowAuth {
-    background-color: #1b6ec2;
-    border: 2px solid #1b6ec2;
-    border-radius: 3%;
+    background-color: rgb(65, 105, 225);
+    border-radius: 1%;
     margin-bottom: 15px;
-    height: 700px;
+}
+
+.parent {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.block {
+    width: 50%;
+    position: absolute;
+    top: 10%;
+    left: 30%;
 }
 
 .formLabel {
@@ -20,8 +33,10 @@
     color: white;
     margin-top: 10px;
 }
-/*
-.selected {
-    background-color: white;
-    color: #1b6ec2;
-}*/
+
+.authButton {
+    width: 80%;
+    background-color: black;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}

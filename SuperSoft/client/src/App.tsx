@@ -63,28 +63,35 @@ class App extends Component<Props> {
     }
 
     renderMenu(store: RootStore) {
+        let height = this.props.store.userStore.authorizationRequired ? 400 : 650; 
+        // @ts-ignore
         return(
-            <div className="container-fluid">
-                <div className="row rowAuth justify-content-center">
-                    <Nav tabs defaultValue={1}>
-                        <NavItem>
-                            <NavLink to={"#"}
-                                  style={{color: 'white'}}
-                                  onClick={() => this.props.store.userStore.registrationToggle("authorization")}
-                                  className="nav-link"
-                                  activeClassName="selected"
-                                >ВХОД</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink to={"#"} 
-                                  style={{color: 'white'}}
-                                  onClick={() => this.props.store.userStore.registrationToggle("registration")}
-                                  className="nav-link"
-                                  activeClassName="selected">РЕГИСТРАЦИЯ</NavLink>
-                        </NavItem>
+            <div className="container-fluid parent">
+                <div className="rowAuth block" style={{height: `${height}px`}}>
+                    <div className="row justify-content-center">
+                        <Nav tabs className="nav mainMenu">
+                            <NavItem>
+                                <NavLink to={"#"}
+                                         exact
+                                         activeClassName=""
+                                         onClick={() => this.props.store.userStore.registrationToggle("authorization")}
+                                         className="nav-link"
+                                >Вход</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink to={"#"}
+                                         exact
+                                         activeClassName=""
+                                         onClick={() => this.props.store.userStore.registrationToggle("registration")}
+                                         className="nav-link">
+                                    Регистрация</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </div>
+                    <div className="row justify-content-center">
                         {this.props.store.userStore.authorizationRequired && <Authorization store={store}/>}
                         {this.props.store.userStore.registrationRequired && <Registration store={store}/>}
-                    </Nav>
+                    </div>
                 </div>
             </div>
         );

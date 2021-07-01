@@ -38,7 +38,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
     renderLoginInput() {
         return (
             <>
-                <Label className="formLabel">ЛОГИН</Label>
+                <Label className="formLabel">Логин</Label>
                 <Input
                     style={{width: "80%"}}
                     onChange={(e) => this.inputLogin(e)}/>
@@ -49,7 +49,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
     renderPasswordInput() {
         return (
             <>
-                <Label className="formLabel">ПАРОЛЬ</Label>
+                <Label className="formLabel">Пароль</Label>
                 <Input
                     style={{width: "80%"}}
                     type="password"
@@ -61,9 +61,10 @@ export class Authorization extends React.Component<IAuthorizationProps> {
     renderEnterButton() {
         return(
             <Button
-                style={{width: "80%", backgroundColor: "#07575b", marginTop: "25px", marginBottom: "15px"}}
+                className="authButton"
+                style={{backgroundColor: "black"}}
                 onClick={() => this.authorize()}>
-                ВОЙТИ
+                Войти
             </Button>
         );
     }
