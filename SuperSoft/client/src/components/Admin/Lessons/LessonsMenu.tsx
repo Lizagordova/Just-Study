@@ -127,11 +127,12 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     renderLessonPage() {
-        let lessonChoosen = this.props.store.lessonStore.choosenLesson !== undefined;
+        let lessonChoosen = this.props.store.lessonStore.choosenLesson;
+        let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 
         return(
             <>
-                {lessonChoosen && <LessonPage store={this.props.store} lessonActive={true}/>}
-                {!lessonChoosen && <Alert color="success">Выберите или добавьте урок:)</Alert>}
+                {lessonExists && <LessonPage store={this.props.store} lessonActive={true}/>}
+                {!lessonExists && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
     }
@@ -141,7 +142,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         return(
             <>
                 {lessons !== undefined && this.renderLessonsMenu(lessons)}
-                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
+                {(lessons === undefined) && renderSpinner()}
             </>
         );
     }
