@@ -101,31 +101,38 @@ class LessonStore {
         return response.status;
     }
 
-    async addOrUpdateMaterial1(file: File): Promise<number> {
-        var count = 0;
-        console.log("file", file);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("lessonId", this.choosenLesson.id.toString());
-        const response = await fetch("/addorupdatematerial", {
-            body: formData,
-            method: "POST"
-        });
-        if(response.status === 200) {
-            this.getMaterialsByLesson(this.choosenLesson.id);
-        } else if(response.status === 500 && count !== 3) {
-            count++;
-            this.addOrUpdateMaterial(file);
-        }
+    async addOrUpdateMaterial(file: File): Promise<number> {
+        if(file.name.includes("mp4") || file.name.includes("mov")) {
+            let status =  await this.addOrUpdateMaterial1(file);
+            if(status === 200) {
+                this.getMaterialsByLesson(this.choosenLesson.id);
+            }
+            return status;
+        } else {
+            let count = 0;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("lessonId", this.choosenLesson.id.toString());
+            const response = await fetch("/addorupdatematerial", {
+                body: formData,
+                method: "POST"
+            });
+            if(response.status === 200) {
+                this.getMaterialsByLesson(this.choosenLesson.id);
+            } else if(response.status === 500 && count !== 3) {
+                count++;
+                this.addOrUpdateMaterial(file);
+            }
 
-        return response.status;
+            return response.status;
+        }
     }
 
-    async addOrUpdateMaterial(file: File): Promise<number> {
-        
+    async addOrUpdateMaterial1(file: File): Promise<number> {
         let size = file.size;
         let start = 0;
-        let end = 50000;
+        let chunkSize = 100000;
+        let end = chunkSize;        
         while(start < size) {
             let chunk = file.slice(start, end, "video/mp4");
             const formData = new FormData();
@@ -138,8 +145,8 @@ class LessonStore {
                 method: "POST"
             });
             if(response.status === 200) {
-                start+= 50000;
-                end+= 50000;
+                start+= chunkSize;
+                end+= chunkSize;
             }
         }
 

@@ -169,10 +169,8 @@ namespace SuperSoft.Controllers
 			}
 
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
-			_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 2 Time={DateTime.Now}"));
 			try
 			{
-				_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 3 Time={DateTime.Now}"));
 				_lessonEditor.AddOrUpdateMaterial(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
 
 				return new OkResult();
@@ -194,7 +192,6 @@ namespace SuperSoft.Controllers
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
 			try
 			{
-				_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 3 Time={DateTime.Now}"));
 				_lessonEditor.AddOrUpdateMaterial1(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File, lessonMaterialReadModel.Offset, lessonMaterialReadModel.FileName);
 
 				return new OkResult();
