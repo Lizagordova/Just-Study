@@ -40,3 +40,13 @@
     margin-top: 25px;
     margin-bottom: 15px;
 }
+
+.authNavLink {
+    color: white;
+    text-decoration: none;
+}
+
+.authNavLink:hover {
+    color: rgb(65, 105, 225);
+    background-color: white;
+}

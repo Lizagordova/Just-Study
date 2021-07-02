@@ -63,7 +63,7 @@ class App extends Component<Props> {
     }
 
     renderMenu(store: RootStore) {
-        let height = this.props.store.userStore.authorizationRequired ? 400 : 650; 
+        let height = this.props.store.userStore.authorizationRequired ? 450 : 700; 
         // @ts-ignore
         return(
             <div className="container-fluid parent">
@@ -75,7 +75,7 @@ class App extends Component<Props> {
                                          exact
                                          activeClassName=""
                                          onClick={() => this.props.store.userStore.registrationToggle("authorization")}
-                                         className="nav-link"
+                                         className="nav-link authNavLink"
                                 >Вход</NavLink>
                             </NavItem>
                             <NavItem>
@@ -83,7 +83,7 @@ class App extends Component<Props> {
                                          exact
                                          activeClassName=""
                                          onClick={() => this.props.store.userStore.registrationToggle("registration")}
-                                         className="nav-link">
+                                         className="nav-link authNavLink">
                                     Регистрация</NavLink>
                             </NavItem>
                         </Nav>
