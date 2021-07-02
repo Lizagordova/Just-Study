@@ -7,4 +7,6 @@ export class LessonMaterialReadModel
 	public id: number;
 	public lessonId: number;
 	public file: any;
+	public offset: string;
+	public fileName: string;
 }

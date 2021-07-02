@@ -36,11 +36,21 @@ export class ContentUpload extends Component<IContentProps> {
         let reader = new FileReader();
         // @ts-ignore
         let file = event.target.files[0];
+        reader.readAsDataURL(file);
+        console.log("it was-it was!")
         reader.onloadend = () => {
+            console.log("it was-it was!!!!!!!!!!")
             this.loadingFromClientStarted = false;
             this.file = file;
         };
-        reader.readAsDataURL(file)
+        reader.onload = () => {
+            console.log("result", reader.result);
+        };
+
+        reader.onerror = () => {
+            console.log("error", reader.error);
+        };
+        
     }
 
     renderCautions() {

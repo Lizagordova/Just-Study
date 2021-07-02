@@ -35,7 +35,7 @@ class App extends Component<Props> {
                         {/*<div className="row justify-content-center">
                             <a href="tel:+79190754485" style={{fontSize: "0.8em"}}>Гоша Кунаев</a>
                         </div>*/}
-                        <div className="row justify-content-center" style={{fontSize: "0.8em"}}>
+                        <div className="row justify-content-center" style={{fontSize: "0.8em", color: "white"}}>
                             Тех. поддержка: <a href="tel:+79016957927">Лиза Гордова</a>
                         </div>
                     </div>

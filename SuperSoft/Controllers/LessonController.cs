@@ -162,19 +162,17 @@ namespace SuperSoft.Controllers
 		[Route("/addorupdatematerial")]
 		public ActionResult AddOrUpdateMaterial([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
 		{
-			_logService.AddLogAddOrUpdateMaterialException(_logger, new Exception("Всё хорошо, я сюда зашел"));
-			_logger.Log(LogLevel.Information, "Я был здесь");
 			var role = SessionHelper.GetRole(HttpContext);
 			if (role != UserRole.Admin.ToString())
 			{
 				return new BadRequestResult();
 			}
-			_logger.Log(LogLevel.Information, "Я был здесь 1");
+
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
-			_logger.Log(LogLevel.Information, "Я был здесь 2");
+			_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 2 Time={DateTime.Now}"));
 			try
 			{
-				_logger.Log(LogLevel.Information, "Я был здесь 3");
+				_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 3 Time={DateTime.Now}"));
 				_lessonEditor.AddOrUpdateMaterial(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
 
 				return new OkResult();
@@ -182,7 +180,29 @@ namespace SuperSoft.Controllers
 			catch (Exception e)
 			{
 				//_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
-				_logService.AddLogAddOrUpdateMaterialException(_logger, e);
+				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
+		[Route("/addorupdatematerial1")]
+		public ActionResult AddOrUpdateMaterial1([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
+		{
+
+			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
+			try
+			{
+				_logService.AddLogAddOrUpdateJustLogException(_logger, new Exception("Я был здесь 3 Time={DateTime.Now}"));
+				_lessonEditor.AddOrUpdateMaterial1(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File, lessonMaterialReadModel.Offset, lessonMaterialReadModel.FileName);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				//_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
+				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
 
 				return new StatusCodeResult(500);
 			}

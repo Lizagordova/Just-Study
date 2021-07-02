@@ -14,16 +14,19 @@ namespace SuperSoft.Persistence.Services.Lessons
 	{
 		private readonly ILessonRepository _lessonRepository;
 		private readonly IGarbageRepository _garbageRepository;
+		private readonly ILogRepository _logRepository;
 		private readonly ILogger<LessonEditorService> _logger;
 
 		public LessonEditorService(
 			ILessonRepository lessonRepository,
 			IGarbageRepository garbageRepository,
+			ILogRepository logRepository,
 			ILogger<LessonEditorService> logger
 			)
 		{
 			_lessonRepository = lessonRepository;
 			_garbageRepository = garbageRepository;
+			_logRepository = logRepository;
 			_logger = logger;
 		}
 
@@ -48,16 +51,30 @@ namespace SuperSoft.Persistence.Services.Lessons
 
 		public int AddOrUpdateMaterial(LessonMaterial lessonMaterial, int lessonId, IFormFile file)
 		{
-			_logger.Log(LogLevel.Information, "Я был здесь 4");
+			_logRepository.AddLog(new Log() { Message = "Я был здесь 4", Date = DateTime.Now });
+			_logger.Log(LogLevel.Information,$"Я был здесь 4 Time={DateTime.Now}" );
 			var bytes = FileHelper.GetBytes(file);
 			var path = GetPath(lessonId, file.FileName);
 			FileHelper.SaveContent(bytes, path);
 			lessonMaterial.Path = path;
-			_logger.Log(LogLevel.Information, "Я был здесь 5");
+			_logger.Log(LogLevel.Information,$"Я был здесь 5 Time={DateTime.Now}" );
+			_logRepository.AddLog(new Log() { Message = "Я был здесь 5", Date = DateTime.Now});
 			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
-			_logger.Log(LogLevel.Information, "Я был здесь 6");
+			_logger.Log(LogLevel.Information,$"Я был здесь 6 Time={DateTime.Now}" );
+			_logRepository.AddLog(new Log() { Message = "Я был здесь 6", Date = DateTime.Now});
 
 			return materialId;
+		}
+
+		public int AddOrUpdateMaterial1(LessonMaterial lessonMaterial, int lessonId, IFormFile file, string offset, string fileName)
+		{
+			var bytes = FileHelper.GetBytes(file);
+			var path = GetPath(lessonId, fileName);
+			FileHelper.AppendContent(bytes, path, int.Parse(offset));
+			lessonMaterial.Path = path;
+			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
+
+			return 1;
 		}
 
 		public void DeleteMaterial(int materialId)

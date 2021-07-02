@@ -101,7 +101,7 @@ class LessonStore {
         return response.status;
     }
 
-    async addOrUpdateMaterial(file: File): Promise<number> {
+    async addOrUpdateMaterial1(file: File): Promise<number> {
         var count = 0;
         console.log("file", file);
         const formData = new FormData();
@@ -121,6 +121,31 @@ class LessonStore {
         return response.status;
     }
 
+    async addOrUpdateMaterial(file: File): Promise<number> {
+        
+        let size = file.size;
+        let start = 0;
+        let end = 50000;
+        while(start < size) {
+            let chunk = file.slice(start, end, "video/mp4");
+            const formData = new FormData();
+            formData.append("offset", start.toString());
+            formData.append("file", chunk);
+            formData.append("fileName", file.name);
+            formData.append("lessonId", this.choosenLesson.id.toString());
+            const response = await fetch("/addorupdatematerial1", {
+                body: formData,
+                method: "POST"
+            });
+            if(response.status === 200) {
+                start+= 50000;
+                end+= 50000;
+            }
+        }
+
+        return 200;
+    }
+    
     async getUserProgressByLesson(lessonId: number, userId: number): Promise<number> {
         const response = await fetch("/getuserprogressbylesson", {
             method: "POST",

@@ -180,9 +180,15 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
-		public void AddLogAddOrUpdateMaterialException(ILogger logger, Exception e)
+		public void AddLogAddOrUpdateMaterialException(ILogger logger, Exception e, LessonMaterial lessonMaterial)
 		{
-			var customMessage = $"Не удалось добавить материал.";
+			var customMessage = $"Не удалось добавить материал в {lessonMaterial.Path}";
+			AddLog(logger, e, customMessage);
+		}
+		
+		public void AddLogAddOrUpdateJustLogException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось((((";
 			AddLog(logger, e, customMessage);
 		}
 
