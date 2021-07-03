@@ -39,12 +39,12 @@ export class Course extends Component<ICourseProps> {
 
     renderCourseContent() {
             return(
-                <>
+                <div className="container-fluid">
                     {this.lessonsActive && <LessonsMenu store={this.props.store}/>}
                     {this.wordsOfADay && <WordsOfADay store={this.props.store} />}
                     {this.participants && <ParticipantsPage courseStore={this.props.store.courseStore} userStore={this.props.store.userStore} update={this.props.update}/>}
                     {this.courseProgress && <CourseProgress store={this.props.store} />}
-                </>
+                </div>
             );
     }
 

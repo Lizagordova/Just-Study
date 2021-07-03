@@ -73,8 +73,12 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             <>
                 {users.map(u => {
                     return(
-                        <div className="row justify-content-center" style={{border: "1px solid black"}} key={u.id}>
-                            <Label>
+                        <div 
+                            className="row justify-content-center"
+                            style={{border: "1px solid black", marginBottom: "5px",
+                                width: "20%", marginLeft: "1%", marginRight: "1%"}}
+                            key={u.id}>
+                            <Label style={{width: "80%", textAlign: "start"}}>
                                 {u.lastName} {u.firstName}
                             </Label>
                             <i
@@ -114,12 +118,11 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
 
     renderDividingLine() {
         return(
-            <>
-                <hr />
-                <span style={{fontSize: "1.5em"}}>
+            <div className="row justify-content-start">
+                <span style={{fontSize: "1.5em", marginLeft: "1.7%"}}>
                     Добавить:
                 </span>
-            </>
+            </div>
         );
     }
 

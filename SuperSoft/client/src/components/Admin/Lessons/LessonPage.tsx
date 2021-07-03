@@ -49,7 +49,7 @@ export class LessonPage extends Component<ILessonPageProps> {
                                      className="nav-link"
                                      eventKey="lesson"
                                      onClick={() => this.toggleMenu("lesson")}>
-                                    УРОК
+                                    Урок
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -57,7 +57,7 @@ export class LessonPage extends Component<ILessonPageProps> {
                                      className="nav-link"
                                      eventKey="homework"
                                      onClick={() => this.toggleMenu("homework")}>
-                                    ДОМАШНЯЯ РАБОТА
+                                    Домашняя работа
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -65,7 +65,7 @@ export class LessonPage extends Component<ILessonPageProps> {
                                      className="nav-link"
                                      eventKey="completedHomework"
                                      onClick={() => this.toggleMenu("completedHomework")}>
-                                    ВЫПОЛНЕННЫЕ ДОМАШНИЕ РАБОТЫ
+                                    Выполненные домашние работы
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -73,7 +73,7 @@ export class LessonPage extends Component<ILessonPageProps> {
                                     className="nav-link"
                                     eventKey="progress"
                                     onClick={() => this.toggleMenu("progress")}>
-                                    ПРОГРЕСС
+                                    Прогресс
                                 </Nav.Link>
                             </Nav.Item>
                         </Nav>
@@ -87,11 +87,60 @@ export class LessonPage extends Component<ILessonPageProps> {
         );
     }
 
-    render() {
+    renderLessonMenu1() {
         return(
             <>
-                {this.renderLessonMenu()}
+              <div className="row lessonMenuHeader">
+                        <Nav variant="pills" defaultActiveKey="lesson">
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="nav-link menuNavLink"
+                                    eventKey="lesson"
+                                    onClick={() => this.toggleMenu("lesson")}>
+                                    Урок
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="nav-link menuNavLink"
+                                    eventKey="homework"
+                                    onClick={() => this.toggleMenu("homework")}>
+                                    Домашняя работа
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="nav-link menuNavLink"
+                                    eventKey="completedHomework"
+                                    onClick={() => this.toggleMenu("completedHomework")}>
+                                    Выполненные домашние работы
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link
+                                    className="nav-link menuNavLink"
+                                    eventKey="progress"
+                                    onClick={() => this.toggleMenu("progress")}>
+                                    Прогресс
+                                </Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                </div>
+                <div className="justify-content-center">
+                    {this.lessonActive && <Lesson store={this.props.store}/>}
+                    {this.homeworkActive && <HomeworkPage store={this.props.store}/>}
+                    {this.completedHomeworkActive && <CompletedHomeworkPage store={this.props.store}/>}
+                    {this.progressActive && <ProgressByLesson store={this.props.store} />}
+                </div>
             </>
+        );
+    }
+    
+    render() {
+        return(
+            <div className="container-fluid lessonContent">
+                {this.renderLessonMenu1()}
+            </div>
         );
     }
 

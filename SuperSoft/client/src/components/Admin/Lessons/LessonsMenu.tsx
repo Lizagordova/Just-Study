@@ -2,9 +2,10 @@
 import RootStore from "../../../stores/RootStore";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { observer } from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable } from "mobx";
 import { Tab, Nav } from "react-bootstrap";
-import { Alert, Button, Col, Collapse, Row } from "reactstrap";
+import { Alert, Button, NavItem, Collapse, Row } from "reactstrap";
+import { NavLink } from "react-router-dom";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import { AddOrUpdateNewLesson } from "./AddOrUpdateNewLesson";
 import { LessonPage } from "./LessonPage";
@@ -74,55 +75,18 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                    return (
                        <Nav.Item key={lesson.id}>
                            <div className="row" key={lesson.id} style={{height: "auto"}}>
-                               <div className="col-8" style={{height: "auto"}}>
-                                   <Nav.Link
-                                       style={{height: "auto"}}
-                                       eventKey={lesson.id}
-                                       className="nav-link lesson"
-                                       onClick={() => this.lessonToggle(lesson)}>
-                                       {lesson.name}
-                                   </Nav.Link>
-                               </div>
-                               <div className="col-2 col-lg-offset-10">
-                                   <i className="fa fa-window-close fa-2x"
-                                      aria-hidden="true"
-                                      onClick={() => this.deleteLesson(lesson.id)}/>
-                                   <i className="fa fa-edit fa-2x"
-                                      aria-hidden="true"
-                                      onClick={() => this.editLessonToggle(lesson)}/>
-                               </div>
+                               <Nav.Link
+                                   style={{height: "auto"}}
+                                   eventKey={lesson.id}
+                                   className="nav-link lesson"
+                                   onClick={() => this.lessonToggle(lesson)}>
+                                   {lesson.name}
+                               </Nav.Link>
                            </div>
                        </Nav.Item>
                    );
                })}
            </>
-        );
-    }
-
-    renderLessonsMenu1(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
-        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
-        return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
-                {this.renderCautions()}
-                <Row>
-                    <Col sm={3} style={{marginTop: "10px", width: "25%"}}>
-                        <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px"}}>Уроки</Button>
-                        <Collapse isOpen={this.isNavOpen}>
-                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
-                                <div className="container-fluid">
-                                    {lessons.length > 0 && this.renderLessonsList(lessons)}
-                                    <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
-                                </div>
-                            </Nav>
-                        </Collapse>
-                    </Col>
-                    <Col sm={9}>
-                        {this.renderLessonPage()}
-                    </Col>
-                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
-                </Row>
-            </Tab.Container>
         );
     }
 
@@ -134,7 +98,9 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                 {this.renderCautions()}
                 <div className="row">
                     <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
-                        <Button color="primary" onClick={() => this.toggleNav()} style={{marginBottom: "3px", width: "100%"}}>Уроки</Button>
+                        <Button
+                            onClick={() => this.toggleNav()} 
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
                                 <div className="container-fluid">

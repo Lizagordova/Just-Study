@@ -28,8 +28,11 @@ export class Lesson extends Component<ILessonProps> {
     renderLessonDescription() {
         return(
             <div className="row justify-content-center">
-                <div className="col-lg-12 col-sm-12">
-                    <Label>{this.props.store.lessonStore.choosenLesson.description}</Label>
+                <div className="col-lg-11 col-sm-11">
+                    <Label style={{fontSize: ""}}>{this.props.store.lessonStore.choosenLesson.description}</Label>
+                </div>
+                <div className="col-lg-1">
+                    
                 </div>
             </div>
         );

@@ -87,7 +87,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
                 <Button className="addTask"
                         onClick={() => this.toggleTaskUploadWindow()}
                         outline color="secondary">
-                    <span className="addTaskText">ДОБАВИТЬ УПРАЖНЕНИЕ</span>
+                    <span className="addTaskText">Добавить упражение</span>
                 </Button>
             </div>
         );

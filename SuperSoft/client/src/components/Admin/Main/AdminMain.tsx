@@ -25,11 +25,10 @@ export class AdminMain extends React.Component<IAdminMainProps> {
     
     render() {
         return (
-            <>
+            <div>
                 <Nav tabs className="nav mainMenu">
                     <NavItem>
-                        <NavLink to="/courses" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}
-                        activeClassName="">
+                        <NavLink to="/courses" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}>
                             Курсы
                         </NavLink>
                     </NavItem>
@@ -73,7 +72,7 @@ export class AdminMain extends React.Component<IAdminMainProps> {
                             render={(props) => <FeedbackPage feedbackStore={this.props.store.feedbackStore}/>} />}
                     <Redirect to="/courses" />
                 </Switch>
-            </>
+            </div>
         );
     }
 
