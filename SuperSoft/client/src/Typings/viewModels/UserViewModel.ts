@@ -14,4 +14,5 @@ export class UserViewModel
 	public passwordHash: string;
 	public role: UserRole;
 	public token: string;
+	public fullName: string;
 }

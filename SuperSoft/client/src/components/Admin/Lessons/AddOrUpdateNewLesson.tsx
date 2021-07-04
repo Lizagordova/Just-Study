@@ -66,7 +66,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         return(
             <Button 
                 style={{marginTop: "10px", marginBottom: "10px"}}
-                outline color="primary" onClick={() => this.addOrUpdateNewLessonToggle()}>
+                outline
+                className="addNewLesson"
+                onClick={() => this.addOrUpdateNewLessonToggle()}>
                 Добавить урок
             </Button>
         );

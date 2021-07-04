@@ -115,10 +115,14 @@ class Participant extends Component<IParticipantProps> {
 
     renderStartDate(details: UserCourseViewModel) {
         return (
-            <>
-                {<span onClick={() => this.toggleStartDate()}>{new Date(details.startDate).toLocaleDateString()}</span>}
-                {this.startDateCalendarOpen && this.renderStartDateCalendar(details)}
-            </>
+            <div className="container-fluid">
+                <div className="row justify-content-center">
+                    {<span onClick={() => this.toggleStartDate()}>{new Date(details.startDate).toLocaleDateString()}</span>}
+                </div>
+                {this.startDateCalendarOpen && <div className="row justify-content-center">
+                    {this.renderStartDateCalendar(details)}
+                </div>}
+            </div>
         );
     }
 
@@ -136,8 +140,14 @@ class Participant extends Component<IParticipantProps> {
     renderEndDate(details: UserCourseViewModel) {
         return (
             <>
-                {<span onClick={() => this.toggleExpireDate()}>{new Date(details.expireDate).toLocaleDateString()}</span>}
-                {this.expireDateCalendarOpen && this.renderEndDateCalendar(details)}
+                <div className="container-fluid">
+                    <div className="row justify-content-center">
+                        {<span onClick={() => this.toggleExpireDate()}>{new Date(details.expireDate).toLocaleDateString()}</span>}
+                    </div>
+                    {this.expireDateCalendarOpen && <div className="row justify-content-center">
+                        {this.renderEndDateCalendar(details)}
+                    </div>}
+                </div>
             </>
         );
     }

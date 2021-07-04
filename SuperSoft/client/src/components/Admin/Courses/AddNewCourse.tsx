@@ -34,7 +34,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
         return(
             <>
                 <Button
-                    outline color="primary" onClick={() => this.addNewCourseToggle()}>
+                    outline
+                    className="addNewCourse"
+                    onClick={() => this.addNewCourseToggle()}>
                     Добавить курс
                 </Button>
             </>
@@ -132,7 +134,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                    onClick={() => this.addNewCourseToggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
-                    СОЗДАНИЕ НОВОГО КУРСА
+                    Создание нового курса
                 </div>
                 {this.renderBody()}
                 {this.renderCancelButton()}

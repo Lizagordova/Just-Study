@@ -4,7 +4,7 @@ import CourseStore from "../../../stores/CourseStore";
 import { makeObservable, observable } from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
-import { Button, Alert, Label } from "reactstrap";
+import {Button, Alert, Label, Input} from "reactstrap";
 import Participants from "./Participants";
 import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
 import {renderSpinner} from "../../../functions/renderSpinner";
@@ -118,10 +118,17 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
 
     renderDividingLine() {
         return(
-            <div className="row justify-content-start">
-                <span style={{fontSize: "1.5em", marginLeft: "1.7%"}}>
+            <div className="row justify-content-start searchbar searchForm" style={{width: "400px", marginBottom: "1%"}}>
+                <span style={{fontSize: "1.3em", marginLeft: "1.7%", width: "100px"}}>
                     Добавить:
                 </span>
+                <Input type="text"
+                       className="searchInput"
+                       style={{ marginLeft: "5px", width: "250px" }}
+                       onChange={(e) => this.restUsersFilter(e)} />
+                <button
+                    className="searchButton"
+                    style={{ width: "50px"}} type="submit"/>
             </div>
         );
     }
@@ -185,6 +192,11 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
                         });
                 }
             });
+    }
+
+    restUsersFilter(event: React.ChangeEvent<HTMLInputElement>) {
+        let value = event.currentTarget.value;
+        this.restUsers = this.props.userStore.users.filter(u => u.fullName.includes(value));
     }
 }
 

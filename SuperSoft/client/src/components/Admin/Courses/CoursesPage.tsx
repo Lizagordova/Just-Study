@@ -92,7 +92,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
         let choosenCourse = this.props.store.courseStore.choosenCourse;
         return(
             <ButtonDropdown isOpen={this.isNavOpen} toggle={() => this.toggleNav()}>
-                <DropdownToggle caret outline color="primary">
+                <DropdownToggle caret outline color="primary" className="courseToggler">
                     {choosenCourse.name === "" || choosenCourse.name === undefined ? "Курс" : choosenCourse.name}
                 </DropdownToggle>
                 <DropdownMenu>

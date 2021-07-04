@@ -136,3 +136,24 @@
     text-align: start;
     width: 100%;
 }
+
+.addNewLesson, .addNewCourse {
+    color: rgb(65, 105, 225) !important;
+    border-color: rgb(65, 105, 225) !important;
+}
+
+.addNewLesson:hover, .addNewCourse:hover {
+    background-color: rgb(65, 105, 225) !important;
+    color: white !important;
+}
+
+.courseToggler {
+    color: rgb(65, 105, 225) !important;
+    border-color: rgb(65, 105, 225)!important;
+    background-color: white !important;
+}
+
+.courseToggler:hover {
+    color: white !important;
+    background-color: rgb(65, 105, 225) !important;
+}

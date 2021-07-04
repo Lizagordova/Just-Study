@@ -54,7 +54,7 @@ export class UserMain extends React.Component<IUserMainProps> {
         return (
             <div>
                         <Nav tabs className="nav mainMenu">
-                            <NavItem>
+                            <NavItem  style={{marginRight: "5px"}}>
                                 {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                             </NavItem>
                             <NavItem>
@@ -119,7 +119,8 @@ export class UserMain extends React.Component<IUserMainProps> {
             <ButtonDropdown isOpen={this.courseMenuOpen} toggle={() => this.toggleCourseMenuOpen()}>
                 <DropdownToggle
                     caret outline 
-                    style={{ color: "white", marginTop: "15%", borderColor: "rgb(43, 69, 148)" }}>
+                    className="courseToggler"
+                    style={{  marginTop: "10%" }}>
                     {choosenCourse.name === undefined || choosenCourse.name === null ? "Выбрать курс" : choosenCourse.name}
                 </DropdownToggle>
                 <DropdownMenu>
