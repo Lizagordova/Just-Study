@@ -28,27 +28,28 @@ export class AdminMain extends React.Component<IAdminMainProps> {
             <div>
                 <Nav tabs className="nav mainMenu">
                     <NavItem>
-                        <NavLink to="/courses" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}>
+                        <NavLink to="/courses" exact className="nav-link menuNavLink"
+                                 style={{fontSize: "1.5em"}}>
                             Курсы
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/users" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}
+                        <NavLink to="/users" exact className="nav-link menuNavLink"
                         >
                             Пользователи
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/dictionary" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}>
+                        <NavLink to="/dictionary" exact className="nav-link menuNavLink">
                             Словарь
                         </NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/trainings" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}>
+                        <NavLink to="/trainings" exact className="nav-link menuNavLink">
                             Тренировки</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/feedbacks" exact className="nav-link menuNavLink" style={{fontSize: "1.5em"}}>
+                        <NavLink to="/feedbacks" exact className="nav-link menuNavLink">
                             Обратная связь</NavLink>
                     </NavItem>
                     <Button
