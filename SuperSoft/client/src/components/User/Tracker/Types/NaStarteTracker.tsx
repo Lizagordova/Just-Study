@@ -15,6 +15,7 @@ class INaStarteTrackerProps {
     courseId: number;
 }
 
+// @ts-ignore
 @observer
 class NaStarteTracker extends Component<INaStarteTrackerProps> {
     days: number[] = new Array<number>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -84,7 +85,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
                 {this.days.map((day, i) => {
                     let trackerByDay = this.getTrackerByDay(day);
                     return(
-                            <td onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))} key={i}>
+                            <td id={trackerByDay.day.toString()} onClick={(e) => this.handleChange(type, Number(e.currentTarget.id))} key={i}>
                                 {this.isCompleted(trackerByDay, type)
                                 ? <i className="fa fa-check" aria-hidden="true"/> :
                                 <i className="fa fa-times" aria-hidden="true"/>
@@ -116,8 +117,11 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
 
     @action
     handleChange(type: TrackerType, day: number) {
+        console.log("type", type, "day", day);
         let trackerByDay = this.trackersByDay.filter(t => t.day === day)[0];
+        console.log("trackerByDay", trackerByDay);
         let index = this.trackersByDay.indexOf(trackerByDay);
+        console.log("index", index);
         if(type === TrackerType.ChatParticipation) {
             trackerByDay.chatParticipation = !trackerByDay.chatParticipation;
         } else if(type === TrackerType.CompletedHomework) {
@@ -169,7 +173,7 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
     addOrUpdateTracker() {
         this.props.trackerStore.addOrUpdateTracker(this.tracker);
     }
-
+    
     toggleUpdate() {
         this.update = !this.update;
     }
