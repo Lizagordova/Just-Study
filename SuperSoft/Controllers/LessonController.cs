@@ -177,7 +177,7 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				//_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
+				_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);//todo: это лучше улучшить
 				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
 
 				return new StatusCodeResult(500);

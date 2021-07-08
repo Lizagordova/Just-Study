@@ -131,7 +131,6 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
             return false;
         }
         let userCourse = courseStore.userCourses.filter(uc => uc.courseId === choosenCourseId)[0];
-        console.log("userCourse", toJS(userCourse));
         if(userCourse === undefined || (userCourse.expireDate < new Date() || userCourse.startDate > new Date())) {
             return false;
         }

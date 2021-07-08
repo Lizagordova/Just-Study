@@ -289,7 +289,6 @@ class TaskStore {
         let subtagIds = subtags.map(t => t.id);
         let tagIds = tags.map(t => t.id);
         let tasks = new Array<TaskViewModel>();
-        console.log("subtags", toJS(subtags), "tags", toJS(tags), "tagIds", toJS(tagIds));
         const response = await fetch("/gettasks", {
             method: "POST",
             headers: {

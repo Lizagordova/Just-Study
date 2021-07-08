@@ -117,7 +117,6 @@ class NaStarteTracker extends Component<INaStarteTrackerProps> {
 
     @action
     handleChange(type: TrackerType, day: number) {
-        console.log("type", type, "day", day);
         let trackerByDay = this.trackersByDay.filter(t => t.day === day)[0];
         console.log("trackerByDay", trackerByDay);
         let index = this.trackersByDay.indexOf(trackerByDay);

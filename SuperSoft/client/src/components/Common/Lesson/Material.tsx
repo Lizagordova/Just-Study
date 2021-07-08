@@ -39,11 +39,13 @@ export class Material extends Component<IMaterialProps> {
 
     renderMaterial(material: LessonMaterialViewModel) {
         let path = material.path.replace("client/build", ".");
+        console.log("path", path);
             if(path.includes("pdf") ) {
             return (
                 <>
                     {this.renderDeleteButton()}
-                    <embed src={`${path}#toolbar=0`} type="application/pdf" width="100%" height="600px" contentEditable={false}/>
+                    <iframe id="iframeContainer" src={`https://drive.google.com/viewerng/viewer?embedded=true&url=https://juststudy.ru.com/${path}#toolbar=0`}
+                            style={{width:"100%", height:"500px"}}/>
                  </>
             );
         } else if(path.includes("mp4")) {

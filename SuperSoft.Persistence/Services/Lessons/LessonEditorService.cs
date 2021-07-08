@@ -46,27 +46,26 @@ namespace SuperSoft.Persistence.Services.Lessons
 			var bytes = FileHelper.GetBytes(file);
 			var path = GetPath(lessonId, file.FileName);
 			FileHelper.SaveContent(bytes, path);
-			path = PostHandle(path);
 			lessonMaterial.Path = path;
 			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
 
 			return materialId;
 		}
 
-		private string PostHandle(string path)
-		{
-			var outPath = "";
-			if (path.Contains("pptx"))
-			{
-				ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-
-				var presentation = PresentationDocument.Load(path);
-				outPath = path.Replace("pptx", "pdf");
-				presentation.Save(outPath);
-			}
-
-			return outPath;
-		}
+		// private string PostHandle(string path)
+		// {
+		// 	var outPath = path;
+		// 	if (path.Contains("pptx"))
+		// 	{
+		// 		ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+		//
+		// 		var presentation = PresentationDocument.Load(path);
+		// 		outPath = path.Replace("pptx", "pdf");
+		// 		presentation.Save(outPath);
+		// 	}
+		//
+		// 	return outPath;
+		// }
 
 		public int AddOrUpdateMaterial1(LessonMaterial lessonMaterial, int lessonId, IFormFile file, string offset, string fileName)
 		{

@@ -147,8 +147,9 @@ Table, td, tr, thead {
     position: relative;
     width: 300px;
 }
+
 .searchInput {
-    width: 100px;
+    width: 260px;
     height: 42px;
     padding-left: 10px;
     border: 2px solid #0366d6;;
@@ -157,6 +158,7 @@ Table, td, tr, thead {
     background: #ffffff;
     color: #9E9C9C;
 }
+
 .searchButton {
     position: absolute;
     top: 0;
@@ -168,6 +170,7 @@ Table, td, tr, thead {
     border-radius: 0 5px 5px 0;
     cursor: pointer;
 }
+
 .searchButton:before {
     content: "\f002";
     font-family: FontAwesome;
