@@ -134,29 +134,27 @@ export class Task extends Component<ITaskProps> {
 
     renderInstruction(task: TaskViewModel) {
         return(
-            <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.instruction}}/>
+            <CardTitle style={{fontSize: "1.3em"}}  dangerouslySetInnerHTML={{__html: task.instruction}}/>
         );
     }
 
     renderText(task: TaskViewModel) {
         if(task.text !== undefined && task.text !== "") {
             return(
-                <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.text}}/>
+                <CardTitle className="text-center" style={{fontSize: "1.5em"}} dangerouslySetInnerHTML={{__html: task.text}}/>
             );
         }
     }
 
     renderTask(task: TaskViewModel) {
         return(
-            <Card style={{width: '100%'}}>
+            <div className="container-fluid" style={{width: '100%'}}>
                 {this.renderControlButtons()}
                 {this.renderInstruction(task)}
                 {this.renderText(task)}
-                <CardBody style={{marginLeft: '5%'}}>
-                    {this.renderSubtasks(task.subtasks, this.update)}
-                </CardBody>
+                {this.renderSubtasks(task.subtasks, this.update)}
                 {this.renderAddSubtask()}
-            </Card>
+            </div>
         )
     }
 
@@ -165,7 +163,9 @@ export class Task extends Component<ITaskProps> {
            <>
                {subtasks.map((subtask, i) => {
                    return(
-                       <>{this.renderSubtask(subtask, i, update)}</>
+                       <div className="row" style={{marginLeft: "5%"}}>
+                           {this.renderSubtask(subtask, i, update)}
+                       </div>
                    );
                })}
                {this.renderAddSubtaskButton()}

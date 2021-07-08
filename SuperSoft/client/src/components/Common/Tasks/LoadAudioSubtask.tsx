@@ -51,9 +51,11 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '94%', width: '2%'}}
-                   onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                <div className="row justify-content-center">
+                    <i style={{marginLeft: '94%', width: '2%'}}
+                       onClick={() => this.deleteSubtask()}
+                       className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                </div>
             );
         }
     }
@@ -61,18 +63,16 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     renderSubtaskText(subtask: SubtaskViewModel) {
         return(
             <>
-                {subtask.text !== null && <CardText>
+                {subtask.text !== null && <div className="row justify-content-start">
                     {subtask.text}
-                </CardText>}
+                </div>}
             </>
         );
     }
 
     renderSaveButton() {
         return(
-            <div className="col-3">
-                <Button outline color="primary" onClick={() => this.save()}>СОХРАНИТЬ</Button>
-            </div>
+            <Button outline color="success" onClick={() => this.save()}>Сохранить</Button>
         );
     }
 
@@ -104,16 +104,18 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
 
     renderUserAnswers() {
         return(
-            <CardText>
-                {this.userAnswer.answerFiles.map(ans => {
-                    return(
-                        <div className="row justify-content-center">
-                            {this.renderDeleteButton()}
-                            {renderContent(ans)}
-                        </div>
-                    );
-                })}
-            </CardText>
+            <div className="row justify-content-start">
+                <div className="container-fluid">
+                    {this.userAnswer.answerFiles.map(ans => {
+                        return(
+                            <div className="row justify-content-center">
+                                {this.renderDeleteButton()}
+                                {renderContent(ans)}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         );
     }
 
@@ -131,13 +133,17 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     renderAnswerInput() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             return (
-                <CardText>
-                    <div className="row justify-content-center">
+                <>
+                    <div className="row justify-content-start">
                         {this.renderInputFile()}
+                    </div>
+                    <div className="row justify-content-center">
                         {this.renderSaveButton()}
+                    </div>
+                    <div className="row justify-content-center">
                         {this.renderCautions()}
                     </div>
-                </CardText>
+                </>
             );
         }
     }
@@ -147,7 +153,9 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
             <>
                 {this.renderControlButton()}
                 {this.renderSubtaskText(subtask)}
-                {subtask.path !== null && renderContent(subtask.path)}
+                <div className="row justify-content-start">
+                    {subtask.path !== null && renderContent(subtask.path)}
+                </div>
                 {this.renderUserAnswers()}
                 {this.renderAnswerInput()}
             </>
@@ -156,9 +164,9 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
 
     render() {
         return(
-            <>
+            <div className="container-fluid taskBlock">
                 {this.renderSubtask(this.props.subtask)}
-            </>
+            </div>
         );
     }
 

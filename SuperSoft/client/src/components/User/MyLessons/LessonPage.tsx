@@ -36,7 +36,7 @@ class LessonPage extends Component<ILessonPageProps> {
                                     className="nav-link"
                                     eventKey="Lesson"
                                     onClick={() => this.toggleMenu("lesson")}>
-                                    УРОК
+                                    Урок
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -44,7 +44,7 @@ class LessonPage extends Component<ILessonPageProps> {
                                     className="nav-link"
                                     eventKey="Homework"
                                     onClick={() => this.toggleMenu("homework")}>
-                                    ДОМАШНЯЯ РАБОТА
+                                    Домашняя работа
                                 </Nav.Link>
                             </Nav.Item>
                         </Nav>

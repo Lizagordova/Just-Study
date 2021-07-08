@@ -28,6 +28,13 @@
     left: 30%;
 }
 
+@media (max-width: 500px) {
+    .block {
+        width: 80%;
+        left: 12%;
+    }
+}
+
 .formLabel {
     width: 100%;
     color: white;
@@ -50,4 +57,8 @@
 .authNavLink:hover {
     color: rgb(65, 105, 225);
     background-color: white;
+}
+
+.navAuth {
+    
 }

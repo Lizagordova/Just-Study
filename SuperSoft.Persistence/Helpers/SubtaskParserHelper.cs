@@ -8,7 +8,7 @@ namespace SuperSoft.Persistence.Helpers
 	public static class SubtaskParserHelper
 	{
 		private static readonly Regex _verbFormPattern = new Regex(@"\[(\w*?\D*?)\]");
-		private static readonly Regex _fillGapsFormPattern = new Regex(@"\[(\w*?\D*?)\]");
+		private static readonly Regex _fillGapsFormPattern = new Regex(@"\[(\w*\/)*(\w*?\D*?)]");
 		private static readonly Regex _explanationPattern = new Regex(@"\((w*?\D*?)\)");
 
 		public static MatchCollection GetAnswerGroupsMatchCollection(string text, SubtaskType subtaskType)

@@ -83,7 +83,9 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
 
     renderBadge() {
         return(
-            <Badge outline color="primary">{this.props.order + 1}</Badge>
+            <Badge outline color="primary" className="subtaskBadge">
+                {this.props.order + 1}
+            </Badge>
         );
     }
 
@@ -112,22 +114,24 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
+    renderSubtask(update: boolean) {
         return (
-            <>
-                <CardText>
+            <div className="container-fluid taskBlock">
+                <div className="row justify-content-center">
                     {this.renderControlButton()}
+                </div>
+                <div className="row justify-content-start">
                     {this.renderBadge()}
                     {this.renderSentence()}
-                </CardText>
-            </>
+                </div>
+            </div>
         )
     }
 
     render() {
         return(
             <>
-                {this.loaded && this.renderSubtask(this.subtask, this.update)}
+                {this.loaded && this.renderSubtask(this.update)}
             </>
         );
     }
@@ -218,10 +222,9 @@ class Dropdown extends Component<IDropdownProps> {
 
     renderMenu() {
         let answers = this.answerGroup.answers;
-        console.log("answetGroup", toJS(answers))
         return(
             <>
-                <ButtonDropdown isOpen={this.isOpen} toggle={() => this.toggle()}>
+                <ButtonDropdown isOpen={this.isOpen} toggle={() => this.toggle()} style={{marginLeft: "4px", marginRight: "4px"}}>
                     {this.renderDropdownToggle()}
                     <DropdownMenu>
                         {answers.map((answer) => {

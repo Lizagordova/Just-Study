@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SuperSoft.Persistence.Helpers
 {
@@ -49,6 +51,15 @@ namespace SuperSoft.Persistence.Helpers
 
 			return path;
 		}
+		
+		public static string GetTempPath()
+		{
+			var path = "client/build/temp";
+			CreateDirectory(path);
+			Task.Factory.StartNew(() => Console.WriteLine());
+			return path;
+		}
+		
 
 		public static string GetUserSubtaskPath(int userId, int subtaskId)
 		{

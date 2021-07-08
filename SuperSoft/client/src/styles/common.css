@@ -178,3 +178,17 @@ Table, td, tr, thead {
 .searchSelect {
     width: 300px;
 }
+
+.taskBlock {
+    margin-bottom: 2%;
+}
+
+.subtaskBlock {
+    margin-left: 2%;
+}
+
+.subtaskBadge {
+    margin-right: 1%;
+    height: 20px;
+    
+}

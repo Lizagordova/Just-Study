@@ -39,21 +39,11 @@ export class Material extends Component<IMaterialProps> {
 
     renderMaterial(material: LessonMaterialViewModel) {
         let path = material.path.replace("client/build", ".");
-        // if(path.includes("pptx")) {
-        //     return (
-        //         <>
-        //             {this.renderDeleteButton()}
-        //             <iframe
-        //                 src={`https://view.officeapps.live.com/op/embed.aspx?src=[https://juststudy.ru.com/${path}]`}
-        //                 width='100%' height='600px' frameBorder='0'/>
-        //         </>
-        //     );
-        // } else 
-            if(path.includes("pdf") || path.includes("pptx")) {
+            if(path.includes("pdf") ) {
             return (
                 <>
                     {this.renderDeleteButton()}
-                    <embed src={`${path}#toolbar=0`} type="application/pdf" width="100%" height="600px"  contentEditable={false}/>
+                    <embed src={`${path}#toolbar=0`} type="application/pdf" width="100%" height="600px" contentEditable={false}/>
                  </>
             );
         } else if(path.includes("mp4")) {

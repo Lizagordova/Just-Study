@@ -8,7 +8,6 @@ import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadM
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/SubtaskAnswerGroupViewModel";
 import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
-import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
@@ -88,7 +87,10 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
 
     renderBadge() {
         return(
-            <Badge outline="true" color="primary">{this.props.order + 1 }</Badge>
+            <Badge outline="true"
+                   className="subtaskBadge"
+                   color="primary">
+                {this.props.order + 1 }</Badge>
         );
     }
 
@@ -108,7 +110,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                 {partsOfSentence.map((p, i ) => {
                     return (
                         <>
-                            <span style={{clear: 'both'}} key={i * 40}>{p}</span>
+                            <span style={{clear: 'both', marginLeft: "4px", marginRight: "4px"}} key={i * 40}>{p}</span>
                             {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[i])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[i])} key={i}/>}
                         </>
                     )
@@ -117,22 +119,22 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
+    renderSubtask(update: boolean) {
         return (
-            <>
-                <CardText>
+            <div className="container-fluid taskBlock">
+                <div className="row justify-content-start">
                     {this.renderControlButton()}
                     {this.renderBadge()}
                     {this.renderSentence()}
-                </CardText>
-            </>
+                </div>
+            </div>
         )
     }
 
     render() {
         return(
             <>
-                {this.loaded && this.renderSubtask(this.subtask, this.update)}
+                {this.loaded && this.renderSubtask(this.update)}
             </>
         );
     }

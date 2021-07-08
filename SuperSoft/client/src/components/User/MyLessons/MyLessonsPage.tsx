@@ -47,7 +47,9 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row>
                     <Col sm={3} style={{height: `${rowHeight}px`}}>
-                        <Button color="primary" onClick={() => this.toggleNav()}>Уроки</Button>
+                        <Button
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}
+                            onClick={() => this.toggleNav()}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column">
                                 <div className="container-fluid">

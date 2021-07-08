@@ -70,8 +70,10 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
 
     renderSaveButton() {
         return(
-            <div className="col-3">
-                <Button outline color="primary" onClick={() => this.save()}>СОХРАНИТЬ</Button>
+            <div className="row justify-content-center">
+                <Button outline color="success" onClick={() => this.save()}>
+                    Сохранить
+                </Button>
             </div>
         );
     }
@@ -104,24 +106,26 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
 
     renderUserAnswers() {
         return(
-            <CardText>
-                {this.userAnswer.answerFiles.map(ans => {
-                    if(ans !== null) {
-                        return(
-                            <div className= "row justify-content-center">
-                                {this.renderDeleteButton()}
-                                {renderContent(ans)}
-                            </div>
-                        );
-                    }
-                })}
-            </CardText>
+            <div className="row justify-content-start">
+                <div className="container-fluid">
+                    {this.userAnswer.answerFiles.map(ans => {
+                        if(ans !== null) {
+                            return(
+                                <div className= "row justify-content-start">
+                                    {this.renderDeleteButton()}
+                                    {renderContent(ans)}
+                                </div>
+                            );
+                        }
+                    })}
+                </div>
+            </div>
         );
     }
 
     renderInputFile() {
         return(
-            <div className="col-9">
+            <div className="row justify-content-start">
                 <Input className="fileInput"
                        type="file"
                        id="loadAudioFile"
@@ -133,28 +137,28 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     renderSubtask(subtask: SubtaskViewModel) {
         return(
             <>
-                <CardText style={{border: "1px solid grey"}}>
-                    {this.renderControlButton()}
-                    {this.renderSubtaskText(subtask)}
-                    {subtask.path !== null && renderContent(subtask.path)}
-                </CardText>
-                <CardText>
                     <div className="row justify-content-center">
+                        {this.renderControlButton()}
+                    </div>
+                    <div className="row justify-content-center">
+                        {this.renderSubtaskText(subtask)}
+                    </div>
+                    {subtask.path !== null && <div className="row justify-content-center">
+                        {renderContent(subtask.path)}
+                    </div>}
                         {this.renderUserAnswers()}
                         {this.renderInputFile()}
                         {this.renderSaveButton()}
                         {this.renderCautions()}
-                    </div>
-                </CardText>
             </>
         );
     }
 
     render() {
         return(
-            <>
+            <div className="container-fluid taskBlock">
                 {this.renderSubtask(this.props.subtask)}
-            </>
+            </div>
         );
     }
 

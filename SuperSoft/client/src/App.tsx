@@ -69,7 +69,7 @@ class App extends Component<Props> {
             <div className="container-fluid parent">
                 <div className="rowAuth block" style={{height: `${height}px`}}>
                     <div className="row justify-content-center">
-                        <Nav tabs className="nav mainMenu">
+                        <Nav tabs className="nav navAuth">
                             <NavItem>
                                 <NavLink to={"#"}
                                          exact
