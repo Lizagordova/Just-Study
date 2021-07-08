@@ -7,6 +7,7 @@ import {makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import LessonPage from "./LessonPage";
 import {renderSpinner} from "../../../functions/renderSpinner";
+import {AddOrUpdateNewLesson} from "../../Admin/Lessons/AddOrUpdateNewLesson";
 
 class IMyLessonsPageProps {
     store: RootStore;
@@ -17,12 +18,14 @@ class IMyLessonsPageProps {
 class MyLessonsPage extends Component<IMyLessonsPageProps> {
     isNavOpen: boolean = true;
     courseId: number;
+    courseAvailable: boolean = false;
 
     constructor(props: IMyLessonsPageProps) {
         super(props);
         makeObservable(this, {
             isNavOpen: observable,
             courseId: observable,
+            courseAvailable: observable,
         });
         if(this.props.store.courseStore.choosenCourse.id !== undefined) {
             this.getLessons();
@@ -41,48 +44,57 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
         }
     }
 
+    renderLessonsList(lessons: LessonViewModel[]) {
+        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
+        return (
+            <>
+                {lessons.map((lesson) => {
+                    // @ts-ignore
+                    let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
+                    return (
+                        <Nav.Item key={lesson.id}>
+                            <div className="row" key={lesson.id} style={{height: "auto"}}>
+                                <Nav.Link
+                                    style={{height: "auto"}}
+                                    eventKey={lesson.id}
+                                    className="nav-link lesson"
+                                    disabled={isDisabled}
+                                    onClick={() => this.lessonToggle(lesson)}>
+                                    {lesson.name}
+                                </Nav.Link>
+                            </div>
+                        </Nav.Item>
+                    );
+                })}
+            </>
+        );
+    }
+    
     renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 + 50  : 60;
+        let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                <Row>
-                    <Col sm={3} style={{height: `${rowHeight}px`}}>
+            <>
+                <div className="row">
+                    <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <Button
-                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}
-                            onClick={() => this.toggleNav()}>Уроки</Button>
+                            onClick={() => this.toggleNav()}
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
-                            <Nav variant="pills" className="flex-column">
+                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey}>
                                 <div className="container-fluid">
-                                    {lessons.map((lesson) => {
-                                        let currentDate = new Date().toString();
-                                        let isDisabled = Date.parse(currentDate) > Date.parse(lesson.expireDate)  && Date.parse(currentDate) < Date.parse(lesson.startDate);
-                                        return (
-                                                <Nav.Item key={lesson.id}>
-                                                    <div className="row" key={lesson.id}>
-                                                        <Nav.Link
-                                                            key={lesson.id}
-                                                            eventKey={lesson.id}
-                                                            disabled={isDisabled}
-                                                            className="nav-link lesson"
-                                                            onClick={() => this.lessonToggle(lesson)}>
-                                                            {lesson.name}
-                                                        </Nav.Link>
-                                                    </div>
-                                                </Nav.Item>
-                                        );
-                                    })}
+                                    {lessons.length > 0 && this.renderLessonsList(lessons)}
                                 </div>
                             </Nav>
                         </Collapse>
-                    </Col>
-                    <Col sm={9}>
+                    </div>
+                    <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         <LessonPage store={this.props.store}/>
-                    </Col>
-                </Row>
-            </Tab.Container>
+                    </div>
+                </div>
+            </>
         );
     }
-
+    
     renderCautions() {
         return(
             <Alert color="danger">Курс не доступен. Обратитесь к администратору.</Alert>
@@ -91,13 +103,13 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
 
     render() {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
-        let courseAvailable = this.choosenCourseIsAvailable();
+        this.courseAvailable = this.choosenCourseIsAvailable();
         return(
-            <>
-                {(lessons === undefined || lessons.length === 0) && courseAvailable && renderSpinner()}
-                {courseAvailable && this.renderLessonsMenu(lessons)}
-                {!courseAvailable && this.renderCautions()}
-            </>
+            <div className="container-fluid">
+                {(lessons === undefined || lessons.length === 0) && this.courseAvailable && renderSpinner()}
+                {this.courseAvailable && this.renderLessonsMenu(lessons)}
+                {!this.courseAvailable && this.renderCautions()}
+            </div>
         );
     }
 
@@ -113,10 +125,13 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
     choosenCourseIsAvailable(): boolean {
         let courseStore = this.props.store.courseStore;
         let choosenCourseId = courseStore.choosenCourse.id;
+        console.log("courseStore", courseStore);
+        console.log("choosenCourseId", choosenCourseId);
         if(choosenCourseId === 0) {
             return false;
         }
         let userCourse = courseStore.userCourses.filter(uc => uc.courseId === choosenCourseId)[0];
+        console.log("userCourse", toJS(userCourse));
         if(userCourse === undefined || (userCourse.expireDate < new Date() || userCourse.startDate > new Date())) {
             return false;
         }

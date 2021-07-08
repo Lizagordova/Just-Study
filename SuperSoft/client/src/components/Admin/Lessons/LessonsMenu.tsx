@@ -91,7 +91,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     }
 
     renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <>

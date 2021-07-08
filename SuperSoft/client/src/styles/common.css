@@ -190,5 +190,9 @@ Table, td, tr, thead {
 .subtaskBadge {
     margin-right: 1%;
     height: 20px;
-    
+}
+
+.taskNav {
+    background-color: white;
+    color: rgb(43, 69, 148);
 }

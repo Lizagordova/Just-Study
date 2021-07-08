@@ -40,55 +40,6 @@ export class LessonPage extends Component<ILessonPageProps> {
 
     renderLessonMenu() {
         return(
-            <Tab.Container defaultActiveKey="lesson">
-                <Card>
-                    <CardHeader className="menuHeader">
-                        <Nav variant="pills" defaultActiveKey="lesson">
-                            <Nav.Item>
-                                <Nav.Link
-                                     className="nav-link"
-                                     eventKey="lesson"
-                                     onClick={() => this.toggleMenu("lesson")}>
-                                    Урок
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                     className="nav-link"
-                                     eventKey="homework"
-                                     onClick={() => this.toggleMenu("homework")}>
-                                    Домашняя работа
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                     className="nav-link"
-                                     eventKey="completedHomework"
-                                     onClick={() => this.toggleMenu("completedHomework")}>
-                                    Выполненные домашние работы
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    className="nav-link"
-                                    eventKey="progress"
-                                    onClick={() => this.toggleMenu("progress")}>
-                                    Прогресс
-                                </Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </CardHeader>
-                    {this.lessonActive && <Lesson store={this.props.store}/>}
-                    {this.homeworkActive && <HomeworkPage store={this.props.store}/>}
-                    {this.completedHomeworkActive && <CompletedHomeworkPage store={this.props.store}/>}
-                    {this.progressActive && <ProgressByLesson store={this.props.store} />}
-                </Card>
-            </Tab.Container>
-        );
-    }
-
-    renderLessonMenu1() {
-        return(
             <>
               <div className="row lessonMenuHeader">
                         <Nav variant="pills" defaultActiveKey="lesson">
@@ -139,7 +90,7 @@ export class LessonPage extends Component<ILessonPageProps> {
     render() {
         return(
             <div className="container-fluid lessonContent">
-                {this.renderLessonMenu1()}
+                {this.renderLessonMenu()}
             </div>
         );
     }

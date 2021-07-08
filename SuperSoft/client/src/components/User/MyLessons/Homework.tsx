@@ -3,7 +3,7 @@ import RootStore from "../../../stores/RootStore";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 import {Nav, Tab} from "react-bootstrap";
 import {observer} from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable } from "mobx";
 import {Alert} from "reactstrap";
 import HomeworkTask from "./HomeworkTask";
 import {NavigationType} from "../../../NavigationType";
@@ -15,26 +15,35 @@ class IHomeworkProps {
 @observer
 class Homework extends Component<IHomeworkProps> {
     taskToRender: TaskViewModel = new TaskViewModel();
+    tasksByChoosenLessonChanged: boolean;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IHomeworkProps) {
+        super(props);
         makeObservable(this, {
-            taskToRender: observable
+            taskToRender: observable,
+            tasksByChoosenLessonChanged: observable
         });
+        this.setTaskToRender();
     }
-
+    
+    setTaskToRender() {
+        let tasksByChoosenLesson = this.props.store.taskStore.tasksByChoosenLesson;
+        this.taskToRender =  tasksByChoosenLesson !== undefined && tasksByChoosenLesson !== null && tasksByChoosenLesson.length > 0
+            ? tasksByChoosenLesson[0] : new TaskViewModel();
+        this.props.store.taskStore.setTasksByChoosenLessonChanged(false);
+    }
+    
     renderTasks(tasks: TaskViewModel[]) {
         return(
-            <Tab.Container>
-                <div className="container-fluid">
-                    <Nav variant="pills">
+            <>
+                <div className="row taskNav">
+                    <Nav variant="pills" defaultActiveKey="lesson">
                         {tasks.map((task, i) => {
                             return (
                                 <Nav.Item key={i}>
                                     <Nav.Link
                                         active={task === this.taskToRender}
-                                        className="nav-link lesson"
+                                        className="nav-link"
                                         eventKey={i}
                                         onClick={() => this.taskToRender = task}
                                     >{ i + 1 }</Nav.Link>
@@ -42,21 +51,27 @@ class Homework extends Component<IHomeworkProps> {
                             );
                         })}
                     </Nav>
-                    <div className="row justify-content-center">
-                        <div className="col-12">
-                            {<HomeworkTask task={this.taskToRender} store={this.props.store} userId={this.props.store.userStore.currentUser.id} taskToggler={this.taskToggler}/>}
-                        </div>
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col-12">
+                        {<HomeworkTask task={this.taskToRender} store={this.props.store} userId={this.props.store.userStore.currentUser.id} taskToggler={this.taskToggler}/>}
                     </div>
                 </div>
-            </Tab.Container>
+            </>
         );
     }
-
+    
     render() {
         let tasks = this.props.store.taskStore.tasksByChoosenLesson;
+        let tasksByChoosenLessonChanged = this.props.store.taskStore.tasksByChoosenLessonChanged;
+        if(tasksByChoosenLessonChanged) {
+            this.setTaskToRender();
+        }
         return(
             <>
-                {tasks.length === 0 && <Alert color="primary">Домашнего задания пока нет. Можно отдыхать:)</Alert>}
+                {tasks.length === 0 && <Alert color="primary">
+                    Домашнего задания пока нет. Можно отдыхать:)
+                </Alert>}
                 {tasks.length !== 0 && this.renderTasks(tasks)}
             </>
         );

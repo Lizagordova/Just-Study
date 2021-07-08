@@ -12,13 +12,16 @@ import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
 
 class TaskStore {
+    @observable
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
+    tasksByChoosenLessonChanged: boolean;
     tasksByQuery: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         makeObservable(this, {
             tasksByChoosenLesson: observable,
-            tasksByQuery: observable
+            tasksByQuery: observable,
+            tasksByChoosenLessonChanged: observable
         });
     }
 
@@ -33,11 +36,16 @@ class TaskStore {
         });
         if(response.status === 200) {
             this.tasksByChoosenLesson  = await response.json();
+            this.tasksByChoosenLessonChanged = true;
         }
 
         return response.status;
     }
 
+    setTasksByChoosenLessonChanged(value: boolean) {
+        this.tasksByChoosenLessonChanged = value;
+    }
+    
     async addOrUpdateTask(task: TaskReadModel, lessonId: number | null): Promise<number> {
         const formData = this.getFormDataForTask(task, lessonId);
         const response = await fetch("/addorupdatetask", {
