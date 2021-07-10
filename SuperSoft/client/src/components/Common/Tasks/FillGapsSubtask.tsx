@@ -38,11 +38,12 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
             userAnswerGroups: observable,
             update: observable
         });
-        this.subtask = this.props.subtask;
+        this.setDefault();
     }
 
-    componentDidMount(): void {
-        this.parseSubtask(this.subtask);
+    setDefault(): void {
+        this.subtask = this.props.subtask;
+        this.parseSubtask(this.props.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
         this.loaded = true;
     }
@@ -128,7 +129,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                     {this.renderSentence()}
                 </div>
             </div>
-        )
+        );
     }
 
     render() {
