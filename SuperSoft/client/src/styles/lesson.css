@@ -166,6 +166,15 @@
 }
 
 .gapToInsert {
-    width: 70px !important;
     margin: 0 5px 5px 5px;
+}
+
+.rightAnswer {
+    color: #4F8A10 !important;
+    background-color: #DFF2BF !important;
+}
+
+.wrongAnswer {
+    color: #D8000C !important;
+    background-color: #FFBABA !important;
 }

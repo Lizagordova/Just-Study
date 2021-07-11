@@ -81,33 +81,29 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     }
 
     renderSentenceWithGaps(textParts: TextPart[]) {
-        console.log("i want to rerender", toJS(textParts));
         return (
             <>
                 {textParts.map((textPart) => {
                     if(textPart.isGap) {
-                        console.log("textPART", toJS(textPart));
                         if(textPart.action === ActionType.isChoosenRight) {
                             return (
                                 <Input
-                                    className="gapToInsert"
+                                    className="gapToInsert rightAnswer"
                                     value={textPart.textToRender !== undefined ? textPart.textToRender : ""}
                                     disabled={true}
-                                    style={{backgroundColor: "rgb(75,181, 67)"}}
+                                    style={{width: "auto"}}
                                 />
                             );
                         } else if(textPart.action === ActionType.isChoosenWrong) {
                             setTimeout(() => {
                                 this.turnOffTargetIdIfWrong(textPart.id);
                             }, 1000);
-                            console.log(" i am here textPart", toJS(textPart));
-                            console.log(" i am here textToRender", toJS(textPart.textToRender));
                             return (
                                 <Input
-                                    className="gapToInsert"
+                                    className="gapToInsert wrongAnswer"
+                                    style={{width: "auto"}}
                                     value={textPart.textToRender !== undefined ? textPart.textToRender : ""}
                                     onClick={() => this.checkParts(textPart.id)}
-                                    style={{backgroundColor: "#FFD2D2"}}
                                 />
                             );
                         } else if(textPart.action === ActionType.isNotChoosen) {
@@ -116,6 +112,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                                     value=""
                                     className="gapToInsert"
                                     onClick={() => this.checkParts(textPart.id)}
+                                    style={{width: "70px"}}
                                 />
                             );
                         }
@@ -170,6 +167,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         let targetTextPart = textParts.find(part => part.id === targetId);
         if(targetTextPart !== undefined) {
             if (this.sourcePartId === targetId) {
+                this.playAudio(ActionType.isChoosenRight);
                 targetTextPart.action = ActionType.isChoosenRight;
                 targetTextPart.textToRender = targetTextPart.name;
                 let shuffledParts = this.shuffledParts;
@@ -178,6 +176,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                 this.shuffledParts = shuffledParts.filter(part => part.id !== shuffledPart.id);
                 
             } else {
+                this.playAudio(ActionType.isChoosenWrong);
                 targetTextPart.action = ActionType.isChoosenWrong;
                 let sourceTextPart = textParts.find(part => part.id === this.sourcePartId);
                 if(sourceTextPart !== undefined) {
@@ -188,16 +187,18 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
             let index = textParts.indexOf(targetTextPart);
             textParts[index] = targetTextPart;
         }
-        this.toggler(ToggleType.Update); 
-        this.playAudio();
+        this.toggler(ToggleType.Update);
         this.textParts = textParts;
     }
     
-    playAudio() {
-        let audioObj = new Audio("/public/right.mp3");
-       let audioObj1 = new Audio("/build/right.mp3");
-        audioObj.play();
-        audioObj1.play();
+    playAudio(type: ActionType) {
+        if(type === ActionType.isChoosenRight) {
+            let audioObj = new Audio("right.mp3");
+            audioObj.play();
+        } else if(type === ActionType.isChoosenWrong) {
+            let audioObj = new Audio("wrong.mp3");
+            audioObj.play();
+        }
     }
     
     toggler(type: ToggleType) {
@@ -213,14 +214,12 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     turnOffTargetIdIfWrong(id: number) {
         let textParts = this.textParts;
         let textPart = textParts.find(textPart => textPart.id === id);
-        console.log("textParts.......1", textPart);
         if(textPart !== undefined) {
             textPart.action = ActionType.isNotChoosen;
             textPart.textToRender = "";
             let index = textParts.indexOf(textPart);
             textParts[index] = textPart;
         }
-        console.log("textParts.......2",textPart);
         this.textParts = textParts;
         this.toggler(ToggleType.Update);
     }

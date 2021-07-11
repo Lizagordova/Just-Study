@@ -96,7 +96,7 @@ class App extends Component<Props> {
             </div>
         );
     }
-
+    
     render() {
        const { store } = this.props;
        let authorizationRequired = this.props.store.userStore.authorizationRequired || this.props.store.userStore.registrationRequired;
