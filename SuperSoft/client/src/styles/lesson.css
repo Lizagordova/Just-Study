@@ -157,3 +157,15 @@
     color: white !important;
     background-color: rgb(65, 105, 225) !important;
 }
+
+.shuffledPart {
+    background-color: white !important;
+    color: black !important;
+    border-color: black !important;
+    margin: 5px 5px 5px 5px;
+}
+
+.gapToInsert {
+    width: 70px !important;
+    margin: 0 5px 5px 5px;
+}
