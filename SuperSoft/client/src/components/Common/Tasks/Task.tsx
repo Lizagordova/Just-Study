@@ -74,7 +74,7 @@ export class Task extends Component<ITaskProps> {
     renderEditButton() {
         if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
             return (
-                <i style={{marginLeft: '92%', width: '2%'}}
+                <i style={{marginRight: "2px"}}
                    onClick={() => this.editTaskToggle()}
                    className="fa fa-edit fa-2x" aria-hidden="true"/>
             );
@@ -83,8 +83,7 @@ export class Task extends Component<ITaskProps> {
     
     renderDeleteButton() {
         return (
-            <i style={{marginLeft: '92%', width: '2%'}}
-               onClick={() => this.deleteTask()}
+            <i onClick={() => this.deleteTask()}
                className="fa fa-window-close fa-2x" aria-hidden="true"/>
         );
     }
@@ -94,8 +93,8 @@ export class Task extends Component<ITaskProps> {
         if(role === UserRole.Admin) {
             return(
             <>
-                {this.renderDeleteButton()}
                 {this.renderEditButton()}
+                {this.renderDeleteButton()}
             </>
             );
         }
@@ -105,11 +104,11 @@ export class Task extends Component<ITaskProps> {
         let role = this.props.store.userStore.currentUser.role;
         if(role === UserRole.Admin && !this.props.reviewMode) {
             return(
-                <Button className="addTask"
-                     style={{fontSize: "0.6em", height: "auto"}}
+                <Button className="commonButton"
+                     style={{fontSize: "0.8em", height: "auto"}}
                      onClick={() => this.addSubtaskToggle()}
                      outline color="secondary">
-                    <span className="addTaskText">
+                    <span>
                         {!this.addSubtask ? 'Добавить подзадание' : 'Отменить'}
                     </span>
                 </Button>
@@ -134,8 +133,16 @@ export class Task extends Component<ITaskProps> {
 
     renderInstruction(task: TaskViewModel) {
         return(
-            <CardTitle style={{fontSize: "1.3em"}}  dangerouslySetInnerHTML={{__html: task.instruction}}/>
-        );
+            <div className="row justify-content-center">
+                <div style={{fontSize: "1.3em"}}
+                     className="col-11"
+                     dangerouslySetInnerHTML={{__html: task.instruction}}>
+                </div>
+                <div className="col-1s">
+                    {this.renderControlButtons()}
+                </div>
+            </div>
+         );
     }
 
     renderText(task: TaskViewModel) {
@@ -148,8 +155,7 @@ export class Task extends Component<ITaskProps> {
 
     renderTask(task: TaskViewModel) {
         return(
-            <div className="container-fluid" style={{width: '100%'}}>
-                {this.renderControlButtons()}
+            <div className="container-fluid task">
                 {this.renderInstruction(task)}
                 {this.renderText(task)}
                 {this.renderSubtasks(task.subtasks, this.update)}
@@ -163,7 +169,7 @@ export class Task extends Component<ITaskProps> {
            <>
                {subtasks.map((subtask, i) => {
                    return(
-                       <div className="row" style={{marginLeft: "5%"}}>
+                       <div className="row" style={{marginLeft: "1%"}}>
                            {this.renderSubtask(subtask, i, update)}
                        </div>
                    );
@@ -180,7 +186,6 @@ export class Task extends Component<ITaskProps> {
         if(userSubtask === undefined) {
             userSubtask = new UserSubtaskViewModel();
         }
-        console.log("subtask", toJS(subtask));
         if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
             return(
                 <DetailedAnswerSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />

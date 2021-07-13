@@ -12,3 +12,17 @@
     color: white !important;
     border-color: black;
 }
+
+.commonButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-color: black !important;
+    background-color: white !important;
+    color: black !important;
+}
+
+.commonButton:hover {
+    background-color: black !important;
+    color: white !important;
+    border-color: black;
+}

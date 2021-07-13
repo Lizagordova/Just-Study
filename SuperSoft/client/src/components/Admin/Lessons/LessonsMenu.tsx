@@ -95,11 +95,12 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         return(
             <>
                 {this.renderCautions()}
-                <div className="row">
+                <div className="row" style={{marginRight: "1px", marginLeft: "1px"}}>
                     <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
                         <Button
                             onClick={() => this.toggleNav()} 
-                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>Уроки</Button>
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>
+                            Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
                                 <div className="container-fluid">
@@ -132,10 +133,10 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     render() {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
-            <div className="container-fluid">
+            <>
                 {lessons !== undefined && this.renderLessonsMenu(lessons)}
                 {(lessons === undefined) && renderSpinner()}
-            </div>
+            </>
         );
     }
 

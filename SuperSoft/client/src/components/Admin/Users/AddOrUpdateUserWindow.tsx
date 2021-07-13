@@ -56,7 +56,7 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
         return (
             <Button
                 outline
-                className="addUserButton"
+                className="commonButton"
                 onClick={() => this.toggleAddUser()}>
                 Добавить пользователя
             </Button>

@@ -75,7 +75,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '98%', width: '2%'}}
+                <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
             );
@@ -120,7 +120,9 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                         }
                 } else {
                         return (
-                            <span>{textPart.name}</span>
+                            <span style={{marginLeft: "3px", marginRight: "3px"}}>
+                                {textPart.name}
+                            </span>
                         );
                     }
                 })}

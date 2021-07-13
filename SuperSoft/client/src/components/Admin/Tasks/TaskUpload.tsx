@@ -84,7 +84,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
     renderButton() {
         return(
             <div className="row justify-content-center" style={{marginTop: "10px", marginBottom: "10px"}}>
-                <Button className="addTask"
+                <Button className="commonButton"
                         onClick={() => this.toggleTaskUploadWindow()}
                         outline color="secondary">
                     <span className="addTaskText">Добавить упражение</span>

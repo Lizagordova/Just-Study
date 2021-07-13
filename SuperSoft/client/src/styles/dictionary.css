@@ -20,3 +20,14 @@
         height: 125px;
     }
 }
+
+.addNewWordButton {
+    color: rgb(65, 105, 225) !important;
+    border-color: rgb(65, 105, 225) !important;
+    background-color: white !important;
+}
+
+.addNewWordButton:hover {
+    background-color: rgb(65, 105, 225) !important;
+    color: white !important;
+}

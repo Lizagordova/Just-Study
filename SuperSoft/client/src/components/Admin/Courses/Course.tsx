@@ -87,7 +87,7 @@ export class Course extends Component<ICourseProps> {
                         </Nav.Item>
                     </Nav>
                 </div>
-                <div className="row"  style={{marginLeft: "2%", marginTop:"5px"}}>
+                <div className="row"  style={{ marginTop:"5px"}}>
                     {this.renderCourseContent()}
                 </div>
             </>
