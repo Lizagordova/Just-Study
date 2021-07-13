@@ -22,6 +22,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     deleted: boolean = false;
     isNavOpen: boolean = true;
     loading: boolean = true;
+    update: boolean = false;
 
     constructor() {
         // @ts-ignore
@@ -33,6 +34,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             deleted: observable,
             isNavOpen: observable,
             loading: observable,
+            update: observable,
         });
     }
 
@@ -90,7 +92,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
-    renderLessonsMenu(lessons: LessonViewModel[]) {
+    renderLessonsMenu(lessons: LessonViewModel[], update: boolean) {
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <>
@@ -124,7 +126,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 
         return(
             <>
-                {lessonExists && <LessonPage store={this.props.store} lessonActive={true}/>}
+                {lessonExists && <LessonPage store={this.props.store} lessonActive={true} update={this.updateToggle}/>}
                 {!lessonExists && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
@@ -134,20 +136,14 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <>
-                {lessons !== undefined && this.renderLessonsMenu(lessons)}
+                {lessons !== undefined && this.renderLessonsMenu(lessons, this.update)}
                 {(lessons === undefined) && renderSpinner()}
             </>
         );
     }
-
-    deleteLesson(lessonId: number) {
-        let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
-        if(result) {
-            this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)
-                .then((status) => {
-                    this.notDeleted = status !== 200;
-                    this.deleted = status === 200;
-            });
-        }
+    
+    updateToggle = () => {
+        this.update = !this.update;
     }
+    
 }
