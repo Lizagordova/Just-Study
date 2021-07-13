@@ -110,7 +110,7 @@ export class Task extends Component<ITaskProps> {
                      onClick={() => this.addSubtaskToggle()}
                      outline color="secondary">
                     <span className="addTaskText">
-                        {!this.addSubtask ? 'ДОБАВИТЬ ПОДЗАДАНИЕ' : 'ОТМЕНИТЬ'}
+                        {!this.addSubtask ? 'Добавить подзадание' : 'Отменить'}
                     </span>
                 </Button>
             );
@@ -180,35 +180,32 @@ export class Task extends Component<ITaskProps> {
         if(userSubtask === undefined) {
             userSubtask = new UserSubtaskViewModel();
         }
-        subtask.text = "I want* to be* like you* and* live* there,* in Turkey*"
-        return(
-            <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store} userSubtask={userSubtask}  order={order} reviewMode={this.props.reviewMode} taskId={taskId} userId={userId} updateUserTask={this.getUserTask} />
-        );
-        // if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
-        //     return(
-        //         <DetailedAnswerSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
-        //     );
-        // } else if(subtask.subtaskType === SubtaskType.FillGaps) {
-        //     return(
-        //         <FillGapsSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
-        //     );
-        // } else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
-        //     return(
-        //         <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store} userSubtask={userSubtask}  order={order} reviewMode={this.props.reviewMode} taskId={taskId} userId={userId} updateUserTask={this.getUserTask} />
-        //     );
-        // } else if(subtask.subtaskType === SubtaskType.LoadAudio) {
-        //     return(
-        //         <LoadAudioSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
-        //     );
-        // } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
-        //     return(
-        //         <RightVerbFormSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
-        //     );
-        // } else if(subtask.subtaskType === SubtaskType.LoadFile) {
-        //     return(
-        //         <LoadFileSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
-        //     );
-        // }
+        console.log("subtask", toJS(subtask));
+        if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
+            return(
+                <DetailedAnswerSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.FillGaps) {
+            return(
+                <FillGapsSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
+            return(
+                <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store} userSubtask={userSubtask}  order={order} reviewMode={this.props.reviewMode} taskId={taskId} userId={userId} updateUserTask={this.getUserTask} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.LoadAudio) {
+            return(
+                <LoadAudioSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.RightVerbForm) {
+            return(
+                <RightVerbFormSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.LoadFile) {
+            return(
+                <LoadFileSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        }
     }
 
     render() {

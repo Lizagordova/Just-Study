@@ -12,7 +12,6 @@ import {
     Label,
     Modal,
     ModalBody,
-    ModalFooter
 } from "reactstrap";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import { UserRole } from "../../../Typings/enums/UserRole";
@@ -127,11 +126,13 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
 
     renderRole(user: UserViewModel) {
         return(
-            <Dropdown style={{marginTop: "7px", opacity: ".7"}} isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
-                <DropdownToggle caret>
+            <Dropdown 
+                style={{marginTop: "7px"}}
+                isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
+                <DropdownToggle caret  className="dropdown">
                     {translateRole(user.role)}
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu >
                     <DropdownItem id="1" onClick={() => this.roleChange(UserRole.Admin)}>{translateRole(UserRole.Admin)}</DropdownItem>
                     <DropdownItem id="2" onClick={() => this.roleChange(UserRole.User)}>{translateRole(UserRole.User)}</DropdownItem>
                 </DropdownMenu>
@@ -194,7 +195,7 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
             <Button
                 color="primary"
                 onClick={() => this.toggleAddUser()}>
-                ОТМЕНИТЬ
+                Отменить
             </Button>
         );
     }
@@ -208,7 +209,9 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
                 toggle={() => this.toggleAddUser()}
             >
                 <div className="row justify-content-center">
-                    Пользователь
+                    <span style={{fontSize: "1.2em"}}>
+                        Пользователь
+                    </span>
                 </div>
                 {this.renderBody(this.user)}
                 {this.renderCancelButton()}

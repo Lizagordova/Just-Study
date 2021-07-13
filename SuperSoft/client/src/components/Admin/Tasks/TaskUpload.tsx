@@ -105,13 +105,13 @@ class TaskUpload extends Component<ITaskUploadProps> {
                    onClick={() => this.toggleTaskUploadWindow()}
                    className="fa fa-window-close fa-2x" aria-hidden="true" />
                 <div className="row justify-content-center">
-                    СОЗДАТЬ НОВОЕ УПРАЖНЕНИЕ
+                    Создать новое упражнение
                 </div>
                 {this.renderBody()}
                 <Button
                     color="primary"
                     onClick={() => this.toggleTaskUploadWindow()}>
-                    СКРЫТЬ УПРАЖНЕНИЯ
+                    Скрыть упражнения
                 </Button>
             </Modal>
         );

@@ -140,16 +140,6 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    save() {
-        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
-                .then((status) => {
-                    this.notSaved = status !== 200;
-                    this.saved = status === 200;
-                });
-        }
-    }
-
     deleteSubtask() {
         this.props.store.taskStore
             .deleteSubtask(this.props.subtask.id, this.props.taskId)

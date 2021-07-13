@@ -42,7 +42,7 @@ class HomeworkPage extends Component<IHomeworkPageProps> {
                     }}
                     onClick={() => this.toggleTasksPoolOpen()}
                     outline color="secondary">
-                    ДОБАВИТЬ ЗАДАНИЕ ИЗ БАНКА ЗАДАНИЙ
+                    Добавить задание из банка заданий
                 </Button>
             </div>
         );

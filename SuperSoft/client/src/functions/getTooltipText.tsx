@@ -6,7 +6,7 @@ export function getTooltipText(subtaskType: SubtaskType): string {
     } else if(subtaskType === SubtaskType.RightVerbForm) {
         return "Подсказка\n Запишите варианты ответа в квадратных скобках и отметьте правильный вариант звездочкой *.\n Если вы хотите добавить объяснение, то напишите его в скобочках сразу после ответа\n Пример:\n They [is(because bla-bla-bla)/are/was/were*(it is right!because...)] on holiday yesterday";
     } else if(subtaskType === SubtaskType.InsertWordsIntoGaps) {
-        return "Подсказка\n Напишите текст. Слова и фразы, которые нужно вставить из рамочки, заключите в квадратные скобки.\n Пример:\n I like [walking] in the park in the morning.";
+        return "Подсказка\n Напишите текст. Слова и фразы, которые нужно вставить из рамочки, отметьте знаком *.\n Пример:\n I like walking* in the park* in the morning.";
     }
     return "";
 }

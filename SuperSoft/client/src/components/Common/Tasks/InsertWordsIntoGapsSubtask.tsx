@@ -5,6 +5,8 @@ import {makeObservable, observable, toJS} from "mobx";
 import { shuffleArray } from "../../../functions/shuffleWords";
 import { Button, Input } from "reactstrap";
 import { UserRole } from "../../../Typings/enums/UserRole";
+import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
+import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
 
 class TextPart {
     id: number;
@@ -222,6 +224,12 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         }
         this.textParts = textParts;
         this.toggler(ToggleType.Update);
+    }
+    
+    saveResult() {
+        // let userSubtask = mapToUserSubtaskReadModel(this.props.userSubtask);
+        // this.props.store.taskStore
+        //     .addOrUpdateUserSubtask();
     }
 }
 
