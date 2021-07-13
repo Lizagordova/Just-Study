@@ -28,6 +28,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
     notDeleted: boolean = false;
     isNavOpen: boolean = false;
     updateParticipants: boolean = true;
+    update: boolean = false;
 
     constructor() {
         // @ts-ignore
@@ -35,7 +36,8 @@ class CoursesPage extends Component<ICoursesPageProps> {
         makeObservable(this, {
             notDeleted: observable,
             isNavOpen: observable,
-            updateParticipants: observable
+            updateParticipants: observable,
+            update: observable,
         });
     }
 
@@ -71,7 +73,7 @@ class CoursesPage extends Component<ICoursesPageProps> {
         );
     }
     
-    renderCoursesMenu(courses: CourseViewModel[]) {
+    renderCoursesMenu(courses: CourseViewModel[], update: boolean) {
         return (
             <>
                 <div className="row justify-content-start" style={{marginTop: "1%"}}>
@@ -81,6 +83,9 @@ class CoursesPage extends Component<ICoursesPageProps> {
                    <div style={{marginLeft: "1%"}}>
                        {<AddNewCourse courseStore={this.props.store.courseStore}/>}
                    </div>
+                    <div style={{marginLeft: "70%"}}>
+                        {this.renderControls()}
+                    </div>
                 </div>
                 <div className="row justify-content-center">
                     {this.renderCourse()}
@@ -108,64 +113,38 @@ class CoursesPage extends Component<ICoursesPageProps> {
             </ButtonDropdown>
         );
     }
-    
-    renderCoursesMenu1(courses: CourseViewModel[]) {
-        let rowHeight = this.isNavOpen ? courses.length * 130 : 40;
-            return (
-                <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-                    {this.renderCautions()}
-                    <Row>
-                        <Col sm={3} style={{height: `${rowHeight}px`}}>
-                            <Button color="primary" onClick={() => this.toggleNav()}>Курсы</Button>
-                            <Collapse isOpen={this.isNavOpen}>
-                                <Nav variant="pills" className="flex-column">
-                                    <div className="container-fluid">
-                                        {courses.map((course) => {
-                                            return (
-                                                <Nav.Item key={course.id}>
-                                                    <div className="row" key={course.id}>
-                                                        <i style={{marginLeft: '96%', width: '2%'}}
-                                                           onClick={() => this.deleteCourse(course.id)}
-                                                           className="fa fa-window-close fa-2x" aria-hidden="true"/>
-                                                            <Nav.Link
-                                                                eventKey={course.id}
-                                                                className="nav-link lesson"
-                                                                onClick={() => this.changeCourse(course)}>
-                                                                {course.name}
-                                                            </Nav.Link>
-                                                    </div>
-                                                </Nav.Item>
-                                            );
-                                        })}
-                                        {<AddNewCourse courseStore={this.props.store.courseStore}/>}
-                                    </div>
-                                </Nav>
-                            </Collapse>
-                        </Col>
-                        <Col sm={9}>
-                            {this.renderCourse()}
-                        </Col>
-                    </Row>
-                </Tab.Container>
-            );
-    }
 
+    renderControls() {
+        let courseId = this.props.store.courseStore.choosenCourse.id;
+        if (courseId !== undefined && courseId !== null) {
+            return (
+                <div className="controls">
+                    <i className="fa fa-trash-o fa-3x" style={{marginRight: "4px"}} onClick={() => this.deleteCourse()} />
+                </div>
+            );
+        }
+    }
+    
     render() {
         let courses = this.props.store.courseStore.coursesForTeacher;
         return (
             <div style={{marginTop: "5px"}}>
-                {courses !== undefined && this.renderCoursesMenu(courses)}
+                {courses !== undefined && this.renderCoursesMenu(courses, this.update)}
                 {courses === undefined && renderSpinner()}
             </div>
         );
     }
 
-    deleteCourse(courseId: number) {
+    deleteCourse() {
         let result = window.confirm('Вы уверены, что хотите удалить этот курс?');
         if(result) {
-            this.props.store.courseStore.deleteCourse(courseId)
+            this.props.store.courseStore.deleteCourse(this.props.store.courseStore.choosenCourse.id)
                 .then((status) => {
                     this.notDeleted = status !== 200;
+                    if(status === 200) {
+                        this.udpateToggle();
+                    }
+                    this.changeCourse(new CourseViewModel());
             });
         }
     }
@@ -179,6 +158,10 @@ class CoursesPage extends Component<ICoursesPageProps> {
         this.props.store.lessonStore.getLessonsByCourse(course.id);
         this.props.store.courseStore.getUsersByCourse(course.id);
         this.props.store.wordStore.getWordOfADay(new Date(), course.id);
+    }
+
+    udpateToggle = () => {
+        this.update = !this.update;
     }
 }
 

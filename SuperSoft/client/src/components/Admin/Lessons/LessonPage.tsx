@@ -69,8 +69,8 @@ export class LessonPage extends Component<ILessonPageProps> {
     renderControls() {
         return (
             <div className="controls">
-                <i className="fa fa-edit fa-3x" style={{marginRight: "4px"}} onClick={() => this.editToggle()}/>
-                <i className="fa fa-trash-o fa-3x"  onClick={() => this.deleteLesson()}/>
+                <i className="fa fa-edit fa-2x" style={{marginRight: "4px"}} onClick={() => this.editToggle()}/>
+                <i className="fa fa-trash-o fa-2x"  onClick={() => this.deleteLesson()}/>
             </div>
         );
     }

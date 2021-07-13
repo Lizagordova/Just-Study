@@ -16,8 +16,6 @@ class ILessonsMenuProps {
 
 @observer
 export class LessonsMenu extends Component<ILessonsMenuProps> {
-    editLesson: boolean = false;
-    lessonToEdit: LessonViewModel = new LessonViewModel();
     notDeleted: boolean = false;
     deleted: boolean = false;
     isNavOpen: boolean = true;
@@ -28,27 +26,16 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         // @ts-ignore
         super();
         makeObservable(this, {
-            editLesson: observable,
-            lessonToEdit: observable,
             notDeleted: observable,
             deleted: observable,
             isNavOpen: observable,
             loading: observable,
-            update: observable,
+            update: observable
         });
     }
 
     toggleNav() {
         this.isNavOpen = !this.isNavOpen;
-    }
-
-    editToggle = () => {
-        this.editLesson = !this.editLesson;
-    };
-
-    editLessonToggle(lesson: LessonViewModel) {
-        this.editLesson = true;
-        this.lessonToEdit = lesson;
     }
 
     lessonToggle(lesson: LessonViewModel) {
@@ -115,7 +102,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                     <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         {this.renderLessonPage()}
                     </div>
-                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
                 </div>
             </>
         );

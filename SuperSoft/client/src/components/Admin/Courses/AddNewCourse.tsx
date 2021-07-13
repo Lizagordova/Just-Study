@@ -141,11 +141,11 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
             </Modal>
         );
     }
-
+    
     render() {
         return(
             <>
-                {!this.addNewCourse && this.renderButton()}
+                {this.renderButton()}
                 {this.addNewCourse && this.renderAddNewCourseWindow()}
             </>
         );
