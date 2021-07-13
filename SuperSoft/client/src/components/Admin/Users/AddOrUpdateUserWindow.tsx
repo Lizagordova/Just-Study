@@ -57,7 +57,6 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
             <Button
                 outline
                 className="addUserButton"
-                style={{color: "black", borderColor: "black"}}
                 onClick={() => this.toggleAddUser()}>
                 Добавить пользователя
             </Button>

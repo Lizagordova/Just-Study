@@ -1,9 +1,14 @@
 ﻿.addUserButton {
     margin-top: 10px;
     margin-bottom: 10px;
+    border-color: black !important;
+    background-color: white !important;
+    color: black !important;
+    
 }
 
 .btn-outline-secondary.addUserButton:hover {
     background-color: black !important;
     color: white !important;
+    border-color: black;
 }
