@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using GemBox.Presentation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Lessons;
@@ -36,7 +37,10 @@ namespace SuperSoft.Persistence.Services.Lessons
 			var lessonMaterials = _lessonRepository.GetMaterialsByLesson(lessonId);
 			lessonMaterials.ForEach(lm =>
 			{
-				File.Delete(lm.Path);//todo: сделать что-то более усложнённое
+				if (File.Exists(lm.Path))
+				{
+					File.Delete(lm.Path);//todo: сделать что-то более усложнённое	
+				}
 			});
 			_lessonRepository.DeleteLesson(lessonId);
 		}

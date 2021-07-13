@@ -178,3 +178,12 @@
     color: #D8000C !important;
     background-color: #FFBABA !important;
 }
+
+.controlButton {
+    margin-left: 1%;   
+}
+
+.controls {
+    margin-right: 2px;
+    display: inline;
+}

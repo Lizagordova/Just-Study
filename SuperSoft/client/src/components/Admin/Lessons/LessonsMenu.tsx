@@ -16,23 +16,19 @@ class ILessonsMenuProps {
 
 @observer
 export class LessonsMenu extends Component<ILessonsMenuProps> {
-    editLesson: boolean = false;
     lessonToEdit: LessonViewModel = new LessonViewModel();
-    notDeleted: boolean = false;
-    deleted: boolean = false;
     isNavOpen: boolean = true;
     loading: boolean = true;
+    update: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            editLesson: observable,
             lessonToEdit: observable,
-            notDeleted: observable,
-            deleted: observable,
             isNavOpen: observable,
             loading: observable,
+            update: observable,
         });
     }
 
@@ -40,29 +36,9 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         this.isNavOpen = !this.isNavOpen;
     }
 
-    editToggle = () => {
-        this.editLesson = !this.editLesson;
-    };
-
-    editLessonToggle(lesson: LessonViewModel) {
-        this.editLesson = true;
-        this.lessonToEdit = lesson;
-    }
-
     lessonToggle(lesson: LessonViewModel) {
         this.props.store.lessonStore.setChoosenLesson(lesson);
         this.props.store.taskStore.getTasksByLesson(lesson.id);
-    }
-
-    renderCautions() {
-        setTimeout(() => {
-            this.notDeleted = false;
-        }, 6000);
-        return (
-            <>
-                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
-            </>
-        );
     }
 
     renderLessonsList(lessons: LessonViewModel[]) {
@@ -90,11 +66,10 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
-    renderLessonsMenu(lessons: LessonViewModel[]) {
+    renderLessonsMenu(lessons: LessonViewModel[], update: boolean) {
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <>
-                {this.renderCautions()}
                 <div className="row">
                     <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
                         <Button
@@ -112,7 +87,6 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                     <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         {this.renderLessonPage()}
                     </div>
-                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
                 </div>
             </>
         );
@@ -123,7 +97,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 
         return(
             <>
-                {lessonExists && <LessonPage store={this.props.store} lessonActive={true}/>}
+                {lessonExists && <LessonPage store={this.props.store} lessonActive={true} update={this.updateToggle} />}
                 {!lessonExists && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
@@ -133,20 +107,14 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <div className="container-fluid">
-                {lessons !== undefined && this.renderLessonsMenu(lessons)}
+                {lessons !== undefined && this.renderLessonsMenu(lessons, this.update)}
                 {(lessons === undefined) && renderSpinner()}
             </div>
         );
     }
 
-    deleteLesson(lessonId: number) {
-        let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
-        if(result) {
-            this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)
-                .then((status) => {
-                    this.notDeleted = status !== 200;
-                    this.deleted = status === 200;
-            });
-        }
+    updateToggle = () => {
+        this.update = !this.update
     }
+    
 }

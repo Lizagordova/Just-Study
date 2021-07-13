@@ -1,17 +1,20 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
-import { Tab, Nav } from "react-bootstrap";
-import { Card, CardHeader } from "reactstrap";
+import { Nav } from "react-bootstrap";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import { Lesson } from "../../Common/Lesson/Lesson";
 import HomeworkPage from "../Homework/HomeworkPage";
 import { CompletedHomeworkPage } from "../CompletedHomework/CompletedHomeworkPage";
 import ProgressByLesson from "../ProgressByLesson/ProgressByLesson";
+import {Alert} from "reactstrap";
+import {LessonViewModel} from "../../../Typings/viewModels/LessonViewModel";
+import {AddOrUpdateNewLesson} from "./AddOrUpdateNewLesson";
 
 class ILessonPageProps {
     store: RootStore;
     lessonActive: boolean;
+    update: any;
 }
 
 @observer
@@ -20,6 +23,9 @@ export class LessonPage extends Component<ILessonPageProps> {
     homeworkActive: boolean;
     completedHomeworkActive: boolean;
     progressActive: boolean;
+    notDeleted: boolean = false;
+    deleted: boolean = false;
+    editLesson: boolean = false;
 
     constructor(props: ILessonPageProps) {
         super(props);
@@ -27,7 +33,10 @@ export class LessonPage extends Component<ILessonPageProps> {
             lessonActive: observable,
             homeworkActive: observable,
             completedHomeworkActive: observable,
-            progressActive: observable
+            progressActive: observable,
+            notDeleted: observable,
+            deleted: observable,
+            editLesson: observable,
         });
         this.lessonActive = this.props.lessonActive;
     }
@@ -38,9 +47,41 @@ export class LessonPage extends Component<ILessonPageProps> {
         }
     }
 
+    editToggle = () => {
+        this.editLesson = !this.editLesson;
+    };
+
+    editLessonToggle(lesson: LessonViewModel) {
+        this.editLesson = true;
+    }
+    
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
+            </>
+        );
+    }
+    
+    renderControls() {
+        return (
+            <div className="controls">
+                <i className="fa fa-edit fa-3x" style={{marginRight: "4px"}} onClick={() => this.editToggle()}/>
+                <i className="fa fa-trash-o fa-3x"  onClick={() => this.deleteLesson()}/>
+            </div>
+        );
+    }
+    
     renderLessonMenu() {
         return(
             <>
+                {this.renderCautions()}
+                <div className="row justify-content-end">
+                    {this.renderControls()}
+                </div>
               <div className="row lessonMenuHeader">
                         <Nav variant="pills" defaultActiveKey="lesson">
                             <Nav.Item>
@@ -91,6 +132,7 @@ export class LessonPage extends Component<ILessonPageProps> {
         return(
             <div className="container-fluid lessonContent">
                 {this.renderLessonMenu()}
+                {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.props.store.lessonStore.choosenLesson} cancelEdit={this.editToggle}/>}
             </div>
         );
     }
@@ -108,6 +150,19 @@ export class LessonPage extends Component<ILessonPageProps> {
             this.completedHomeworkActive = true;
         } else if (turnOn === "progress") {
             this.progressActive = true;
+        }
+    }
+
+    deleteLesson() {
+        let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
+        if(result) {
+            this.props.store.lessonStore.deleteLesson(this.props.store.lessonStore.choosenLesson.id, this.props.store.courseStore.choosenCourse.id)
+                .then((status) => {
+                    this.notDeleted = status !== 200;
+                    if(status === 200) {
+                        this.props.update();
+                    }
+                });
         }
     }
 }

@@ -214,8 +214,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 <i style={{marginLeft: '92%', width: '2%'}}
                    onClick={() => this.addOrUpdateNewLessonToggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
-            <div className="row justify-content-center">
-                УРОК
+            <div className="row justify-content-center" style={{fontSize: "1.3em"}}>
+                Урок
             </div>
                 {this.renderBody()}
                 {this.renderCancelButton()}
