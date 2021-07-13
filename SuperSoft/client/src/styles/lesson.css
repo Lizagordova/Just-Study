@@ -179,11 +179,10 @@
     background-color: #FFBABA !important;
 }
 
-.controlButton {
-    margin-left: 1%;   
-}
-
-.controls {
-    margin-right: 2px;
-    display: inline;
+.task {
+    width: 100%;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.8);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
 }

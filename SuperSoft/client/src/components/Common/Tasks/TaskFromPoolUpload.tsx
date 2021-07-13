@@ -6,10 +6,10 @@ import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
 import { Task } from "./Task";
 import RootStore from "../../../stores/RootStore";
 import { Modal, ModalBody, Button, Alert } from  "reactstrap";
-import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
-import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
-import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
-import {mapToSubtagReadModel} from "../../../functions/mapper";
+import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
+import { SubtagReadModel } from "../../../Typings/readModels/SubtagReadModel";
+import { SubtagViewModel } from "../../../Typings/viewModels/SubtagViewModel";
+import { mapToSubtagReadModel } from "../../../functions/mapper";
 
 class ITaskFromPoolUploadProps {
     store: RootStore;
@@ -97,7 +97,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                     color="primary"
                     style={{width: '50%'}}
                     onClick={() => this.applyTags()}>
-                    ПРИМЕНИТЬ
+                    Применить
                 </Button>
             </div>
         );
@@ -153,7 +153,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                    onClick={() => this.props.toggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
-                    БАНК ЗАДАНИЙ
+                   Банк заданий
                 </div>
                 {this.renderFilters(tags)}
                 {this.renderBody()}
@@ -185,7 +185,6 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     applyTags() {
-        console.log("this.choosenSubtags", toJS(this.choosenSubtags));
         this.props.store.taskStore
             .getTasks(this.choosenSubtags.map(mapToSubtagReadModel))
             .then((status) => {

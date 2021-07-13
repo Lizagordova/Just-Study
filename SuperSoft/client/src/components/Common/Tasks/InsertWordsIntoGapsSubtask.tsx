@@ -5,6 +5,8 @@ import {makeObservable, observable, toJS} from "mobx";
 import { shuffleArray } from "../../../functions/shuffleWords";
 import { Button, Input } from "reactstrap";
 import { UserRole } from "../../../Typings/enums/UserRole";
+import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
+import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
 
 class TextPart {
     id: number;
@@ -73,7 +75,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '98%', width: '2%'}}
+                <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
             );
@@ -118,7 +120,9 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                         }
                 } else {
                         return (
-                            <span>{textPart.name}</span>
+                            <span style={{marginLeft: "3px", marginRight: "3px"}}>
+                                {textPart.name}
+                            </span>
                         );
                     }
                 })}
@@ -222,6 +226,12 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         }
         this.textParts = textParts;
         this.toggler(ToggleType.Update);
+    }
+    
+    saveResult() {
+        // let userSubtask = mapToUserSubtaskReadModel(this.props.userSubtask);
+        // this.props.store.taskStore
+        //     .addOrUpdateUserSubtask();
     }
 }
 

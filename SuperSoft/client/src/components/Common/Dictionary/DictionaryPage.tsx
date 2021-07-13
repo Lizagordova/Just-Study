@@ -64,7 +64,7 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
             <div className="col-lg-6 col-md-6 col-sm-12" style={{marginTop: "10px", marginBottom: "10px"}}>
                 <Button
                     outline
-                    color="primary"
+                    className="addNewWordButton"
                     onClick={() => this.addNewWordToggle()}>
                     Добавить новое слово
                 </Button>

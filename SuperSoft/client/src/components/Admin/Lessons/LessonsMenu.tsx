@@ -16,19 +16,23 @@ class ILessonsMenuProps {
 
 @observer
 export class LessonsMenu extends Component<ILessonsMenuProps> {
+    editLesson: boolean = false;
     lessonToEdit: LessonViewModel = new LessonViewModel();
+    notDeleted: boolean = false;
+    deleted: boolean = false;
     isNavOpen: boolean = true;
     loading: boolean = true;
-    update: boolean = false;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
+            editLesson: observable,
             lessonToEdit: observable,
+            notDeleted: observable,
+            deleted: observable,
             isNavOpen: observable,
             loading: observable,
-            update: observable,
         });
     }
 
@@ -36,9 +40,29 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         this.isNavOpen = !this.isNavOpen;
     }
 
+    editToggle = () => {
+        this.editLesson = !this.editLesson;
+    };
+
+    editLessonToggle(lesson: LessonViewModel) {
+        this.editLesson = true;
+        this.lessonToEdit = lesson;
+    }
+
     lessonToggle(lesson: LessonViewModel) {
         this.props.store.lessonStore.setChoosenLesson(lesson);
         this.props.store.taskStore.getTasksByLesson(lesson.id);
+    }
+
+    renderCautions() {
+        setTimeout(() => {
+            this.notDeleted = false;
+        }, 6000);
+        return (
+            <>
+                {this.notDeleted && <Alert color="danger">Что-то пошло не так и урок не удалился</Alert>}
+            </>
+        );
     }
 
     renderLessonsList(lessons: LessonViewModel[]) {
@@ -66,15 +90,17 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
-    renderLessonsMenu(lessons: LessonViewModel[], update: boolean) {
+    renderLessonsMenu(lessons: LessonViewModel[]) {
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
             <>
-                <div className="row">
+                {this.renderCautions()}
+                <div className="row" style={{marginRight: "1px", marginLeft: "1px"}}>
                     <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
                         <Button
                             onClick={() => this.toggleNav()} 
-                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>Уроки</Button>
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>
+                            Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
                             <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
                                 <div className="container-fluid">
@@ -87,6 +113,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                     <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         {this.renderLessonPage()}
                     </div>
+                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
                 </div>
             </>
         );
@@ -97,7 +124,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 
         return(
             <>
-                {lessonExists && <LessonPage store={this.props.store} lessonActive={true} update={this.updateToggle} />}
+                {lessonExists && <LessonPage store={this.props.store} lessonActive={true}/>}
                 {!lessonExists && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
@@ -106,15 +133,21 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     render() {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
-            <div className="container-fluid">
-                {lessons !== undefined && this.renderLessonsMenu(lessons, this.update)}
+            <>
+                {lessons !== undefined && this.renderLessonsMenu(lessons)}
                 {(lessons === undefined) && renderSpinner()}
-            </div>
+            </>
         );
     }
 
-    updateToggle = () => {
-        this.update = !this.update
+    deleteLesson(lessonId: number) {
+        let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
+        if(result) {
+            this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)
+                .then((status) => {
+                    this.notDeleted = status !== 200;
+                    this.deleted = status === 200;
+            });
+        }
     }
-    
 }

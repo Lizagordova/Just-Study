@@ -84,7 +84,7 @@ class TaskUpload extends Component<ITaskUploadProps> {
     renderButton() {
         return(
             <div className="row justify-content-center" style={{marginTop: "10px", marginBottom: "10px"}}>
-                <Button className="addTask"
+                <Button className="commonButton"
                         onClick={() => this.toggleTaskUploadWindow()}
                         outline color="secondary">
                     <span className="addTaskText">Добавить упражение</span>
@@ -105,13 +105,13 @@ class TaskUpload extends Component<ITaskUploadProps> {
                    onClick={() => this.toggleTaskUploadWindow()}
                    className="fa fa-window-close fa-2x" aria-hidden="true" />
                 <div className="row justify-content-center">
-                    СОЗДАТЬ НОВОЕ УПРАЖНЕНИЕ
+                    Создать новое упражнение
                 </div>
                 {this.renderBody()}
                 <Button
                     color="primary"
                     onClick={() => this.toggleTaskUploadWindow()}>
-                    СКРЫТЬ УПРАЖНЕНИЯ
+                    Скрыть упражнения
                 </Button>
             </Modal>
         );

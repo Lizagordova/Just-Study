@@ -199,3 +199,7 @@ Table, td, tr, thead {
     background-color: white;
     color: rgb(43, 69, 148);
 }
+
+.dropdown {
+    background-color: black !important;
+}
