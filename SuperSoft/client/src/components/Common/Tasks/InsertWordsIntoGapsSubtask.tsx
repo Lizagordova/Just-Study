@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { ISubtaskProps } from "./ISubtaskProps";
 import { observer } from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
+import { makeObservable, observable, toJS} from "mobx";
 import { shuffleArray } from "../../../functions/shuffleWords";
 import { Button, Input } from "reactstrap";
 import { UserRole } from "../../../Typings/enums/UserRole";
-import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
-import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
+import { ActionType } from "../../../consts/ActionType";
+import { playAudio } from "../../../functions/playAudio";
 
 class TextPart {
     id: number;
@@ -171,7 +171,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         let targetTextPart = textParts.find(part => part.id === targetId);
         if(targetTextPart !== undefined) {
             if (this.sourcePartId === targetId) {
-                this.playAudio(ActionType.isChoosenRight);
+                playAudio(ActionType.isChoosenRight);
                 targetTextPart.action = ActionType.isChoosenRight;
                 targetTextPart.textToRender = targetTextPart.name;
                 let shuffledParts = this.shuffledParts;
@@ -180,7 +180,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                 this.shuffledParts = shuffledParts.filter(part => part.id !== shuffledPart.id);
                 
             } else {
-                this.playAudio(ActionType.isChoosenWrong);
+                playAudio(ActionType.isChoosenWrong);
                 targetTextPart.action = ActionType.isChoosenWrong;
                 let sourceTextPart = textParts.find(part => part.id === this.sourcePartId);
                 if(sourceTextPart !== undefined) {
@@ -195,15 +195,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         this.textParts = textParts;
     }
     
-    playAudio(type: ActionType) {
-        if(type === ActionType.isChoosenRight) {
-            let audioObj = new Audio("right.mp3");
-            audioObj.play();
-        } else if(type === ActionType.isChoosenWrong) {
-            let audioObj = new Audio("wrong.mp3");
-            audioObj.play();
-        }
-    }
+    
     
     toggler(type: ToggleType) {
         if(type === ToggleType.Update) {
@@ -235,12 +227,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     }
 }
 
-enum ActionType {
-    None,
-    isChoosenRight,
-    isChoosenWrong,
-    isNotChoosen
-}
+
 
 enum ToggleType {
     Update,

@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {Alert, Button, CardText} from "reactstrap";
+import { Alert, Button } from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {makeObservable, observable} from "mobx";
