@@ -8,6 +8,7 @@ import {ActionType} from "../../../consts/ActionType";
 import {mapToUserSubtaskReadModel} from "../../../functions/mapper";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
+import {UserRole} from "../../../Typings/enums/UserRole";
 
 class Group {
     id: number;
@@ -218,10 +219,12 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
     }
     
     saveResult() {
-        // @ts-ignore
-        let userSubtask = mapToUserSubtaskReadModel(this.userSubtask, this.props.taskId, this.props.userId, null);
-        this.props.store.taskStore
-            .addOrUpdateUserSubtask(userSubtask);
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            // @ts-ignore
+            let userSubtask = mapToUserSubtaskReadModel(this.userSubtask, this.props.taskId, this.props.userId, null);
+            this.props.store.taskStore
+                .addOrUpdateUserSubtask(userSubtask);
+        }
     }
 }
 

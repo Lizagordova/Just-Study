@@ -25,9 +25,10 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     shuffledParts: TextPart[] = new Array<TextPart>();
     loaded: boolean;
     update: boolean;
-    sourcePartId: number = -1;
+    sourcePartId: number = 0;
     notDeleted: boolean;//todo: доделать
     userSubtask: UserSubtaskViewModel = new UserSubtaskViewModel();
+    countWords: number = -1;
     
     constructor(props: ISubtaskProps) {
         super(props);
@@ -39,27 +40,37 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
             notDeleted: observable,
             userSubtask: observable,
         });
-        this.setInitialSettings();
+        this.setInitialState();
     }
 
-    setInitialSettings() {
-        this.userSubtask = this.props.userSubtask;
-        if(this.props.userSubtask.status === CompletingStatus.Completed) {
-            this.parseSubtask(true);
+    componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any) {
+        if(prevProps.userSubtask.status !== this.props.userSubtask.status) {
+            this.setInitialState();
         }
+    }
+
+    setInitialState() {
+        this.userSubtask = this.props.userSubtask;
+        this.parseSubtask(this.props.userSubtask.status === CompletingStatus.Completed);
     }
     
     parseSubtask(userCompleted: boolean) {
         let textParts = this.props.subtask.text.split(" ");
         let textPartsArray = new Array<TextPart>();
+        this.countWords = 0;
         textParts.forEach((textPart, i) => {
            let part = new TextPart();
            part.id = textParts.indexOf(textPart);
            part.name = textPart.replace("*", "");
            part.isGap = textPart.includes("*");
+           if(textPart.includes("*")) {
+               console.log("textPart", textPart, "countWords", this.countWords);
+               this.countWords++;
+           }
            if(userCompleted) {
                part.action = ActionType.isChoosenRight;
                part.textToRender = textPart;
+               this.countWords = 0;
            } else {
                part.action = textPart.includes("*") ? ActionType.isNotChoosen : ActionType.None;
                part.textToRender = "";
@@ -67,17 +78,18 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
            textPartsArray.push(part);
         });
         this.textParts = textPartsArray;
-        this.shuffledParts = userCompleted ? shuffleArray(textPartsArray) : new Array<TextPart>();
+        this.shuffledParts = !userCompleted ? shuffleArray(textPartsArray) : new Array<TextPart>();
         this.loaded = true;
     }
     
     renderWords(shuffledParts: TextPart[]) {
         return (
             <>
-                {shuffledParts.map(shuffledPart => {
+                {shuffledParts.map((shuffledPart, index) => {
                     if(shuffledPart.isGap) {
                         return (
                             <Button
+                                key={index}
                                 className="shuffledPart"
                                 onClick={() => this.chooseSourceId(shuffledPart.id)}>
                                 {shuffledPart.name}
@@ -102,11 +114,12 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     renderSentenceWithGaps(textParts: TextPart[]) {
         return (
             <>
-                {textParts.map((textPart) => {
+                {textParts.map((textPart, index) => {
                     if(textPart.isGap) {
                         if(textPart.action === ActionType.isChoosenRight) {
                             return (
                                 <Input
+                                    key={index}
                                     className="gapToInsert rightAnswer"
                                     value={textPart.textToRender !== undefined ? textPart.textToRender : ""}
                                     disabled={true}
@@ -195,7 +208,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
                 let shuffledPart = shuffledParts.find(shuffledPart => shuffledPart.id === targetId);
                 // @ts-ignore
                 this.shuffledParts = shuffledParts.filter(part => part.id !== shuffledPart.id);
-                
+                --this.countWords;
             } else {
                 playAudio(ActionType.isChoosenWrong);
                 targetTextPart.action = ActionType.isChoosenWrong;
@@ -237,17 +250,21 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     }
     
     checkCompletion() {
-        if(this.shuffledParts.length === 0) {
+        console.log("this.shuffledParts.length", this.shuffledParts.length, this.shuffledParts);
+        console.log("countWords", this.countWords);
+        if(this.countWords === 0) {
             this.userSubtask.status = CompletingStatus.Completed;
             this.saveResult();
         }
     }
     
     saveResult() {
-        // @ts-ignore
-        let userSubtask = mapToUserSubtaskReadModel(this.props.userSubtask, this.props.taskId, this.props.userId, null);
-        this.props.store.taskStore
-            .addOrUpdateUserSubtask(userSubtask);
+        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
+            // @ts-ignore
+            let userSubtask = mapToUserSubtaskReadModel(this.userSubtask, this.props.taskId, this.props.userId, null);
+            this.props.store.taskStore
+                .addOrUpdateUserSubtask(userSubtask);
+        }
     }
 }
 
