@@ -203,3 +203,7 @@ Table, td, tr, thead {
 .dropdown {
     background-color: black !important;
 }
+
+.navigationButton {
+    background-color: black !important;
+}

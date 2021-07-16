@@ -30,7 +30,7 @@ class Notifications extends Component<INotificationsProps> {
 
     renderCloseButton() {
         return (
-            <i style={{marginLeft: '96%', width: '2%'}}
+            <i style={{marginLeft: '93%', width: '2%'}}
                onClick={() => this.props.toggle()}
                className="fa fa-window-close fa-2x" aria-hidden="true"/>
         );

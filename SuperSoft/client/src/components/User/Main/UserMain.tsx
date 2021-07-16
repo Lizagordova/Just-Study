@@ -54,7 +54,7 @@ export class UserMain extends React.Component<IUserMainProps> {
         return (
             <div>
                         <Nav tabs className="nav mainMenu">
-                            <NavItem  style={{marginRight: "5px"}}>
+                            <NavItem  style={{marginRight: "5px", marginLeft: "5px"}}>
                                 {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                             </NavItem>
                             <NavItem>
