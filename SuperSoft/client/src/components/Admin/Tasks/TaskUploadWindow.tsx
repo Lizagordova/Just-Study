@@ -266,7 +266,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         task.subtasks = this.subtasks;
         task.tagIds = this.choosenTags.map(t => t.id);
         task.subtagIds = this.choosenSubtags.map(t => t.id);
-        console.log("task type", this.props.task.taskType);
         this.props.taskStore.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(this.props.lessonId !== null) {
@@ -296,7 +295,6 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                 });
             }
         });
-        console.log("subtags", toJS(subtags));
         this.subtags = subtags;
         this.updateToggle();
     }

@@ -38,7 +38,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
 
     renderTooltip() {
         let subtaskType = this.subtask.subtaskType;
-        if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm || subtaskType === SubtaskType.InsertWordsIntoGaps) {
+        if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm || subtaskType === SubtaskType.InsertWordsIntoGaps || subtaskType === SubtaskType.DistributeItemsIntoGroups) {
             return(
                 <>
                     <span id="DisabledAutoHideExample">Введите текст задания</span>

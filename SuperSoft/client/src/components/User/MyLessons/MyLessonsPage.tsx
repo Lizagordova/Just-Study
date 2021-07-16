@@ -125,8 +125,6 @@ class MyLessonsPage extends Component<IMyLessonsPageProps> {
     choosenCourseIsAvailable(): boolean {
         let courseStore = this.props.store.courseStore;
         let choosenCourseId = courseStore.choosenCourse.id;
-        console.log("courseStore", courseStore);
-        console.log("choosenCourseId", choosenCourseId);
         if(choosenCourseId === 0) {
             return false;
         }

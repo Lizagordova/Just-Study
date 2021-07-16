@@ -1,10 +1,13 @@
 ﻿import React, {Component} from 'react';
 import {ISubtaskProps} from "./ISubtaskProps";
 import {observer} from "mobx-react";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable} from "mobx";
 import {Button, Label} from "reactstrap";
 import {playAudio} from "../../../functions/playAudio";
 import {ActionType} from "../../../consts/ActionType";
+import {mapToUserSubtaskReadModel} from "../../../functions/mapper";
+import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
+import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 
 class Group {
     id: number;
@@ -27,6 +30,7 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
     update: boolean;
     notDeleted: boolean;
     loaded: boolean;
+    userSubtask: UserSubtaskViewModel = new UserSubtaskViewModel();
     
     constructor(props: ISubtaskProps) {
         super(props);
@@ -37,11 +41,25 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
             update: observable,
             notDeleted: observable,
             loaded: observable,
+            userSubtask: observable,
         });
-        this.parseSubtask();
+        this.setInitialState();
     }
 
-    parseSubtask() {
+    componentDidUpdate(prevProps: Readonly<ISubtaskProps>, prevState: Readonly<{}>, snapshot?: any) {
+        if(prevProps.userSubtask.status !== this.props.userSubtask.status) {
+            this.setInitialState();
+        }
+    }
+
+    setInitialState() {
+        this.userSubtask = this.props.userSubtask;
+        this.items = new Array<Item>();
+        this.groups = new Array<Group>();
+        this.parseSubtask(this.props.userSubtask.status === CompletingStatus.Completed);
+    }
+    
+    parseSubtask(userCompleted: boolean = false) {
         let groupsNotParsed = this.props.subtask.text.split(";");
         let groups = new Array<Group>();
         groupsNotParsed.forEach((groupNotParsed, index) => {
@@ -49,6 +67,9 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
            let itemsExp = /\[(\w*?\D*?)\]/;
            let groupName = groupNotParsed.match(groupNameExp);
            let itemsGroupParsed = groupNotParsed.match(itemsExp);
+            let group = new Group();
+            group.id = index;
+            group.name = groupName !== null ? groupName[0].replace("(", "").replace(")", "") : "";
             if (itemsGroupParsed) {
                 let itemsParsed = itemsGroupParsed[0].split(",");
                 itemsParsed.map((itemNotParsed, i) => {
@@ -56,14 +77,14 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
                     item.id = i;
                     item.groupId = index;
                     item.name = itemNotParsed.replace("[", "").replace("]", "");
-                    this.items.push(item);
+                    if(userCompleted) {
+                        group.choosenItems.push(item);
+                    } else {
+                        this.items.push(item);
+                    }
                 });
             }
-           let group = new Group();
-           group.id = index;
-           group.name = groupName !== null ? groupName[0].replace("(", "").replace(")", "") : "";
-           
-           groups.push(group);
+            groups.push(group);
         });
         this.groups = groups;
         this.loaded = true;
@@ -77,6 +98,7 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
                         <Button
                             key={index}
                             className="shuffledPart"
+                            disabled={this.props.userSubtask.status === CompletingStatus.Completed}
                             onClick={() => this.chooseItem(item)}>
                             {item.name}
                         </Button>
@@ -91,14 +113,15 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
         if(type === ActionType.isChoosenWrong) {
             groupClassName = "wrongAnswer";
         } else if(type === ActionType.isChoosenRight) {
-            groupClassName = "rightAnswer"
+            groupClassName = "rightAnswer";
+        } else if(this.props.userSubtask.status === CompletingStatus.Completed) {
+            groupClassName = "rightAnswer";
         }
         
         return groupClassName;
     }
     
     renderGroups(groups: Group[]) {
-        console.log("i want to rerender");
         return (
             <>
                 {groups.map((group, index) => {
@@ -107,7 +130,7 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
                         this.turnOffSettings(group.id);
                     }, 5000)
                     return(
-                        <div key={index} className={`row justify-content-center ${groupClassName}`} style={{height: "150px"}} onClick={() => this.checkTarget(group.id)}>
+                        <div key={index} className={`row justify-content-center ${groupClassName}`} style={{minHeight: "150px"}} onClick={() => this.checkTarget(group.id)}>
                             <Label style={{fontSize: "1.3em", width: "100%"}}>
                                 {group.name}
                             </Label>
@@ -141,28 +164,31 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
     }
     
     checkTarget(groupId: number) {
-        let groups = this.groups;
-        let choosenGroup = groups.find(g => g.id === groupId);
-        // @ts-ignore
-        let choosenGroupIndex = groups.indexOf(choosenGroup);
-        if(this.choosenItem.groupId === groupId) {
-            playAudio(ActionType.isChoosenRight);
-            if(choosenGroup !== undefined) {
-                choosenGroup.action = ActionType.isChoosenRight;
-                choosenGroup.choosenItems.push(this.choosenItem);
-            }            
-            this.items = this.items.filter(item => item !== this.choosenItem);
-            this.toggler(ToggleType.ChoosenItem);
-        } else {
-            playAudio(ActionType.isChoosenWrong);
-            if(choosenGroup !== undefined) {
-                choosenGroup.action = ActionType.isChoosenWrong;
+        if(this.props.userSubtask.status !== CompletingStatus.Completed) {
+            let groups = this.groups;
+            let choosenGroup = groups.find(g => g.id === groupId);
+            // @ts-ignore
+            let choosenGroupIndex = groups.indexOf(choosenGroup);
+            if(this.choosenItem.groupId === groupId) {
+                playAudio(ActionType.isChoosenRight);
+                if(choosenGroup !== undefined) {
+                    choosenGroup.action = ActionType.isChoosenRight;
+                    choosenGroup.choosenItems.push(this.choosenItem);
+                }
+                this.items = this.items.filter(item => item !== this.choosenItem);
+                this.toggler(ToggleType.ChoosenItem);
+            } else {
+                playAudio(ActionType.isChoosenWrong);
+                if(choosenGroup !== undefined) {
+                    choosenGroup.action = ActionType.isChoosenWrong;
+                }
+                this.toggler(ToggleType.ChoosenItem);
             }
-            this.toggler(ToggleType.ChoosenItem);
+            // @ts-ignore
+            groups[choosenGroupIndex] = choosenGroup;
+            this.toggler(ToggleType.Update);
+            this.checkCompletion();   
         }
-        // @ts-ignore
-        groups[choosenGroupIndex] = choosenGroup;
-        this.toggler(ToggleType.Update);
     }
 
     toggler(type: ToggleType) {
@@ -182,6 +208,20 @@ export class DistributeItemsIntoGroupsSubtask extends Component<ISubtaskProps> {
             choosenGroup.action = ActionType.isNotChoosen;
         }
         this.toggler(ToggleType.Update);
+    }
+
+    checkCompletion() {
+        if(this.items.length === 0) {
+            this.userSubtask.status = CompletingStatus.Completed;
+            this.saveResult();
+        }
+    }
+    
+    saveResult() {
+        // @ts-ignore
+        let userSubtask = mapToUserSubtaskReadModel(this.userSubtask, this.props.taskId, this.props.userId, null);
+        this.props.store.taskStore
+            .addOrUpdateUserSubtask(userSubtask);
     }
 }
 

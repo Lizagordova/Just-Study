@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { ISubtaskProps } from "./ISubtaskProps";
-import { observer } from "mobx-react";
-import { makeObservable, observable, toJS} from "mobx";
-import { shuffleArray } from "../../../functions/shuffleWords";
-import { Button, Input } from "reactstrap";
-import { UserRole } from "../../../Typings/enums/UserRole";
-import { ActionType } from "../../../consts/ActionType";
-import { playAudio } from "../../../functions/playAudio";
+import React, {Component} from 'react';
+import {ISubtaskProps} from "./ISubtaskProps";
+import {observer} from "mobx-react";
+import {makeObservable, observable} from "mobx";
+import {shuffleArray} from "../../../functions/shuffleWords";
+import {Button, Input} from "reactstrap";
+import {UserRole} from "../../../Typings/enums/UserRole";
+import {ActionType} from "../../../consts/ActionType";
+import {playAudio} from "../../../functions/playAudio";
+import {mapToUserSubtaskReadModel} from "../../../functions/mapper";
+import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
+import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 
 class TextPart {
     id: number;
@@ -24,6 +27,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     update: boolean;
     sourcePartId: number = -1;
     notDeleted: boolean;//todo: доделать
+    userSubtask: UserSubtaskViewModel = new UserSubtaskViewModel();
     
     constructor(props: ISubtaskProps) {
         super(props);
@@ -32,12 +36,20 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
             loaded: observable,
             update: observable,
             sourcePartId: observable,
-            notDeleted: observable
+            notDeleted: observable,
+            userSubtask: observable,
         });
-        this.parseSubtask();
+        this.setInitialSettings();
+    }
+
+    setInitialSettings() {
+        this.userSubtask = this.props.userSubtask;
+        if(this.props.userSubtask.status === CompletingStatus.Completed) {
+            this.parseSubtask(true);
+        }
     }
     
-    parseSubtask() {
+    parseSubtask(userCompleted: boolean) {
         let textParts = this.props.subtask.text.split(" ");
         let textPartsArray = new Array<TextPart>();
         textParts.forEach((textPart, i) => {
@@ -45,12 +57,17 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
            part.id = textParts.indexOf(textPart);
            part.name = textPart.replace("*", "");
            part.isGap = textPart.includes("*");
-           part.action = textPart.includes("*") ? ActionType.isNotChoosen : ActionType.None;
-            part.textToRender = "";
+           if(userCompleted) {
+               part.action = ActionType.isChoosenRight;
+               part.textToRender = textPart;
+           } else {
+               part.action = textPart.includes("*") ? ActionType.isNotChoosen : ActionType.None;
+               part.textToRender = "";
+           }
            textPartsArray.push(part);
         });
         this.textParts = textPartsArray;
-        this.shuffledParts = shuffleArray(textPartsArray);
+        this.shuffledParts = userCompleted ? shuffleArray(textPartsArray) : new Array<TextPart>();
         this.loaded = true;
     }
     
@@ -193,9 +210,8 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         }
         this.toggler(ToggleType.Update);
         this.textParts = textParts;
+        this.checkCompletion();
     }
-    
-    
     
     toggler(type: ToggleType) {
         if(type === ToggleType.Update) {
@@ -220,10 +236,18 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
         this.toggler(ToggleType.Update);
     }
     
+    checkCompletion() {
+        if(this.shuffledParts.length === 0) {
+            this.userSubtask.status = CompletingStatus.Completed;
+            this.saveResult();
+        }
+    }
+    
     saveResult() {
-        // let userSubtask = mapToUserSubtaskReadModel(this.props.userSubtask);
-        // this.props.store.taskStore
-        //     .addOrUpdateUserSubtask();
+        // @ts-ignore
+        let userSubtask = mapToUserSubtaskReadModel(this.props.userSubtask, this.props.taskId, this.props.userId, null);
+        this.props.store.taskStore
+            .addOrUpdateUserSubtask(userSubtask);
     }
 }
 

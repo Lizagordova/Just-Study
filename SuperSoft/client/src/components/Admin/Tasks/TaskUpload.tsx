@@ -1,11 +1,10 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
-import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody } from "reactstrap";
 import { makeObservable, observable } from "mobx";
 import { TaskTypeTranslater } from "../../../consts/TaskTypeTranslater";
 import { TaskType } from "../../../Typings/enums/TaskType";
 import { observer } from "mobx-react";
-import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
 import TaskUploadWindow from "./TaskUploadWindow";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 

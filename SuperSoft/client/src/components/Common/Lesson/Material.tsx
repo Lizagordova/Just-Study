@@ -39,7 +39,6 @@ export class Material extends Component<IMaterialProps> {
 
     renderMaterial(material: LessonMaterialViewModel) {
         let path = material.path.replace("client/build", ".");
-        console.log("path", path);
             if(path.includes("pdf") ) {
             return (
                 <>

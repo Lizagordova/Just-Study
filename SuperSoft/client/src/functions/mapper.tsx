@@ -12,15 +12,16 @@ import { UserViewModel } from "../Typings/viewModels/UserViewModel";
 import { UserReadModel } from "../Typings/readModels/UserReadModel";
 import { TagViewModel } from "../Typings/viewModels/TagViewModel";
 import { TagReadModel } from "../Typings/readModels/TagReadModel";
-import { toJS } from "mobx";
-import {TaskViewModel} from "../Typings/viewModels/TaskViewModel";
-import {TaskReadModel} from "../Typings/readModels/TaskReadModel";
-import {UserSubtaskAnswerGroupReadModel} from "../Typings/readModels/UserSubtaskAnswerGroupReadModel";
-import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
-import {FeedbackViewModel} from "../Typings/viewModels/FeedbackViewModel";
-import {FeedbackReadModel} from "../Typings/readModels/FeedbackReadModel";
-import {SubtagViewModel} from "../Typings/viewModels/SubtagViewModel";
-import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
+import { TaskViewModel} from "../Typings/viewModels/TaskViewModel";
+import { TaskReadModel} from "../Typings/readModels/TaskReadModel";
+import { UserSubtaskAnswerGroupReadModel } from "../Typings/readModels/UserSubtaskAnswerGroupReadModel";
+import { UserSubtaskAnswerGroupViewModel } from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
+import { FeedbackViewModel } from "../Typings/viewModels/FeedbackViewModel";
+import { FeedbackReadModel } from "../Typings/readModels/FeedbackReadModel";
+import { SubtagViewModel } from "../Typings/viewModels/SubtagViewModel";
+import { SubtagReadModel } from "../Typings/readModels/SubtagReadModel";
+import { UserSubtaskViewModel } from "../Typings/viewModels/UserSubtaskViewModel";
+import { UserSubtaskReadModel } from "../Typings/readModels/UserSubtaskReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -147,7 +148,7 @@ export function mapToUserSubtaskAnswerGroupReadModel(userAnswerGroup: UserSubtas
     return answerGroupReadModel;
 }
 
-export function mapToFeedbackReadModel(feedback: FeedbackViewModel, old: boolean) {
+export function mapToFeedbackReadModel(feedback: FeedbackViewModel, old: boolean): FeedbackReadModel {
     let feedbackReadModel = new FeedbackReadModel();
     feedbackReadModel.id = feedback.id;
     feedbackReadModel.name = feedback.name;
@@ -158,10 +159,22 @@ export function mapToFeedbackReadModel(feedback: FeedbackViewModel, old: boolean
     return feedbackReadModel;
 }
 
-export function mapToSubtagReadModel(subtag: SubtagViewModel) {
+export function mapToSubtagReadModel(subtag: SubtagViewModel): SubtagReadModel {
     let subtagReadModel = new SubtagReadModel();
     subtagReadModel.id = subtag.id;
     subtagReadModel.name = subtag.name;
 
     return subtagReadModel;
+}
+
+export function mapToUserSubtaskReadModel(userSubtask: UserSubtaskViewModel, taskId: number, userId: number, file: File): UserSubtaskReadModel {
+    let userSubtaskReadModel = new UserSubtaskReadModel();
+    userSubtaskReadModel.subtaskId = userSubtask.subtaskId;
+    userSubtaskReadModel.answer = userSubtask.answer;
+    userSubtaskReadModel.status = userSubtask.status;
+    userSubtaskReadModel.file = file;
+    userSubtaskReadModel.taskId = taskId;
+    userSubtaskReadModel.userId = userId;
+    
+    return userSubtaskReadModel;
 }
