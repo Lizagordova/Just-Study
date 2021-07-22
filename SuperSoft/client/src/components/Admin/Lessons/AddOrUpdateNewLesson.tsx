@@ -27,7 +27,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     saved: boolean = false;
     name: string = "";
     warningTypes: WarningType[] = new Array<WarningType>();
-    isValid: boolean = false;
+    isValid: boolean = true;
 
     constructor(props: IAddOrUpdateNewLessonProps) {
         super(props);
@@ -275,7 +275,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     initialState() {
         this.id = 0;
-        this.order = 0;
+        this.order = this.props.store.lessonStore.lessonsByChoosenCourse.length + 1;
         this.description = "";
         this.startDate = new Date();
         this.expireDate = new Date();
@@ -334,9 +334,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             warningsTypes.push(WarningType.StartDateMoreThanEndDate);
         }
         this.warningTypes = warningsTypes;
-        if(warningsTypes.length === 0) {
-            this.isValid = true;
-        }
+        this.isValid = warningsTypes.length === 0;
     }
 
     addDays(date: Date, days: number): Date {
