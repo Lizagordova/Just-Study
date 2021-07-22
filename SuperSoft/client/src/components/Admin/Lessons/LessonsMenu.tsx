@@ -161,7 +161,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         lessons[draggableLessonIndex] = dropToLesson;
         // @ts-ignore
         lessons[dropToLessonIndex] = draggableLesson;
-        this.props.store.lessonStore.setLessonsByChoosenCourse(lessons);
+        this.props.store.lessonStore.setLessonsByChoosenCourse(lessons, this.props.store.courseStore.choosenCourse.id);
         this.updateToggle();
     }
 }

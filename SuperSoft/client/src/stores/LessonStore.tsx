@@ -1,6 +1,8 @@
-﻿import {action, makeObservable, observable} from "mobx";
+﻿import {action, makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
 import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
+import {LessonReadModel} from "../Typings/readModels/LessonReadModel";
+import {mapToLessonReadModel} from "../functions/mapper";
 
 class LessonStore {
     lessonsByChoosenCourse: LessonViewModel[] = new Array<LessonViewModel>();
@@ -168,8 +170,28 @@ class LessonStore {
     }
 
     @action
-    setLessonsByChoosenCourse(lessons: LessonViewModel[]) {
+    setLessonsByChoosenCourse(lessons: LessonViewModel[], courseId: number) {
+        lessons.forEach((lesson, index) => {
+            lesson.order = index; 
+        });
         this.lessonsByChoosenCourse = lessons;
+        let lessonReadModels = lessons.map(lesson => mapToLessonReadModel(lesson));
+        this.updateLessons(lessonReadModels, courseId);
+    }
+
+    async updateLessons(lessons: LessonReadModel[], courseId: number): Promise<number> {
+        const response = await fetch("/updatelessons", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                lessons: lessons,
+                courseId: courseId
+            })
+        });
+
+        return await response.json();
     }
 }
 

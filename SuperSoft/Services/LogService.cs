@@ -186,6 +186,12 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 		
+		public void AddLogUpdateLessonsException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось обновить уроки";
+			AddLog(logger, e, customMessage);
+		}
+		
 		public void AddLogAddOrUpdateJustLogException(ILogger logger, Exception e)
 		{
 			var customMessage = $"Не удалось((((";

@@ -1,7 +1,6 @@
-﻿using System.IO;
-using GemBox.Presentation;
+﻿using System.Collections.Generic;
+using System.IO;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services.Lessons;
@@ -106,6 +105,11 @@ namespace SuperSoft.Persistence.Services.Lessons
 			{
 				File.Delete(path);
 			}
+		}
+
+		public void UpdateLessons(List<Lesson> lessons, int courseId)
+		{
+			_lessonRepository.UpdateLessons(lessons, courseId);
 		}
 
 		private string GetPath(int lessonId, string fileName)

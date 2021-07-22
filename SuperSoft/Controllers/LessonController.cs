@@ -204,5 +204,24 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+		
+		[HttpPost]
+		[Route("/updatelessons")]
+		public ActionResult UpdateLessons([FromBody]LessonsCollectionReadModel lessonsCollection)
+		{
+			var lessons = lessonsCollection.Lessons.Select(_mapper.Map<LessonReadModel, Lesson>).ToList();
+			try
+			{
+				_lessonEditor.UpdateLessons(lessons, lessonsCollection.CourseId);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogUpdateLessonsException(_logger, e);
+				
+				return new StatusCodeResult(500);
+			}
+
+			return new OkResult();
+		}
 	}
 }

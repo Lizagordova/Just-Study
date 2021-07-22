@@ -22,6 +22,8 @@ import { SubtagViewModel } from "../Typings/viewModels/SubtagViewModel";
 import { SubtagReadModel } from "../Typings/readModels/SubtagReadModel";
 import { UserSubtaskViewModel } from "../Typings/viewModels/UserSubtaskViewModel";
 import { UserSubtaskReadModel } from "../Typings/readModels/UserSubtaskReadModel";
+import {LessonViewModel} from "../Typings/viewModels/LessonViewModel";
+import {LessonReadModel} from "../Typings/readModels/LessonReadModel";
 
 export function mapWordReadModel(word: WordViewModel): WordReadModel {
     let wordReadModel = new WordReadModel();
@@ -177,4 +179,16 @@ export function mapToUserSubtaskReadModel(userSubtask: UserSubtaskViewModel, tas
     userSubtaskReadModel.userId = userId;
     
     return userSubtaskReadModel;
+}
+
+export function mapToLessonReadModel(lesson: LessonViewModel): LessonReadModel {
+    let lessonReadModel = new LessonReadModel();
+    lessonReadModel.id = lesson.id;
+    lessonReadModel.name = lesson.name;
+    lessonReadModel.order = lesson.order;
+    lessonReadModel.description = lesson.description;
+    lessonReadModel.expireDate = lesson.expireDate;
+    lessonReadModel.startDate = lesson.startDate;
+
+    return lessonReadModel;
 }

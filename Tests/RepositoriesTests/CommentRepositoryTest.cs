@@ -18,8 +18,6 @@ namespace Tests.RepositoriesTests
 		[TestCase]
 		public void AddOrUpdateComment_Scenario_ExpectedResult()
 		{
-			var comment = new Comment();
-			_commentRepository.AddOrUpdateComment()
 		}
 	}
 }
