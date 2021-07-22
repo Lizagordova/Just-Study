@@ -1,10 +1,12 @@
-﻿import React, { Component } from 'react';
+﻿import React, {Component} from 'react';
 import RootStore from "../../../stores/RootStore";
-import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
-import {makeObservable, observable, toJS} from "mobx";
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Input } from "reactstrap";
-import { observer } from "mobx-react";
+import {LessonViewModel} from "../../../Typings/viewModels/LessonViewModel";
+import {makeObservable, observable} from "mobx";
+import {Alert, Button, Fade, Input, Label, Modal, ModalBody} from "reactstrap";
+import {observer} from "mobx-react";
 import Calendar from "react-calendar";
+import {WarningType} from "../../../consts/WarningType";
+import {DateType} from "../../../consts/DateType";
 
 class IAddOrUpdateNewLessonProps {
     store: RootStore;
@@ -24,6 +26,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     notSaved: boolean = false;
     saved: boolean = false;
     name: string = "";
+    warningTypes: WarningType[] = new Array<WarningType>();
+    isValid: boolean = false;
 
     constructor(props: IAddOrUpdateNewLessonProps) {
         super(props);
@@ -37,6 +41,8 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
             notSaved: observable,
             saved: observable,
             name: observable,
+            warningTypes: observable,
+            isValid: observable,
         });
         if(this.props.edit) {
             this.fillData();
@@ -124,7 +130,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 <Label className="inputLabel" align="center">Выберите дату начала доступа урока</Label>
                 <Calendar
                     value={startDate}
-                    onChange={(date) => this.inputDate(date, "startDate")}
+                    onChange={(date) => this.inputDate(date, DateType.StartDate)}
                 />
             </>
         );
@@ -137,12 +143,36 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 <Label className="inputLabel" align="center">Выберите дату окончания доступа урока</Label>
                 <Calendar
                     value={expireDate}
-                    onChange={(date) => this.inputDate(date, "expireDate")}
+                    onChange={(date) => this.inputDate(date, DateType.EndDate)}
                 />
             </>
         );
     }
 
+    renderWarnings() {
+        return (
+            <>
+                {this.warningTypes.includes(WarningType.EndDateLessThanStartDate) && 
+                    <Fade className="warning">
+                    Дата окончания не может быть меньше даты начала
+                    </Fade>}
+                {this.warningTypes.includes(WarningType.StartDateMoreThanEndDate) &&
+                    <Fade className="warning">
+                    Дата начала не может быть больше даты окончания
+                </Fade>}
+                {this.warningTypes.includes(WarningType.ChoosenDateLessThanToday) &&
+                <Fade className="warning">
+                    Выбранная дата не может быть меньше сегодняшней даты
+                </Fade>}
+                {this.warningTypes.includes(WarningType.NotValid) &&
+                <Fade className="warning"
+                    style={{fontSize: "1.2em", textAlign: "center"}}>
+                    Устраните ошибки
+                </Fade>}
+            </>
+        );
+    }
+    
     renderSaveLessonButton() {
         return (
             <Button
@@ -184,6 +214,9 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                         <div className="col-6">
                             {this.renderEndDateInput()}
                         </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        {this.renderWarnings()}
                     </div>
                 </ModalBody>
                 <div className="row justify-content-center">
@@ -253,12 +286,19 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
 
     addOrUpdateLesson() {
         let courseId = this.props.store.courseStore.choosenCourse.id;
-        this.props.store.lessonStore
-            .addOrUpdateLesson(this.id, this.order, courseId, this.name, this.description, this.startDate, this.expireDate)
-            .then((status) => {
-                this.notSaved = status !== 200;
-                this.saved = status === 200;
-        });
+        if(this.isValid) {
+            this.props.store.lessonStore
+                .addOrUpdateLesson(this.id, this.order, courseId, this.name, this.description, this.startDate, this.expireDate)
+                .then((status) => {
+                    this.notSaved = status !== 200;
+                    this.saved = status === 200;
+                });
+        } else {
+            if(!this.warningTypes.includes(WarningType.NotValid)) {
+                this.warningTypes.push(WarningType.NotValid);    
+            }
+        }
+        
     }
 
     inputDescription(event: React.FormEvent<HTMLInputElement>) {
@@ -273,11 +313,34 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         this.name = event.currentTarget.value;
     }
 
-    inputDate(date: Date | Date[], dateType: string) {
-        if(dateType === "startDate") {
+    inputDate(date: Date | Date[], dateType: DateType) {
+        if(dateType === DateType.StartDate) {
             this.startDate = date;
-        } else if(dateType === "expireDate") {
+        } else if(dateType === DateType.EndDate) {
             this.expireDate = date;
         }
+        this.validate(date, dateType);
+    }
+    
+    validate(date: Date | Date[], dateType: DateType) {
+        let warningsTypes = new Array<WarningType>();
+        if(date < this.addDays(new Date(), -1)) {
+            warningsTypes.push(WarningType.ChoosenDateLessThanToday);
+        }
+        if(dateType === DateType.EndDate && date < this.startDate) {
+            warningsTypes.push(WarningType.EndDateLessThanStartDate);
+        }
+        if(dateType === DateType.StartDate && date > this.expireDate) {
+            warningsTypes.push(WarningType.StartDateMoreThanEndDate);
+        }
+        this.warningTypes = warningsTypes;
+        if(warningsTypes.length === 0) {
+            this.isValid = true;
+        }
+    }
+
+    addDays(date: Date, days: number): Date {
+        date.setDate(date.getDate() + days);
+        return date;
     }
 }
