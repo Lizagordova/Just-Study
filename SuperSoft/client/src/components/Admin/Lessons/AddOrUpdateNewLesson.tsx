@@ -167,7 +167,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
                 {this.warningTypes.includes(WarningType.NotValid) &&
                 <Fade className="warning"
                     style={{fontSize: "1.2em", textAlign: "center"}}>
-                    Устраните ошибки
+                    Урок пока не может быть сохранён, устраните ошибки
                 </Fade>}
             </>
         );
