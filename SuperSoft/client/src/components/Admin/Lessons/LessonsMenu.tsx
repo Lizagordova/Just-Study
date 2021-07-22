@@ -2,7 +2,7 @@
 import RootStore from "../../../stores/RootStore";
 import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { observer } from "mobx-react";
-import {makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { Tab, Nav } from "react-bootstrap";
 import { Alert, Button, NavItem, Collapse, Row } from "reactstrap";
 import { NavLink } from "react-router-dom";
@@ -21,6 +21,7 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     isNavOpen: boolean = true;
     loading: boolean = true;
     update: boolean = false;
+    selectedElementId: number;
 
     constructor() {
         // @ts-ignore
@@ -30,7 +31,8 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
             deleted: observable,
             isNavOpen: observable,
             loading: observable,
-            update: observable
+            update: observable,
+            selectedElementId: observable
         });
     }
 
@@ -61,10 +63,22 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                {lessons.map((lesson) => {
                    // @ts-ignore
                    let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
+                   // @ts-ignore
                    return (
-                       <Nav.Item key={lesson.id}>
+                       <Nav.Item key={lesson.id}
+                                
+                                 className="lessonDraggable"
+                                 draggable="true"
+                                 // @ts-ignore
+                                 onDragOver={(event) => this.allowDrop(event)}
+                                 // @ts-ignore
+                                 onDragStart={(event) => console.log("dragging started with id", event.target.id)}
+                                 // @ts-ignore
+                                onDragEnd={(event) => this.onDragEnd(event.target.id)}>
                            <div className="row" key={lesson.id} style={{height: "auto"}}>
                                <Nav.Link
+                                   // @ts-ignore
+                                   id={lesson.id}
                                    style={{height: "auto"}}
                                    eventKey={lesson.id}
                                    className="nav-link lesson"
@@ -131,5 +145,23 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
     updateToggle = () => {
         this.update = !this.update;
     }
-    
+
+    allowDrop(event: any) {
+        event.preventDefault();
+        this.selectedElementId = event.target.id;
+    }
+
+    onDragEnd(draggableLessonId: number) {
+        let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
+        let draggableLesson = lessons.find(lesson => lesson.id == draggableLessonId);
+        let draggableLessonIndex = lessons.findIndex(lesson => lesson.id == draggableLessonId);
+        let dropToLesson = lessons.find(lesson => lesson.id == this.selectedElementId);
+        let dropToLessonIndex = lessons.findIndex(lesson => lesson.id == this.selectedElementId);
+        // @ts-ignore
+        lessons[draggableLessonIndex] = dropToLesson;
+        // @ts-ignore
+        lessons[dropToLessonIndex] = draggableLesson;
+        this.props.store.lessonStore.setLessonsByChoosenCourse(lessons);
+        this.updateToggle();
+    }
 }

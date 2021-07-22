@@ -1,4 +1,4 @@
-﻿import { makeObservable, observable } from "mobx";
+﻿import {action, makeObservable, observable} from "mobx";
 import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
 import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
 
@@ -165,6 +165,11 @@ class LessonStore {
         });
 
         return await response.json();
+    }
+
+    @action
+    setLessonsByChoosenCourse(lessons: LessonViewModel[]) {
+        this.lessonsByChoosenCourse = lessons;
     }
 }
 
