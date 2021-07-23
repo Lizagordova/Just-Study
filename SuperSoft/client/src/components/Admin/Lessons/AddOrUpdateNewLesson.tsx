@@ -7,6 +7,8 @@ import {observer} from "mobx-react";
 import Calendar from "react-calendar";
 import {WarningType} from "../../../consts/WarningType";
 import {DateType} from "../../../consts/DateType";
+import {renderWarning} from "../../../functions/renderWarnings";
+import {addDays} from "../../../functions/addDays";
 
 class IAddOrUpdateNewLessonProps {
     store: RootStore;
@@ -152,23 +154,14 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     renderWarnings() {
         return (
             <>
-                {this.warningTypes.includes(WarningType.EndDateLessThanStartDate) && 
-                    <Fade className="warning">
-                    Дата окончания не может быть меньше даты начала
-                    </Fade>}
-                {this.warningTypes.includes(WarningType.StartDateMoreThanEndDate) &&
-                    <Fade className="warning">
-                    Дата начала не может быть больше даты окончания
-                </Fade>}
-                {this.warningTypes.includes(WarningType.ChoosenDateLessThanToday) &&
-                <Fade className="warning">
-                    Выбранная дата не может быть меньше сегодняшней даты
-                </Fade>}
-                {this.warningTypes.includes(WarningType.NotValid) &&
-                <Fade className="warning"
-                    style={{fontSize: "1.2em", textAlign: "center"}}>
-                    Урок пока не может быть сохранён, устраните ошибки
-                </Fade>}
+                {this.warningTypes.includes(WarningType.EndDateLessThanStartDate) 
+                    && renderWarning(WarningType.EndDateLessThanStartDate)}
+                {this.warningTypes.includes(WarningType.StartDateMoreThanEndDate) 
+                    && renderWarning(WarningType.StartDateMoreThanEndDate)}
+                {this.warningTypes.includes(WarningType.ChoosenDateLessThanToday)
+                    && renderWarning(WarningType.ChoosenDateLessThanToday)}
+                {this.warningTypes.includes(WarningType.NotValid)
+                    && renderWarning(WarningType.NotValid)}
             </>
         );
     }
@@ -324,7 +317,7 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
     
     validate(date: Date | Date[], dateType: DateType) {
         let warningsTypes = new Array<WarningType>();
-        if(date < this.addDays(new Date(), -1)) {
+        if(date < addDays(new Date(), -1)) {
             warningsTypes.push(WarningType.ChoosenDateLessThanToday);
         }
         if(dateType === DateType.EndDate && date < this.startDate) {
@@ -335,10 +328,5 @@ export class AddOrUpdateNewLesson extends Component<IAddOrUpdateNewLessonProps> 
         }
         this.warningTypes = warningsTypes;
         this.isValid = warningsTypes.length === 0;
-    }
-
-    addDays(date: Date, days: number): Date {
-        date.setDate(date.getDate() + days);
-        return date;
     }
 }

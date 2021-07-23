@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { observer } from "mobx-react";
 import CourseStore from "../../../stores/CourseStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
 import {Button, Alert, Label, Input} from "reactstrap";
@@ -119,7 +119,7 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     renderDividingLine() {
         return(
             <div className="row justify-content-start searchbar searchForm" style={{width: "400px", marginBottom: "1%"}}>
-                <span style={{fontSize: "1.3em", marginLeft: "1.7%", width: "100px"}}>
+                <span style={{fontSize: "1.3em", marginLeft: "5%", width: "100px"}}>
                     Добавить:
                 </span>
                 <Input type="text"
@@ -195,8 +195,8 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
     }
 
     restUsersFilter(event: React.ChangeEvent<HTMLInputElement>) {
-        let value = event.currentTarget.value;
-        this.restUsers = this.props.userStore.users.filter(u => u.fullName.includes(value));
+        let value = event.currentTarget.value.toLowerCase();
+        this.restUsers = this.props.userStore.users.filter(u => u.fullName.toLowerCase().includes(value));
     }
 }
 

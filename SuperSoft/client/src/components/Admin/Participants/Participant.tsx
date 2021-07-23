@@ -3,14 +3,16 @@ import {observer} from "mobx-react";
 import {UserViewModel} from "../../../Typings/viewModels/UserViewModel";
 import CourseStore from "../../../stores/CourseStore";
 import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label, Alert } from "reactstrap";
-import {makeObservable, observable, toJS} from "mobx";
+import {Alert, Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label} from "reactstrap";
+import {makeObservable, observable} from "mobx";
 import Calendar from "react-calendar";
-import {UserRole} from "../../../Typings/enums/UserRole";
 import {Tarif} from "../../../Typings/enums/Tarif";
-import {translateCourseRole, translateRole, translateTarif} from "../../../functions/translater";
-import {renderSpinner} from "../../../functions/renderSpinner";
+import {translateCourseRole, translateTarif} from "../../../functions/translater";
 import {CourseRole} from "../../../Typings/enums/CourseRole";
+import {DateType} from "../../../consts/DateType";
+import {WarningType} from "../../../consts/WarningType";
+import {addDays} from "../../../functions/addDays";
+import {renderWarning} from "../../../functions/renderWarnings";
 
 class IParticipantProps {
     participant: UserViewModel;
@@ -28,6 +30,8 @@ class Participant extends Component<IParticipantProps> {
     startDateCalendarOpen: boolean;
     expireDateCalendarOpen: boolean;
     startDateExceedExpireDate: boolean;
+    isValid: boolean = true;
+    warningTypes: WarningType[] = new Array<WarningType>();
 
     constructor() {
         // @ts-ignore
@@ -40,7 +44,9 @@ class Participant extends Component<IParticipantProps> {
             tarifOpen: observable,
             startDateCalendarOpen: observable,
             expireDateCalendarOpen: observable,
-            startDateExceedExpireDate: observable
+            startDateExceedExpireDate: observable,
+            isValid: observable,
+            warningTypes: observable
         });
     }
 
@@ -56,9 +62,17 @@ class Participant extends Component<IParticipantProps> {
         }, 6000);
         return(
             <>
-                {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}
-                {this.saved && <Alert color="success">Данные успешно обновились :)</Alert>}
-                {this.startDateExceedExpireDate && <Alert color="danger">Дата начала курса превышает дату конца окончания...</Alert>}
+                    {this.notSaved && <Alert color="danger">Не удалось обновить данные</Alert>}
+                    {this.saved && <Alert color="success">Данные успешно обновились :)</Alert>}
+                    {this.startDateExceedExpireDate && <Alert color="danger">Дата начала курса превышает дату конца окончания...</Alert>}
+                    {this.warningTypes.length > 0 &&
+                        <tr><td colSpan={6}>
+                            {this.warningTypes.includes(WarningType.EndDateLessThanStartDate) && renderWarning(WarningType.EndDateLessThanStartDate)}
+                            {this.warningTypes.includes(WarningType.StartDateMoreThanEndDate) && renderWarning(WarningType.StartDateMoreThanEndDate)}
+                            {this.warningTypes.includes(WarningType.ChoosenDateLessThanToday) && renderWarning(WarningType.ChoosenDateLessThanToday)}
+                            {this.warningTypes.includes(WarningType.NotValid) && renderWarning(WarningType.NotValid)}
+                        </td></tr>
+                    }
             </>
         );
     }
@@ -66,7 +80,7 @@ class Participant extends Component<IParticipantProps> {
     renderParticipant(participant: UserViewModel, details: UserCourseViewModel) {
         return(
             <>
-                {this.renderWarnings()}
+                {this.renderWarnings()}    
                 <tr>
                     <td>
                         {this.renderName(participant)}
@@ -102,7 +116,7 @@ class Participant extends Component<IParticipantProps> {
     renderTarif(details: UserCourseViewModel) {
         return(
             <Dropdown isOpen={this.tarifOpen} toggle={() => this.toggleTarif()}>
-                <DropdownToggle caret>
+                <DropdownToggle caret className="specialDropdown">
                     {translateTarif(details.tarif)}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -132,7 +146,7 @@ class Participant extends Component<IParticipantProps> {
             <Calendar
                 minDate={new Date(2021)}
                 value={startDate}
-                onChange={(date) => this.inputDate(date, "startDate")}
+                onChange={(date) => this.inputDate(date, DateType.StartDate)}
             />
         );
     }
@@ -158,7 +172,7 @@ class Participant extends Component<IParticipantProps> {
             <Calendar
                 minDate={new Date(2021)}
                 value={expireDate}
-                onChange={(date) => this.inputDate(date, "expireDate")}
+                onChange={(date) => this.inputDate(date, DateType.EndDate)}
             />
         );
     }
@@ -166,7 +180,7 @@ class Participant extends Component<IParticipantProps> {
     renderRole(details: UserCourseViewModel) {
         return(
             <Dropdown isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
-                <DropdownToggle caret>
+                <DropdownToggle caret className="specialDropdown">
                     {translateCourseRole(details.courseRole)}
                 </DropdownToggle>
                 <DropdownMenu>
@@ -183,12 +197,12 @@ class Participant extends Component<IParticipantProps> {
                 <Button 
                     style={{width: "90%", marginBottom: "4px"}}
                     outline color="success" onClick={() => this.updateParticipant()}>
-                    СОХРАНИТЬ
+                    Сохранить
                 </Button>
                 <Button
                     style={{width: "90%", marginBottom: "10px"}}
                     outline color="danger" onClick={() => this.props.deleteParticipant(this.props.participant)}>
-                    УДАЛИТЬ
+                    Удалить
                 </Button>
             </>
         );
@@ -204,22 +218,29 @@ class Participant extends Component<IParticipantProps> {
     }
 
     updateParticipant() {
-        this.startDateExceedExpireDate = new Date(this.details.startDate.toLocaleString()) > new Date(this.details.expireDate.toLocaleString());
-        if(!this.startDateExceedExpireDate) {
-            this.props.courseStore.addOrUpdateUserCourseDetails(this.details)
-                .then((status) => {
-                    this.notSaved = status !== 200;
-                    this.saved = status === 200;
-                });
-        }
+        if(this.isValid) {
+            this.startDateExceedExpireDate = new Date(this.details.startDate.toLocaleString()) > new Date(this.details.expireDate.toLocaleString());
+            if(!this.startDateExceedExpireDate) {
+                this.props.courseStore.addOrUpdateUserCourseDetails(this.details)
+                    .then((status) => {
+                        this.notSaved = status !== 200;
+                        this.saved = status === 200;
+                    });
+            }
+        } else {
+            if(!this.warningTypes.includes(WarningType.NotValid)) {
+                this.warningTypes.push(WarningType.NotValid);
+            }
+        }       
     }
 
-    inputDate(date: Date | Date[], type: string) {
-        if (type === "startDate") {
+    inputDate(date: Date | Date[], dateType: DateType) {
+        if (dateType === DateType.StartDate) {
             this.details.startDate = date;
-        } else if (type === "expireDate") {
+        } else if (dateType === DateType.EndDate) {
             this.details.expireDate = date;
         }
+        this.validate(date, dateType)
     }
 
     toggleRoleMenu() {
@@ -244,6 +265,21 @@ class Participant extends Component<IParticipantProps> {
 
     toggleExpireDate() {
         this.expireDateCalendarOpen = !this.expireDateCalendarOpen;
+    }
+
+    validate(date: Date | Date[], dateType: DateType) {
+        let warningsTypes = new Array<WarningType>();
+        if(this.details.startDate < addDays(new Date(), -1) || this.details.expireDate < addDays(new Date(), -1)) {
+            warningsTypes.push(WarningType.ChoosenDateLessThanToday);
+        }
+        if((dateType === DateType.EndDate && date < this.details.startDate) || this.details.expireDate < this.details.startDate) {
+            warningsTypes.push(WarningType.EndDateLessThanStartDate);
+        }
+        if((dateType === DateType.StartDate && date > this.details.expireDate) || this.details.startDate > this.details.expireDate) {
+            warningsTypes.push(WarningType.StartDateMoreThanEndDate);
+        }
+        this.warningTypes = warningsTypes;
+        this.isValid = warningsTypes.length === 0;
     }
 }
 

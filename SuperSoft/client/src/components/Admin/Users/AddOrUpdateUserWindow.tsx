@@ -128,7 +128,7 @@ class AddOrUpdateUserWindow extends Component<IAddOrUpdateUserProps> {
             <Dropdown 
                 style={{marginTop: "7px"}}
                 isOpen={this.roleMenuOpen} toggle={() => this.toggleRoleMenu()}>
-                <DropdownToggle caret  className="dropdown">
+                <DropdownToggle caret className="specialDropdown">
                     {translateRole(user.role)}
                 </DropdownToggle>
                 <DropdownMenu >
