@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Claims;
 using Just_Study.Authorization.Api.Enums;
 using Just_Study.Authorization.Api.Models;
-using JustStudy.Authorization.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

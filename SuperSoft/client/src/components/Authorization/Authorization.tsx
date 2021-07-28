@@ -121,9 +121,33 @@ export class Authorization extends React.Component<IAuthorizationProps> {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({login: this.login, password: this.password})
+            body: JSON.stringify({login: this.login, password: this.password, email: this.login})
         });
         const data = await response.json();
-        console.log("data", toJS(data));
+        const token = data.access_token;
+        console.log("data", toJS(data), data, "token", token);
+        this.first(token).then((res) => console.log("first", res));
+        this.second(token).then((res) => console.log("second", res));
+    }
+
+    async second(token: string): Promise<string> {
+        const response = await fetch("/second", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return await response.json();
+    }
+
+    async first(token: string): Promise<string> {
+        const response = await fetch("/first", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        console.log("response", response, toJS(response));
+        return await response.json();
     }
 }
