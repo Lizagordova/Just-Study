@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using Just_Study.Authorization.Api.Enums;
-using Just_Study.Authorization.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +13,7 @@ using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Services.Users;
 using SuperSoft.Helpers;
+using SuperSoft.Persistence.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
@@ -30,31 +29,7 @@ namespace SuperSoft.Controllers
 		private readonly ILogger<AuthorizationController> _logger;
 		private readonly LogService _logService;
 		private readonly IOptions<AuthOptions> authOptions;
-		private List<Account> Accounts => new List<Account>
-		{
-			new Account
-			{
-				Id = Guid.NewGuid(),
-				Email = "el@gmail.com",
-				Password = "gordova",
-				Roles = new Role[] { Role.User}
-			},
-			new Account
-			{
-				Id = Guid.NewGuid(),
-				Email = "user",
-				Password = "user",
-				Roles = new Role[] {Role.User}
-			},
-			new Account
-			{
-				Id = Guid.NewGuid(),
-				Email = "admin",
-				Password = "admin",
-				Roles = new Role[] {Role.Admin}
-			},
-		};
-		
+
 		public AuthorizationController(
 			MapperService mapper,
 			IUserReaderService userReader,
@@ -92,6 +67,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "User")]
 		[Route("/checktoken")]
 		public ActionResult CheckToken()
 		{
@@ -126,30 +102,6 @@ namespace SuperSoft.Controllers
 
 			return Unauthorized();
 		}
-		
-		[HttpPost]
-		[Route("/authorization")]
-		public ActionResult Authorization([FromBody]UserReadModel userReadModel)
-		{
-			var user = _mapper.Map<UserReadModel, User>(userReadModel);
-			try
-			{
-				var userInfo = _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = user.PasswordHash, Email = user.Email, Login = user.Login });
-				if (userInfo == null)
-				{
-					return new StatusCodeResult(401);
-				}
-				SetUserData(userInfo.Role, userInfo.Token, userInfo.Id);
-
-				return new OkResult();
-			}
-			catch (Exception e)
-			{
-				_logService.AddLogAuthorizationProblemException(_logger, e, userReadModel.Login);
-
-				return new StatusCodeResult(500);
-			}
-		}
 
 		[HttpGet]//todo: разобраться потом, как HttpDelete делать fetch-ом
 		[Route("/exit")]
@@ -173,7 +125,17 @@ namespace SuperSoft.Controllers
 		
 		private Account AuthenticateUser(string email, string password)
 		{
-			return Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
+			var userInfo =  _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = password.GetPasswordHash(), Email = email, Login = email });
+			if (userInfo == null)
+			{
+				return null;
+			}
+			return new Account
+			{
+				Id = userInfo.Id,
+				Email = userInfo.Email,
+				Roles = new UserRole[] { UserRole.User }
+			};
 		}
 
 		private string GenerateJWT(Account user)

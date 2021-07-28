@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSoft.Persistence", "Su
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B25C43B7-DD9A-4E57-9A7D-616EB4ABB349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustStudy.Resourse.Api", "JustStudy.Resourse.Api\JustStudy.Resourse.Api.csproj", "{9B81CE8D-7A89-44DC-85B2-4ECD4CE29522}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{B25C43B7-DD9A-4E57-9A7D-616EB4ABB349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B25C43B7-DD9A-4E57-9A7D-616EB4ABB349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B25C43B7-DD9A-4E57-9A7D-616EB4ABB349}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B81CE8D-7A89-44DC-85B2-4ECD4CE29522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B81CE8D-7A89-44DC-85B2-4ECD4CE29522}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B81CE8D-7A89-44DC-85B2-4ECD4CE29522}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B81CE8D-7A89-44DC-85B2-4ECD4CE29522}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

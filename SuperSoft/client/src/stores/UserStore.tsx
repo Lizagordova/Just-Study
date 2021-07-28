@@ -25,8 +25,14 @@ class UserStore {
         this.getUsers();
     }
 
-    async getCurrentUser() {
-        const response = await fetch("/checktoken");
+    async getCurrentUser(token: string = "") {
+        console.log("token", token);
+        const response = await fetch("/checktoken", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(response.status === 200) {
             this.currentUser = await response.json();
             this.authorizationRequired = false;

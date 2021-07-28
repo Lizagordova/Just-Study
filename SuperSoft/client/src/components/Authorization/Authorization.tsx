@@ -29,7 +29,7 @@ export class Authorization extends React.Component<IAuthorizationProps> {
         return(
             <>
                 {this.props.store.userStore.wrongCredetianals && <div className="row justify-content-center">
-                    <Alert color="danger">Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
+                    <Alert color="danger" style={{width: "90%"}}>Пользователя с такими данными не существует. Попробуйте ещё раз</Alert>
                 </div> }
             </>
         );
@@ -94,27 +94,6 @@ export class Authorization extends React.Component<IAuthorizationProps> {
         this.password = event.currentTarget.value;
     }
 
-    // async authorize() {
-    //     const response = await fetch("/authorization", {
-    //         method: "POST",
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify({login: this.login, password: this.password})
-    //     });
-    //     if(response.status === 200) {
-    //         this.props.store.userStore.getCurrentUser()
-    //             .then(() => {
-    //                 this.props.store.userStore.authorizationRequire(false);
-    //                 this.props.store.userStore.wrongCredetianalsToggle(false);
-    //                 this.props.store.userStore.getUsers();
-    //             });
-    //     } else {
-    //         this.props.store.userStore.authorizationRequire(true);
-    //         this.props.store.userStore.wrongCredetianalsToggle(true);
-    //     }
-    // }
-
     async authorize() {
         const response = await fetch("/login", {
             method: "POST",
@@ -123,31 +102,19 @@ export class Authorization extends React.Component<IAuthorizationProps> {
             },
             body: JSON.stringify({login: this.login, password: this.password, email: this.login})
         });
-        const data = await response.json();
-        const token = data.access_token;
-        console.log("data", toJS(data), data, "token", token);
-        this.first(token).then((res) => console.log("first", res));
-        this.second(token).then((res) => console.log("second", res));
-    }
-
-    async second(token: string): Promise<string> {
-        const response = await fetch("/second", {
-            method: "GET",
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        return await response.json();
-    }
-
-    async first(token: string): Promise<string> {
-        const response = await fetch("/first", {
-            method: "GET",
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        console.log("response", response, toJS(response));
-        return await response.json();
+        if(response.status === 200) {
+            let data = await response.json();
+            let token = data.access_token;
+            console.log("tokennnn", token);
+            this.props.store.userStore.getCurrentUser(token)
+                .then(() => {
+                    this.props.store.userStore.authorizationRequire(false);
+                    this.props.store.userStore.wrongCredetianalsToggle(false);
+                    this.props.store.userStore.getUsers();
+                });
+        } else {
+            this.props.store.userStore.authorizationRequire(true);
+            this.props.store.userStore.wrongCredetianalsToggle(true);
+        }
     }
 }

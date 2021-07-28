@@ -1,13 +1,12 @@
-﻿using System;
-using Just_Study.Authorization.Api.Enums;
+﻿using SuperSoft.Domain.enums;
 
-namespace Just_Study.Authorization.Api.Models
+namespace SuperSoft.Domain.Models
 {
     public class Account
     {
         public int Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public Role[] Roles { get; set; }
+        public UserRole[] Roles { get; set; }
     }
 }
