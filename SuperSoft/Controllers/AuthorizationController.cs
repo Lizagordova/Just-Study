@@ -1,7 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using Just_Study.Authorization.Api.Enums;
+using Just_Study.Authorization.Api.Models;
+using JustStudy.Authorization.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
@@ -10,6 +19,7 @@ using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace SuperSoft.Controllers
 {
@@ -20,19 +30,46 @@ namespace SuperSoft.Controllers
 		private readonly IUserEditorService _userEditor;
 		private readonly ILogger<AuthorizationController> _logger;
 		private readonly LogService _logService;
-
+		private readonly IOptions<AuthOptions> authOptions;
+		private List<Account> Accounts => new List<Account>
+		{
+			new Account
+			{
+				Id = Guid.NewGuid(),
+				Email = "el@gmail.com",
+				Password = "gordova",
+				Roles = new Role[] { Role.User}
+			},
+			new Account
+			{
+				Id = Guid.NewGuid(),
+				Email = "user",
+				Password = "user",
+				Roles = new Role[] {Role.User}
+			},
+			new Account
+			{
+				Id = Guid.NewGuid(),
+				Email = "admin",
+				Password = "admin",
+				Roles = new Role[] {Role.Admin}
+			},
+		};
+		
 		public AuthorizationController(
 			MapperService mapper,
 			IUserReaderService userReader,
 			IUserEditorService userEditor,
 			ILogger<AuthorizationController> logger,
-			LogService logService)
+			LogService logService,
+			IOptions<AuthOptions> authOptions)
 		{
 			_mapper = mapper;
 			_userReader = userReader;
 			_userEditor = userEditor;
 			_logger = logger;
 			_logService = logService;
+			this.authOptions = authOptions;
 		}
 
 		[HttpPost]
@@ -72,6 +109,25 @@ namespace SuperSoft.Controllers
 			return new StatusCodeResult(401);
 		}
 
+		[Route("/login")]
+		[HttpPost]
+		public IActionResult Login([FromBody]UserReadModel request)
+		{
+			var user = AuthenticateUser(request.Email, request.Password);
+
+			if (user != null)
+			{
+				var token = GenerateJWT(user);
+
+				return Ok(new
+				{
+					access_token = token
+				});
+			}
+
+			return Unauthorized();
+		}
+		
 		[HttpPost]
 		[Route("/authorization")]
 		public ActionResult Authorization([FromBody]UserReadModel userReadModel)
@@ -114,6 +170,38 @@ namespace SuperSoft.Controllers
 			HttpContext.Response.Cookies.Append("token", token);
 			HttpContext.Response.Cookies.Append("role", role.ToString());
 			HttpContext.Session.SetString("authorized", "true");
+		}
+		
+		private Account AuthenticateUser(string email, string password)
+		{
+			return Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
+		}
+
+		private string GenerateJWT(Account user)
+		{
+			var authParams = authOptions.Value;
+
+			var securityKey = authParams.GetSymmetricSecurityKey();
+			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+			var claims = new List<Claim>()
+			{
+				new Claim(JwtRegisteredClaimNames.Email, user.Email),
+				new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
+			};
+
+			foreach (var role in user.Roles)
+			{
+				claims.Add(new Claim("role", role.ToString()));
+			}
+            
+			var token = new JwtSecurityToken(authParams.Issuer,
+				authParams.Audience,
+				claims,
+				expires: DateTime.Now.AddSeconds(authParams.TokenLifeTime),
+				signingCredentials: credentials);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 import RootStore from "../../stores/RootStore";
 import { Label, Input, Button, Alert }from "reactstrap";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 
 interface IAuthorizationProps {
     store: RootStore;
@@ -93,24 +93,36 @@ export class Authorization extends React.Component<IAuthorizationProps> {
         this.password = event.currentTarget.value;
     }
 
+    // async authorize() {
+    //     const response = await fetch("/authorization", {
+    //         method: "POST",
+    //         headers: {
+    //             'Content-Type': 'application/json;charset=utf-8'
+    //         },
+    //         body: JSON.stringify({login: this.login, password: this.password})
+    //     });
+    //     if(response.status === 200) {
+    //         this.props.store.userStore.getCurrentUser()
+    //             .then(() => {
+    //                 this.props.store.userStore.authorizationRequire(false);
+    //                 this.props.store.userStore.wrongCredetianalsToggle(false);
+    //                 this.props.store.userStore.getUsers();
+    //             });
+    //     } else {
+    //         this.props.store.userStore.authorizationRequire(true);
+    //         this.props.store.userStore.wrongCredetianalsToggle(true);
+    //     }
+    // }
+
     async authorize() {
-        const response = await fetch("/authorization", {
+        const response = await fetch("/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({login: this.login, password: this.password})
         });
-        if(response.status === 200) {
-            this.props.store.userStore.getCurrentUser()
-                .then(() => {
-                    this.props.store.userStore.authorizationRequire(false);
-                    this.props.store.userStore.wrongCredetianalsToggle(false);
-                    this.props.store.userStore.getUsers();
-                });
-        } else {
-            this.props.store.userStore.authorizationRequire(true);
-            this.props.store.userStore.wrongCredetianalsToggle(true);
-        }
+        const data = await response.json();
+        console.log("data", toJS(data));
     }
 }
