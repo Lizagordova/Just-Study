@@ -18,6 +18,8 @@ import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewM
 import AddSubtask from "../../Admin/Tasks/AddSubtask";
 import {TaskType} from "../../../Typings/enums/TaskType";
 import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
+import {InsertWordsIntoGapsSubtask} from "./InsertWordsIntoGapsSubtask";
+import {DistributeItemsIntoGroupsSubtask} from "./DistributeItemsIntoGroupsSubtask";
 
 class ITaskProps {
     store: RootStore;
@@ -73,7 +75,7 @@ export class Task extends Component<ITaskProps> {
     renderEditButton() {
         if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
             return (
-                <i style={{marginLeft: '92%', width: '2%'}}
+                <i style={{marginRight: "2px"}}
                    onClick={() => this.editTaskToggle()}
                    className="fa fa-edit fa-2x" aria-hidden="true"/>
             );
@@ -82,8 +84,7 @@ export class Task extends Component<ITaskProps> {
     
     renderDeleteButton() {
         return (
-            <i style={{marginLeft: '92%', width: '2%'}}
-               onClick={() => this.deleteTask()}
+            <i onClick={() => this.deleteTask()}
                className="fa fa-window-close fa-2x" aria-hidden="true"/>
         );
     }
@@ -93,8 +94,8 @@ export class Task extends Component<ITaskProps> {
         if(role === UserRole.Admin) {
             return(
             <>
-                {this.renderDeleteButton()}
                 {this.renderEditButton()}
+                {this.renderDeleteButton()}
             </>
             );
         }
@@ -104,12 +105,12 @@ export class Task extends Component<ITaskProps> {
         let role = this.props.store.userStore.currentUser.role;
         if(role === UserRole.Admin && !this.props.reviewMode) {
             return(
-                <Button className="addTask"
-                     style={{fontSize: "0.6em", height: "auto"}}
+                <Button className="commonButton"
+                     style={{fontSize: "0.8em", height: "auto"}}
                      onClick={() => this.addSubtaskToggle()}
                      outline color="secondary">
-                    <span className="addTaskText">
-                        {!this.addSubtask ? 'ДОБАВИТЬ ПОДЗАДАНИЕ' : 'ОТМЕНИТЬ'}
+                    <span>
+                        {!this.addSubtask ? 'Добавить подзадание' : 'Отменить'}
                     </span>
                 </Button>
             );
@@ -133,29 +134,34 @@ export class Task extends Component<ITaskProps> {
 
     renderInstruction(task: TaskViewModel) {
         return(
-            <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.instruction}}/>
-        );
+            <div className="row justify-content-center">
+                <div style={{fontSize: "1.3em"}}
+                     className="col-11"
+                     dangerouslySetInnerHTML={{__html: task.instruction}}>
+                </div>
+                <div className="col-1s">
+                    {this.renderControlButtons()}
+                </div>
+            </div>
+         );
     }
 
     renderText(task: TaskViewModel) {
         if(task.text !== undefined && task.text !== "") {
             return(
-                <CardTitle className="text-center" dangerouslySetInnerHTML={{__html: task.text}}/>
+                <CardTitle className="text-center" style={{fontSize: "1.5em"}} dangerouslySetInnerHTML={{__html: task.text}}/>
             );
         }
     }
 
     renderTask(task: TaskViewModel) {
         return(
-            <Card style={{width: '100%'}}>
-                {this.renderControlButtons()}
+            <div className="container-fluid task">
                 {this.renderInstruction(task)}
                 {this.renderText(task)}
-                <CardBody style={{marginLeft: '5%'}}>
-                    {this.renderSubtasks(task.subtasks, this.update)}
-                </CardBody>
+                {this.renderSubtasks(task.subtasks, this.update)}
                 {this.renderAddSubtask()}
-            </Card>
+            </div>
         )
     }
 
@@ -164,7 +170,9 @@ export class Task extends Component<ITaskProps> {
            <>
                {subtasks.map((subtask, i) => {
                    return(
-                       <>{this.renderSubtask(subtask, i, update)}</>
+                       <div className="row" style={{marginLeft: "1%"}}>
+                           {this.renderSubtask(subtask, i, update)}
+                       </div>
                    );
                })}
                {this.renderAddSubtaskButton()}
@@ -176,8 +184,10 @@ export class Task extends Component<ITaskProps> {
         let userId = this.props.userId;
         let userSubtask = this.userTask.userSubtasks.find(u => u.subtaskId === subtask.id);
         let taskId = this.props.task.id;
+        console.log("userSubtask", toJS(userSubtask));
         if(userSubtask === undefined) {
             userSubtask = new UserSubtaskViewModel();
+            userSubtask.subtaskId = subtask.id;
         }
         if(subtask.subtaskType === SubtaskType.DetailedAnswer) {
             return(
@@ -187,11 +197,11 @@ export class Task extends Component<ITaskProps> {
             return(
                 <FillGapsSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
             );
-        } /*else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
+        } else if(subtask.subtaskType === SubtaskType.InsertWordsIntoGaps) {
             return(
-                <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store} userSubtask={userSubtask} />
+                <InsertWordsIntoGapsSubtask subtask={subtask} store={this.props.store} userSubtask={userSubtask}  order={order} reviewMode={this.props.reviewMode} taskId={taskId} userId={userId} updateUserTask={this.getUserTask} />
             );
-        }*/ else if(subtask.subtaskType === SubtaskType.LoadAudio) {
+        } else if(subtask.subtaskType === SubtaskType.LoadAudio) {
             return(
                 <LoadAudioSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
             );
@@ -202,6 +212,10 @@ export class Task extends Component<ITaskProps> {
         } else if(subtask.subtaskType === SubtaskType.LoadFile) {
             return(
                 <LoadFileSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
+            );
+        } else if(subtask.subtaskType === SubtaskType.DistributeItemsIntoGroups) {
+            return(
+                <DistributeItemsIntoGroupsSubtask updateUserTask={this.getUserTask} subtask={subtask} store={this.props.store} userId={userId} userSubtask={userSubtask} taskId={taskId} key={subtask.id} order={order} reviewMode={this.props.reviewMode} />
             );
         }
     }

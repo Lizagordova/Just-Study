@@ -6,9 +6,13 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Dapper" Version="2.0.78" />
-	  <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.0" />
+	  <PackageReference Include="DynamicPDF" Version="8.0.0" />
+	  <PackageReference Include="GemBox.Presentation" Version="25.0.1129" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 	  <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.16.0" />
+
 	</ItemGroup>
 
 	<ItemGroup>
@@ -16,9 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Microsoft.AspNetCore.Http.Features">
-	    <HintPath>..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.10\ref\netcoreapp3.1\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-	  </Reference>
+	  <Folder Include="Scripts\NewScripts" />
 	</ItemGroup>
 
 </Project>

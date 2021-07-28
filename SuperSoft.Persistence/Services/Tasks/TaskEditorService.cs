@@ -60,6 +60,11 @@ namespace SuperSoft.Persistence.Services.Tasks
 			_taskRepository.AttachTagsToTask(taskId, tagIds);
 		}
 
+		public void AttachSubtagsToTask(int taskId, IReadOnlyCollection<int> subtagIds)
+		{
+			_taskRepository.AttachSubtagsToTask(taskId, subtagIds);
+		}
+
 		private Subtask PreHandleSubtask(Subtask subtask, int taskId)
 		{
 			var subtaskType = subtask.SubtaskType;

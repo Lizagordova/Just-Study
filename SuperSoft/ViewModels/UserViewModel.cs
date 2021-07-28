@@ -14,5 +14,6 @@ namespace SuperSoft.ViewModels
 		public string PasswordHash { get; set; }
 		public UserRole Role { get; set; }
 		public string Token { get; set; }
+		public string FullName => $"{FirstName} {LastName}";
 	}
 }

@@ -6,4 +6,5 @@ export class TaskTagReadModel
 {
 	public taskId: number;
 	public tagIds: number[];
+	public subtagIds: number[];
 }

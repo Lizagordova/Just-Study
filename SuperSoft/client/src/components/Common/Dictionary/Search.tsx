@@ -35,14 +35,14 @@ class Search extends Component<ISearchProps> {
             this.firstFoundWordsSettled = true;
         }
         return(
-            <>
+            <div>
                 <Input type="text"
                     className="searchInput"
                     onFocus={() => this.selectOpenToggle()}
                     onChange={(e) => this.onChange(e)}
                 />
                 <button className="searchButton" type="submit"/>
-            </>
+            </div>
         );
     }
 

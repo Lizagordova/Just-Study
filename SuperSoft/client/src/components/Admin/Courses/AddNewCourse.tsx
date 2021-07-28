@@ -34,8 +34,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
         return(
             <>
                 <Button
-                    style={{marginTop: "10px"}}
-                    outline color="primary" onClick={() => this.addNewCourseToggle()}>
+                    outline
+                    className="addNewCourse"
+                    onClick={() => this.addNewCourseToggle()}>
                     Добавить курс
                 </Button>
             </>
@@ -45,7 +46,7 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     renderCourseNameInput() {
         return(
             <>
-                <Label>
+                <Label className="inputLabel" align="center">
                     Введите название курса
                 </Label>
                 <Input
@@ -58,7 +59,9 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
     renderDescriptionInput() {
         return(
             <>
-                <Label>Введите описание курса</Label>
+                <Label className="inputLabel" align="center">
+                    Введите описание курса
+                </Label>
                 <Input
                     style={{width: "70%"}}
                     onChange={(e) => this.inputDescription(e)}/>
@@ -131,18 +134,18 @@ export class AddNewCourse extends Component<IAddNewCourseProps> {
                    onClick={() => this.addNewCourseToggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
-                    СОЗДАНИЕ НОВОГО КУРСА
+                    Создание нового курса
                 </div>
                 {this.renderBody()}
                 {this.renderCancelButton()}
             </Modal>
         );
     }
-
+    
     render() {
         return(
             <>
-                {!this.addNewCourse && this.renderButton()}
+                {this.renderButton()}
                 {this.addNewCourse && this.renderAddNewCourseWindow()}
             </>
         );

@@ -9,5 +9,6 @@ export enum TaskType {
 	LoadAudio = 3, 
 	DetailedAnswer = 4, 
 	LoadFile = 5, 
-	ReadText = 6
+	ReadText = 6, 
+	DistributeItemsIntoGroups = 7
 }

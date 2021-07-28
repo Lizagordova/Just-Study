@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using GemBox.Presentation;
+using NUnit.Framework;
 using SuperSoft.Persistence.Repositories;
 using SuperSoft.Persistence.Services.MapperService;
 
@@ -14,9 +15,9 @@ namespace Tests.RepositoriesTests
 		}
 
 		[Test]
+		[TestCase]
 		public void AddOrUpdateComment_Scenario_ExpectedResult()
 		{
-			
 		}
 	}
 }

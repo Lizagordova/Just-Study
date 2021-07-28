@@ -1,6 +1,8 @@
-﻿import { makeObservable, observable } from "mobx";
+﻿import {action, makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
 import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
+import {LessonReadModel} from "../Typings/readModels/LessonReadModel";
+import {mapToLessonReadModel} from "../functions/mapper";
 
 class LessonStore {
     lessonsByChoosenCourse: LessonViewModel[] = new Array<LessonViewModel>();
@@ -102,28 +104,90 @@ class LessonStore {
     }
 
     async addOrUpdateMaterial(file: File): Promise<number> {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("lessonId", this.choosenLesson.id.toString());
-        const response = await fetch("/addorupdatematerial", {
-            body: formData,
-            method: "POST"
-        });
-        if(response.status === 200) {
-            this.getMaterialsByLesson(this.choosenLesson.id);
-        }
+        if(file.name.includes("mp4") || file.name.includes("mov")) {
+            let status =  await this.addOrUpdateMaterial1(file);
+            if(status === 200) {
+                this.getMaterialsByLesson(this.choosenLesson.id);
+            }
+            return status;
+        } else {
+            let count = 0;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("lessonId", this.choosenLesson.id.toString());
+            const response = await fetch("/addorupdatematerial", {
+                body: formData,
+                method: "POST"
+            });
+            if(response.status === 200) {
+                this.getMaterialsByLesson(this.choosenLesson.id);
+            } else if(response.status === 500 && count !== 3) {
+                count++;
+                this.addOrUpdateMaterial(file);
+            }
 
-        return response.status;
+            return response.status;
+        }
     }
 
-    async getUsersProgressByLesson(lessonId: number): Promise<number> {//todo: создать
-        const response = await fetch("/getUsersProgressByLesson", {
+    async addOrUpdateMaterial1(file: File): Promise<number> {
+        let size = file.size;
+        let start = 0;
+        let chunkSize = 100000;
+        let end = chunkSize;        
+        while(start < size) {
+            let chunk = file.slice(start, end, "video/mp4");
+            const formData = new FormData();
+            formData.append("offset", start.toString());
+            formData.append("file", chunk);
+            formData.append("fileName", file.name);
+            formData.append("lessonId", this.choosenLesson.id.toString());
+            const response = await fetch("/addorupdatematerial1", {
+                body: formData,
+                method: "POST"
+            });
+            if(response.status === 200) {
+                start+= chunkSize;
+                end+= chunkSize;
+            }
+        }
+
+        return 200;
+    }
+    
+    async getUserProgressByLesson(lessonId: number, userId: number): Promise<number> {
+        const response = await fetch("/getuserprogressbylesson", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({
-                id: lessonId
+                lessonId: lessonId, userId: userId
+            })
+        });
+
+        return await response.json();
+    }
+
+    @action
+    setLessonsByChoosenCourse(lessons: LessonViewModel[], courseId: number) {
+        lessons.forEach((lesson, index) => {
+            lesson.order = index; 
+        });
+        this.lessonsByChoosenCourse = lessons;
+        let lessonReadModels = lessons.map(lesson => mapToLessonReadModel(lesson));
+        this.updateLessons(lessonReadModels, courseId);
+    }
+
+    async updateLessons(lessons: LessonReadModel[], courseId: number): Promise<number> {
+        const response = await fetch("/updatelessons", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                lessons: lessons,
+                courseId: courseId
             })
         });
 

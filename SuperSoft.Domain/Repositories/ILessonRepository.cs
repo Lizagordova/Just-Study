@@ -14,5 +14,6 @@ namespace SuperSoft.Domain.Repositories
 		List<LessonMaterial> GetMaterialsByLesson(int lessonId);
 		LessonMaterial GetLessonMaterial(int materialId);
 		Lesson GetLessonById(int lessonId);
+		void UpdateLessons(List<Lesson> lessons, int courseId);
 	}
 }

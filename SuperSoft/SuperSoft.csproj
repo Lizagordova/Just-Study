@@ -7,11 +7,12 @@
 		<IsPackable>false</IsPackable>
 		<SpaRoot>client\</SpaRoot>
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+		<UserSecretsId>f513989e-5c6a-4a77-baa4-f26c514e67ec</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.16.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
 		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.12.0" />
 		<PackageReference Include="Reinforced.Typings" Version="1.5.9" />
@@ -20,6 +21,8 @@
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
 		<Content Remove="$(SpaRoot)**" />
+		<Content Include="client\public\left.mp3" />
+		<Content Include="client\public\right.mp3" />
 		<Content Include="client\src\styles\authorization.css" />
 		<Content Include="client\src\styles\common.css" />
 		<Content Include="client\src\styles\dictionary.css" />

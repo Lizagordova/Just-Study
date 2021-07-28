@@ -41,6 +41,7 @@ export class RootStore {
             commentStore: observable,
             progressStore: observable
         });
+        this.tagStore = new TagStore();
         this.userStore = new UserStore();
         this.courseStore = new CourseStore();
         this.lessonStore = new LessonStore();
@@ -50,7 +51,6 @@ export class RootStore {
         this.trackerStore = new TrackerStore();
         this.notificationStore = new NotificationStore();
         this.feedbackStore = new FeedbackStore();
-        this.tagStore = new TagStore();
         this.commentStore = new CommentStore();
         this.progressStore = new ProgressStore();
     }

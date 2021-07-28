@@ -167,6 +167,7 @@ namespace SuperSoft.Controllers
 			{
 				return new BadRequestResult();
 			}
+
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
 			try
 			{
@@ -176,11 +177,51 @@ namespace SuperSoft.Controllers
 			}
 			catch (Exception e)
 			{
-				_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
+				_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);//todo: это лучше улучшить
 				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
 
 				return new StatusCodeResult(500);
 			}
+		}
+		
+		[HttpPost]
+		[Route("/addorupdatematerial1")]
+		public ActionResult AddOrUpdateMaterial1([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
+		{
+
+			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
+			try
+			{
+				_lessonEditor.AddOrUpdateMaterial1(lessonMaterial, lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File, lessonMaterialReadModel.Offset, lessonMaterialReadModel.FileName);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				//_lessonEditor.DeleteMaterial(lessonMaterialReadModel.LessonId, lessonMaterialReadModel.File);
+				_logService.AddLogAddOrUpdateMaterialException(_logger, e, lessonMaterial);
+
+				return new StatusCodeResult(500);
+			}
+		}
+		
+		[HttpPost]
+		[Route("/updatelessons")]
+		public ActionResult UpdateLessons([FromBody]LessonsCollectionReadModel lessonsCollection)
+		{
+			var lessons = lessonsCollection.Lessons.Select(_mapper.Map<LessonReadModel, Lesson>).ToList();
+			try
+			{
+				_lessonEditor.UpdateLessons(lessons, lessonsCollection.CourseId);
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogUpdateLessonsException(_logger, e);
+				
+				return new StatusCodeResult(500);
+			}
+
+			return new OkResult();
 		}
 	}
 }

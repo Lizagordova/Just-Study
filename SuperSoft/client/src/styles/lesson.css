@@ -11,8 +11,17 @@
     text-align: center;
 }
 
-.lesson {
-    text-align: center;
+.lessonButton {
+    color: rgb(65, 105, 225);
+    text-align: start;
+    width: 100%;
+    border-color: white;
+}
+
+.lessonButton:hover {
+    background-color: rgb(65, 105, 225);
+    color: white;
+    text-align: start;
     width: 100%;
 }
 
@@ -52,7 +61,7 @@
     height: 700px;
 }
 
-@media (max-width: 1217px) {
+@media (max-width: 1220px) {
     .menuHeader {
         height: 130px;
     }
@@ -64,6 +73,11 @@
     }
 }
 
+@media (max-width: 750px) {
+    .menuHeader {
+        height: 180px;
+    }
+}
 @media (max-width: 900px) {
     .materialContent {
         width: 600px;
@@ -101,4 +115,77 @@
         width: 250px;
         height: 250px;
     }
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link .menuNavLink {
+    background-color: rgb(65, 105, 225) !important;
+    font-weight: bold;
+    color: white !important;
+    font-size: 1.2em;
+}
+
+.lesson {
+    color: rgb(65, 105, 225);
+    text-align: start;
+    width: 100%;
+}
+
+.lesson:hover {
+    background-color: rgb(65, 105, 225);
+    color:white;
+    text-align: start;
+    width: 100%;
+}
+
+.addNewLesson, .addNewCourse {
+    color: rgb(65, 105, 225) !important;
+    border-color: rgb(65, 105, 225) !important;
+}
+
+.addNewLesson:hover, .addNewCourse:hover {
+    background-color: rgb(65, 105, 225) !important;
+    color: white !important;
+}
+
+.courseToggler {
+    color: rgb(65, 105, 225) !important;
+    border-color: rgb(65, 105, 225)!important;
+    background-color: white !important;
+}
+
+.courseToggler:hover {
+    color: white !important;
+    background-color: rgb(65, 105, 225) !important;
+}
+
+.shuffledPart {
+    background-color: white !important;
+    color: black !important;
+    border-color: black !important;
+    margin: 5px 5px 5px 5px;
+    height: 40px;
+}
+
+.gapToInsert {
+    margin: 0 5px 5px 5px;
+}
+
+.rightAnswer {
+    color: #4F8A10 !important;
+    background-color: #DFF2BF !important;
+}
+
+.wrongAnswer {
+    color: #D8000C !important;
+    background-color: #FFBABA !important;
+}
+
+.task {
+    width: 100%;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.8);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px !important;
 }

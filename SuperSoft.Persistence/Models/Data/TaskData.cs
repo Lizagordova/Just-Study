@@ -10,5 +10,7 @@ namespace SuperSoft.Persistence.Models.Data
 		public List<SubtaskUdt> Subtasks { get; set; }
 		public List<TagUdt> Tags { get; set; }
 		public List<TaskTagUdt> TagTasks { get; set; }
+		public List<SubtagUdt> Subtags { get; set; }
+		public List<TaskSubtagUdt> TaskSubtags { get; set; }
 	}
 }

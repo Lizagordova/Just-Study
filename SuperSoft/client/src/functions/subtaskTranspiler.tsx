@@ -14,6 +14,9 @@ export function subtaskTranspiler(taskType: TaskType): SubtaskType {
         return SubtaskType.RightVerbForm;
     } else if(taskType === TaskType.DetailedAnswer) {
         return SubtaskType.DetailedAnswer;
+    } else if(taskType === TaskType.DistributeItemsIntoGroups) {
+        return SubtaskType.DistributeItemsIntoGroups;
     }
+    
     return SubtaskType.FillGaps;//todo: плохо, лучше сделать None
 }

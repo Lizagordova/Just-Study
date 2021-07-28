@@ -8,6 +8,7 @@
 		LoadAudio,
 		DetailedAnswer,
 		LoadFile,
-		ReadText
+		ReadText,
+		DistributeItemsIntoGroups
 	}
 }

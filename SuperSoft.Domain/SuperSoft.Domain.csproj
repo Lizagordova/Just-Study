@@ -6,10 +6,14 @@
 
 	<ItemGroup>
 	  <PackageReference Include="AutoMapper" Version="10.1.1" />
-	  <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.16.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 	</ItemGroup>
 
-	
+	<ItemGroup>
+	  <Reference Include="Microsoft.AspNetCore.Http, Version=2.2.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+	    <HintPath>..\..\..\Users\Liza\.nuget\packages\microsoft.aspnetcore.http\2.2.2\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 </Project>

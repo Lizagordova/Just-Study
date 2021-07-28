@@ -4,7 +4,7 @@ import { UserRole } from "../../../Typings/enums/UserRole";
 import { Content } from "./Content";
 import { ContentUpload } from "../../Admin/Lessons/ContentUpload";
 import { Label } from "reactstrap";
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 
 class ILessonProps {
     store: RootStore;
@@ -24,13 +24,13 @@ export class Lesson extends Component<ILessonProps> {
             );
         }
     }
-
+    
     renderLessonDescription() {
         return(
             <div className="row justify-content-center">
-                <div className="col-lg-12 col-sm-12">
-                    <Label>{this.props.store.lessonStore.choosenLesson.description}</Label>
-                </div>
+                <Label style={{fontSize: ""}}>
+                    {this.props.store.lessonStore.choosenLesson.description}
+                </Label>
             </div>
         );
     }

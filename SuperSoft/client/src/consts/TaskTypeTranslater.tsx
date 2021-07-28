@@ -6,5 +6,7 @@ export const TaskTypeTranslater = [
     { type: TaskType.FillGaps, russian: 'Заполнить пропуски' },
     { type: TaskType.LoadAudio, russian: 'Загрузить аудио' },
     { type: TaskType.LoadFile, russian: 'Прикрепить файл' },
-    { type: TaskType.DetailedAnswer, russian: 'Развернутый ответ' }
+    { type: TaskType.DetailedAnswer, russian: 'Развернутый ответ' },
+    { type: TaskType.ReadText, russian: 'Чтение текста' },
+    { type: TaskType.DistributeItemsIntoGroups, russian: 'Распределение слов по группам' },
 ];

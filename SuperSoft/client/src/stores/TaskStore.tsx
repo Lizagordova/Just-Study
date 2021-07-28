@@ -12,13 +12,16 @@ import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
 
 class TaskStore {
+    @observable
     tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
+    tasksByChoosenLessonChanged: boolean;
     tasksByQuery: TaskViewModel[] = new Array<TaskViewModel>();
 
     constructor() {
         makeObservable(this, {
             tasksByChoosenLesson: observable,
-            tasksByQuery: observable
+            tasksByQuery: observable,
+            tasksByChoosenLessonChanged: observable
         });
     }
 
@@ -33,11 +36,16 @@ class TaskStore {
         });
         if(response.status === 200) {
             this.tasksByChoosenLesson  = await response.json();
+            this.tasksByChoosenLessonChanged = true;
         }
 
         return response.status;
     }
 
+    setTasksByChoosenLessonChanged(value: boolean) {
+        this.tasksByChoosenLessonChanged = value;
+    }
+    
     async addOrUpdateTask(task: TaskReadModel, lessonId: number | null): Promise<number> {
         const formData = this.getFormDataForTask(task, lessonId);
         const response = await fetch("/addorupdatetask", {
@@ -47,6 +55,7 @@ class TaskStore {
         if(response.status === 200) {
             let taskId = await response.json();
             this.attachTagsToTask(taskId, task.tagIds);
+            this.attachSubtagsToTask(taskId, task.subtagIds);
             task.subtasks.forEach((sub, i) => {
                 sub.taskId = taskId;
                 this.addOrUpdateSubtask(sub);
@@ -64,6 +73,17 @@ class TaskStore {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({taskId: taskId, tagIds: tagIds})
+        });
+    }
+
+    async attachSubtagsToTask(taskId: number, subtagIds: number[])
+    {
+        const response = await fetch("/attachsubtagstotask", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({taskId: taskId, subtagIds: subtagIds})
         });
     }
 

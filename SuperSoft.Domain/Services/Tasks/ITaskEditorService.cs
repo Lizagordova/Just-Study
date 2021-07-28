@@ -12,5 +12,6 @@ namespace SuperSoft.Domain.Services.Tasks
 		void DeleteTaskFromLesson(int taskId, int lessonId);
 		void DeleteSubtask(int subtaskId);
 		void AttachTagsToTask(int taskId, IReadOnlyCollection<int> tagIds);
+		void AttachSubtagsToTask(int taskId, IReadOnlyCollection<int> subtagIds);
 	}
 }

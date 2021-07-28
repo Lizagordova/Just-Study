@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
 using SuperSoft.Domain.Services;
@@ -59,10 +60,15 @@ namespace SuperSoft
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
+			services.AddSession(options =>
+			{
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				options.IdleTimeout = TimeSpan.FromDays(3);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
 			services.AddControllersWithViews();
 			services.AddMvc();
-			services.AddSession(options => { options.IdleTimeout = TimeSpan.FromDays(3); });
 			AddRepositories(services);
 			AddServices(services);
 			// In production, the React files will be served from this directory

@@ -6,6 +6,9 @@ import { Card, CardHeader } from "reactstrap";
 import { observer } from "mobx-react";
 import RootStore from "../../../stores/RootStore";
 import Homework from "./Homework";
+import HomeworkPage from "../../Admin/Homework/HomeworkPage";
+import {CompletedHomeworkPage} from "../../Admin/CompletedHomework/CompletedHomeworkPage";
+import ProgressByLesson from "../../Admin/ProgressByLesson/ProgressByLesson";
 
 class ILessonPageProps {
     store: RootStore;
@@ -27,35 +30,36 @@ class LessonPage extends Component<ILessonPageProps> {
 
     renderLessonMenu() {
         return(
-            <Tab.Container>
-                <Card>
-                    <CardHeader className="userMenuHeader">
-                        <Nav variant="pills">
-                            <Nav.Item>
-                                <Nav.Link
-                                    className="nav-link"
-                                    eventKey="Lesson"
-                                    onClick={() => this.toggleMenu("lesson")}>
-                                    УРОК
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link
-                                    className="nav-link"
-                                    eventKey="Homework"
-                                    onClick={() => this.toggleMenu("homework")}>
-                                    ДОМАШНЯЯ РАБОТА
-                                </Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </CardHeader>
+            <>
+                <div className="row lessonMenuHeader">
+                    <Nav variant="pills" defaultActiveKey="lesson">
+                        <Nav.Item>
+                            <Nav.Link
+                                className="nav-link menuNavLink"
+                                eventKey="lesson"
+                                onClick={() => this.toggleMenu("lesson")}>
+                                Урок
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link
+                                className="nav-link menuNavLink"
+                                eventKey="homework"
+                                onClick={() => this.toggleMenu("homework")}>
+                                Домашняя работа
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                </div>
+                <div className="justify-content-center">
                     {this.lessonActive && <Lesson store={this.props.store} />}
                     {this.homeworkActive && <Homework store={this.props.store} />}
-                </Card>
-            </Tab.Container>
+                </div>
+            </>
+            
         );
     }
-
+    
     render() {
         return(
             <>

@@ -1,7 +1,7 @@
 ﻿import React, {Component} from "react";
 import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
 import {Fade, Input, Label, Tooltip} from "reactstrap";
-import {makeObservable, observable, toJS} from "mobx";
+import {makeObservable, observable} from "mobx";
 import {IUploadSubtaskProps} from "./IUploadSubtaskProps";
 import {SubtaskType} from "../../../Typings/enums/SubtaskType";
 import {getTooltipText} from "../../../functions/getTooltipText";
@@ -38,7 +38,7 @@ class SubtaskUploadWindow extends Component<IUploadSubtaskProps> {
 
     renderTooltip() {
         let subtaskType = this.subtask.subtaskType;
-        if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm) {
+        if(subtaskType === SubtaskType.FillGaps || subtaskType === SubtaskType.RightVerbForm || subtaskType === SubtaskType.InsertWordsIntoGaps || subtaskType === SubtaskType.DistributeItemsIntoGroups) {
             return(
                 <>
                     <span id="DisabledAutoHideExample">Введите текст задания</span>

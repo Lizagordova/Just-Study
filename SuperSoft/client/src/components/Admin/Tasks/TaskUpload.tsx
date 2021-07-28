@@ -1,11 +1,10 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
-import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody } from "reactstrap";
 import { makeObservable, observable } from "mobx";
 import { TaskTypeTranslater } from "../../../consts/TaskTypeTranslater";
 import { TaskType } from "../../../Typings/enums/TaskType";
 import { observer } from "mobx-react";
-import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
 import TaskUploadWindow from "./TaskUploadWindow";
 import {TaskViewModel} from "../../../Typings/viewModels/TaskViewModel";
 
@@ -40,9 +39,9 @@ class TaskUpload extends Component<ITaskUploadProps> {
             <ModalBody>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
-                        {TaskTypeTranslater.map(type => {
+                        {TaskTypeTranslater.map((type, i) => {
                             return (
-                                <div className="col-6 align-items-center" style={{marginTop: "5px"}}>
+                                <div className="col-6 align-items-center" style={{marginTop: "5px"}} key={i}>
                                     <div className="row justify-content-center">
                                         <Button className="modalButton" outline color="secondary"
                                                 onClick={() => this.modalToggle(type.type)}>
@@ -84,10 +83,10 @@ class TaskUpload extends Component<ITaskUploadProps> {
     renderButton() {
         return(
             <div className="row justify-content-center" style={{marginTop: "10px", marginBottom: "10px"}}>
-                <Button className="addTask"
+                <Button className="commonButton"
                         onClick={() => this.toggleTaskUploadWindow()}
                         outline color="secondary">
-                    <span className="addTaskText">ДОБАВИТЬ УПРАЖНЕНИЕ</span>
+                    <span className="addTaskText">Добавить упражение</span>
                 </Button>
             </div>
         );
@@ -105,13 +104,13 @@ class TaskUpload extends Component<ITaskUploadProps> {
                    onClick={() => this.toggleTaskUploadWindow()}
                    className="fa fa-window-close fa-2x" aria-hidden="true" />
                 <div className="row justify-content-center">
-                    СОЗДАТЬ НОВОЕ УПРАЖНЕНИЕ
+                    Создать новое упражнение
                 </div>
                 {this.renderBody()}
                 <Button
                     color="primary"
                     onClick={() => this.toggleTaskUploadWindow()}>
-                    СКРЫТЬ УПРАЖНЕНИЯ
+                    Скрыть упражнения
                 </Button>
             </Modal>
         );

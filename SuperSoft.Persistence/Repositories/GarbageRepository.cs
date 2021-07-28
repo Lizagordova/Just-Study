@@ -24,8 +24,7 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			var tvp = new TableValuedParameter("fileToDelete", "UDT_FileToDelete");
-			var udt = new QueueToDeleteUdt();
-			udt.Path = path;
+			var udt = new QueueToDeleteUdt { Path = path };
 			tvp.AddObjectAsRow(udt);
 			param.Add(tvp);
 

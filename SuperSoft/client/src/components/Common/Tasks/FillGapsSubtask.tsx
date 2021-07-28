@@ -8,7 +8,6 @@ import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadM
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {SubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/SubtaskAnswerGroupViewModel";
 import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
-import {UserSubtaskAnswerGroupReadModel} from "../../../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import RootStore from "../../../stores/RootStore";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
@@ -39,11 +38,12 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
             userAnswerGroups: observable,
             update: observable
         });
-        this.subtask = this.props.subtask;
+        this.setDefault();
     }
 
-    componentDidMount(): void {
-        this.parseSubtask(this.subtask);
+    setDefault(): void {
+        this.subtask = this.props.subtask;
+        this.parseSubtask(this.props.subtask);
         this.userAnswerGroups = this.props.userSubtask.userSubtaskAnswerGroups;
         this.loaded = true;
     }
@@ -88,7 +88,10 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
 
     renderBadge() {
         return(
-            <Badge outline="true" color="primary">{this.props.order + 1 }</Badge>
+            <Badge outline="true"
+                   className="subtaskBadge"
+                   color="primary">
+                {this.props.order + 1 }</Badge>
         );
     }
 
@@ -108,8 +111,8 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
                 {partsOfSentence.map((p, i ) => {
                     return (
                         <>
-                            <span style={{clear: 'both'}} key={i * i}>{p}</span>
-                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[0])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[0])} key={i}/>}
+                            <span style={{clear: 'both', marginLeft: "4px", marginRight: "4px"}} key={i * 40}>{p}</span>
+                            {groupIds !== null && i < groupIds.length && <Gap answerGroup={this.getAnswerGroup(groupIds[i])} store={this.props.store} userAnswerGroup={this.getUserAnswerGroup(groupIds[i])} key={i}/>}
                         </>
                     )
                 })}
@@ -117,34 +120,24 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
         );
     }
 
-    renderSubtask(subtask: SubtaskViewModel, update: boolean) {
+    renderSubtask(update: boolean) {
         return (
-            <>
-                <CardText>
+            <div className="container-fluid taskBlock">
+                <div className="row justify-content-start">
                     {this.renderControlButton()}
                     {this.renderBadge()}
                     {this.renderSentence()}
-                </CardText>
-            </>
-        )
+                </div>
+            </div>
+        );
     }
 
     render() {
         return(
             <>
-                {this.loaded && this.renderSubtask(this.subtask, this.update)}
+                {this.loaded && this.renderSubtask(this.update)}
             </>
         );
-    }
-
-    save() {
-        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            this.props.store.taskStore.addOrUpdateUserSubtask(this.userAnswer)
-                .then((status) => {
-                    this.notSaved = status !== 200;
-                    this.saved = status === 200;
-                });
-        }
     }
 
     deleteSubtask() {
@@ -183,6 +176,9 @@ class Gap extends Component<IGapProps> {
     componentDidUpdate(prevProps: Readonly<IGapProps>, prevState: Readonly<{}>, snapshot?: any): void {
         if(prevProps.userAnswerGroup !== this.props.userAnswerGroup) {
             this.setUserAnswerGroup();
+        }
+        if(prevProps.answerGroup !== this.props.answerGroup) {
+            this.answerGroup = this.props.answerGroup;
         }
     }
 

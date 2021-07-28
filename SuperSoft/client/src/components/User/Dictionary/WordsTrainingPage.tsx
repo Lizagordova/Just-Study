@@ -2,7 +2,7 @@
 import { observer } from "mobx-react";
 import WordStore from "../../../stores/WordStore";
 import {makeObservable, observable, toJS} from "mobx";
-import { Button, Card, CardBody, CardFooter, Modal, ModalBody } from "reactstrap";
+import { Button, Card, Modal, ModalBody } from "reactstrap";
 import { UserWordViewModel } from "../../../Typings/viewModels/UserWordViewModel";
 import { WordViewModel } from "../../../Typings/viewModels/WordViewModel";
 import { WordTrainingType } from "../../../Typings/enums/WordTrainingType";
@@ -12,8 +12,8 @@ import EnglishWordRussianMeaningTraining from "./TrainingTypes/EnglishWordRussia
 import RussianWordEnglishWordTraining from "./TrainingTypes/RussianWordEnglishWordTraining";
 import ShowWordTraining from "./TrainingTypes/ShowWordTraining";
 import { UserWordReadModel } from "../../../Typings/readModels/UserWordReadModel";
-import {shuffleWords} from "../../../functions/shuffleWords";
-import {mapToUserAnswerReadModel, mapToUserReadModel} from "../../../functions/mapper";
+import { shuffleArray } from "../../../functions/shuffleWords";
+import { mapToUserAnswerReadModel } from "../../../functions/mapper";
 
 class IWordsTrainingPageProps {
     onToggle: any;
@@ -141,7 +141,7 @@ class WordsTrainingPage extends Component<IWordsTrainingPageProps> {
 
     train(toggleTrain: boolean) {
         let wordId = this.chooseWord();
-        let words = shuffleWords(this.chooseWords(wordId));
+        let words = shuffleArray(this.chooseWords(wordId));
         let word = this.props.wordStore.dictionary.filter(w => w.id === wordId)[0];
         let trainingType = this.getRandomIntInclusive(1, 2);
         if(trainingType === 1) {

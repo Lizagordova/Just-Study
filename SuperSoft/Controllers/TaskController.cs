@@ -252,5 +252,29 @@ namespace SuperSoft.Controllers
 				return new StatusCodeResult(500);
 			}
 		}
+
+		[HttpPost]
+		[Route("/attachsubtagstotask")]
+		public ActionResult AttachSubtagsToTask([FromBody]TaskTagReadModel taskTagReadModel)
+		{
+			var role = SessionHelper.GetRole(HttpContext);
+			if (role != UserRole.Admin.ToString())
+			{
+				return new BadRequestResult();
+			}
+
+			try
+			{
+				_taskEditor.AttachSubtagsToTask(taskTagReadModel.TaskId, taskTagReadModel.SubtagIds);
+
+				return new OkResult();
+			}
+			catch (Exception e)
+			{
+				_logService.AddLogAttachTagsToTaskException(_logger, e, taskTagReadModel.TaskId);
+
+				return new StatusCodeResult(500);
+			}
+		}
 	}
 }

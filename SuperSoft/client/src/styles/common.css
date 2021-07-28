@@ -11,7 +11,7 @@ footer {
     margin-top: 5px;
     width: 100%;
     height: 50px;
-    background-color: #F0F0F0;
+    background-color: rgb(43, 69, 148);
 }
 
 @media (max-width: 811px) {
@@ -19,17 +19,38 @@ footer {
         height: 100px;
     }
 }
+.mainMenu {
+    background-color: rgb(43, 69, 148);
+    color: white;
+    font-size: 1.3em;
+}
+
 .nav-link {
-    height: 60px;
+    height: 65px;
     width: 100%;
     display: block;
     padding: .7rem 15px;
-    color: #0366d6;
     text-decoration: none;
 }
 
-.nav {
-    height: 60px;
+.menuNavLink {
+    color: white;
+    font-size: 1.5em;
+    margin-top: 1px;
+}
+
+.menuNavLink:hover, .exitButton:hover {
+    color: white;
+}
+
+.menuNavLinkActive {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.exitButton {
+    color: white;
+    border-color: white;
 }
 
 .inputLabel {
@@ -42,8 +63,20 @@ footer {
 }
 
 @media (max-width: 600px) {
-    .nav {
-        height: 120px;
+    .mainMenu {
+        height: 190px;
+    }
+}
+
+@media (max-width: 450px) {
+    .mainMenu {
+        height: 240px;
+    }
+}
+
+@media (max-width: 360px) {
+    .mainMenu {
+        height: 300px;
     }
 }
 
@@ -99,4 +132,90 @@ Table, td, tr, thead {
     border-radius: 8px;
     padding: 4px 8px;
     display: inline;
+}
+
+.lessonMenuHeader {
+    background-color: rgb(65, 105, 225);
+}
+
+.lessonContent {
+    background-color: rgb(245, 245, 245);
+}
+
+* {box-sizing: border-box;}
+.searchForm {
+    position: relative;
+    width: 300px;
+}
+
+.searchInput {
+    width: 260px;
+    height: 42px;
+    padding-left: 10px;
+    border: 2px solid #0366d6;;
+    border-radius: 5px;
+    outline: none;
+    background: #ffffff;
+    color: #9E9C9C;
+}
+
+.searchButton {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #0366d6;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.searchButton:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    font-size: 16px;
+    color: #F9F0DA;
+}
+
+.searchSelect {
+    width: 300px;
+}
+
+.taskBlock {
+    margin-bottom: 2%;
+}
+
+.subtaskBlock {
+    margin-left: 2%;
+}
+
+.subtaskBadge {
+    margin-right: 1%;
+    height: 20px;
+}
+
+.taskNav {
+    background-color: white;
+    color: rgb(43, 69, 148);
+}
+
+.specialDropdown {
+    background-color: black !important;
+}
+
+.navigationButton {
+    background-color: black !important;
+}
+
+.warning {
+    font-size: 1em;
+    color: red;
+    margin-top: 1px;
+    width: 70%;
+}
+
+
+.lessonDraggable {
+    cursor: move;
 }

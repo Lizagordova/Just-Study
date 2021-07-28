@@ -21,5 +21,17 @@ namespace SuperSoft.Persistence.Helpers
 		{
 			System.IO.File.WriteAllBytes(path, fileBytes);
 		}
+		
+		public static void AppendContent(byte[] fileBytes, string path, int offset)
+		{
+			if (offset > 100)
+			{
+				offset -= 100;
+			}
+			using (var stream = new FileStream(path, FileMode.Append))
+			{
+				stream.Write(fileBytes, 0, fileBytes.Length);
+			}
+		}
 	}
 }

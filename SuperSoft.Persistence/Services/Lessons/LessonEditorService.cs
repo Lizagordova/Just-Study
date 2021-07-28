@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using SuperSoft.Domain.Models;
@@ -37,7 +36,10 @@ namespace SuperSoft.Persistence.Services.Lessons
 			var lessonMaterials = _lessonRepository.GetMaterialsByLesson(lessonId);
 			lessonMaterials.ForEach(lm =>
 			{
-				File.Delete(lm.Path);//todo: сделать что-то более усложнённое
+				if (File.Exists(lm.Path))
+				{
+					File.Delete(lm.Path);//todo: сделать что-то более усложнённое	
+				}
 			});
 			_lessonRepository.DeleteLesson(lessonId);
 		}
@@ -47,6 +49,32 @@ namespace SuperSoft.Persistence.Services.Lessons
 			var bytes = FileHelper.GetBytes(file);
 			var path = GetPath(lessonId, file.FileName);
 			FileHelper.SaveContent(bytes, path);
+			lessonMaterial.Path = path;
+			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
+
+			return materialId;
+		}
+
+		// private string PostHandle(string path)
+		// {
+		// 	var outPath = path;
+		// 	if (path.Contains("pptx"))
+		// 	{
+		// 		ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+		//
+		// 		var presentation = PresentationDocument.Load(path);
+		// 		outPath = path.Replace("pptx", "pdf");
+		// 		presentation.Save(outPath);
+		// 	}
+		//
+		// 	return outPath;
+		// }
+
+		public int AddOrUpdateMaterial1(LessonMaterial lessonMaterial, int lessonId, IFormFile file, string offset, string fileName)
+		{
+			var bytes = FileHelper.GetBytes(file);
+			var path = GetPath(lessonId, fileName);
+			FileHelper.AppendContent(bytes, path, int.Parse(offset));
 			lessonMaterial.Path = path;
 			var materialId = _lessonRepository.AddOrUpdateMaterial(lessonMaterial, lessonId);
 
@@ -79,12 +107,21 @@ namespace SuperSoft.Persistence.Services.Lessons
 			}
 		}
 
+		public void UpdateLessons(List<Lesson> lessons, int courseId)
+		{
+			_lessonRepository.UpdateLessons(lessons, courseId);
+		}
+
 		private string GetPath(int lessonId, string fileName)
 		{
 			var path = "";
 			if (fileName.Contains("jpg") || fileName.Contains("jpeg") || fileName.Contains("png"))
 			{
 				path = PathHelper.GetLessonImagePath(lessonId);
+			}
+			else if (fileName.Contains("pptx"))
+			{
+				path = PathHelper.GetTempPath();
 			}
 			else
 			{

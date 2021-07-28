@@ -4,7 +4,8 @@ import { LessonViewModel } from "../../../Typings/viewModels/LessonViewModel";
 import { observer } from "mobx-react";
 import {makeObservable, observable, toJS} from "mobx";
 import { Tab, Nav } from "react-bootstrap";
-import { Alert, Button, Col, Collapse, Row } from "reactstrap";
+import { Alert, Button, NavItem, Collapse, Row } from "reactstrap";
+import { NavLink } from "react-router-dom";
 import { renderSpinner } from "../../../functions/renderSpinner";
 import { AddOrUpdateNewLesson } from "./AddOrUpdateNewLesson";
 import { LessonPage } from "./LessonPage";
@@ -15,37 +16,28 @@ class ILessonsMenuProps {
 
 @observer
 export class LessonsMenu extends Component<ILessonsMenuProps> {
-    editLesson: boolean = false;
-    lessonToEdit: LessonViewModel = new LessonViewModel();
     notDeleted: boolean = false;
     deleted: boolean = false;
     isNavOpen: boolean = true;
     loading: boolean = true;
+    update: boolean = false;
+    selectedElementId: number;
 
     constructor() {
         // @ts-ignore
         super();
         makeObservable(this, {
-            editLesson: observable,
-            lessonToEdit: observable,
             notDeleted: observable,
             deleted: observable,
             isNavOpen: observable,
             loading: observable,
+            update: observable,
+            selectedElementId: observable
         });
     }
 
     toggleNav() {
         this.isNavOpen = !this.isNavOpen;
-    }
-
-    editToggle = () => {
-        this.editLesson = !this.editLesson;
-    };
-
-    editLessonToggle(lesson: LessonViewModel) {
-        this.editLesson = true;
-        this.lessonToEdit = lesson;
     }
 
     lessonToggle(lesson: LessonViewModel) {
@@ -71,26 +63,28 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
                {lessons.map((lesson) => {
                    // @ts-ignore
                    let isDisabled = new Date() < Date.parse(lesson.expireDate)  && new Date() > Date.parse(lesson.startDate);
+                   // @ts-ignore
                    return (
-                       <Nav.Item key={lesson.id}>
+                       <Nav.Item key={lesson.id}
+                                
+                                 className="lessonDraggable"
+                                 draggable="true"
+                                 // @ts-ignore
+                                 onDragOver={(event) => this.allowDrop(event)}
+                                 // @ts-ignore
+                                 onDragStart={(event) => console.log("dragging started with id", event.target.id)}
+                                 // @ts-ignore
+                                onDragEnd={(event) => this.onDragEnd(event.target.id)}>
                            <div className="row" key={lesson.id} style={{height: "auto"}}>
-                               <div className="col-8" style={{height: "auto"}}>
-                                   <Nav.Link
-                                       style={{height: "auto"}}
-                                       eventKey={lesson.id}
-                                       className="nav-link lesson"
-                                       onClick={() => this.lessonToggle(lesson)}>
-                                       {lesson.name}
-                                   </Nav.Link>
-                               </div>
-                               <div className="col-2 col-lg-offset-10">
-                                   <i className="fa fa-window-close fa-2x"
-                                      aria-hidden="true"
-                                      onClick={() => this.deleteLesson(lesson.id)}/>
-                                   <i className="fa fa-edit fa-2x"
-                                      aria-hidden="true"
-                                      onClick={() => this.editLessonToggle(lesson)}/>
-                               </div>
+                               <Nav.Link
+                                   // @ts-ignore
+                                   id={lesson.id}
+                                   style={{height: "auto"}}
+                                   eventKey={lesson.id}
+                                   className="nav-link lesson"
+                                   onClick={() => this.lessonToggle(lesson)}>
+                                   {lesson.name}
+                               </Nav.Link>
                            </div>
                        </Nav.Item>
                    );
@@ -99,39 +93,41 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         );
     }
 
-    renderLessonsMenu(lessons: LessonViewModel[]) {
-        let rowHeight = this.isNavOpen ? lessons.length * 80 + 80 : 80;
+    renderLessonsMenu(lessons: LessonViewModel[], update: boolean) {
         let defaultActiveKey = lessons[0] !== undefined ? lessons[0].id : 0;
         return(
-            <Tab.Container id="left-tabs-example" defaultActiveKey={defaultActiveKey}>
+            <>
                 {this.renderCautions()}
-                <Row>
-                    <Col sm={3} style={{height: `${rowHeight}px`, marginTop: "10px"}}>
-                        <Button color="primary" onClick={() => this.toggleNav()}>УРОКИ</Button>
+                <div className="row" style={{marginRight: "1px", marginLeft: "1px"}}>
+                    <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12" style={{marginTop: "10px"}}>
+                        <Button
+                            onClick={() => this.toggleNav()} 
+                            style={{marginBottom: "3px", width: "100%", backgroundColor: "rgb(65, 105, 225)"}}>
+                            Уроки</Button>
                         <Collapse isOpen={this.isNavOpen}>
-                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey}>
+                            <Nav variant="pills" className="flex-column" defaultActiveKey={defaultActiveKey} style={{}}>
                                 <div className="container-fluid">
                                     {lessons.length > 0 && this.renderLessonsList(lessons)}
                                     <AddOrUpdateNewLesson store={this.props.store} edit={false} lessonToEdit={undefined} cancelEdit={undefined}/>
                                 </div>
                             </Nav>
                         </Collapse>
-                    </Col>
-                    <Col sm={9}>
+                    </div>
+                    <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         {this.renderLessonPage()}
-                    </Col>
-                    {this.editLesson && <AddOrUpdateNewLesson store={this.props.store} edit={true} lessonToEdit={this.lessonToEdit} cancelEdit={this.editToggle}/>}
-                </Row>
-            </Tab.Container>
+                    </div>
+                </div>
+            </>
         );
     }
-
+    
     renderLessonPage() {
-        let lessonChoosen = this.props.store.lessonStore.choosenLesson !== undefined;
+        let lessonChoosen = this.props.store.lessonStore.choosenLesson;
+        let lessonExists = lessonChoosen !== undefined && lessonChoosen.id !== undefined; 
         return(
             <>
-                {lessonChoosen && <LessonPage store={this.props.store} lessonActive={true}/>}
-                {!lessonChoosen && <Alert color="success">Выберите или добавьте урок:)</Alert>}
+                {lessonExists && <LessonPage store={this.props.store} lessonActive={true} update={this.updateToggle}/>}
+                {!lessonExists && <Alert color="success">Выберите или добавьте урок:)</Alert>}
             </>
         );
     }
@@ -140,20 +136,32 @@ export class LessonsMenu extends Component<ILessonsMenuProps> {
         let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
         return(
             <>
-                {lessons !== undefined && this.renderLessonsMenu(lessons)}
-                {(lessons === undefined || lessons.length === 0) && renderSpinner()}
+                {lessons !== undefined && this.renderLessonsMenu(lessons, this.update)}
+                {(lessons === undefined) && renderSpinner()}
             </>
         );
     }
+    
+    updateToggle = () => {
+        this.update = !this.update;
+    }
 
-    deleteLesson(lessonId: number) {
-        let result = window.confirm('Вы уверены, что хотите удалить этот урок?');
-        if(result) {
-            this.props.store.lessonStore.deleteLesson(lessonId, this.props.store.courseStore.choosenCourse.id)
-                .then((status) => {
-                    this.notDeleted = status !== 200;
-                    this.deleted = status === 200;
-            });
-        }
+    allowDrop(event: any) {
+        event.preventDefault();
+        this.selectedElementId = event.target.id;
+    }
+
+    onDragEnd(draggableLessonId: number) {
+        let lessons = this.props.store.lessonStore.lessonsByChoosenCourse;
+        let draggableLesson = lessons.find(lesson => lesson.id == draggableLessonId);
+        let draggableLessonIndex = lessons.findIndex(lesson => lesson.id == draggableLessonId);
+        let dropToLesson = lessons.find(lesson => lesson.id == this.selectedElementId);
+        let dropToLessonIndex = lessons.findIndex(lesson => lesson.id == this.selectedElementId);
+        // @ts-ignore
+        lessons[draggableLessonIndex] = dropToLesson;
+        // @ts-ignore
+        lessons[dropToLessonIndex] = draggableLesson;
+        this.props.store.lessonStore.setLessonsByChoosenCourse(lessons, this.props.store.courseStore.choosenCourse.id);
+        this.updateToggle();
     }
 }

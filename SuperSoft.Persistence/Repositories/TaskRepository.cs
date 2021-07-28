@@ -26,6 +26,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string AddOrUpdateAnswerGroupSp = "TaskRepository_AddOrUpdateAnswerGroup";
 		private const string GetSubtaskByIdSp = "TaskRepository_GetSubtaskById";
 		private const string AttachTagsToTaskSp = "TaskRepository_AttachTagsToTask";
+		private const string AttachSubtagsToTaskSp = "TaskRepository_AttachSubtagsToTask";
 		private const string DeleteTaskFromLessonSp = "TaskRepository_DeleteTaskFromLesson";
 
 		public TaskRepository(
@@ -144,6 +145,14 @@ namespace SuperSoft.Persistence.Repositories
 			DatabaseHelper.CloseConnection(conn);
 		}
 
+		public void AttachSubtagsToTask(int taskId, IReadOnlyCollection<int> subtagIds)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetAttachSubtagsToTaskParam(taskId, subtagIds);
+			conn.Query(AttachSubtagsToTaskSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
 		public void DeleteTaskFromLesson(int taskId, int lessonId)
 		{
 			var conn = DatabaseHelper.OpenConnection();
@@ -173,6 +182,18 @@ namespace SuperSoft.Persistence.Repositories
 			return param;
 		}
 
+		private DynamicTvpParameters GetAttachSubtagsToTaskParam(int taskId, IReadOnlyCollection<int> subtagsIds)
+		{
+			var param = new DynamicTvpParameters();
+			param.Add("taskId", taskId);
+			var tvp = new TableValuedParameter("subtagsIds", "UDT_Integer");
+			var udt = subtagsIds.Select(tId => new IntegerUdt() { Id = tId }).ToList();
+			tvp.AddGenericList(udt);
+			param.Add(tvp);
+
+			return param;
+		}
+
 		private DynamicTvpParameters GetAnswerGroupParam(int subtaskId, SubtaskAnswerGroup answerGroup)
 		{
 			var param = new DynamicTvpParameters();
@@ -184,6 +205,7 @@ namespace SuperSoft.Persistence.Repositories
 
 			return param;
 		}
+
 		private TaskData GetTaskData(SqlMapper.GridReader reader)
 		{
 			var taskData = new TaskData
@@ -191,7 +213,9 @@ namespace SuperSoft.Persistence.Repositories
 				Tasks = reader.Read<TaskUdt>().ToList(),
 				Subtasks = reader.Read<SubtaskUdt>().ToList(),
 				Tags = reader.Read<TagUdt>().ToList(),
-				TagTasks = reader.Read<TaskTagUdt>().ToList()
+				TagTasks = reader.Read<TaskTagUdt>().ToList(),
+				Subtags = reader.Read<SubtagUdt>().ToList(),
+				TaskSubtags = reader.Read<TaskSubtagUdt>().ToList(),
 			};
 
 			return taskData;
@@ -233,6 +257,7 @@ namespace SuperSoft.Persistence.Repositories
 			var task = _mapper.Map<TaskUdt, Task>(taskData.Tasks.FirstOrDefault());
 			task.Subtasks = taskData.Subtasks.Select(_mapper.Map<SubtaskUdt, Subtask>).ToList();
 			task.Tags = taskData.Tags.Select(_mapper.Map<TagUdt, Tag>).ToList();
+			task.Subtags = taskData.Subtags.Select(_mapper.Map<SubtagUdt, Subtag>).ToList();
 
 			return task;
 		}
@@ -249,6 +274,10 @@ namespace SuperSoft.Persistence.Repositories
 					t => t.Id,
 					tag => tag.TaskId,
 					MapTaskWithTags)
+				.GroupJoin(taskData.TaskSubtags,
+					t => t.Id,
+					s => s.TaskId,
+					MapTaskWithSubtags)
 				.ToList();
 			
 			tasks.ForEach(t =>
@@ -266,7 +295,7 @@ namespace SuperSoft.Persistence.Repositories
 
 		private Task MapTaskWithTags(Task task, IEnumerable<TaskTagUdt> tagTaskUdts)
 		{
-			task.Tags = tagTaskUdts.Select(t => new Tag() {Id = t.TagId}).ToList();
+			task.Tags = tagTaskUdts.Select(t => new Tag() { Id = t.TagId }).ToList();
 
 			return task;
 		}
@@ -279,9 +308,9 @@ namespace SuperSoft.Persistence.Repositories
 			return task;
 		}
 
-		private Task MapTaskWithTags(Task task, IEnumerable<TagUdt> tagUdts)
+		private Task MapTaskWithSubtags(Task task, IEnumerable<TaskSubtagUdt> subtagUdts)
 		{
-			task.Tags = tagUdts.Select(_mapper.Map<TagUdt, Tag>).ToList();
+			task.Subtags = subtagUdts.Select(ts => new Subtag() { Id = ts.SubtagId }).ToList();
 
 			return task;
 		}

@@ -7,6 +7,7 @@
 		RightVerbForm,
 		LoadAudio,
 		DetailedAnswer,
-		LoadFile
+		LoadFile,
+		DistributeItemsIntoGroups
 	}
 }

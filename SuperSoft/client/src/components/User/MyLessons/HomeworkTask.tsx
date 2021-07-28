@@ -35,7 +35,7 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
                     {this.renderTask()}
                 </div>
                 <div className="row justify-content-center">
-                    <div className="col-4 text-center">
+                    <div className="col-4 text-center ">
                         {this.renderBackButton()}
                     </div>
                     <div className="col-4 text-center">
@@ -61,6 +61,7 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
     renderForwardButton() {
         return (
             <Button
+                className="navigationButton"
                 onClick={() => {this.props.taskToggler(NavigationType.Forward)}}>
                 <i className="fa fa-long-arrow-right" aria-hidden="true"/>
             </Button>
@@ -70,6 +71,7 @@ class HomeworkTask extends Component<IHomeworkTaskProps> {
     renderBackButton() {
         return (
             <Button
+                className="navigationButton"
                 onClick={() => {this.props.taskToggler(NavigationType.Back)}}>
                 <i className="fa fa-long-arrow-left" aria-hidden="true"/>
             </Button>

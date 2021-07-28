@@ -6,10 +6,10 @@ import { TagReadModel } from "../../../Typings/readModels/TagReadModel";
 import { Task } from "./Task";
 import RootStore from "../../../stores/RootStore";
 import { Modal, ModalBody, Button, Alert } from  "reactstrap";
-import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
-import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
-import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
-import {mapToSubtagReadModel} from "../../../functions/mapper";
+import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
+import { SubtagReadModel } from "../../../Typings/readModels/SubtagReadModel";
+import { SubtagViewModel } from "../../../Typings/viewModels/SubtagViewModel";
+import { mapToSubtagReadModel } from "../../../functions/mapper";
 
 class ITaskFromPoolUploadProps {
     store: RootStore;
@@ -18,7 +18,7 @@ class ITaskFromPoolUploadProps {
 
 @observer
 class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
-    choosenTags: SubtagViewModel[] = new Array<SubtagViewModel>();
+    choosenSubtags: SubtagViewModel[] = new Array<SubtagViewModel>();
     ignoreIds: number[] = new Array<number>(0);
     notAttached: boolean;
     notReceived: boolean;
@@ -29,7 +29,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         makeObservable(this, {
             ignoreIds: observable,
             notAttached: observable,
-            choosenTags: observable,
+            choosenSubtags: observable,
             update: observable,
             notReceived: observable
         });
@@ -97,35 +97,33 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                     color="primary"
                     style={{width: '50%'}}
                     onClick={() => this.applyTags()}>
-                    ПРИМЕНИТЬ
+                    Применить
                 </Button>
             </div>
         );
     }
 
-    renderTags(tags: SubtagViewModel[], update: boolean) {
+    renderSubtags(subtags: SubtagViewModel[], update: boolean) {
         return (
             <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
-                {tags.map((tag, i) => {
-                    let outline = !this.choosenTags.includes(tag);
-                    if(tag.id !== 1 && tag.id !== 2 && tag.id !== 3) {//todo: неприятный хардкод 
-                        return (
-                            <Button
-                                outline={outline} color="primary"
-                                style={{
-                                    marginLeft: "10px",
-                                    marginBottom: "10px",
-                                    height: "auto",
-                                    width: "auto",
-                                    fontSize: "0.8em"
-                                }}
-                                active={false}
-                                key={i}
-                                onClick={() => this.toggleTag(tag)}>
-                                {tag.name}
-                            </Button>
-                        );
-                    }
+                {subtags.map((subtag, i) => {
+                    let outline = !this.choosenSubtags.includes(subtag);
+                    return (
+                        <Button
+                            outline={outline} color="primary"
+                            style={{
+                                marginLeft: "10px",
+                                marginBottom: "10px",
+                                height: "auto",
+                                width: "auto",
+                                fontSize: "0.8em"
+                            }}
+                            active={false}
+                            key={i}
+                            onClick={() => this.toggleSubtag(subtag)}>
+                            {subtag.name}
+                        </Button>
+                    );
                 })}
             </div>
         );
@@ -135,7 +133,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         if(tags.length > 0) {
             return(
                 <>
-                    {this.renderTags(tags, this.update)}
+                    {this.renderSubtags(tags, this.update)}
                     {this.renderApplyButton()}
                 </>
             );
@@ -155,7 +153,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
                    onClick={() => this.props.toggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <div className="row justify-content-center">
-                    БАНК ЗАДАНИЙ
+                   Банк заданий
                 </div>
                 {this.renderFilters(tags)}
                 {this.renderBody()}
@@ -188,7 +186,7 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
 
     applyTags() {
         this.props.store.taskStore
-            .getTasks(this.choosenTags.map(mapToSubtagReadModel))
+            .getTasks(this.choosenSubtags.map(mapToSubtagReadModel))
             .then((status) => {
                 this.notReceived = status !== 200;
             });
@@ -198,13 +196,13 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
         this.update = !this.update;
     }
 
-    toggleTag(tag: SubtagViewModel) {
-        if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
-            let choosenTags = this.choosenTags
-                .filter(t => t !== tag);
-            this.choosenTags = choosenTags;
+    toggleSubtag(subtag: SubtagViewModel) {
+        if(this.choosenSubtags.filter(t => t.id === subtag.id).length > 0) {
+            let choosenSubtags = this.choosenSubtags
+                .filter(t => t !== subtag);
+            this.choosenSubtags = choosenSubtags;
         } else {
-            this.choosenTags.push(tag);
+            this.choosenSubtags.push(subtag);
         }
         this.updateToggle();
     }

@@ -1,11 +1,10 @@
 ﻿import React, { Component } from "react";
 import TagStore from "../../../stores/TagStore";
 import { observer } from "mobx-react";
-import { makeObservable, observable } from "mobx";
-import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
+import {makeObservable, observable, toJS} from "mobx";
 import { Button, Modal, ModalBody, Input } from "reactstrap";
-import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
 import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
+import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
 
 class ITagsControlWindowProps {
     tagStore: TagStore;
@@ -14,36 +13,51 @@ class ITagsControlWindowProps {
 }
 
 @observer
-class TagsControlWindow extends Component<ITagsControlWindowProps> {
+class SubtagsControlWindow extends Component<ITagsControlWindowProps> {
     notDeleted: boolean;
     notAdded: boolean;
-    addTagInputOpen: boolean;
+    addSubtagInputOpen: boolean;
     newTagName: string = "";
+    subtags: SubtagViewModel[] = new Array<SubtagViewModel>();
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: ITagsControlWindowProps) {
+        super(props);
         makeObservable(this, {
             notDeleted: observable,
             notAdded: observable,
-            addTagInputOpen: observable,
+            addSubtagInputOpen: observable,
             newTagName: observable,
+            subtags: observable
         });
+        this.setSubtags();
     }
 
-    renderTags(tags: TagViewModel[]) {
+    componentDidUpdate(prevProps: Readonly<ITagsControlWindowProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(this.props.tagId !== prevProps.tagId) {
+            this.setSubtags();
+        }
+    }
+
+    setSubtags() {
+        let foundTag = this.props.tagStore.tags.filter(t => t.id === this.props.tagId)[0];
+        if(foundTag !== undefined) {
+            this.subtags = foundTag.subtags;
+        }
+    }
+
+    renderSubtags(subtags: SubtagViewModel[]) {
         return (
             <>
-                {tags.map((tag) => {
+                {subtags.map((subtag) => {
                     return(
-                        <div className="row justify-content-center" key={tag.id}>
+                        <div className="row justify-content-center" key={subtag.id}>
                             <i style={{marginLeft: '88%', width: '2%'}}
-                               onClick={() => this.deleteTag(tag.id)}
+                               onClick={() => this.deleteSubtag(subtag.id)}
                                className="fa fa-window-close fa-2x" aria-hidden="true"/>
                             <Button
                                 outline color="secondary"
                                 style={{width: "70%", fontSize: "0.8em"}}>
-                                {tag.name}
+                                {subtag.name}
                             </Button>
                         </div>
                     );
@@ -52,49 +66,55 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
         );
     }
 
-    renderAddTagButton() {
+    renderAddSubtagButton() {
         return (
             <div className="container-fluid">
                 <div className="row justify-content-center">
                     <Button
                         style={{marginTop: "10px"}}
                         outline color="secondary"
-                        onClick={() => this.addTagInputOpenToggle()}>
-                        Добавить тег
+                        onClick={() => this.addSubtagInputOpenToggle()}>
+                        Добавить подтег
                     </Button>
                 </div>
             </div>
         );
     }
 
-    renderAddTagInput() {
+    renderSaveButton() {
+        return (
+            <div className="container">
+                <div className="row justify-content-center">
+                    <Button
+                        color="success"
+                        style={{marginTop: "10px", width: "80%"}}
+                        onClick={() => this.saveNewSubtag()}>
+                        Сохранить
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    renderAddSubtagInput() {
         return(
             <>
                 <i style={{marginLeft: '96%', width: '2%'}}
-                   onClick={() => this.addTagInputOpenToggle()}
+                   onClick={() => this.addSubtagInputOpenToggle()}
                    className="fa fa-window-close fa-2x" aria-hidden="true"/>
                 <Input style={{width: "90%"}}
-                    placeholder="Введите название тега"
+                    placeholder="Введите название подтега"
                     onChange={(e) => this.handleChange(e)}/>
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <Button
-                                color="success"
-                                style={{marginTop: "10px", width: "80%"}}
-                                onClick={() => this.saveNewTag()}>
-                                Сохранить
-                            </Button>
-                        </div>
-                    </div>
+                {this.renderSaveButton()}
             </>
         );
     }
 
-    renderAddTagWindow() {
+    renderAddSubtagWindow() {
         return (
             <>
-                {!this.addTagInputOpen && this.renderAddTagButton()}
-                {this.addTagInputOpen && this.renderAddTagInput()}
+                {!this.addSubtagInputOpen && this.renderAddSubtagButton()}
+                {this.addSubtagInputOpen && this.renderAddSubtagInput()}
             </>
         );
     }
@@ -102,8 +122,8 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
     renderBody() {
         return(
             <ModalBody>
-                {this.renderTags(this.props.tagStore.tags)}
-                {this.renderAddTagWindow()}
+                {this.renderSubtags(this.subtags)}
+                {this.renderAddSubtagWindow()}
             </ModalBody>
         );
     }
@@ -127,14 +147,14 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
         );
     }
 
-    deleteTag(tagId: number) {
-        this.props.tagStore.deleteTag(tagId)
+    deleteSubtag(subtagId: number) {
+        this.props.tagStore.deleteTag(subtagId)
             .then((status) => {
                 this.notDeleted = status !== 200;
             });
     }
 
-    saveNewTag() {
+    saveNewSubtag() {
         let subtagReadModel = new SubtagReadModel();
         subtagReadModel.name = this.newTagName;
         this.props.tagStore
@@ -143,13 +163,13 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
                 this.notAdded = status !== 200;
                 if(status === 200) {
                     this.newTagName = "";
-                    this.addTagInputOpen = false;
+                    this.addSubtagInputOpen = false;
                 }
             });
     }
 
-    addTagInputOpenToggle() {
-        this.addTagInputOpen = !this.addTagInputOpen;
+    addSubtagInputOpenToggle() {
+        this.addSubtagInputOpen = !this.addSubtagInputOpen;
     }
 
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -157,4 +177,4 @@ class TagsControlWindow extends Component<ITagsControlWindowProps> {
     }
 }
 
-export default TagsControlWindow;
+export default SubtagsControlWindow;

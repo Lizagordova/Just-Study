@@ -8,6 +8,10 @@ BEGIN
 	INTO [Lesson_Material] AS [dest]
 	USING @lessonMaterial AS [src]
 	ON [dest].[Id] = [src].[Id]
+	    OR (
+        [dest].[LessonId] = [src].[LessonId]
+        AND [dest].[Path] = [src].[Path]
+        )
 	WHEN MATCHED THEN
 		UPDATE
 		SET

@@ -13,5 +13,6 @@ namespace SuperSoft.Domain.Models
 		public TaskType TaskType { get; set; }
 		public List<Subtask> Subtasks { get; set; }
 		public List<Tag> Tags { get; set; }
+		public List<Subtag> Subtags { get; set; }
 	}
 }

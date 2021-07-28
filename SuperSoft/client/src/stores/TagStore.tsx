@@ -41,6 +41,23 @@ class TagStore {
         return response.status;
     }
 
+    async deleteSubtag(subtagId: number): Promise<number> {
+        const response = await fetch("/deletesubtag", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                id: subtagId
+            })
+        });
+        if(response.status === 200) {
+            this.getTags();
+        }
+
+        return response.status;
+    }
+
     async addOrUpdateTag(tag: TagReadModel): Promise<number> {
         const response = await fetch("/addorupdatetag", {
             method: "POST",

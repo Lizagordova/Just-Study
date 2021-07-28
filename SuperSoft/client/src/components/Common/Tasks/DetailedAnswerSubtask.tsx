@@ -1,5 +1,5 @@
 ﻿import React, {Component} from 'react';
-import {Alert, Button, CardText} from "reactstrap";
+import { Alert, Button } from "reactstrap";
 import {ISubtaskProps} from "./ISubtaskProps";
 import {SubtaskViewModel} from "../../../Typings/viewModels/SubtaskViewModel";
 import {makeObservable, observable} from "mobx";
@@ -60,9 +60,9 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     renderSubtaskText(subtask: SubtaskViewModel) {
         return(
             <>
-                {subtask.text !== null && <CardText>
+                {subtask.text !== null && <div className="row justify-content-start">
                     {subtask.text}
-                </CardText>}
+                </div>}
             </>
         );
     }
@@ -73,7 +73,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
             return(
                 <div className="col-12">
                     <textarea
-                        style={{width: "90%"}}
+                        style={{width: "95%"}}
                         defaultValue={this.userAnswer.answer}
                         className="answerInput"
                         onChange={(e) => this.inputAnswer(e)}/>
@@ -93,9 +93,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     renderSaveButton() {
         if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
             return(
-                <div className="col-lg-offset-10 col-lg-2">
-                    <Button outline color="success" onClick={() => this.save()}>СОХРАНИТЬ</Button>
-                </div>
+                <Button outline color="success" onClick={() => this.save()}>Сохранить</Button>
             );
         }
     }
@@ -117,19 +115,22 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
 
     renderSubtask(subtask: SubtaskViewModel, update: boolean) {
         return(
-            <>
+            <div className="container-fluid taskBlock">
                 {this.renderSubtaskText(subtask)}
-                {subtask.path !== null && renderContent(subtask.path)}
-                <CardText>
-                    <div className="row justify-content-center">
-                        {this.renderInputAnswerArea()}
-                    </div>
-                    <div className="row justify-content-center">
-                        {this.renderSaveButton()}
-                        {this.renderCautions()}
-                    </div>
-                </CardText>
-            </>
+                {subtask.path !== null && 
+                <div className="row justify-content-start subtaskBlock">
+                    {renderContent(subtask.path)}
+                </div>}
+                <div className="row justify-content-start subtaskBlock">
+                    {this.renderInputAnswerArea()}
+                </div>
+                <div className="row justify-content-center">
+                    {this.renderSaveButton()}
+                </div>
+                <div className="row justify-content-center">
+                    {this.renderCautions()}
+                </div>
+            </div>
         );
     }
 

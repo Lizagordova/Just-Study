@@ -15,12 +15,14 @@ import Notifications from "../../Common/Notifications/Notifications";
 export class UserMain extends React.Component<IUserMainProps> {
     courseMenuOpen: boolean;
     notificationsOpen: boolean;
+    update: boolean;
 
     constructor(props: IUserMainProps) {
         super(props);
         makeObservable(this, {
             courseMenuOpen: observable,
             notificationsOpen: observable,
+            update: observable,
         });
         this.getInitialStateOfApplication();
     }
@@ -50,70 +52,48 @@ export class UserMain extends React.Component<IUserMainProps> {
 
     render() {
         return (
-            <>
-                <Card>
-                    <CardHeader className="mainMenuHeader">
-                        <Nav tabs className="nav">
-                            <NavItem>
+            <div>
+                        <Nav tabs className="nav mainMenu">
+                            <NavItem  style={{marginRight: "5px", marginLeft: "5px"}}>
                                 {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/home" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                     activeStyle={{
-                                         color: '#ffffff',
-                                         backgroundColor: '#4169E1',
-                                         textDecoration: 'none'
-                                     }}>ГЛАВНАЯ</NavLink>
+                                <NavLink to="/home" exact className="nav-link menuNavLink">Главная</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/mylessons" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#4169E1',
-                                             textDecoration: 'none'
-                                         }}>МОИ УРОКИ</NavLink>
+                                <NavLink to="/mylessons" exact className="nav-link menuNavLink">Мои уроки</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/dictionary" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                            color: '#ffffff',
-                                             backgroundColor: '#4169E1',
-                                             textDecoration: 'none'
-                                         }}>СЛОВАРЬ</NavLink>
+                                <NavLink to="/dictionary" exact className="nav-link menuNavLink">Словарь</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink to="/trainings" exact className="nav-link" style={{fontSize: "1.5em"}}
-                                         activeStyle={{
-                                             color: '#ffffff',
-                                             backgroundColor: '#4169E1',
-                                             textDecoration: 'none'
-                                         }}>ТРЕНИРОВКИ</NavLink>
+                                <NavLink to="/trainings" exact className="nav-link menuNavLink">Тренировки</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to={"#"}
                                          exact 
-                                         
-                                         className="nav-link" style={{fontSize: "1.5em"}}
+                                         className="nav-link menuNavLink" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
-                                             backgroundColor: '#4169E1',
+                                             backgroundColor: 'rgb(43, 69, 148)',
+                                             border: "0px",
                                              textDecoration: 'none'
                                          }}>
                                     <i className="fa fa-bell" onClick={() => this.toggleNotifications()} />
                                 </NavLink>
                             </NavItem>
                             <Button
-                                outline color="primary"
+                                outline 
+                                className="exitButton"
+                                style={{color: "white", borderColor: "rgb(43, 69, 148)", fontSize: "1.3em"}}
                                 onClick={() => this.exit()}>
-                                ВЫЙТИ
+                                Выйти
                             </Button>
                         </Nav>
-                    </CardHeader>
                     {this.renderNotifications()}
-                </Card>
                 <Switch>
                     <Route exact path="/home"
-                           render={(props) => <HomePage store={this.props.store} />} />
+                           render={(props) => <HomePage store={this.props.store} courseChanged={this.update} />} />
                     <Route exact path="/mylessons"
                            render={(props) => <MyLessonsPage store={this.props.store} />} />
                     <Route exact path="/dictionary"
@@ -122,7 +102,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                            render={(props) => <TrainingPage store={this.props.store} />} />
                     <Redirect to="/home" />
                 </Switch>
-            </>
+            </div>
         );
     }
 
@@ -137,8 +117,11 @@ export class UserMain extends React.Component<IUserMainProps> {
         let choosenCourse = this.props.store.courseStore.choosenCourse;
         return(
             <ButtonDropdown isOpen={this.courseMenuOpen} toggle={() => this.toggleCourseMenuOpen()}>
-                <DropdownToggle caret outline color="primary">
-                    {choosenCourse.name}
+                <DropdownToggle
+                    caret outline 
+                    className="courseToggler"
+                    style={{  marginTop: "10%" }}>
+                    {choosenCourse.name === undefined || choosenCourse.name === null ? "Выбрать курс" : choosenCourse.name}
                 </DropdownToggle>
                 <DropdownMenu>
                     {courses.map((course) => {
@@ -159,6 +142,7 @@ export class UserMain extends React.Component<IUserMainProps> {
     }
 
     toggleCourse(course: CourseViewModel) {
+        this.toggleUpdate();
         this.props.store.courseStore.setChoosenCourse(course);
         this.props.store.lessonStore.getLessonsByCourse(course.id);
         let choosenLessonId = this.props.store.lessonStore.choosenLesson.id;
@@ -168,5 +152,9 @@ export class UserMain extends React.Component<IUserMainProps> {
 
     toggleNotifications = () => {
         this.notificationsOpen = !this.notificationsOpen;
+    };
+
+    toggleUpdate() {
+        this.update = !this.update;
     }
 }

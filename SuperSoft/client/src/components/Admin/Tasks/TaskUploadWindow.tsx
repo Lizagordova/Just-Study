@@ -1,40 +1,52 @@
-﻿import React, { Component } from "react";
-import { TaskReadModel } from "../../../Typings/readModels/TaskReadModel";
-import { Alert, Button, ModalBody, Fade, Input, Label } from "reactstrap";
-import { observer } from "mobx-react";
+﻿import React, {Component} from "react";
+import {TaskReadModel} from "../../../Typings/readModels/TaskReadModel";
+import {Alert, Button, Fade, Input, Label, ModalBody} from "reactstrap";
+import {observer} from "mobx-react";
 import {makeObservable, observable, toJS} from "mobx";
-import { SubtaskReadModel } from "../../../Typings/readModels/SubtaskReadModel";
-import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
-import { IUploadTaskProps } from "./IUploadTaskProps";
+import {SubtaskReadModel} from "../../../Typings/readModels/SubtaskReadModel";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
+import {IUploadTaskProps} from "./IUploadTaskProps";
 import SubtaskUploadWindow from "./SubtaskUploadWindow";
-import { getTaskTitle } from "../../../functions/getTaskTitle";
+import {getTaskTitle} from "../../../functions/getTaskTitle";
 import {subtaskTranspiler} from "../../../functions/subtaskTranspiler";
-import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
-import {mapToSubtaskReadModel, mapToTagReadModel, mapToTaskReadModel} from "../../../functions/mapper";
+import {
+    mapToSubtaskReadModel,
+    mapToTagReadModel,
+    mapToTaskReadModel
+} from "../../../functions/mapper";
 import {SubtagReadModel} from "../../../Typings/readModels/SubtagReadModel";
+import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
 
 @observer
 class TaskUploadWindow extends Component<IUploadTaskProps> {
     task: TaskReadModel = new TaskReadModel();
     subtasks: SubtaskReadModel[] = new Array<SubtaskReadModel>();
-    tags: TagReadModel[] = new Array<TagReadModel>();
+    tags: TagViewModel[] = new Array<TagViewModel>();
+    choosenTags: TagViewModel[] = new Array<TagViewModel>();
+    subtags: SubtagViewModel[] = new Array<SubtagViewModel>();
+    choosenSubtags: SubtagViewModel[] = new Array<SubtagViewModel>();
     notSaved: boolean;
     saved: boolean;
     loaded: boolean;
     renderEmptyWarning: boolean = true;
+    update: boolean = true;
 
-    constructor() {
-        // @ts-ignore
-        super();
+    constructor(props: IUploadTaskProps) {
+        super(props);
         makeObservable(this, {
             task: observable,
             notSaved: observable,
             loaded: observable,
             subtasks: observable,
+            subtags: observable,
             tags: observable,
+            choosenTags: observable,
+            choosenSubtags: observable,
             saved: observable,
+            update: observable,
             renderEmptyWarning: observable
         });
+        this.tags = this.props.tagStore.tags;
     }
 
     componentDidMount(): void {
@@ -43,7 +55,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             this.subtasks = task.subtasks.map(s => mapToSubtaskReadModel(s));
         }
         if(task.tags !== undefined) {
-            this.tags = task.tags.map(t =>  mapToTagReadModel(t));
+            this.choosenTags = task.tags.map(t =>  mapToTagReadModel(t));
         }
         this.task = mapToTaskReadModel(task);
         this.loaded = true;
@@ -74,28 +86,67 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         );
     }
 
-    renderTags() {
-        let tags = this.props.tagStore.tags;
-        if(tags !== undefined && tags.length !== 0) {
-            return(
-                <div className="row justify-content-center" style={{marginTop: "15px", fontSize: "1.2em" }}>
-                    <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                        {tags.map((tag) => {
-                            let backgroundColor = (this.tags.find(t => t.id === tag.id) !== undefined) ? "lightgrey" : "white";
-                            return(
-                                <option 
-                                    style={{backgroundColor: backgroundColor, marginTop: "5px" }}
-                                    key={tag.id} onClick={() => this.addTag(tag)}>
+    renderTags(tags: TagViewModel[], update: boolean) {
+        if(tags.length > 0) {
+            return (
+                <>
+                    <div className="row justify-content-center" style={{marginTop: "25px"}}>
+                        <Label>
+                            Выберите теги
+                        </Label>
+                    </div>
+                    <div className="row" style={{fontSize: "1em"}}>
+                        {tags.map((tag, i) => {
+                            let outline = !this.choosenTags.includes(tag);
+                            return (
+                                <Button
+                                    outline={outline} color="primary"
+                                    style={{
+                                        marginLeft: "10px",
+                                        marginBottom: "10px",
+                                        height: "auto",
+                                        width: "auto",
+                                        fontSize: "1em"
+                                    }}
+                                    active={false}
+                                    key={i}
+                                    onClick={() => this.toggleTag(tag)}>
                                     {tag.name}
-                                </option>
+                                </Button>
                             );
                         })}
-                    </Input>
-                </div>
+                    </div>
+                </>
             );
         }
     }
 
+    renderSubtags(subtags: SubtagViewModel[], update: boolean) {
+        return (
+            <div className="row" style={{marginTop: "10px", marginLeft: "10px", marginRight: "10px"}}>
+                {subtags.map((subtag, i) => {
+                    let outline = !this.choosenSubtags.includes(subtag);
+                    return (
+                        <Button
+                            outline={outline} color="secondary"
+                            style={{
+                                marginLeft: "8px",
+                                marginBottom: "8px",
+                                height: "auto",
+                                width: "auto",
+                                fontSize: "0.8em"
+                            }}
+                            active={false}
+                            key={i}
+                            onClick={() => this.toggleSubtag(subtag)}>
+                            {subtag.name}
+                        </Button>
+                    );
+                })}
+            </div>
+        );
+    }
+    
     renderInstructionField() {
         return(
             <div className="row justify-content-center">
@@ -126,9 +177,10 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
             <div className="row justify-content-center">
                 <Button 
                     style={{width: "70%", marginTop: "15px"}}
+                    className="commonButton"
                     onClick={() => this.addSubtask()}
                     outline color="secondary">
-                    <span className="addTaskText">ДОБАВИТЬ ПОДЗАДАНИЕ</span>
+                    <span className="addTaskText">Добавить подзадание</span>
                 </Button>
             </div>
         );
@@ -171,7 +223,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                         {this.renderTextField()}
                         {this.renderInputForSubtasks()}
                         {this.renderAddSubtaskButton()}
-                        {this.renderTags()}
+                        {this.renderTags(this.tags, this.update)}
+                        {this.renderSubtags(this.subtags, this.update)}
                     </div>
                 </ModalBody>
                 <div className="row justify-content-center" style={{marginTop: "15px"}}>
@@ -201,7 +254,7 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
         let tagReadModel = mapToTagReadModel(tag);
         this.tags.push(tagReadModel);
     }
-    
+
     inputInstruction(event: React.FormEvent<HTMLInputElement>) {
         let value = event.currentTarget.value;
         this.renderEmptyWarning = value === "" || value === null || value === undefined;
@@ -211,7 +264,8 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
     saveTask() {
         let task = this.task;
         task.subtasks = this.subtasks;
-        task.tagIds = this.tags.map(t => t.id);
+        task.tagIds = this.choosenTags.map(t => t.id);
+        task.subtagIds = this.choosenSubtags.map(t => t.id);
         this.props.taskStore.addOrUpdateTask(this.task, this.props.lessonId)
             .then((status) => {
                 if(this.props.lessonId !== null) {
@@ -224,6 +278,39 @@ class TaskUploadWindow extends Component<IUploadTaskProps> {
                 this.notSaved = status !== 200;
                 this.saved = status === 200;
         });
+    }
+
+    toggleTag(tag: TagViewModel) {
+        if(this.choosenTags.filter(t => t.id === tag.id).length > 0) {
+            this.choosenTags = this.choosenTags
+                .filter(t => t !== tag);
+        } else {
+            this.choosenTags.push(tag);
+        }
+        let subtags = new Array<SubtagViewModel>();
+        this.tags.forEach(t => {
+            if(this.choosenTags.includes(t)) {
+                t.subtags.forEach(s => {
+                    subtags.push(s);
+                });
+            }
+        });
+        this.subtags = subtags;
+        this.updateToggle();
+    }
+
+    toggleSubtag(subtag: SubtagViewModel) {
+        if(this.choosenSubtags.filter(t => t.id === subtag.id).length > 0) {
+            this.choosenSubtags = this.choosenSubtags
+                .filter(t => t !== subtag);
+        } else {
+            this.choosenSubtags.push(subtag);
+        }
+        this.updateToggle();
+    }
+
+    updateToggle() {
+        this.update = !this.update;
     }
 }
 

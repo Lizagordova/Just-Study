@@ -8,6 +8,7 @@ import Tracker from "../Tracker/Tracker";
 
 class IHomePageProps {
     store: RootStore;
+    courseChanged: boolean;
 }
 
 @observer
@@ -40,7 +41,7 @@ class HomePage extends Component<IHomePageProps> {
 
     renderOverallProgress() {
         return(
-            <OverallProgress courseStore={this.props.store.courseStore} currentUser={this.props.store.userStore.currentUser} progressStore={this.props.store.progressStore} />
+            <OverallProgress courseStore={this.props.store.courseStore} currentUser={this.props.store.userStore.currentUser} progressStore={this.props.store.progressStore}  courseChanged={this.props.courseChanged}/>
         );
     }
 

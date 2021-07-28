@@ -182,7 +182,19 @@ namespace SuperSoft.Services
 
 		public void AddLogAddOrUpdateMaterialException(ILogger logger, Exception e, LessonMaterial lessonMaterial)
 		{
-			var customMessage = $"Не удалось добавить материал {lessonMaterial.Id}.";
+			var customMessage = $"Не удалось добавить материал в {lessonMaterial.Path}";
+			AddLog(logger, e, customMessage);
+		}
+		
+		public void AddLogUpdateLessonsException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось обновить уроки";
+			AddLog(logger, e, customMessage);
+		}
+		
+		public void AddLogAddOrUpdateJustLogException(ILogger logger, Exception e)
+		{
+			var customMessage = $"Не удалось((((";
 			AddLog(logger, e, customMessage);
 		}
 
@@ -257,7 +269,13 @@ namespace SuperSoft.Services
 			var customMessage = $"Не удалось прикрепить тэги к заданию с taskId={taskId}.";
 			AddLog(logger, e, customMessage);
 		}
-		
+
+		public void AddLogAttachSubtagsToTaskException(ILogger logger, Exception e, int taskId)
+		{
+			var customMessage = $"Не удалось прикрепить подтеги к заданию с taskId={taskId}.";
+			AddLog(logger, e, customMessage);
+		}
+
 		public void AddLogGetUserTaskException(ILogger logger, Exception e, int taskId, int userId)
 		{
 			var customMessage = $"Не удалось получить пользовательский ответ на  задание {taskId} {userId}.";

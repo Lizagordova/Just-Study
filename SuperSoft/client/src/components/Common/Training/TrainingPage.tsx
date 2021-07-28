@@ -1,13 +1,13 @@
-﻿import React, { Component } from "react";
-import { makeObservable, observable } from "mobx";
-import { Nav, Tab, Row, Col }  from "react-bootstrap";
-import { observer } from "mobx-react";
+﻿import React, {Component} from "react";
+import {makeObservable, observable} from "mobx";
+import {Col, Nav, Row, Tab} from "react-bootstrap";
+import {observer} from "mobx-react";
 import TrainingContent from "./TrainingContent";
 import RootStore from "../../../stores/RootStore";
-import { TagViewModel } from "../../../Typings/viewModels/TagViewModel";
-import { Button } from "reactstrap";
+import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
+import {Alert, Button} from "reactstrap";
 import AddTagWindow from "../../Admin/Tags/AddTagWindow";
-import { UserRole } from "../../../Typings/enums/UserRole";
+import {UserRole} from "../../../Typings/enums/UserRole";
 
 class ITrainingPageProps {
     store: RootStore;
@@ -16,40 +16,73 @@ class ITrainingPageProps {
 @observer
 class TrainingPage extends Component<ITrainingPageProps> {
     filtersOpen: boolean;
-    mainTag: number = 1;
+    mainTag: number = 0;
     addTagWindowOpen: boolean;
+    notDeleted: boolean;
 
     constructor(props: ITrainingPageProps) {
         super(props);
         makeObservable(this, {
             filtersOpen: observable,
             mainTag: observable,
-            addTagWindowOpen: observable
+            addTagWindowOpen: observable,
+            notDeleted: observable
         });
+        this.setMainTag();
     }
 
-    renderAddTagButton() {
+    setMainTag() {
+        let mainTag = this.props.store.tagStore.tags[0];
+        if(mainTag !== undefined) {
+            this.mainTag = mainTag.id;
+        }
+    }
+
+    renderCautions() {
         return (
-            <Button
-                onClick={() => this.toggleAddTagWindow()}>
-                Добавить тег
-            </Button>
+            <>
+                {this.notDeleted && <Alert>Что-то пошло не так, и тег не удалился</Alert>}
+            </>
         );
     }
 
+    renderAddTagButton() {
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return (
+                <Button
+                    onClick={() => this.toggleAddTagWindow()}>
+                    Добавить тег
+                </Button>
+            );
+        }
+    }
+
+    renderDeleteButton(tagId: number) {
+        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+            return (
+                <i style={{marginLeft: '96%', width: '2%'}}
+                   onClick={() => this.deleteTag(tagId)}
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+
+            );
+        }
+    }
+
     renderMenu(tags: TagViewModel[]) {
+        let rowHeight = tags.length * 80 + 100;
         return(
             <Tab.Container id="left-tabs-example" defaultActiveKey={1}>
                 <Row>
-                    <Col sm={2} style={{height: "160px"}}>
-                        <Nav  variant="pills" className="flex-column">
+                    <Col sm={2} style={{height: `${rowHeight}px`}}>
+                        <Nav variant="pills" className="flex-column">
                             <div className="container-fluid">
                                 {tags.map(t => {
                                     return (
                                         <Nav.Item key={t.id}>
-                                            <div className="row" key={1}>
-                                                <Nav.Link
-                                                    eventKey={1}
+                                            {this.renderDeleteButton(t.id)}
+                                            <div className="row" key={t.id}>
+                                                 <Nav.Link
+                                                    eventKey={t.id}
                                                     className="nav-link lesson"
                                                     onClick={() => this.changeMainTag(t.id)}>
                                                     {t.name}
@@ -58,9 +91,9 @@ class TrainingPage extends Component<ITrainingPageProps> {
                                         </Nav.Item>
                                     );
                                 })}
+                                {this.renderAddTagButton()}
                             </div>
                         </Nav>
-                        {this.renderAddTagButton()}
                     </Col>
                     <Col sm={10}>
                         <TrainingContent store={this.props.store} mainTag={this.mainTag}/>
@@ -71,13 +104,11 @@ class TrainingPage extends Component<ITrainingPageProps> {
     }
 
     renderAddTagWindow() {
-        if(this.props.store.userStore.currentUser.role !== UserRole.Admin) {
-            return (
-                <>
-                    {this.addTagWindowOpen && <AddTagWindow tagStore={this.props.store.tagStore} toggle={this.toggleAddTagWindow} />}
-                </>
-            );
-        }
+        return (
+            <>
+                {this.addTagWindowOpen && <AddTagWindow tagStore={this.props.store.tagStore} toggle={this.toggleAddTagWindow} />}
+            </>
+        );
     }
 
     render() {
@@ -95,6 +126,16 @@ class TrainingPage extends Component<ITrainingPageProps> {
 
     toggleAddTagWindow = () => {
         this.addTagWindowOpen = !this.addTagWindowOpen;
+    };
+
+    deleteTag(tagId: number) {
+        let result = window.confirm('Вы уверены, что хотите удалить этот тег?');
+        if(result) {
+            this.props.store.tagStore.deleteTag(tagId)
+                .then((status) => {
+                    this.notDeleted = status !== 200;
+                });
+        }
     }
 }
 

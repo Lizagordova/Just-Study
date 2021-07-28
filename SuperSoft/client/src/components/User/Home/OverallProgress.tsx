@@ -10,21 +10,30 @@ class IOverallProgressProps {
     courseStore: CourseStore;
     progressStore: ProgressStore;
     currentUser: UserViewModel;
+    courseChanged: boolean;
 }
 
 @observer
 class OverallProgress extends Component<IOverallProgressProps> {
     progress: number = 0;
+    update: boolean;
 
     constructor(props: IOverallProgressProps) {
         super(props);
         makeObservable(this, {
-            progress: observable
+            progress: observable,
+            update: observable
         });
         this.computeProgress();
     }
 
-    renderProgress() {
+    componentDidUpdate(prevProps: Readonly<IOverallProgressProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        if(this.props.courseChanged !== prevProps.courseChanged) {
+            this.computeProgress();
+        }
+    }
+
+    renderProgress(update: boolean) {
         return(
             <Circle//todo: изучи побольше, может быть тут можно несколько данных отображать
                 size="300"
@@ -36,7 +45,7 @@ class OverallProgress extends Component<IOverallProgressProps> {
     render() {
         return(
             <div style={{marginTop: "10px"}}>
-                {this.renderProgress()}
+                {this.renderProgress(this.update)}
             </div>
         );
     }
@@ -49,6 +58,10 @@ class OverallProgress extends Component<IOverallProgressProps> {
             .then((progress) => {
                 this.progress =  progress;
             });
+    }
+
+    toggleUpdate() {
+        this.update = !this.update;
     }
 }
 

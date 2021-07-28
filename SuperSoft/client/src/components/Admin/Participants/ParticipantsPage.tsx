@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
 import { observer } from "mobx-react";
 import CourseStore from "../../../stores/CourseStore";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { UserViewModel } from "../../../Typings/viewModels/UserViewModel";
 import UserStore from "../../../stores/UserStore";
-import { Button, Alert, Label } from "reactstrap";
+import {Button, Alert, Label, Input} from "reactstrap";
 import Participants from "./Participants";
 import {UserCourseViewModel} from "../../../Typings/viewModels/UserCourseViewModel";
 import {renderSpinner} from "../../../functions/renderSpinner";
@@ -73,8 +73,12 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
             <>
                 {users.map(u => {
                     return(
-                        <div className="row justify-content-center" style={{border: "1px solid black"}} key={u.id}>
-                            <Label>
+                        <div 
+                            className="row justify-content-center"
+                            style={{border: "1px solid black", marginBottom: "5px",
+                                width: "20%", marginLeft: "1%", marginRight: "1%"}}
+                            key={u.id}>
+                            <Label style={{width: "80%", textAlign: "start"}}>
                                 {u.lastName} {u.firstName}
                             </Label>
                             <i
@@ -114,12 +118,18 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
 
     renderDividingLine() {
         return(
-            <>
-                <hr />
-                <span style={{fontSize: "1.5em"}}>
+            <div className="row justify-content-start searchbar searchForm" style={{width: "400px", marginBottom: "1%"}}>
+                <span style={{fontSize: "1.3em", marginLeft: "5%", width: "100px"}}>
                     Добавить:
                 </span>
-            </>
+                <Input type="text"
+                       className="searchInput"
+                       style={{ marginLeft: "5px", width: "250px" }}
+                       onChange={(e) => this.restUsersFilter(e)} />
+                <button
+                    className="searchButton"
+                    style={{ width: "50px"}} type="submit"/>
+            </div>
         );
     }
 
@@ -182,6 +192,11 @@ class ParticipantsPage extends Component<IParticipantsPageProps> {
                         });
                 }
             });
+    }
+
+    restUsersFilter(event: React.ChangeEvent<HTMLInputElement>) {
+        let value = event.currentTarget.value.toLowerCase();
+        this.restUsers = this.props.userStore.users.filter(u => u.fullName.toLowerCase().includes(value));
     }
 }
 

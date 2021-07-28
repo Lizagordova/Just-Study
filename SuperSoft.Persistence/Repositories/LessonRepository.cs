@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -24,6 +25,7 @@ namespace SuperSoft.Persistence.Repositories
 		private const string GetMaterialsByLessonSp = "LessonRepository_GetMaterialsByLesson";
 		private const string GetLessonMaterialSp = "LessonRepository_GetLessonMaterial";
 		private const string GetLessonByIdSp = "LessonRepository_GetLessonById";
+		private const string UpdateLessonsSp = "LessonRepository_UpdateLessons";
 
 		public LessonRepository(
 			MapperService mapper)
@@ -122,6 +124,14 @@ namespace SuperSoft.Persistence.Repositories
 			return lesson;
 		}
 
+		public void UpdateLessons(List<Lesson> lessons, int courseId)
+		{
+			var conn = DatabaseHelper.OpenConnection();
+			var param = GetCourseLessonsParam(lessons, courseId);
+			conn.Query(UpdateLessonsSp, param, commandType: CommandType.StoredProcedure);
+			DatabaseHelper.CloseConnection(conn);
+		}
+
 		private DynamicTvpParameters GetAddOrUpdateLessonParam(Lesson lesson)
 		{
 			var param = new DynamicTvpParameters();
@@ -185,6 +195,17 @@ namespace SuperSoft.Persistence.Repositories
 		{
 			var param = new DynamicTvpParameters();
 			param.Add("materialId", materialId);
+
+			return param;
+		}
+
+		private DynamicTvpParameters GetCourseLessonsParam(List<Lesson> lessons, int courseId)
+		{
+			var param = new DynamicTvpParameters();
+			var tvp = new TableValuedParameter("lessonCourses", "[UDT_Lesson_Course]");
+			var udt = lessons.Select(l => new LessonCourseUdt { CourseId = courseId, LessonId = l.Id, StartDate = DateTime.Now, ExpireDate = DateTime.Now, Order = l.Order}).ToList();
+			tvp.AddGenericList(udt);
+			param.Add(tvp);
 
 			return param;
 		}
