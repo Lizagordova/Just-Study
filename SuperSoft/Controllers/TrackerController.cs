@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -38,15 +39,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/gettracker")]
 		public ActionResult GetTracker([FromBody]TrackerReadModel trackerReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var tracker = _trackerReader.GetTracker(trackerReadModel.UserId, trackerReadModel.CourseId);
@@ -63,15 +59,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdatetracker")]
 		public ActionResult AddOrUpdateTracker([FromBody]TrackerReadModel trackerReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var tracker = _mapHelper.MapTracker(trackerReadModel);

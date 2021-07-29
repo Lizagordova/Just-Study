@@ -1,8 +1,9 @@
 ﻿import {action, makeObservable, observable, toJS} from "mobx";
 import { LessonViewModel } from "../Typings/viewModels/LessonViewModel";
 import { LessonMaterialViewModel } from "../Typings/viewModels/LessonMaterialViewModel";
-import {LessonReadModel} from "../Typings/readModels/LessonReadModel";
-import {mapToLessonReadModel} from "../functions/mapper";
+import { LessonReadModel } from "../Typings/readModels/LessonReadModel";
+import { mapToLessonReadModel } from "../functions/mapper";
+import {getToken} from "../functions/getToken";
 
 class LessonStore {
     lessonsByChoosenCourse: LessonViewModel[] = new Array<LessonViewModel>();
@@ -27,7 +28,8 @@ class LessonStore {
         const response = await fetch("getlessonsbycourse", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: courseId})
         });
@@ -47,7 +49,8 @@ class LessonStore {
         const response = await fetch("addorupdatelesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: id, courseId: courseId, name: name, description: description, startDate: startDate, expireDate: expireDate, order: order})
         });
@@ -62,7 +65,8 @@ class LessonStore {
         const response = await fetch("deletelesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: lessonId})
         });
@@ -77,7 +81,8 @@ class LessonStore {
         const response = await fetch("getmaterialsbylesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: lessonId})
         });
@@ -92,7 +97,8 @@ class LessonStore {
         const response = await fetch("deletematerial", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: materialId})
         });
@@ -117,7 +123,10 @@ class LessonStore {
             formData.append("lessonId", this.choosenLesson.id.toString());
             const response = await fetch("/addorupdatematerial", {
                 body: formData,
-                method: "POST"
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                }
             });
             if(response.status === 200) {
                 this.getMaterialsByLesson(this.choosenLesson.id);
@@ -144,7 +153,10 @@ class LessonStore {
             formData.append("lessonId", this.choosenLesson.id.toString());
             const response = await fetch("/addorupdatematerial1", {
                 body: formData,
-                method: "POST"
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                }
             });
             if(response.status === 200) {
                 start+= chunkSize;
@@ -159,7 +171,8 @@ class LessonStore {
         const response = await fetch("/getuserprogressbylesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 lessonId: lessonId, userId: userId
@@ -183,7 +196,8 @@ class LessonStore {
         const response = await fetch("/updatelessons", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 lessons: lessons,

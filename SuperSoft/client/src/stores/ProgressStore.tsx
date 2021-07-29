@@ -1,9 +1,12 @@
-﻿class ProgressStore {
+﻿import {getToken} from "../functions/getToken";
+
+class ProgressStore {
     async getProgressByLesson(lessonId: number): Promise<number> {
         const response = await fetch("/getprogressbylesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: lessonId
@@ -17,7 +20,8 @@
         const response = await fetch("/getusercourseprogress", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({userId: userId, courseId: courseId})
         });
@@ -29,7 +33,8 @@
         const response = await fetch("/getuserprogressbylesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({userId: userId, lessonId: lessonId})
         });

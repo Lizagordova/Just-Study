@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -42,14 +43,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdatecomment")]
 		public ActionResult AddOrUpdateComment([FromBody]CommentGroupReadModel commentGroup)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if(role == null)
-			{
-				return new BadRequestResult();
-			}
 			var comment = _mapperService.Map<CommentReadModel, Comment>(commentGroup.Comment);
 			var group = _mapperService.Map<CommentGroupReadModel, CommentGroup>(commentGroup);
 			var groupId = 0;
@@ -78,14 +75,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getcommentgroup")]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult GetCommentGroup([FromBody]CommentGroupReadModel commentGroupReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if(role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var group = _mapHelper.MapCommentGroup(commentGroupReadModel);
 			var groupId = _commentEditor.AddOrUpdateCommentGroup(group);
 			group.Id = groupId;
@@ -106,13 +98,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/removecomment")]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult RemoveComment([FromBody]CommentReadModel commentReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if(role == null)
-			{
-				return new BadRequestResult();
-			}
 			_commentEditor.RemoveComment(commentReadModel.Id);
 
 			return new OkResult();

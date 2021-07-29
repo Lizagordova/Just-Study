@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -37,14 +38,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatefeedback")]
+		[Authorize]
 		public ActionResult AddFeedback([FromBody]FeedbackReadModel feedbackReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var feedback = _mapper.Map<FeedbackReadModel, Feedback>(feedbackReadModel);
 			try
 			{
@@ -62,14 +58,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getfeedbacks")]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult GetFeedbacks([FromBody]FeedbackReadModel feedbackReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var feedbacks = _feedbackReader.GetFeedbacks(feedbackReadModel.Old);

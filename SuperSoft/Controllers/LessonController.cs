@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -37,14 +38,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getlessonsbycourse")]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult GetLessonsByCourse([FromBody]CourseReadModel course)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var lessons = _lessonReader.GetLessonsByCourse(course.Id);
@@ -62,14 +58,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatelesson")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult AddOrUpdateLesson([FromBody]LessonReadModel lessonReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var lesson = _mapper.Map<LessonReadModel, Lesson>(lessonReadModel);
 			try
 			{
@@ -87,14 +78,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/deletelesson")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult DeleteLesson([FromBody]LessonReadModel lessonReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_lessonEditor.DeleteLesson(lessonReadModel.Id);
@@ -111,14 +97,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getmaterialsbylesson")]
+		[Authorize]
 		public ActionResult GetMaterialsByLesson([FromBody]LessonReadModel lessonReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var materials = _lessonReader.GetMaterialsByLesson(lessonReadModel.Id);
@@ -136,14 +117,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/deletematerial")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult DeleteMaterial([FromBody]LessonMaterialReadModel lessonMaterial)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_lessonEditor.DeleteMaterial(lessonMaterial.Id);
@@ -160,14 +136,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatematerial")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult AddOrUpdateMaterial([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var lessonMaterial = _mapper.Map<LessonMaterialReadModel, LessonMaterial>(lessonMaterialReadModel);
 			try
 			{
@@ -186,6 +157,7 @@ namespace SuperSoft.Controllers
 		
 		[HttpPost]
 		[Route("/addorupdatematerial1")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult AddOrUpdateMaterial1([FromForm]LessonMaterialReadModel lessonMaterialReadModel)
 		{
 
@@ -207,6 +179,7 @@ namespace SuperSoft.Controllers
 		
 		[HttpPost]
 		[Route("/updatelessons")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult UpdateLessons([FromBody]LessonsCollectionReadModel lessonsCollection)
 		{
 			var lessons = lessonsCollection.Lessons.Select(_mapper.Map<LessonReadModel, Lesson>).ToList();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -38,15 +39,11 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatecourse")]
 		public ActionResult AddOrUpdateCourse([FromBody]CourseReadModel courseReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
 			var userId = SessionHelper.GetUserId(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
 
 			var course = _mapper.Map<CourseReadModel, Course>(courseReadModel);
 			int courseId = 0;
@@ -67,15 +64,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletecourse")]
 		public ActionResult DeleteCourse([FromBody]CourseReadModel course)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_courseEditor.DeleteCourse(course.Id);
@@ -92,14 +84,10 @@ namespace SuperSoft.Controllers
 
 		[HttpGet]
 		[Route("/getusercourses")]
+		[Authorize(Roles = "User")]
 		public ActionResult GetUserCourses()
 		{
 			var userId = SessionHelper.GetUserId(HttpContext);
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
-			{
-				return new BadRequestResult();
-			}
 
 			try
 			{
@@ -118,14 +106,10 @@ namespace SuperSoft.Controllers
 
 		[HttpGet]
 		[Route("/getcoursesforteacher")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult GetCoursesForTeacher()
 		{
-			var role = SessionHelper.GetRole(HttpContext);
 			var userId = SessionHelper.GetUserId(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				var courses = _courseReader.GetCoursesForTeacher(userId);
@@ -143,14 +127,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getusersbycourse")]
+		[Authorize(Roles = "Admin")]
 		public ActionResult GetUsersByCourse([FromBody]CourseReadModel course)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var users = _courseReader.GetUsersByCourse(course.Id);
@@ -167,15 +146,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdateparticipantslist")]
 		public ActionResult AddOrUpdateParticipantsList([FromBody]CourseReadModel course)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_courseEditor.AddOrUpdateParticipantsList(course.ParticipantsIds, course.Id);
@@ -191,15 +165,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getcoursesinfo")]
 		public ActionResult GetCoursesInfo([FromBody]CoursesInfoQueryReadModel queryReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var query = _mapper.Map<CoursesInfoQueryReadModel, CoursesInfoQuery>(queryReadModel);
@@ -217,15 +186,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdateusercoursedetails")]
 		public ActionResult AddOrUpdateUserCourseDetails([FromBody]UserCourseReadModel userCourseReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var userCourse = _mapper.Map<UserCourseReadModel, UserCourse>(userCourseReadModel);
@@ -242,15 +206,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deleteuserfromcourse")]
 		public ActionResult DeleteUserFromCourse([FromBody]UserCourseReadModel userCourseReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var userCourse = _mapper.Map<UserCourseReadModel, UserCourse>(userCourseReadModel);

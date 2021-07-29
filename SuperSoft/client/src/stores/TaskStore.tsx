@@ -2,14 +2,13 @@
 import { TaskViewModel } from "../Typings/viewModels/TaskViewModel";
 import {TaskReadModel} from "../Typings/readModels/TaskReadModel";
 import {SubtaskReadModel} from "../Typings/readModels/SubtaskReadModel";
-import {TagViewModel} from "../Typings/viewModels/TagViewModel";
 import {UserSubtaskReadModel} from "../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskAnswerGroupReadModel} from "../Typings/readModels/UserSubtaskAnswerGroupReadModel";
 import {UserSubtaskViewModel} from "../Typings/viewModels/UserSubtaskViewModel";
-import {UserSubtaskAnswerGroupViewModel} from "../Typings/viewModels/UserSubtaskAnswerGroupViewModel";
 import {TagReadModel} from "../Typings/readModels/TagReadModel";
 import {UserTaskViewModel} from "../Typings/viewModels/UserTaskViewModel";
 import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
+import {getToken} from "../functions/getToken";
 
 class TaskStore {
     @observable
@@ -30,7 +29,8 @@ class TaskStore {
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: lessonId})
         });
@@ -50,7 +50,10 @@ class TaskStore {
         const formData = this.getFormDataForTask(task, lessonId);
         const response = await fetch("/addorupdatetask", {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
         });
         if(response.status === 200) {
             let taskId = await response.json();
@@ -70,7 +73,8 @@ class TaskStore {
         const response = await fetch("/attachtagstotask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({taskId: taskId, tagIds: tagIds})
         });
@@ -81,7 +85,8 @@ class TaskStore {
         const response = await fetch("/attachsubtagstotask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({taskId: taskId, subtagIds: subtagIds})
         });
@@ -120,7 +125,10 @@ class TaskStore {
         const formData = this.getFormDataForSubtask(subtask);
         const response = await fetch("/addorupdatesubtask", {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
         });
         if(response.status === 200) {
             this.updateTaskByTaskId(subtask.taskId);
@@ -158,7 +166,8 @@ class TaskStore {
         const response = await fetch("/deletetask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: taskId,
@@ -173,7 +182,8 @@ class TaskStore {
         const response = await fetch("/deletesubtask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: subtaskId
@@ -190,7 +200,8 @@ class TaskStore {
         const response = await fetch("/deleteusersubtask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userId, subtaskId: subtaskId
@@ -204,7 +215,10 @@ class TaskStore {
         let formData = this.getFormDataForUserSubtask(userSubtask);
         const response = await fetch("/addorupdateusersubtask", {
             method: "POST",
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
         });
 
         return response.status;
@@ -238,7 +252,8 @@ class TaskStore {
         const response = await fetch("/addorupdateusersubtaskanswergroup", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userSubtaskAnswerGroup.userId, answerGroupId: userSubtaskAnswerGroup.answerGroupId,
@@ -254,7 +269,8 @@ class TaskStore {
         const response = await fetch("/getusersubtask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userId, subtaskId: subtaskId
@@ -272,7 +288,8 @@ class TaskStore {
         const response = await fetch("/getusertask", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userId, taskId: taskId
@@ -292,7 +309,8 @@ class TaskStore {
         const response = await fetch("/gettasks", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 subtagIds: subtagIds, ignoreIds: ignoreIds, tagIds: tagIds
@@ -309,7 +327,8 @@ class TaskStore {
         const response = await fetch("/gettaskbyid", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: taskId
@@ -325,7 +344,8 @@ class TaskStore {
         const response = await fetch("/attachtasktolesson", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: taskId, lessonId: lessonId

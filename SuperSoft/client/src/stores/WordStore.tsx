@@ -4,6 +4,7 @@ import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
 import { WordReadModel } from "../Typings/readModels/WordReadModel";
 import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
 import {WordOfADayReadModel} from "../Typings/readModels/WordOfADayReadModel";
+import {getToken} from "../functions/getToken";
 
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
@@ -22,7 +23,8 @@ class WordStore {
        const response = await fetch("/deletewordfromdictionary", {
            method: "POST",
            headers: {
-               'Content-Type': 'application/json;charset=utf-8'
+               'Content-Type': 'application/json;charset=utf-8',
+               'Authorization': `Bearer ${getToken()}`
            },
            body: JSON.stringify({id: wordId})
        });
@@ -39,7 +41,8 @@ class WordStore {
        const response = await fetch("/deletewordfromuserdictionary", {
            method: "POST",
            headers: {
-               'Content-Type': 'application/json;charset=utf-8'
+               'Content-Type': 'application/json;charset=utf-8',
+               'Authorization': `Bearer ${getToken()}`
            },
            body: JSON.stringify({userId: userId, word: word})
        });
@@ -51,7 +54,12 @@ class WordStore {
    }
 
    async getDictionary(): Promise<number> {
-        const response = await fetch("/getdictionary");
+        const response = await fetch("/getdictionary", {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         if(response.status === 200) {
             this.dictionary = await response.json();
         }
@@ -63,7 +71,8 @@ class WordStore {
        const response = await fetch("/getuserdictionary", {
            method: "POST",
            headers: {
-               'Content-Type': 'application/json;charset=utf-8'
+               'Content-Type': 'application/json;charset=utf-8',
+               'Authorization': `Bearer ${getToken()}`
            },
            body: JSON.stringify({id: userId})
        });
@@ -78,7 +87,8 @@ class WordStore {
        const response = await fetch("/addorupdatewordtodictionary", {
            method: "POST",
            headers: {
-               'Content-Type': 'application/json;charset=utf-8'
+               'Content-Type': 'application/json;charset=utf-8',
+               'Authorization': `Bearer ${getToken()}`
            },
            body: JSON.stringify({
                id: word.id, word: word.word,
@@ -97,7 +107,8 @@ class WordStore {
         const response = await fetch("/addorupdatewordtouserdictionary", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 word: word,
@@ -118,7 +129,8 @@ class WordStore {
         const response = await fetch("/addorupdateuserwordsprogress", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userWords: userWords
@@ -135,7 +147,8 @@ class WordStore {
         const response = await fetch("/deletewordofaday", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: wordId
@@ -152,7 +165,8 @@ class WordStore {
         const response = await fetch("/getwordofaday", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 courseId: courseId, date: dateWithTime
@@ -173,7 +187,8 @@ class WordStore {
         const response = await fetch("/addorupdatewordofaday", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 word: wordOfADay.word,
@@ -192,7 +207,8 @@ class WordStore {
         const response = await fetch("/getuserwordsprogress", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userId,
@@ -210,7 +226,8 @@ class WordStore {
         const response = await fetch("/addorupdateuserword", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 userId: userWord.userId, word: userWord.word,
@@ -227,7 +244,8 @@ class WordStore {
         const response = await fetch("/getanswerstowordofadaybyword", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                id: wordId,

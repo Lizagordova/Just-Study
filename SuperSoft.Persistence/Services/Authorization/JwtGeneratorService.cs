@@ -39,7 +39,7 @@ namespace SuperSoft.Persistence.Services.Authorization
             {
                 claims.Add(new Claim("role", role.ToString()));
             }
-                            
+            
             var token = new JwtSecurityToken(authParams.Issuer,
                 authParams.Audience,
                 claims,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -35,15 +36,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getnotifications")]
 		public ActionResult GetNotifications([FromBody]UserReadModel user)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var notifications = _notificationReader.GetNotifications(user.Id);
@@ -60,15 +56,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdateusernotification")]
 		public ActionResult AddOrUpdateUserNotification([FromBody]UserNotificationReadModel userNotificationReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var userNotification = _mapper.Map<UserNotificationReadModel, UserNotification>(userNotificationReadModel);
 			try
 			{

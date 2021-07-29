@@ -2,6 +2,7 @@
 import {CommentedEntityType} from "../Typings/enums/CommentedEntityType";
 import {CommentReadModel} from "../Typings/readModels/CommentReadModel";
 import {makeObservable, observable} from "mobx";
+import {getToken} from "../functions/getToken";
 
 class CommentStore {
     commentGroup: CommentGroupViewModel = new CommentGroupViewModel();
@@ -15,7 +16,8 @@ class CommentStore {
         const response = await fetch("/getcommentgroup", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({commentedEntityType: commentedEntityType, commentedEntityId: commentedEntityId, userId: userId})
         });
@@ -34,7 +36,8 @@ class CommentStore {
         const response = await fetch(`/addorupdatecomment`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 comment: comment,

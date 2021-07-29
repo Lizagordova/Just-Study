@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -37,14 +38,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		[Route("/getdictionary")]
 		public ActionResult GetDictionary()
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
 			List<Word> words;
 			try
 			{
@@ -63,14 +60,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getuserdictionary")]
 		public ActionResult GetUserDictionary([FromBody]UserReadModel userReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				var userWords = _wordReader.GetUserDictionary(userReadModel.Id);
@@ -87,15 +80,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatewordtodictionary")]
 		public ActionResult AddOrUpdateWordToDictionary([FromBody]WordReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var word = MapWord(wordReadModel);
 			try
 			{
@@ -112,15 +100,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdatewordtouserdictionary")]
 		public ActionResult AddOrUpdateWordToUserDictionary([FromBody]UserWordReadModel userWordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var word = MapWord(userWordReadModel.Word);
 			try
 			{
@@ -137,15 +120,10 @@ namespace SuperSoft.Controllers
 		}
 		
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletewordfromdictionary")]
 		public ActionResult DeleteWordFromDictionary([FromBody]WordReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_wordEditor.DeleteWordFromDictionary(wordReadModel.Id);
@@ -161,15 +139,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/deletewordfromuserdictionary")]
 		public ActionResult DeleteWordFromUserDictionary([FromBody]UserWordReadModel userWordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_wordEditor.DeleteWordFromUserDictionary(userWordReadModel.Word.Id, userWordReadModel.UserId);
@@ -185,15 +158,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdateuserwordprogress")]
 		public ActionResult AddOrUpdateUserWordProgress([FromBody]UserWordReadModel userWordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var userWord = _mapper.Map<UserWordReadModel, UserWord>(userWordReadModel);
 			try
 			{
@@ -210,15 +178,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User")]
 		[Route("/addorupdateuserwordsprogress")]
 		public ActionResult AddOrUpdateWordProgress([FromBody]UserWordsCollectionReadModel wordTrainingReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
-			{
-				return new BadRequestResult();
-			}
-			var userId = SessionHelper.GetUserId(HttpContext);
 			var userWords = wordTrainingReadModel.UserWords.Select(_mapper.Map<UserWordReadModel, UserWord>).ToList();
 			try
 			{
@@ -235,14 +198,10 @@ namespace SuperSoft.Controllers
 		}
 		
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletewordofaday")]
 		public ActionResult DeleteWordOfADay([FromBody]WordReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				_wordEditor.DeleteWordOfADay(wordReadModel.Id);
@@ -258,14 +217,11 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getwordofaday")]
 		public ActionResult GetWordOfADay([FromBody]WordOfADayReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);//todo:дату без времени прокидывать!!!!
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
+			//todo:дату без времени прокидывать!!!
 			try
 			{
 				var word = _wordReader.GetWordOfADay(wordReadModel.Date, wordReadModel.CourseId);
@@ -282,15 +238,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatewordofaday")]
 		public ActionResult AddOrUpdateWordOfADay([FromBody]WordOfADayReadModel wordOfADay)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var word = MapWord(wordOfADay.Word);
 			try
 			{
@@ -309,15 +260,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getuserwordsprogress")]
 		public ActionResult GetUserWordsProgress([FromBody]UserWordReadModel userWordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var userWord = _wordReader.GetUserWordProgress(userWordReadModel.UserId, userWordReadModel.Word.Id);
@@ -334,15 +280,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/getanswerstowordofadaybyword")]
 		public ActionResult GetAnswersToWordOfADayByWord([FromBody]WordReadModel wordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var userWords = _wordReader.GetAnswersToWordOfADayByWord(wordReadModel.Id, wordReadModel.CourseId);
@@ -359,15 +300,10 @@ namespace SuperSoft.Controllers
 		}
 		
 		[HttpPost]
+		[Authorize(Roles = "User")]
 		[Route("/addorupdateuserword")]
 		public ActionResult AddOrUpdateUserWord([FromBody]UserWordReadModel userWordReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var userWord = _mapper.Map<UserWordReadModel, UserWord>(userWordReadModel);
 			try
 			{

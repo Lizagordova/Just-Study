@@ -1,6 +1,7 @@
 ﻿import { UserViewModel } from "../Typings/viewModels/UserViewModel";
 import { action, makeObservable, observable } from "mobx";
 import { UserReadModel } from "../Typings/readModels/UserReadModel";
+import {getToken} from "../functions/getToken";
 
 class UserStore {
     currentUser: UserViewModel;
@@ -79,7 +80,8 @@ class UserStore {
         const response = await fetch("/addorupdateuser", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: user.id, firstName: user.firstName,
@@ -99,7 +101,8 @@ class UserStore {
         const response = await fetch("/deleteuser", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: userId})
         });

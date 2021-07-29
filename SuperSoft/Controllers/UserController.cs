@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -36,14 +37,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdateuser")]
 		public ActionResult AddOrUpdateUser([FromBody]UserReadModel userReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				var user = _mapper.Map<UserReadModel, User>(userReadModel);
@@ -60,14 +57,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		[Route("/getusers")]
 		public ActionResult GetUsers()
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				var users = _userReader.GetUsers();
@@ -84,14 +77,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deleteuser")]
 		public ActionResult DeleteUser([FromBody]UserReadModel userReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				_userEditor.DeleteUser(userReadModel.Id);

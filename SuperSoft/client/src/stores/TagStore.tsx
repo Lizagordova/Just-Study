@@ -2,6 +2,7 @@
 import { TagViewModel } from "../Typings/viewModels/TagViewModel";
 import {TagReadModel} from "../Typings/readModels/TagReadModel";
 import {SubtagReadModel} from "../Typings/readModels/SubtagReadModel";
+import {getToken} from "../functions/getToken";
 
 class TagStore {
     tags: TagViewModel[] = new Array<TagViewModel>();
@@ -18,7 +19,12 @@ class TagStore {
     }
 
     async getTags() {
-        const response = await fetch("/gettags");
+        const response = await fetch("/gettags", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         if(response.status === 200) {
             this.tags = await response.json();
         }
@@ -28,7 +34,8 @@ class TagStore {
         const response = await fetch("/deletetag", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: tagId
@@ -45,7 +52,8 @@ class TagStore {
         const response = await fetch("/deletesubtag", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: subtagId
@@ -62,7 +70,8 @@ class TagStore {
         const response = await fetch("/addorupdatetag", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: tag.id, name: tag.name
@@ -79,7 +88,8 @@ class TagStore {
         const response = await fetch("/addorupdatesubtag", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 tagId: tagId, id: subtag.id, name: subtag.name

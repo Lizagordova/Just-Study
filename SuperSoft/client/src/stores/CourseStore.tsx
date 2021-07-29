@@ -1,6 +1,7 @@
 ﻿import { CourseViewModel } from "../Typings/viewModels/CourseViewModel";
-import {makeObservable, observable, toJS} from "mobx";
+import { makeObservable, observable, toJS} from "mobx";
 import { UserCourseViewModel } from "../Typings/viewModels/UserCourseViewModel";
+import {getToken} from "../functions/getToken";
 
 class CourseStore {
     coursesForTeacher: CourseViewModel[] = new Array<CourseViewModel>();
@@ -19,7 +20,12 @@ class CourseStore {
     }
 
     async getCoursesForTeacher() {
-        const response = await fetch("/getcoursesforteacher");
+        const response = await fetch("/getcoursesforteacher", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         if (response.status === 200) {
             this.coursesForTeacher = await response.json();
         } else {
@@ -28,7 +34,12 @@ class CourseStore {
     }
 
     async getUserCourses(): Promise<number> {
-        const response = await fetch("/getusercourses");
+        const response = await fetch("/getusercourses", {
+            method: "GET",
+                headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         if(response.status === 200) {
             let courses = await response.json();
             this.userCourses = courses;
@@ -41,7 +52,8 @@ class CourseStore {
         const response = await fetch("/getcoursesinfo", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({coursesIds: ids})
         });
@@ -58,7 +70,8 @@ class CourseStore {
         const response = await fetch("/getusersbycourse", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: courseId})
         });
@@ -71,7 +84,8 @@ class CourseStore {
         const response = await fetch("addorupdatecourse", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: id, name: name, description: description})
         });
@@ -86,9 +100,10 @@ class CourseStore {
         const response = await fetch("/deletecourse", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
-            body: JSON.stringify({id: courseId})
+            body: JSON.stringify({ id: courseId })
         });
         if(response.status === 200) {
             this.getCoursesForTeacher();
@@ -101,7 +116,8 @@ class CourseStore {
         const response = await fetch("/addorupdateparticipantslist", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({participantsIds: participants, id: courseId})
         });
@@ -116,7 +132,8 @@ class CourseStore {
         const response = await fetch("/addorupdateusercoursedetails", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({userId: details.userId,
             courseRole: details.courseRole, tarif: details.tarif, startDate: details.startDate,
@@ -133,7 +150,8 @@ class CourseStore {
         const response = await fetch("/deleteuserfromcourse", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({userId: userId, courseId: courseId})
         });

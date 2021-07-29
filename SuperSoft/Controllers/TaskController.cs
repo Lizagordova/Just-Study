@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -43,15 +44,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/gettasksbychoosenlesson")]
 		public ActionResult GetTasksByChoosenLesson([FromBody]LessonReadModel lessonReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var tasks = _taskReader.GetTasksByChoosenLesson(lessonReadModel.Id);
@@ -68,15 +64,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatetask")]
 		public ActionResult AddOrUpdateTask([FromForm]TaskReadModel taskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var task = _mapper.Map<TaskReadModel, Task>(taskReadModel);
 			task.Tags = taskReadModel.TagIds.Select(tId => new Tag()
 			{
@@ -101,15 +92,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/attachtasktolesson")]
 		public ActionResult AttachTaskToLesson([FromBody]TaskReadModel taskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_taskEditor.AttachTaskToLesson(taskReadModel.Id, taskReadModel.LessonId, taskReadModel.Order);
@@ -125,15 +111,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatesubtask")]
 		public ActionResult AddOrUpdateSubtask([FromForm]SubtaskReadModel subtaskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var subtask = _mapper.Map<SubtaskReadModel, Subtask>(subtaskReadModel);
 			try
 			{
@@ -150,15 +131,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletetask")]
 		public ActionResult DeleteTask([FromBody]TaskReadModel taskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				if (taskReadModel.DeleteOnlyFromLesson)
@@ -181,15 +157,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletesubtask")]
 		public ActionResult DeleteSubtask([FromBody]SubtaskReadModel subtaskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_taskEditor.DeleteSubtask(subtaskReadModel.Id);
@@ -205,15 +176,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/gettaskbyid")]
 		public ActionResult GetTaskById([FromBody]TaskReadModel taskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var task = _taskReader.GetTaskById(taskReadModel.Id);
@@ -230,15 +196,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/attachtagstotask")]
 		public ActionResult GetTaskById([FromBody]TaskTagReadModel taskTagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_taskEditor.AttachTagsToTask(taskTagReadModel.TaskId, taskTagReadModel.TagIds);
@@ -254,15 +215,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/attachsubtagstotask")]
 		public ActionResult AttachSubtagsToTask([FromBody]TaskTagReadModel taskTagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_taskEditor.AttachSubtagsToTask(taskTagReadModel.TaskId, taskTagReadModel.SubtagIds);

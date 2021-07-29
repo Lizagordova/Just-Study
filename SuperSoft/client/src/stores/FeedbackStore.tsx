@@ -1,6 +1,7 @@
 ﻿import { makeObservable, observable } from "mobx";
 import { FeedbackReadModel } from "../Typings/readModels/FeedbackReadModel";
 import {FeedbackViewModel} from "../Typings/viewModels/FeedbackViewModel";
+import {getToken} from "../functions/getToken";
 
 class FeedbackStore {
     feedbacks: FeedbackViewModel[] = new Array<FeedbackViewModel>();
@@ -15,7 +16,8 @@ class FeedbackStore {
         const response = await fetch("getfeedbacks", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({old: old})
         });
@@ -30,7 +32,8 @@ class FeedbackStore {
         const response = await fetch("addorupdatefeedback", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({
                 id: feedback.id, name: feedback.name,

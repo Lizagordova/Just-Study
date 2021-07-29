@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -31,14 +32,9 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getusercourseprogress")]
+		[Authorize]
 		public ActionResult GetUserCourseProgress([FromBody]UserCourseReadModel userCourse)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var progress = _progressReader.GetUserCourseProgress(userCourse.UserId, userCourse.CourseId);
@@ -54,15 +50,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/getprogressbylesson")]
 		public ActionResult GetProgressByLesson([FromBody]LessonReadModel lessonReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var progress = _progressReader.GetProgressByLesson(lessonReadModel.Id);
@@ -78,15 +69,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/getuserprogressbylesson")]
 		public ActionResult GetUserProgressByLesson([FromBody]ProgressQueryReadModel query)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var progress = _progressReader.GetUserProgressByLesson(query.UserId, query.LessonId);

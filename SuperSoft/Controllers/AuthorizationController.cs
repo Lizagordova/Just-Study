@@ -13,7 +13,6 @@ using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
 using IAuthorizationService = SuperSoft.Domain.Services.Authorization.IAuthorizationService;
 
-
 namespace SuperSoft.Controllers
 {
 	public class AuthorizationController : Controller
@@ -53,7 +52,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var updatedUser = _userEditor.AddOrUpdateUser(user);
-				SetUserData(updatedUser.Token);
+				SetUserData(updatedUser.Token, user.Id);
 
 				return new OkResult();
 			}
@@ -89,7 +88,7 @@ namespace SuperSoft.Controllers
 			if (user != null)
 			{
 				var token = _jwtGeneratorService.GenerateJwt(user);
-				SetUserData(token);
+				SetUserData(token, user.Id);
 				return Ok(new
 				{
 					access_token = token
@@ -105,13 +104,15 @@ namespace SuperSoft.Controllers
 		{
 			HttpContext.Response.Cookies.Delete("token");
 			HttpContext.Response.Cookies.Delete("authorization");
+			HttpContext.Response.Cookies.Delete("userId");
 
 			return new OkResult();
 		}
 
-		private void SetUserData(string token)
+		private void SetUserData(string token, int userId)
 		{
 			HttpContext.Response.Cookies.Append("token", token);
+			HttpContext.Response.Cookies.Append("userId", userId.ToString());
 			HttpContext.Session.SetString("authorized", "true");
 		}
 	}

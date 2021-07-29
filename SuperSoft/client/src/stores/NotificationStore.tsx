@@ -1,6 +1,7 @@
 ﻿import { NotificationViewModel } from "../Typings/viewModels/NotificationViewModel";
 import { makeObservable, observable } from "mobx";
 import { UserNotificationReadModel } from "../Typings/readModels/UserNotificationReadModel";
+import {getToken} from "../functions/getToken";
 
 class NotificationStore {
     currentNotifications: NotificationViewModel[] = new Array<NotificationViewModel>();
@@ -15,7 +16,8 @@ class NotificationStore {
         const response = await fetch("/getnotifications", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({id: userId})
         });
@@ -30,7 +32,8 @@ class NotificationStore {
         const response = await fetch("/addorupdateusernotification", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify({userId: userNotification.userId, notificationId: userNotification.notificationId, seen: userNotification.seen})
         });

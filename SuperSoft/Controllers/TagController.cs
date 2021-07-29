@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -60,15 +61,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/deletetag")]
 		public ActionResult GetTasksByChoosenLesson([FromBody]TagReadModel tagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				_tagEditor.DeleteTag(tagReadModel.Id);
@@ -84,15 +80,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatetag")]
 		public ActionResult AddOrUpdateTag([FromBody]TagReadModel tagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var tag = _mapper.Map<TagReadModel, Tag>(tagReadModel);
 			try
 			{
@@ -109,15 +100,10 @@ namespace SuperSoft.Controllers
 		}
 		
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatesubtags")]
 		public ActionResult AddOrUpdateSubtags([FromBody]TagReadModel tagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var subtags = tagReadModel.Subtags.Select(_mapper.Map<SubtagReadModel, Subtag>).ToList();
 			try
 			{
@@ -134,15 +120,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin")]
 		[Route("/addorupdatesubtag")]
 		public ActionResult AddOrUpdateSubtags([FromBody]SubtagReadModel subtagReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.Admin.ToString())
-			{
-				return new BadRequestResult();
-			}
-
 			var subtag = _mapper.Map<SubtagReadModel, Subtag>(subtagReadModel);
 			try
 			{

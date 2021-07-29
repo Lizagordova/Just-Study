@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
@@ -39,15 +40,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/gettasks")]
 		public ActionResult GetTasks([FromBody]TrainingTasksQuery tasksQuery)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var query = new TrainingTaskQuery { TagIds = tasksQuery.TagIds, IgnoreIds = tasksQuery.IgnoreIds, SubtagIds = tasksQuery.SubtagIds };
 			try
 			{

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.enums;
@@ -38,15 +39,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getusertask")]
 		public ActionResult GetUserTask([FromBody]UserTaskReadModel userTaskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var userTask = _userTaskReader.GetUserTask(userTaskReadModel.TaskId, userTaskReadModel.UserId);
@@ -63,15 +59,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/getusersubtask")]
 		public ActionResult GetUserSubtask([FromBody]UserSubtaskReadModel userSubtaskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			try
 			{
 				var subtask = _userTaskReader.GetUserSubtask(userSubtaskReadModel.SubtaskId, userSubtaskReadModel.UserId);
@@ -88,15 +79,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdateusersubtask")]
 		public ActionResult AddOrUpdateUserSubtask([FromForm]UserSubtaskReadModel userSubtaskReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var userSubtask = _mapper.Map<UserSubtaskReadModel, UserSubtask>(userSubtaskReadModel);
 			try
 			{
@@ -113,15 +99,10 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		[Route("/addorupdateusersubtaskanswergroup")]
 		public ActionResult AddOrUpdateUserSubtaskAnswerGroup([FromBody]UserSubtaskAnswerGroupReadModel userSubtaskAnswerGroupReadModel)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role == null)
-			{
-				return new BadRequestResult();
-			}
-
 			var userSubtaskAnswerGroup = _mapper.Map<UserSubtaskAnswerGroupReadModel, UserSubtaskAnswerGroup>(userSubtaskAnswerGroupReadModel);
 			try
 			{
@@ -138,14 +119,10 @@ namespace SuperSoft.Controllers
 		}
 		
 		[HttpPost]
+		[Authorize(Roles = "User")]
 		[Route("/deleteusersubtask")]
 		public ActionResult DeleteUserSubtask([FromBody]UserSubtaskReadModel userSubtask)
 		{
-			var role = SessionHelper.GetRole(HttpContext);
-			if (role != UserRole.User.ToString())
-			{
-				return new BadRequestResult();
-			}
 			try
 			{
 				_userTaskEditor.DeleteUserSubtask(userSubtask.UserId, userSubtask.SubtaskId);
