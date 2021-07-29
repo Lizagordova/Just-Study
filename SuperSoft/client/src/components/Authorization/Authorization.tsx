@@ -100,12 +100,11 @@ export class Authorization extends React.Component<IAuthorizationProps> {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({login: this.login, password: this.password, email: this.login})
+            body: JSON.stringify({ login: this.login, password: this.password })
         });
         if(response.status === 200) {
             let data = await response.json();
             let token = data.access_token;
-            console.log("tokennnn", token);
             this.props.store.userStore.getCurrentUser(token)
                 .then(() => {
                     this.props.store.userStore.authorizationRequire(false);

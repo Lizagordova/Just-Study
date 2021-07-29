@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
+using SuperSoft.Domain.Services.Authorization;
 using SuperSoft.Domain.Services.Users;
 using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
@@ -23,6 +24,7 @@ namespace SuperSoft.Controllers
 		private readonly ILogger<AuthorizationController> _logger;
 		private readonly LogService _logService;
 		private readonly IAuthorizationService _authorizationService;
+		private readonly IJwtGeneratorService _jwtGeneratorService;
 
 		public AuthorizationController(
 			MapperService mapper,
@@ -30,7 +32,9 @@ namespace SuperSoft.Controllers
 			IUserEditorService userEditor,
 			ILogger<AuthorizationController> logger,
 			LogService logService,
-			IAuthorizationService authorizationService)
+			IAuthorizationService authorizationService,
+			IJwtGeneratorService jwtGeneratorService
+			)
 		{
 			_mapper = mapper;
 			_userReader = userReader;
@@ -38,6 +42,7 @@ namespace SuperSoft.Controllers
 			_logger = logger;
 			_logService = logService;
 			_authorizationService = authorizationService;
+			_jwtGeneratorService = jwtGeneratorService;
 		}
 
 		[HttpPost]
@@ -66,11 +71,9 @@ namespace SuperSoft.Controllers
 		public ActionResult CheckToken()
 		{
 			var token = SessionHelper.GetToken(HttpContext);
-			var exists = _userReader.CheckToken(token);
-			if (exists)
+			if (token != "")
 			{
-				var user = _userReader.GetUserInfo(new UserInfoQuery() { Token = token });
-				SetUserData(token);
+				var user = _userReader.GetUserInfo(new UserInfoQuery { Token = token });
 
 				return new JsonResult(user);
 			}
@@ -82,11 +85,10 @@ namespace SuperSoft.Controllers
 		[HttpPost]
 		public IActionResult Login([FromBody]UserReadModel request)
 		{
-			var user = _authorizationService.AuthenticateUser(request.Email, request.Password);
-
+			var user = _authorizationService.AuthenticateUser(request.Login, request.Password);
 			if (user != null)
 			{
-				var token = _authorizationService.GenerateJwt(user);
+				var token = _jwtGeneratorService.GenerateJwt(user);
 				SetUserData(token);
 				return Ok(new
 				{

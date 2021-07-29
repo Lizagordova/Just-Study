@@ -166,6 +166,7 @@ namespace SuperSoft
 			services.AddSingleton<IUserEditorService, UserEditorService>();
 			services.AddSingleton<IWordEditorService, WordEditorService>();
 			services.AddSingleton<IWordReaderService, WordReaderService>();
+			services.AddSingleton<IJwtGeneratorService, JwtGeneratorService>();
 			services.AddSingleton<IFeedbackEditorService, FeedbackEditorService>();
 			services.AddSingleton<IAuthorizationService, AuthorizationService>();
 			services.AddSingleton<LogService>();

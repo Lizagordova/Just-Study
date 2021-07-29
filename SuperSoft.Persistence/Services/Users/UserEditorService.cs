@@ -9,14 +9,15 @@ namespace SuperSoft.Persistence.Services.Users
 	public class UserEditorService : IUserEditorService
 	{
 		private readonly IUserRepository _userRepository;
-		private readonly IAuthorizationService _authorizationService;
+		private readonly IJwtGeneratorService _jwtGeneratorService;
 
 		public UserEditorService(
 			IUserRepository userRepository,
-			IAuthorizationService authorizationService)
+			IJwtGeneratorService jwtGeneratorService
+			)
 		{
 			_userRepository = userRepository;
-			_authorizationService = authorizationService;
+			_jwtGeneratorService = jwtGeneratorService;
 		}
 
 		public User AddOrUpdateUser(User user)
@@ -36,8 +37,7 @@ namespace SuperSoft.Persistence.Services.Users
 
 		private string GetToken(User user)
 		{
-			var account = _authorizationService.AuthenticateUser(user.Email, user.PasswordHash);
-			var token = _authorizationService.GenerateJwt(account);
+			var token = _jwtGeneratorService.GenerateJwt(user);
 
 			return token;
 		}
