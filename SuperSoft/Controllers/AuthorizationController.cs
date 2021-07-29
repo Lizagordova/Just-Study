@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using SuperSoft.Domain.enums;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Queries;
 using SuperSoft.Domain.Services.Users;
 using SuperSoft.Helpers;
-using SuperSoft.Persistence.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using IAuthorizationService = SuperSoft.Domain.Services.Authorization.IAuthorizationService;
+
 
 namespace SuperSoft.Controllers
 {
@@ -28,7 +22,7 @@ namespace SuperSoft.Controllers
 		private readonly IUserEditorService _userEditor;
 		private readonly ILogger<AuthorizationController> _logger;
 		private readonly LogService _logService;
-		private readonly IOptions<AuthOptions> authOptions;
+		private readonly IAuthorizationService _authorizationService;
 
 		public AuthorizationController(
 			MapperService mapper,
@@ -36,14 +30,14 @@ namespace SuperSoft.Controllers
 			IUserEditorService userEditor,
 			ILogger<AuthorizationController> logger,
 			LogService logService,
-			IOptions<AuthOptions> authOptions)
+			IAuthorizationService authorizationService)
 		{
 			_mapper = mapper;
 			_userReader = userReader;
 			_userEditor = userEditor;
 			_logger = logger;
 			_logService = logService;
-			this.authOptions = authOptions;
+			_authorizationService = authorizationService;
 		}
 
 		[HttpPost]
@@ -54,7 +48,7 @@ namespace SuperSoft.Controllers
 			try
 			{
 				var updatedUser = _userEditor.AddOrUpdateUser(user);
-				SetUserData(user.Role, updatedUser.Token, updatedUser.Id);
+				SetUserData(updatedUser.Token);
 
 				return new OkResult();
 			}
@@ -67,7 +61,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = "User")]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/checktoken")]
 		public ActionResult CheckToken()
 		{
@@ -76,7 +70,7 @@ namespace SuperSoft.Controllers
 			if (exists)
 			{
 				var user = _userReader.GetUserInfo(new UserInfoQuery() { Token = token });
-				SetUserData(user.Role, token, user.Id);
+				SetUserData(token);
 
 				return new JsonResult(user);
 			}
@@ -88,12 +82,12 @@ namespace SuperSoft.Controllers
 		[HttpPost]
 		public IActionResult Login([FromBody]UserReadModel request)
 		{
-			var user = AuthenticateUser(request.Email, request.Password);
+			var user = _authorizationService.AuthenticateUser(request.Email, request.Password);
 
 			if (user != null)
 			{
-				var token = GenerateJWT(user);
-
+				var token = _authorizationService.GenerateJwt(user);
+				SetUserData(token);
 				return Ok(new
 				{
 					access_token = token
@@ -108,61 +102,15 @@ namespace SuperSoft.Controllers
 		public ActionResult Exit()
 		{
 			HttpContext.Response.Cookies.Delete("token");
-			HttpContext.Response.Cookies.Delete("userId");
-			HttpContext.Response.Cookies.Delete("role");
 			HttpContext.Response.Cookies.Delete("authorization");
 
 			return new OkResult();
 		}
 
-		private void SetUserData(UserRole role, string token, int userId)
+		private void SetUserData(string token)
 		{
-			HttpContext.Session.SetInt32("userId", userId);
 			HttpContext.Response.Cookies.Append("token", token);
-			HttpContext.Response.Cookies.Append("role", role.ToString());
 			HttpContext.Session.SetString("authorized", "true");
-		}
-		
-		private Account AuthenticateUser(string email, string password)
-		{
-			var userInfo =  _userReader.GetUserInfo(new UserInfoQuery() { PasswordHash = password.GetPasswordHash(), Email = email, Login = email });
-			if (userInfo == null)
-			{
-				return null;
-			}
-			return new Account
-			{
-				Id = userInfo.Id,
-				Email = userInfo.Email,
-				Roles = new UserRole[] { UserRole.User }
-			};
-		}
-
-		private string GenerateJWT(Account user)
-		{
-			var authParams = authOptions.Value;
-
-			var securityKey = authParams.GetSymmetricSecurityKey();
-			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-			var claims = new List<Claim>()
-			{
-				new Claim(JwtRegisteredClaimNames.Email, user.Email),
-				new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
-			};
-
-			foreach (var role in user.Roles)
-			{
-				claims.Add(new Claim("role", role.ToString()));
-			}
-            
-			var token = new JwtSecurityToken(authParams.Issuer,
-				authParams.Audience,
-				claims,
-				expires: DateTime.Now.AddSeconds(authParams.TokenLifeTime),
-				signingCredentials: credentials);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 	}
 }
