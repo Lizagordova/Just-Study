@@ -87,7 +87,7 @@ namespace SuperSoft.Controllers
 			var user = _authorizationService.AuthenticateUser(request.Login, request.Password);
 			if (user != null)
 			{
-				var token = _jwtGeneratorService.GenerateJwt(user);
+				var token = user.Token;
 				SetUserData(token, user.Id);
 				return Ok(new
 				{

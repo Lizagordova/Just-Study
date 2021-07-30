@@ -27,7 +27,6 @@ class UserStore {
     }
 
     async getCurrentUser(token: string = "") {
-        console.log("token", token);
         const response = await fetch("/checktoken", {
             method: "GET",
             headers: {

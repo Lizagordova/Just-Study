@@ -4,6 +4,6 @@ namespace SuperSoft.Domain.Services.Authorization
 {
     public interface IAuthorizationService
     {
-        Account AuthenticateUser(string login, string password);
+        User AuthenticateUser(string login, string password);
     }
 }

@@ -23,7 +23,7 @@ namespace SuperSoft.Persistence.Services.Authorization
 	        _userEditor = userEditor;
         }
         	    
-        public Account AuthenticateUser(string login, string password)
+        public User AuthenticateUser(string login, string password)
         {
 	        var userInfo =  _userReader.GetUserInfo(new UserInfoQuery { PasswordHash = password.GetPasswordHash(), Login = login });
 	        if (userInfo == null)
@@ -36,10 +36,11 @@ namespace SuperSoft.Persistence.Services.Authorization
 		        Email = userInfo.Email,
 		        Roles = new [] { userInfo.Role }
 	        };
-	        userInfo.Token = _jwtGeneratorService.GenerateJwt(account);
+	        var token  = _jwtGeneratorService.GenerateJwt(account);
+	        userInfo.Token = token;
 	        _userEditor.AddOrUpdateUser(userInfo);
 
-	        return account;
+	        return userInfo;
         }
     }
 }
