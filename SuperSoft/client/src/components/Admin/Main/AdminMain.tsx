@@ -1,14 +1,14 @@
 ﻿import React from "react";
 import { observer } from  "mobx-react";
 import { IAdminMainProps } from "./IAdminMainProps";
-import { Card, Nav, NavItem, Button, Navbar, Collapse, NavbarToggler } from "reactstrap";
+import { Nav, NavItem, Button, Navbar, Collapse, NavbarToggler } from "reactstrap";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import CoursesPage from "../Courses/CoursesPage";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
 import TrainingPage from "../../Common/Training/TrainingPage";
 import UsersPage from "../Users/UsersPage";
 import FeedbackPage from "../Feedback/FeedbackPage";
-import {makeObservable, observable} from "mobx";
+import { makeObservable, observable } from "mobx";
 
 
 @observer
@@ -30,7 +30,6 @@ export class AdminMain extends React.Component<IAdminMainProps> {
             <div>
                 <Navbar className="nav mainMenu" expand="lg">
                     <NavbarToggler
-                        class
                         onClick={() => this.toggle()}>
                         <i className="fa fa-bars" style={{color: "white"}}/>
                     </NavbarToggler>

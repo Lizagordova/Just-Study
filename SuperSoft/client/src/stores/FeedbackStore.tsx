@@ -30,7 +30,7 @@ class FeedbackStore {
     }
 
     async addOrUpdateFeedback(feedback: FeedbackReadModel): Promise<number> {
-        const response = await fetch("addorupdatefeedback", {
+        const response = await fetch("/addorupdatefeedback", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',

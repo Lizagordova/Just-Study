@@ -1,10 +1,10 @@
 ﻿import { WordViewModel } from "../Typings/viewModels/WordViewModel";
-import {makeObservable, observable, toJS} from "mobx";
+import { makeObservable, observable, toJS} from "mobx";
 import { UserWordViewModel } from "../Typings/viewModels/UserWordViewModel";
 import { WordReadModel } from "../Typings/readModels/WordReadModel";
 import { UserWordReadModel } from "../Typings/readModels/UserWordReadModel";
-import {WordOfADayReadModel} from "../Typings/readModels/WordOfADayReadModel";
-import {getToken} from "../functions/getToken";
+import { WordOfADayReadModel } from "../Typings/readModels/WordOfADayReadModel";
+import { getToken } from "../functions/getToken";
 
 class WordStore {
     dictionary: WordViewModel[] = new Array<WordViewModel>();
@@ -55,7 +55,7 @@ class WordStore {
 
    async getDictionary(): Promise<number> {
         const response = await fetch("/getdictionary", {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Authorization': `Bearer ${getToken()}`
             }

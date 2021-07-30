@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Services.Feedbacks;
-using SuperSoft.Helpers;
 using SuperSoft.ReadModels;
 using SuperSoft.Services;
 using SuperSoft.Services.MapperService;
@@ -37,8 +36,8 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Route("/addorupdatefeedback")]
 		[Authorize(Roles = "User,Admin")]
+		[Route("/addorupdatefeedback")]
 		public ActionResult AddFeedback([FromBody]FeedbackReadModel feedbackReadModel)
 		{
 			var feedback = _mapper.Map<FeedbackReadModel, Feedback>(feedbackReadModel);
@@ -57,8 +56,8 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Route("/getfeedbacks")]
 		[Authorize(Roles = "User,Admin")]
+		[Route("/getfeedbacks")]
 		public ActionResult GetFeedbacks([FromBody]FeedbackReadModel feedbackReadModel)
 		{
 			try

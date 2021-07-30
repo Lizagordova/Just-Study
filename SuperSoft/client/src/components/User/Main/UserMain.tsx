@@ -1,6 +1,18 @@
 ﻿import React from "react";
 import { observer } from  "mobx-react";
-import { Card, CardHeader, Nav, NavItem, Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, CardFooter } from "reactstrap";
+import {
+    Card,
+    CardHeader,
+    Nav,
+    NavItem,
+    Button,
+    ButtonDropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    CardFooter,
+    Navbar, NavbarToggler, Collapse
+} from "reactstrap";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import { IUserMainProps } from "./IUserMainProps";
 import DictionaryPage from "../../Common/Dictionary/DictionaryPage";
@@ -16,6 +28,7 @@ export class UserMain extends React.Component<IUserMainProps> {
     courseMenuOpen: boolean;
     notificationsOpen: boolean;
     update: boolean;
+    isOpen: boolean;
 
     constructor(props: IUserMainProps) {
         super(props);
@@ -23,6 +36,7 @@ export class UserMain extends React.Component<IUserMainProps> {
             courseMenuOpen: observable,
             notificationsOpen: observable,
             update: observable,
+            isOpen: observable
         });
         this.getInitialStateOfApplication();
     }
@@ -53,8 +67,14 @@ export class UserMain extends React.Component<IUserMainProps> {
     render() {
         return (
             <div>
-                        <Nav tabs className="nav mainMenu">
-                            <NavItem  style={{marginRight: "5px", marginLeft: "5px"}}>
+                <Navbar className="nav mainMenu" expand="lg">
+                    <NavbarToggler
+                        onClick={() => this.toggleOpen()}>
+                        <i className="fa fa-bars" style={{color: "white"}}/>
+                    </NavbarToggler>
+                    <Collapse isOpen={this.isOpen} navbar>
+                        <Nav tabs className="mr-auto menuNav" navbar>
+                            <NavItem style={{marginRight: "5px", marginLeft: "5px"}}>
                                 {this.renderCoursesToggler(this.props.store.courseStore.coursesInfo)}
                             </NavItem>
                             <NavItem>
@@ -71,7 +91,7 @@ export class UserMain extends React.Component<IUserMainProps> {
                             </NavItem>
                             <NavItem>
                                 <NavLink to={"#"}
-                                         exact 
+                                         exact
                                          className="nav-link menuNavLink" style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
@@ -83,14 +103,16 @@ export class UserMain extends React.Component<IUserMainProps> {
                                 </NavLink>
                             </NavItem>
                             <Button
-                                outline 
+                                outline
                                 className="exitButton"
                                 style={{color: "white", borderColor: "rgb(43, 69, 148)", fontSize: "1.3em"}}
                                 onClick={() => this.exit()}>
                                 Выйти
                             </Button>
+                            {this.renderNotifications()}
                         </Nav>
-                    {this.renderNotifications()}
+                    </Collapse>
+                </Navbar>
                 <Switch>
                     <Route exact path="/home"
                            render={(props) => <HomePage store={this.props.store} courseChanged={this.update} />} />
@@ -156,5 +178,9 @@ export class UserMain extends React.Component<IUserMainProps> {
 
     toggleUpdate() {
         this.update = !this.update;
+    }
+
+    toggleOpen() {
+        this.isOpen = !this.isOpen;
     }
 }
