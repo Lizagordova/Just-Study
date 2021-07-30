@@ -39,15 +39,16 @@ footer {
     margin-top: 1px;
 }
 
-.menuNavLink:hover, .exitButton:hover {
-    color: white;
+.menuNavLink:hover, .exitButton:hover, .menuNavLink:active {
+    color: rgb(43, 69, 148) !important;
+    background-color: white !important;
 }
 
-.menuNavLinkActive {
-    font-size: 1.5em;
-    font-weight: bold;
+@media(max-width: 995px) {
+    .menuNavLink {
+        text-align: start;
+    }
 }
-
 .exitButton {
     color: white;
     border-color: white;
@@ -60,24 +61,6 @@ footer {
 
 .modalInput {
     width: 70%;
-}
-
-@media (max-width: 600px) {
-    .mainMenu {
-        height: 190px;
-    }
-}
-
-@media (max-width: 450px) {
-    .mainMenu {
-        height: 240px;
-    }
-}
-
-@media (max-width: 360px) {
-    .mainMenu {
-        height: 300px;
-    }
 }
 
 .cool-close-button {
@@ -218,4 +201,8 @@ Table, td, tr, thead {
 
 .lessonDraggable {
     cursor: move;
+}
+
+.menuNav {
+    border-bottom-color: rgb(43, 69, 148) !important;
 }

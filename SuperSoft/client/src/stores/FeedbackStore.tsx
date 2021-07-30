@@ -13,7 +13,8 @@ class FeedbackStore {
     }
 
     async getFeedbacks(old: boolean): Promise<number> {
-        const response = await fetch("getfeedbacks", {
+        console.log("old", old);
+        const response = await fetch("/getfeedbacks", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
