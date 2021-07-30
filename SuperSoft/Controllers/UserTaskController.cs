@@ -39,7 +39,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getusertask")]
 		public ActionResult GetUserTask([FromBody]UserTaskReadModel userTaskReadModel)
 		{
@@ -59,7 +59,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getusersubtask")]
 		public ActionResult GetUserSubtask([FromBody]UserSubtaskReadModel userSubtaskReadModel)
 		{
@@ -79,7 +79,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdateusersubtask")]
 		public ActionResult AddOrUpdateUserSubtask([FromForm]UserSubtaskReadModel userSubtaskReadModel)
 		{
@@ -99,7 +99,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdateusersubtaskanswergroup")]
 		public ActionResult AddOrUpdateUserSubtaskAnswerGroup([FromBody]UserSubtaskAnswerGroupReadModel userSubtaskAnswerGroupReadModel)
 		{

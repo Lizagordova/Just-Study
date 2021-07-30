@@ -37,7 +37,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdateuser")]
 		public ActionResult AddOrUpdateUser([FromBody]UserReadModel userReadModel)
 		{
@@ -57,7 +57,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
+		[Authorize(Roles="Admin")]
 		[Route("/getusers")]
 		public ActionResult GetUsers()
 		{

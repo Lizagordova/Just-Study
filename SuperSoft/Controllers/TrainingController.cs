@@ -40,7 +40,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/gettasks")]
 		public ActionResult GetTasks([FromBody]TrainingTasksQuery tasksQuery)
 		{

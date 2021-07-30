@@ -32,7 +32,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getusercourseprogress")]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult GetUserCourseProgress([FromBody]UserCourseReadModel userCourse)
 		{
 			try

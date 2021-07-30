@@ -48,7 +48,7 @@ class User extends Component<IUserProps> {
                 <td>
                     <i
                        onClick={() => this.deleteUser()}
-                       className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                       className="fa fa-trash-o fa-2x" aria-hidden="true"/>
                 </td>
             </tr>
         );

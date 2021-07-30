@@ -176,7 +176,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/gettaskbyid")]
 		public ActionResult GetTaskById([FromBody]TaskReadModel taskReadModel)
 		{

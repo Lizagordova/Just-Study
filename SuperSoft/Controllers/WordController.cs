@@ -38,7 +38,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getdictionary")]
 		public ActionResult GetDictionary()
 		{
@@ -60,7 +60,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getuserdictionary")]
 		public ActionResult GetUserDictionary([FromBody]UserReadModel userReadModel)
 		{
@@ -100,7 +100,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdatewordtouserdictionary")]
 		public ActionResult AddOrUpdateWordToUserDictionary([FromBody]UserWordReadModel userWordReadModel)
 		{
@@ -139,7 +139,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/deletewordfromuserdictionary")]
 		public ActionResult DeleteWordFromUserDictionary([FromBody]UserWordReadModel userWordReadModel)
 		{
@@ -158,7 +158,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/addorupdateuserwordprogress")]
 		public ActionResult AddOrUpdateUserWordProgress([FromBody]UserWordReadModel userWordReadModel)
 		{
@@ -217,7 +217,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getwordofaday")]
 		public ActionResult GetWordOfADay([FromBody]WordOfADayReadModel wordReadModel)
 		{
@@ -260,7 +260,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		[Route("/getuserwordsprogress")]
 		public ActionResult GetUserWordsProgress([FromBody]UserWordReadModel userWordReadModel)
 		{

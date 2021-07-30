@@ -65,12 +65,11 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = "User,Admin")]
 		[Route("/checktoken")]
 		public ActionResult CheckToken()
 		{
 			var token = SessionHelper.GetToken(HttpContext);
-			if (token != "")
+			if (token != null)
 			{
 				var user = _userReader.GetUserInfo(new UserInfoQuery { Token = token });
 

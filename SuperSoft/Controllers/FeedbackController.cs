@@ -38,7 +38,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/addorupdatefeedback")]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult AddFeedback([FromBody]FeedbackReadModel feedbackReadModel)
 		{
 			var feedback = _mapper.Map<FeedbackReadModel, Feedback>(feedbackReadModel);

@@ -97,7 +97,7 @@ namespace SuperSoft.Controllers
 
 		[HttpPost]
 		[Route("/getmaterialsbylesson")]
-		[Authorize]
+		[Authorize(Roles = "User,Admin")]
 		public ActionResult GetMaterialsByLesson([FromBody]LessonReadModel lessonReadModel)
 		{
 			try

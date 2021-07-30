@@ -43,7 +43,12 @@ class UserStore {
     }
 
     async getUsers() {
-        const response = await fetch("/getusers");
+        const response = await fetch("/getusers", {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         if(response.status === 200) {
             this.users = await response.json();
         }

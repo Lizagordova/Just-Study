@@ -18,7 +18,7 @@ class Users extends Component<IUsersProps> {
                 <thead>
                     <tr>
                         <td>Id</td>
-                        <td>Фамилия имя</td>
+                        <td>ФИО</td>
                         <td>Email</td>
                         <td>Логин</td>
                         <td>Роль</td>
