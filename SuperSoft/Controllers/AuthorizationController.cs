@@ -23,7 +23,6 @@ namespace SuperSoft.Controllers
 		private readonly ILogger<AuthorizationController> _logger;
 		private readonly LogService _logService;
 		private readonly IAuthorizationService _authorizationService;
-		private readonly IJwtGeneratorService _jwtGeneratorService;
 
 		public AuthorizationController(
 			MapperService mapper,
@@ -31,8 +30,7 @@ namespace SuperSoft.Controllers
 			IUserEditorService userEditor,
 			ILogger<AuthorizationController> logger,
 			LogService logService,
-			IAuthorizationService authorizationService,
-			IJwtGeneratorService jwtGeneratorService
+			IAuthorizationService authorizationService
 			)
 		{
 			_mapper = mapper;
@@ -41,7 +39,6 @@ namespace SuperSoft.Controllers
 			_logger = logger;
 			_logService = logService;
 			_authorizationService = authorizationService;
-			_jwtGeneratorService = jwtGeneratorService;
 		}
 
 		[HttpPost]
@@ -72,6 +69,7 @@ namespace SuperSoft.Controllers
 			if (token != null)
 			{
 				var user = _userReader.GetUserInfo(new UserInfoQuery { Token = token });
+				_logService.AddTrackLog(HttpContext);
 
 				return new JsonResult(user);
 			}

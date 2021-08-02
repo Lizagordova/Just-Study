@@ -18,6 +18,7 @@ import { UserMain } from "./components/User/Main/UserMain";
 import  "../src/styles/lesson.css";
 import AddFeedbackWindow from "./components/Common/Feedback/AddFeedbackWindow";
 import { Cookies } from "react-cookie";
+import {toJS} from "mobx";
 
 interface Props {
     store: RootStore;
@@ -50,6 +51,7 @@ class App extends Component<Props> {
 
     renderMain(store: RootStore) {
         let role = this.props.store.userStore.currentUser.role;
+        console.log("this.props.store.userStore.currentUser", toJS(this.props.store.userStore.currentUser));
         return(
             <>
                 <main>

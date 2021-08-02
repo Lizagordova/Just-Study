@@ -396,10 +396,22 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddTrackLog(HttpContext context)
+		{
+			var message = $"Произведён вход с RemoteIpAddress=${context.Connection.RemoteIpAddress} RemotePort=${context.Connection.RemotePort}" 
+			    + $"LocalIpAddress={context.Connection.LocalIpAddress} LocalPort=${context.Connection.LocalPort}"
+			    + $"ClientCertificate={context.Connection.ClientCertificate}";
+			_logRepository.AddLog(new Log
+			{
+				Message = message, CustomMessage = message, LogLevel = LogLevel.Information, Date = DateTime.Now
+			});
+		}
+		
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");
-			_logRepository.AddLog(new Log() { Message = e.Message, CustomMessage = customMessage, LogLevel = LogLevel.Error, Date = DateTime.Now });
+			_logRepository.AddLog(new Log
+				{ Message = e.Message, CustomMessage = customMessage, LogLevel = LogLevel.Error, Date = DateTime.Now });
 		}
 	}
 }
