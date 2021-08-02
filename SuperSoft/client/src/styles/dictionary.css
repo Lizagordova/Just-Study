@@ -31,3 +31,12 @@
     background-color: rgb(65, 105, 225) !important;
     color: white !important;
 }
+
+.wordDetails {
+    font-size: 1.3em;
+    margin-left: 5%;
+}
+
+.wordDetailsTitle {
+    font-weight: bold;
+}

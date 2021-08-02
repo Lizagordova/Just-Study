@@ -12,6 +12,7 @@ import {SubtagViewModel} from "../../../Typings/viewModels/SubtagViewModel";
 import {mapToSubtagReadModel, mapToTagReadModel} from "../../../functions/mapper";
 import SubtagsControlWindow from "../../Admin/Tags/SubtagsControlWindow";
 import {TagReadModel} from "../../../Typings/readModels/TagReadModel";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 class ITrainingContentProps {
     store: RootStore;
@@ -138,7 +139,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
     
     renderTaskUpload() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return (
                 <TaskUpload store={this.props.store} isTrainingOrPool={true} />
             );
@@ -146,7 +147,7 @@ class TrainingContent extends Component<ITrainingContentProps> {
     }
 
     renderSubtagsControl() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return (
                 <>
                     {<Button 

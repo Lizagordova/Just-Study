@@ -10,6 +10,7 @@ import {playAudio} from "../../../functions/playAudio";
 import {mapToUserSubtaskReadModel} from "../../../functions/mapper";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 class TextPart {
     id: number;
@@ -102,7 +103,7 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     }
 
     renderControlButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
                 <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}

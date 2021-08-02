@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import RootStore from "../../../stores/RootStore";
 import { observer } from "mobx-react";
-import { Button } from 'reactstrap';
+import {Button, Fade} from 'reactstrap';
 import { makeObservable, observable } from "mobx";
 import { UserRole } from "../../../Typings/enums/UserRole";
 import Words from "./Words";
@@ -126,6 +126,12 @@ class DictionaryPage extends Component<IDictionaryPageProps> {
                     {this.renderWordTrainingPage()}
                 </div>
                 {this.renderAddNewWordWindow()}
+                <div className="row justify-content-center">
+                    <Fade in={true}
+                          style={{fontSize: "1.2em", color: "rgb(43, 69, 148)", marginTop: "0px", width: "70%"}}>
+                        Нажав два раза на слово можно увидеть более детальное описание слова
+                    </Fade>
+                </div>                
                 {this.renderWords()}
             </div>
         );

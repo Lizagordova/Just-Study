@@ -51,7 +51,7 @@ class Words extends Component<IWordsProps> {
             );
         } else {
             return(
-                <Table cellpadding="0" cellspacing="0">
+                <Table cellPadding="0" cellSpacing="0" style={{fontSize:"1.3em"}}>
                     <thead>
                         <tr>
                             <td>Слово</td>

@@ -8,6 +8,7 @@ import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserSubtaskReadModel} from "../../../Typings/readModels/UserSubtaskReadModel";
 import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewModel";
 import {renderContent} from "../../../functions/renderContent";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 @observer
 export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
@@ -48,7 +49,7 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     }
     
     renderControlButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin && !this.props.reviewMode) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin) && !this.props.reviewMode) {
             return(
                 <i style={{marginLeft: '94%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}

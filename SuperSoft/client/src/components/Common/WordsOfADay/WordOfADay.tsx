@@ -11,6 +11,7 @@ import AnswerToWordOfADay from "./AnswerToWordOfADay";
 import UserAnswers from "../../Admin/WordsOfADay/UserAnswers";
 import {translatePartOfSpeech} from "../../../functions/translater";
 import AddOrUpdateWord from "../Dictionary/AddOrUpdateWord";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 class IWordOfADayProps {
     date: Date | Date[];
@@ -56,7 +57,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderDeleteButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
                 <i style={{marginLeft: '90%', width: '2%'}}
                    onClick={() => this.handleDelete()}
@@ -189,7 +190,7 @@ class WordOfADay extends Component<IWordOfADayProps> {
     }
 
     renderAddWordButton(word: WordViewModel) {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             if(word.word === null || word === undefined || word.word === undefined || word === null) {
                 return(
                     <Button

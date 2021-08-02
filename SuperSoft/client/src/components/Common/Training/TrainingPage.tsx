@@ -8,6 +8,7 @@ import {TagViewModel} from "../../../Typings/viewModels/TagViewModel";
 import {Alert, Button} from "reactstrap";
 import AddTagWindow from "../../Admin/Tags/AddTagWindow";
 import {UserRole} from "../../../Typings/enums/UserRole";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 class ITrainingPageProps {
     store: RootStore;
@@ -47,7 +48,7 @@ class TrainingPage extends Component<ITrainingPageProps> {
     }
 
     renderAddTagButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return (
                 <Button
                     onClick={() => this.toggleAddTagWindow()}>
@@ -58,7 +59,7 @@ class TrainingPage extends Component<ITrainingPageProps> {
     }
 
     renderDeleteButton(tagId: number) {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return (
                 <i style={{marginLeft: '96%', width: '2%'}}
                    onClick={() => this.deleteTag(tagId)}

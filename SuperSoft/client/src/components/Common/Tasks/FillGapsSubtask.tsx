@@ -11,6 +11,7 @@ import {UserSubtaskAnswerGroupViewModel} from "../../../Typings/viewModels/UserS
 import RootStore from "../../../stores/RootStore";
 import {CompletingStatus} from "../../../Typings/enums/CompletingStatus";
 import {mapToUserSubtaskAnswerGroupReadModel} from "../../../functions/mapper";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 @observer
 export class FillGapsSubtask extends Component<ISubtaskProps> {
@@ -77,7 +78,7 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     }
 
     renderControlButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
                 <i style={{marginLeft: '98%', width: '2%'}}
                    onClick={() => this.deleteSubtask()}

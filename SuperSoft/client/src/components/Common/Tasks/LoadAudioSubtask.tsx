@@ -10,6 +10,7 @@ import {UserSubtaskViewModel} from "../../../Typings/viewModels/UserSubtaskViewM
 import {renderSpinner} from "../../../functions/renderSpinner";
 import {renderLoadingProgress} from "../../../functions/renderLoadingProgress";
 import {renderContent} from "../../../functions/renderContent";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 @observer
 export class LoadAudioSubtask extends Component<ISubtaskProps> {
@@ -49,7 +50,7 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     }
 
     renderControlButton() {
-        if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
+        if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
                 <div className="row justify-content-center">
                     <i style={{marginLeft: '94%', width: '2%'}}

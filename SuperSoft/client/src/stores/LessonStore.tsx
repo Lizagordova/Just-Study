@@ -25,7 +25,7 @@ class LessonStore {
     }
 
     async getLessonsByCourse(courseId: number) {
-        const response = await fetch("getlessonsbycourse", {
+        const response = await fetch("/getlessonsbycourse", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',

@@ -19,13 +19,13 @@ class WordDetailsWindow extends Component<WordDetailsWindowProps> {
         if(examples.length > 0) {
             return(
                 <>
-                    <div className="row justify-content-center">
-                        <Label style={{marginLeft: "0px", paddingLeft: "10px"}}>Примеры</Label>
+                    <div className="row">
+                        <Label className="wordDetails wordDetailsTitle">Примеры:</Label>
                     </div>
                     {examples.map(example => {
                         return (
-                            <div className="row justify-content-center">
-                                <span style={{marginLeft: "0px", paddingLeft: "10px"}}>{example.example}</span>
+                            <div className="row" >
+                                <Label className="wordDetails">{example.example}</Label>
                             </div>
                         );
                     })}
@@ -34,15 +34,31 @@ class WordDetailsWindow extends Component<WordDetailsWindowProps> {
         }
     }
     
+    renderRussianMeaning(russianMeaning: string) {
+        return (
+            <Label className="wordDetails" align="center">
+                {russianMeaning}
+            </Label>
+        );
+    }
+
+    renderEnglishMeaning(englishMeaning: string) {
+        return (
+            <Label className="wordDetails" align="center">
+                {englishMeaning}
+            </Label>
+        );
+    }
+    
     renderBody(word: WordViewModel) {
         return(
             <>
                 <ModalBody>
-                    <div className="row justify-content-center">
-                        <span>{word.russianMeaning}</span>
+                    <div className="row">
+                        {this.renderRussianMeaning(word.russianMeaning)}
                     </div>
-                    <div className="row justify-content-center">
-                        <span>{word.englishMeaning}</span>
+                    <div className="row">
+                        {this.renderEnglishMeaning(word.englishMeaning)}
                     </div>
                     {this.renderExamples(this.props.word.examples)}
                 </ModalBody>
@@ -59,7 +75,7 @@ class WordDetailsWindow extends Component<WordDetailsWindowProps> {
                 toggle={() => this.props.toggle()}
             >
                 <div className="row justify-content-center">
-                    <span style={{fontSize: "1.2em"}}>
+                    <span style={{fontSize: "1.6em", fontWeight: "bold"}}>
                         {this.props.word.word}
                     </span>
                 </div>

@@ -33,7 +33,9 @@ class AddFeedbackWindow extends Component<IAddFeedbackProps> {
 
     renderButton() {
         return(
-            <i className="fa fa-commenting fa-2x" aria-hidden="true" onClick={() =>  this.addFeedbackToggle()}/>
+            <i 
+                style={{color: "white"}}
+                className="fa fa-commenting fa-2x" aria-hidden="true" onClick={() =>  this.addFeedbackToggle()}/>
         );
     }
 

@@ -31,14 +31,13 @@ class App extends Component<Props> {
                 <div className="row justify-content-center">
                     <div className="col-lg-6 col-md-6 col-sm-12">
                         <div className="row justify-content-center">
-                            <b style={{fontSize: "1em", color: "white"}}>Контакты: Contacts</b>
-                            <b style={{fontSize: "1em", color: "white"}}>Contacts</b>
+                            <b style={{fontSize: "1em", color: "white"}}>Контакты:</b>
                         </div>
                         {/*<div className="row justify-content-center">
                             <a href="tel:+79190754485" style={{fontSize: "0.8em"}}>Гоша Кунаев</a>
                         </div>*/}
                         <div className="row justify-content-center" style={{fontSize: "0.8em", color: "white"}}>
-                            Тех. поддержка: <a href="tel:+79016957927" style={{fontSize: "0.8em", color: "white"}}>Лиза Гордова</a>
+                            <a href="tel:+79016957927" style={{fontSize: "0.8em", color: "white"}}>Тех. поддержка: Лиза Гордова</a>
                         </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12">
