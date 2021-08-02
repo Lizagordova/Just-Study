@@ -206,3 +206,21 @@ Table, td, tr, thead {
 .menuNav {
     border-bottom-color: rgb(43, 69, 148) !important;
 }
+
+.progress-bar {
+    width: 100% !important;
+}
+
+.userProgressCell {
+    height: 10px !important;
+    margin: 0;
+    padding: 0 0 0 0 !important;
+}
+
+.userProgressRow, .userProgressCell {
+    border-top: 0 solid white !important;
+}
+
+.wordRow, .wordCell {
+    border-bottom: 0 solid white !important;
+}

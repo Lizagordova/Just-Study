@@ -5,8 +5,8 @@ import {UserRole} from "../../../Typings/enums/UserRole";
 import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
 import Word from "./Word";
 import {observer} from "mobx-react";
-import {Alert} from "reactstrap";
-import {toJS} from "mobx";
+import {Alert, Table} from "reactstrap";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
 
 class IWordsProps {
     userStore: UserStore;
@@ -51,13 +51,23 @@ class Words extends Component<IWordsProps> {
             );
         } else {
             return(
-                <>
+                <Table cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <td>Слово</td>
+                            <td>Часть речи</td>
+                            <td>Значение</td>
+                            {isThatUserRole(this.props.userStore, UserRole.Admin) && <th>Контролы</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
                     {userWords.map((userWord, i) => {
                         return (
                             <Word userWord={userWord} wordStore={this.props.wordStore} userStore={this.props.userStore} key={i}/>
-                        )
+                        );
                     })}
-                </>
+                    </tbody>
+                </Table>
             );
         }
     }

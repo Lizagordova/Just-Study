@@ -1,7 +1,7 @@
 ﻿import React, {Component} from 'react';
 import {WordViewModel} from "../../../Typings/viewModels/WordViewModel";
-import {Card, CardText, Progress} from "reactstrap";
-import {makeObservable, observable, toJS} from "mobx";
+import {Progress} from "reactstrap";
+import {makeObservable, observable} from "mobx";
 import WordStore from "../../../stores/WordStore";
 import UserStore from "../../../stores/UserStore";
 import {UserRole} from "../../../Typings/enums/UserRole";
@@ -9,7 +9,8 @@ import {observer} from "mobx-react";
 import {UserWordViewModel} from "../../../Typings/viewModels/UserWordViewModel";
 import {translatePartOfSpeech} from "../../../functions/translater";
 import AddOrUpdateWord from "./AddOrUpdateWord";
-import {WordReadModel} from "../../../Typings/readModels/WordReadModel";
+import {isThatUserRole} from "../../../functions/isThatUserRole";
+import WordDetailsWindow from "./WordDetailsWindow";
 
 
 class IWordProps {
@@ -23,13 +24,15 @@ class Word extends Component<IWordProps> {
     word: WordViewModel = new WordViewModel();
     notDeleted: boolean;
     edit: boolean;
+    wordDetailsOpen: boolean;
 
     constructor(props: IWordProps) {
         super(props);
         makeObservable(this, {
             word: observable,
             notDeleted: observable,
-            edit: observable
+            edit: observable,
+            wordDetailsOpen: observable
         });
         this.setWord();
     }
@@ -40,67 +43,42 @@ class Word extends Component<IWordProps> {
 
     renderWord() {
         return(
-            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 wordColumn">
-                <span>{this.word.word.toUpperCase()}</span>
-            </div>
+            <span className="wordDetails">{this.word.word.toUpperCase()}</span>
+           
         );
     }
 
     renderPartOfSpeech() {
         return(
-            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                <span>{translatePartOfSpeech(this.word.partOfSpeech)}</span>
-            </div>
+            <span className="wordDetails">{translatePartOfSpeech(this.word.partOfSpeech)}</span>
         );
     }
 
     renderEnglishMeaning() {
         return(
-            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <span>{this.word.englishMeaning}</span>
-            </div>
+            <span className="wordDetails">{this.word.englishMeaning}</span>
         );
     }
-
-    renderRussianMeaning() {
-        return(
-            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <span>{this.word.russianMeaning}</span>
-            </div>
-        );
-    }
-
-    renderExamples() {
-        let examples = this.word.examples;
-        if(examples.length > 0) {
-            return(
-                <div className="row">
-                    <div className="col-10">
-                        <span style={{marginLeft: "0px", paddingLeft: "10px"}}>Пример: {examples[0].example}</span>
-                    </div>
-                </div>
-            );
-        }
-    }
+   
 
     renderControlButtons() {
         return(
-            <>
+            <div className="container-fluid">
                 <div className="row justify-content-center" onClick={() => this.handleDelete()}>
                      <i className="fa fa-trash-o fa-2x" aria-hidden="true"/>
                 </div>
                 <div className="row justify-content-center" onClick={() => this.editToggle()}>
                      <i className="fa fa-edit fa-2x" aria-hidden="true"/>
                 </div>
-            </>
+            </div>
         );
     }
 
     renderProgress() {
-        if(this.props.userStore.currentUser.role != UserRole.Admin) {
+        if(!isThatUserRole(this.props.userStore, UserRole.Admin)) {
             return(
                 <Progress
-                    style={{width: "100%"}}
+                    className="userProgress"
                     color="success" value={this.props.userWord.rightAnswers / 0.05}>
                     выучено на {this.computeProgress()} %
                 </Progress>
@@ -108,34 +86,33 @@ class Word extends Component<IWordProps> {
         }
     }
 
-    renderWordCard() {
+    renderWordCard(userStore: UserStore) {
         return(
-            <Card className="cardWord">
-                <div className="row">
-                    <div className="col-10">
-                        <div className="row justify-content-center">
-                            {this.renderWord()}
-                            {this.renderPartOfSpeech()}
-                            {this.renderEnglishMeaning()}
-                            {this.renderRussianMeaning()}
-                        </div>
-                        {this.renderExamples()}
-                    </div>
-                    <div className="col-2">
-                        {this.renderControlButtons()}
-                    </div>
-                </div>
-                <CardText style={{marginTop: '5px', width: "100%"}}>
-                    {this.renderProgress()}
-                </CardText>
-            </Card>
+            <>
+                <tr onDoubleClick={() => this.wordDetailsToggle()} className="wordRow">
+                    <td className={isThatUserRole(userStore, UserRole.User) ? "wordCell": ""}>{this.renderWord()}</td>
+                    <td className={isThatUserRole(userStore, UserRole.User) ? "wordCell": ""}>{this.renderPartOfSpeech()}</td>
+                    <td className={isThatUserRole(userStore, UserRole.User) ? "wordCell": ""}>{this.renderEnglishMeaning()}</td>
+                    {isThatUserRole(this.props.userStore, UserRole.Admin) && <td>{this.renderControlButtons()}</td>}
+                </tr>
+                <tr className="userProgressRow">
+                    <td className="userProgressCell" colSpan={3}>{this.renderProgress()}</td>
+                </tr>
+            </>
         );
     }
-
+    
+    renderWordDetailsWindow() {
+        return (
+            <WordDetailsWindow word={this.word} toggle={this.wordDetailsToggle}/>
+        );
+    }
+    
     render() {
         return(
             <>
-                {this.renderWordCard()}
+                {this.renderWordCard(this.props.userStore)}
+                {this.wordDetailsOpen && this.renderWordDetailsWindow()}
                 {this.edit && <AddOrUpdateWord word={this.word} cancelEdit={this.editToggle} courseId={undefined} currentUser={this.props.userStore.currentUser} date={undefined} isWordOfADay={false} wordStore={this.props.wordStore} />}
             </>
         );
@@ -172,7 +149,12 @@ class Word extends Component<IWordProps> {
         if(progress > 100) {
             progress = 100;
         }
+        
         return progress;
+    }
+
+    wordDetailsToggle = () => {
+        this.wordDetailsOpen = !this.wordDetailsOpen;
     }
 }
 

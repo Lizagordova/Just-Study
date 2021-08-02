@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperSoft.Domain.Models;
 using SuperSoft.Domain.Repositories;
-using SuperSoft.Domain.Services;
 using SuperSoft.Domain.Services.Authorization;
 using SuperSoft.Domain.Services.Comments;
 using SuperSoft.Domain.Services.Courses;

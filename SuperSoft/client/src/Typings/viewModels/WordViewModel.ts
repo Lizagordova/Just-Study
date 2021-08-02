@@ -3,6 +3,7 @@
 //     the code is regenerated.
 
 import { PartOfSpeech } from '../enums/PartOfSpeech';
+import { ExampleViewModel } from './ExampleViewModel';
 
 export class WordViewModel
 {
@@ -11,5 +12,5 @@ export class WordViewModel
 	public englishMeaning: string;
 	public russianMeaning: string;
 	public partOfSpeech: PartOfSpeech;
-	public examples: any[] = [];
+	public examples: ExampleViewModel[] = [];
 }
