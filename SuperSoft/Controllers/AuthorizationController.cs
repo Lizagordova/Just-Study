@@ -70,8 +70,10 @@ namespace SuperSoft.Controllers
 			{
 				var user = _userReader.GetUserInfo(new UserInfoQuery { Token = token });
 				_logService.AddTrackLog(HttpContext);
-
-				return new JsonResult(user);
+				if (user != null)
+				{
+					return new JsonResult(user);
+				}
 			}
 
 			return new StatusCodeResult(401);

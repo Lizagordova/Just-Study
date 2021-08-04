@@ -11,9 +11,9 @@ class ICompletedHomeworkProps {
 }
 
 @observer
-class CompletedHomework  extends Component<ICompletedHomeworkProps> {
-    renderTasks(tasks: TaskViewModel[]) {
-        if(tasks.length === 0) {
+class CompletedHomework extends Component<ICompletedHomeworkProps> {
+    renderTasks(tasks: TaskViewModel[] | undefined) {
+        if(tasks === undefined || tasks.length === 0) {
             return (
                 <Alert color="secondary">Пока нет заданий в этом разделе</Alert>
             );

@@ -51,9 +51,9 @@ export class DetailedAnswerSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(isThatUserRole(this.props.store.userStore, UserRole.Admin) && !this.props.reviewMode) {
             return(
-                <i style={{marginLeft: '94%', width: '2%'}}
+                <i 
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true" />
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true" />
             );
         }
     }

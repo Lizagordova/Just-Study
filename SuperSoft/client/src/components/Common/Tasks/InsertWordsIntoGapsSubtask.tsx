@@ -65,7 +65,6 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
            part.name = textPart.replace("*", "");
            part.isGap = textPart.includes("*");
            if(textPart.includes("*")) {
-               console.log("textPart", textPart, "countWords", this.countWords);
                this.countWords++;
            }
            if(userCompleted) {
@@ -105,9 +104,9 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
-                <i style={{marginLeft: '96%', width: '2%'}}
+                <i
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }
@@ -251,8 +250,6 @@ export class InsertWordsIntoGapsSubtask extends Component<ISubtaskProps> {
     }
     
     checkCompletion() {
-        console.log("this.shuffledParts.length", this.shuffledParts.length, this.shuffledParts);
-        console.log("countWords", this.countWords);
         if(this.countWords === 0) {
             this.userSubtask.status = CompletingStatus.Completed;
             this.saveResult();

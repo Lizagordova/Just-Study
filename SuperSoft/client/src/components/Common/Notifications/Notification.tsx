@@ -4,7 +4,7 @@ import NotificationStore from "../../../stores/NotificationStore";
 import UserStore from "../../../stores/UserStore";
 import { Input } from "reactstrap";
 import { UserNotificationReadModel } from "../../../Typings/readModels/UserNotificationReadModel";
-import { makeObservable, observable } from "mobx";
+import {makeObservable, observable, toJS} from "mobx";
 import { observer } from "mobx-react";
 
 class INotificationProps {
@@ -31,7 +31,6 @@ class Notification extends Component<INotificationProps> {
     }
 
     renderNotification(notification: NotificationViewModel) {
-        let message = this.generateMessage(notification.createdBy, notification.message);//todo: пока упраздним
         return(
             <div className="row justify-content-center" style={{marginTop:'2px'}}>
                 <div className="col-11">
@@ -54,12 +53,6 @@ class Notification extends Component<INotificationProps> {
 
     updateUserNotification() {
         this.props.notificationStore.addOrUpdateUserNotification(this.userNotification);
-    }
-
-    generateMessage(createdBy: number, message: string): string {
-        let user = this.props.userStore.users.filter(u => u.id === createdBy)[0];
-
-        return user.firstName + ' ' + user.lastName + ' ' + message;
     }
 
     changeSeen(event: React.MouseEvent<HTMLInputElement, MouseEvent>) {

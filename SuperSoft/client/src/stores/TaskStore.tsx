@@ -12,7 +12,7 @@ import {getToken} from "../functions/getToken";
 
 class TaskStore {
     @observable
-    tasksByChoosenLesson: TaskViewModel[] = new Array<TaskViewModel>();
+    tasksByChoosenLesson: TaskViewModel[] | undefined = new Array<TaskViewModel>();
     tasksByChoosenLessonChanged: boolean;
     tasksByQuery: TaskViewModel[] = new Array<TaskViewModel>();
 
@@ -25,7 +25,7 @@ class TaskStore {
     }
 
     async getTasksByLesson(lessonId: number): Promise<number> {
-        this.tasksByChoosenLesson = new Array<TaskViewModel>();
+        this.tasksByChoosenLesson = undefined;
         const response = await fetch("/gettasksbychoosenlesson", {
             method: "POST",
             headers: {
@@ -335,8 +335,10 @@ class TaskStore {
             })
         });
         if(response.status === 200) {
-            let taskIndex = this.tasksByChoosenLesson.findIndex(t => t.id === taskId);
-            this.tasksByChoosenLesson[taskIndex] =  await response.json();
+            if(this.tasksByChoosenLesson !== undefined) {
+                let taskIndex = this.tasksByChoosenLesson.findIndex(t => t.id === taskId);
+                this.tasksByChoosenLesson[taskIndex] =  await response.json();
+            }
         }
     }
 

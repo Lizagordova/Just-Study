@@ -57,7 +57,7 @@ namespace SuperSoft.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles="Admin")]
+		[Authorize(Roles="User,Admin")]
 		[Route("/getusers")]
 		public ActionResult GetUsers()
 		{

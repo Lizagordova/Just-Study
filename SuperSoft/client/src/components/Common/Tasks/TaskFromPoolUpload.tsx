@@ -38,7 +38,10 @@ class TaskFromPoolUpload extends Component<ITaskFromPoolUploadProps> {
     }
 
     setIgnoreIds() {
-        this.ignoreIds = this.props.store.taskStore.tasksByChoosenLesson.map(t => t.id);
+        let tasksByChoosenLesson =  this.props.store.taskStore.tasksByChoosenLesson;
+        if(tasksByChoosenLesson !== undefined) {
+            this.ignoreIds = tasksByChoosenLesson.map(t => t.id);
+        }
         this.updateTasksPool();
     }
 

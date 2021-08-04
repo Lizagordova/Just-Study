@@ -75,9 +75,9 @@ export class RightVerbFormSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
-                <i style={{marginLeft: '98%', width: '2%'}}
+                <i
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }

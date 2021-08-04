@@ -182,10 +182,52 @@
 
 .task {
     width: 100%;
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.8);
+    /*box-shadow: 0 1px 0 1px rgba(0,0,0,0.8);*/
     padding-top: 10px;
     padding-bottom: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-right: 10px !important;
+    margin-right: 1% !important;
+    margin-left: 1% !important;
+    border: 1px solid black;
+}
+
+.deleteButton {
+    margin-left: 83%;
+}
+
+@media(min-width: 376px) and (max-width: 500px) {
+    .deleteButton {
+        margin-left: 86%;
+    }
+}
+
+@media(min-width: 501px) and (max-width: 650px) {
+    .deleteButton {
+        margin-left: 88%;
+    }
+}
+
+@media(min-width: 651px) and (max-width: 800px) {
+    .deleteButton {
+        margin-left: 90%;
+    }
+}
+
+@media(min-width: 801px) and (max-width: 900px) {
+    .deleteButton {
+        margin-left: 92%;
+    }
+}
+
+@media(min-width: 901px) and (max-width: 1100px) {
+    .deleteButton {
+        margin-left: 93%;
+    }
+}
+
+@media(min-width: 1001px) {
+    .deleteButton {
+        margin-left: 94%;
+    }
 }

@@ -5,6 +5,7 @@ import NotificationStore from "../../../stores/NotificationStore";
 import UserStore from "../../../stores/UserStore";
 import { observer } from "mobx-react";
 import Notification from "./Notification"
+import { toJS } from "mobx";
 
 class INotificationsProps {
     toggle: any;
@@ -15,6 +16,7 @@ class INotificationsProps {
 @observer
 class Notifications extends Component<INotificationsProps> {
     renderBody(notifications: NotificationViewModel[]) {
+        console.log("notifications", toJS(notifications));
         return (
             <ModalBody>
                 {notifications.map((notification,i) => {

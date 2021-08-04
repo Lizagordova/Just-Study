@@ -184,7 +184,6 @@ export class Task extends Component<ITaskProps> {
         let userId = this.props.userId;
         let userSubtask = this.userTask.userSubtasks.find(u => u.subtaskId === subtask.id);
         let taskId = this.props.task.id;
-        console.log("userSubtask", toJS(userSubtask));
         if(userSubtask === undefined) {
             userSubtask = new UserSubtaskViewModel();
             userSubtask.subtaskId = subtask.id;

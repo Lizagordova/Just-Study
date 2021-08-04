@@ -53,9 +53,9 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
                 <div className="row justify-content-center">
-                    <i style={{marginLeft: '94%', width: '2%'}}
+                    <i 
                        onClick={() => this.deleteSubtask()}
-                       className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                       className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
                 </div>
             );
         }
@@ -96,9 +96,9 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
     renderDeleteButton() {
         if(this.props.userId === this.props.store.userStore.currentUser.id) {
             return(
-                <i style={{marginLeft: '96%', width: '2%'}}
+                <i 
                    onClick={() => this.deleteAnswer()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }

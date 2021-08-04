@@ -80,9 +80,9 @@ export class FillGapsSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(isThatUserRole(this.props.store.userStore, UserRole.Admin)) {
             return(
-                <i style={{marginLeft: '98%', width: '2%'}}
+                <i
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }
@@ -211,8 +211,8 @@ class Gap extends Component<IGapProps> {
         let lastAnswer = this.userAnswerGroup.lastAnswer.toLowerCase().trim();
         let rightAnswers = this.answerGroup.answers
             .filter(ans => ans.isRight)
-            .filter(ans => ans.answer.toLowerCase());
-       let userRightAnswer = rightAnswers.filter(ans => ans.answer === lastAnswer);
+            .filter(ans => ans.answer.toLowerCase())
+        let userRightAnswer = rightAnswers.filter(ans => ans.answer.toLowerCase() === lastAnswer);
         if(userRightAnswer === null || userRightAnswer.length === 0) {//todo: возможно здесь undefined или length = 0
             this.userAnswerGroup.status = this.userAnswerGroup.status === 0 ? 1 : 2;
         } else {

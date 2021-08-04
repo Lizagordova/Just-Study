@@ -13,7 +13,6 @@ class FeedbackStore {
     }
 
     async getFeedbacks(old: boolean): Promise<number> {
-        console.log("old", old);
         const response = await fetch("/getfeedbacks", {
             method: "POST",
             headers: {

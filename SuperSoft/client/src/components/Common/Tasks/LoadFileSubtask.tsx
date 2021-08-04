@@ -51,9 +51,9 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
     renderControlButton() {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
-                <i style={{marginLeft: '94%', width: '2%'}}
+                <i
                    onClick={() => this.deleteSubtask()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }

@@ -63,6 +63,9 @@ class Homework extends Component<IHomeworkProps> {
     
     render() {
         let tasks = this.props.store.taskStore.tasksByChoosenLesson;
+        if(tasks === undefined) {
+            return;
+        }
         let tasksByChoosenLessonChanged = this.props.store.taskStore.tasksByChoosenLessonChanged;
         if(tasksByChoosenLessonChanged) {
             this.setTaskToRender();
@@ -79,6 +82,9 @@ class Homework extends Component<IHomeworkProps> {
 
     taskToggler = (navigation: NavigationType) => {
         let tasks = this.props.store.taskStore.tasksByChoosenLesson;
+        if(tasks === undefined) {
+            return;
+        }
         let index = tasks.indexOf(this.taskToRender);
         if(navigation === NavigationType.Forward) {
             if(index + 1 < tasks.length) {
