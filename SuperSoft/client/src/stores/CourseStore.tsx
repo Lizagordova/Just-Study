@@ -4,7 +4,7 @@ import { UserCourseViewModel } from "../Typings/viewModels/UserCourseViewModel";
 import {getToken} from "../functions/getToken";
 
 class CourseStore {
-    coursesForTeacher: CourseViewModel[] = new Array<CourseViewModel>();
+    coursesForTeacher: CourseViewModel[] | undefined = new Array<CourseViewModel>();
     userCourses: UserCourseViewModel[] = new Array<UserCourseViewModel>();
     choosenCourse: CourseViewModel = new CourseViewModel();
     usersByCourse: UserCourseViewModel[] = new Array<UserCourseViewModel>();
@@ -20,6 +20,7 @@ class CourseStore {
     }
 
     async getCoursesForTeacher() {
+        this.coursesForTeacher = undefined;
         const response = await fetch("/getcoursesforteacher", {
             method: "GET",
             headers: {

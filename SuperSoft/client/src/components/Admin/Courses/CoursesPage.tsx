@@ -46,7 +46,8 @@ class CoursesPage extends Component<ICoursesPageProps> {
     }
 
     renderCourse() {
-        let coursesExists = this.props.store.courseStore.coursesForTeacher.length !== 0;
+        let coursesExists = this.props.store.courseStore.coursesForTeacher !== undefined
+            && this.props.store.courseStore.coursesForTeacher.length !== 0;
         if(!coursesExists) {
             return(
                 <Alert>Добавьте курсы. Пока нет ни одного курса.</Alert>
