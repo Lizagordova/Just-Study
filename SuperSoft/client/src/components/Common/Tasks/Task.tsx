@@ -75,17 +75,21 @@ export class Task extends Component<ITaskProps> {
     renderEditButton() {
         if(this.props.task.taskType !== TaskType.RightVerbForm && this.props.task.taskType !== TaskType.FillGaps) {
             return (
-                <i style={{marginRight: "2px"}}
-                   onClick={() => this.editTaskToggle()}
-                   className="fa fa-edit fa-2x deleteButton" aria-hidden="true"/>
+                <div className="row justify-content-center">
+                    <i style={{marginRight: "2px"}}
+                       onClick={() => this.editTaskToggle()}
+                       className="fa fa-edit fa-2x" aria-hidden="true"/>
+                </div>
             );
         }
     }
     
     renderDeleteButton() {
         return (
-            <i onClick={() => this.deleteTask()}
-               className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
+            <div className="row justify-content-center">
+                <i onClick={() => this.deleteTask()}
+                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+            </div>
         );
     }
 
@@ -136,10 +140,10 @@ export class Task extends Component<ITaskProps> {
         return(
             <div className="row justify-content-center">
                 <div style={{fontSize: "1.3em"}}
-                     className="col-lg-11 col-md-10 col-sm-9 col-xs-8"
+                     className="col-lg-11 col-md-10 col-sm-9 col-10"
                      dangerouslySetInnerHTML={{__html: task.instruction}}>
                 </div>
-                <div className="col-lg-1 col-md-2 col-sm-3 col-xs-4">
+                <div className="col-lg-1 col-md-2 col-sm-3 col-2">
                     {this.renderControlButtons()}
                 </div>
             </div>

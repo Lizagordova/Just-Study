@@ -98,7 +98,7 @@ export class LoadFileSubtask extends Component<ISubtaskProps> {
             return(
                 <i style={{marginLeft: '94%', width: '2%'}}
                    onClick={() => this.deleteAnswer()}
-                   className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                   className="fa fa-trash-o fa-2x" aria-hidden="true"/>
             );
         }
     }
