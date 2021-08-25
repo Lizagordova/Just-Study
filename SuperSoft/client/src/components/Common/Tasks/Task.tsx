@@ -128,7 +128,7 @@ export class Task extends Component<ITaskProps> {
             let taskId = this.props.task.id;
             if(this.addSubtask) {
                 return(
-                    <div className="row justify-content-center" style={{border: "1px solid black"}}>
+                    <div className="row justify-content-center" style={{border: "1px solid black", margin: "1% 1% 1% 1%"}}>
                         {this.addSubtask && <AddSubtask order={order} taskId={taskId} taskStore={this.props.store.taskStore} toggle={this.addSubtaskToggle}/>}
                     </div>
                 );

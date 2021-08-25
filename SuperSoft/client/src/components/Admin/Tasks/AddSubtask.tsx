@@ -69,8 +69,8 @@ class AddSubtask extends Component<IAddSubtaskProps> {
 
     renderSelectSubtaskTypeButton() {
         return (
-            <>
-                <Input type="select" id="exampleSelect" onClick={(e) => this.handleSubtaskType(e)}>
+            <div className="row justify-content-start">
+                <Input type="select" id="exampleSelect" className="subtaskTypeInput" onClick={(e) => this.handleSubtaskType(e)}>
                     <option disabled value="InsertWordsIntoGaps">{translateSubtaskType(SubtaskType.InsertWordsIntoGaps)}</option>
                     <option value="RightVerbForm">{translateSubtaskType(SubtaskType.RightVerbForm)}</option>
                     <option value="LoadAudio">{translateSubtaskType(SubtaskType.LoadAudio)}</option>
@@ -78,18 +78,18 @@ class AddSubtask extends Component<IAddSubtaskProps> {
                     <option value="LoadFile">{translateSubtaskType(SubtaskType.LoadFile)}</option>
                     <option value="DetailedAnswer">{translateSubtaskType(SubtaskType.DetailedAnswer)}</option>
                 </Input>
-            </>
+            </div>
         );
     }
 
     render() {
         return(
-            <>
+            <div className="container-fluid">
                 {this.renderWarnings()}
                 {this.renderSelectSubtaskTypeButton()}
                 {this.renderSubtaskForm(this.update)}
                 {this.renderSaveButton()}
-            </>
+            </div>
         );
     }
 

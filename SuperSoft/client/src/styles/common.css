@@ -241,3 +241,9 @@ Table, td, tr, thead {
         margin-left: 92%;
     }
 }
+
+.subtaskTypeInput {
+    margin-top: 1vh;
+    margin-left: 1% !important;
+    margin-right: 1% !important;
+}
