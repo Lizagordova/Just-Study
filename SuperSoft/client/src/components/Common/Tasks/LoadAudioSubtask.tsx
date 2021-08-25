@@ -52,9 +52,8 @@ export class LoadAudioSubtask extends Component<ISubtaskProps> {
         if(this.props.store.userStore.currentUser.role === UserRole.Admin) {
             return(
                 <div className="row justify-content-center">
-                    <i style={{marginLeft: '94%', width: '2%'}}
-                       onClick={() => this.deleteSubtask()}
-                       className="fa fa-window-close fa-2x" aria-hidden="true"/>
+                    <i onClick={() => this.deleteSubtask()}
+                       className="fa fa-trash-o fa-2x deleteButton" aria-hidden="true"/>
                 </div>
             );
         }

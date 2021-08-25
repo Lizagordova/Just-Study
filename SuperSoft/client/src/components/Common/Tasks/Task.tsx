@@ -77,7 +77,7 @@ export class Task extends Component<ITaskProps> {
             return (
                 <i style={{marginRight: "2px"}}
                    onClick={() => this.editTaskToggle()}
-                   className="fa fa-edit fa-2x" aria-hidden="true"/>
+                   className="fa fa-edit fa-2x deleteButton" aria-hidden="true"/>
             );
         }
     }
@@ -85,7 +85,7 @@ export class Task extends Component<ITaskProps> {
     renderDeleteButton() {
         return (
             <i onClick={() => this.deleteTask()}
-               className="fa fa-window-close fa-2x" aria-hidden="true"/>
+               className="fa fa-window-close fa-2x deleteButton" aria-hidden="true"/>
         );
     }
 
@@ -136,10 +136,10 @@ export class Task extends Component<ITaskProps> {
         return(
             <div className="row justify-content-center">
                 <div style={{fontSize: "1.3em"}}
-                     className="col-11"
+                     className="col-lg-11 col-md-10 col-sm-9 col-xs-8"
                      dangerouslySetInnerHTML={{__html: task.instruction}}>
                 </div>
-                <div className="col-1s">
+                <div className="col-lg-1 col-md-2 col-sm-3 col-xs-4">
                     {this.renderControlButtons()}
                 </div>
             </div>
@@ -184,7 +184,6 @@ export class Task extends Component<ITaskProps> {
         let userId = this.props.userId;
         let userSubtask = this.userTask.userSubtasks.find(u => u.subtaskId === subtask.id);
         let taskId = this.props.task.id;
-        console.log("userSubtask", toJS(userSubtask));
         if(userSubtask === undefined) {
             userSubtask = new UserSubtaskViewModel();
             userSubtask.subtaskId = subtask.id;

@@ -206,3 +206,38 @@ Table, td, tr, thead {
 .menuNav {
     border-bottom-color: rgb(43, 69, 148) !important;
 }
+
+.deleteButton {
+    margin-left: 94%;
+    width: 4%;
+}
+
+@media (max-width: 400px) {
+    .deleteButton {
+        margin-left: 84%;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 450px) {
+    .deleteButton {
+        margin-left: 86%;
+    }
+}
+
+@media (min-width: 451px) and (max-width: 600px) {
+    .deleteButton {
+        margin-left: 88%;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 700px) {
+    .deleteButton {
+        margin-left: 90%;
+    }
+}
+
+@media (min-width: 700px) and (max-width: 900px) {
+    .deleteButton {
+        margin-left: 92%;
+    }
+}

@@ -13,8 +13,7 @@ export function renderContent(path: string) {
         return (
             <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
         );
-    } else if(path.includes("mp3")) {
-        let fileName = getFileName(path);
+    } else if(path.includes("mp3") || path.includes("ogg") || path.includes("m4a")) {
         return (
             <audio className="audio" controls>
                 <source src={path} type="audio/mpeg"/>

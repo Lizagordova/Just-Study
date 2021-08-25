@@ -17,7 +17,6 @@ import { AdminMain } from "./components/Admin/Main/AdminMain";
 import { UserMain } from "./components/User/Main/UserMain";
 import  "../src/styles/lesson.css";
 import AddFeedbackWindow from "./components/Common/Feedback/AddFeedbackWindow";
-import { Cookies } from "react-cookie";
 
 interface Props {
     store: RootStore;
