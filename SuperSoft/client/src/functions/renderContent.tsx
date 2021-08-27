@@ -13,10 +13,22 @@ export function renderContent(path: string) {
         return (
             <a href={path} type="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="_blank">{fileName}</a>
         );
-    } else if(path.includes("mp3") || path.includes("ogg") || path.includes("m4a")) {
+    } else if(path.includes("mp3")) {
         return (
             <audio className="audio" controls>
                 <source src={path} type="audio/mpeg"/>
+            </audio>
+        );
+    } else if(path.includes("ogg")) {
+        return (
+            <audio className="audio" controls>
+                <source src={path} type="audio/ogg" />
+            </audio>
+        );
+    } else if(path.includes("m4a")) {
+        return (
+            <audio className="audio" controls>
+                <source src={path} type="audio/mp4" />
             </audio>
         );
     } else if(path.includes("mp4")) {
