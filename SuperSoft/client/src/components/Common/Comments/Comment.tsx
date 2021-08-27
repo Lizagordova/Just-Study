@@ -5,6 +5,7 @@ import UserStore from "../../../stores/UserStore";
 import { Alert, Input, Button } from "reactstrap";
 import { observer } from "mobx-react";
 import {CommentReadModel} from "../../../Typings/readModels/CommentReadModel";
+import {getToken} from "../../../functions/getToken";
 
 class ICommentProps {
     comment: CommentViewModel;
@@ -137,9 +138,10 @@ class Comment extends Component<ICommentProps> {
         const response = await fetch(`/removecomment`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${getToken()}`
             },
-            body: JSON.stringify({id: this.comment.id})
+            body: JSON.stringify({ id: this.comment.id })
         });
         this.notDeleted = response.status !== 200;
 

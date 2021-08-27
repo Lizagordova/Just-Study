@@ -112,7 +112,6 @@ namespace SuperSoft.Controllers
 		{
 			HttpContext.Response.Cookies.Append("token", token);
 			HttpContext.Response.Cookies.Append("userId", userId.ToString());
-			HttpContext.Session.SetString("authorized", "true");
 		}
 	}
 }
