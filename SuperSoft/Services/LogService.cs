@@ -396,6 +396,11 @@ namespace SuperSoft.Services
 			AddLog(logger, e, customMessage);
 		}
 
+		public void AddTokenInfoLog(ILogger logger, string token, string message = null)
+		{
+			var customMessage = $"token={token}; message={message}";
+			AddLog(logger, new Exception(), customMessage);
+		}
 		private void AddLog(ILogger logger, Exception e, string customMessage)
 		{
 			logger.Log(LogLevel.Error, $"{customMessage}. Error: {e.Message}");

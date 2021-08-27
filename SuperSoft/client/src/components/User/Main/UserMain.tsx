@@ -65,6 +65,7 @@ export class UserMain extends React.Component<IUserMainProps> {
     }
 
     render() {
+        let notificationsLength = this.props.store.notificationStore.currentNotifications.length;
         return (
             <div>
                 <Navbar className="nav mainMenu" expand="lg">
@@ -92,14 +93,17 @@ export class UserMain extends React.Component<IUserMainProps> {
                             <NavItem>
                                 <NavLink to={"#"}
                                          exact
-                                         className="nav-link menuNavLink" style={{fontSize: "1.5em"}}
+                                         onClick={() => this.toggleNotifications()}
+                                         className={`nav-link menuNavLink ${notificationsLength > 0 ? "notificationsIcon" : ""}`} style={{fontSize: "1.5em"}}
                                          activeStyle={{
                                              color: '#ffffff',
                                              backgroundColor: 'rgb(43, 69, 148)',
                                              border: "0px",
                                              textDecoration: 'none'
                                          }}>
-                                    <i className="fa fa-bell" onClick={() => this.toggleNotifications()} />
+                                    <i className={`fa fa-bell `}>
+                                        {notificationsLength}
+                                    </i>
                                 </NavLink>
                             </NavItem>
                             <Button

@@ -247,3 +247,8 @@ Table, td, tr, thead {
     margin-left: 1% !important;
     margin-right: 1% !important;
 }
+
+.notificationsIcon {
+    background-color: white !important;
+    color: rgb(43, 69, 148) !important;
+}

@@ -69,9 +69,12 @@ namespace SuperSoft.Controllers
 		public ActionResult CheckToken()
 		{
 			var token = SessionHelper.GetToken(HttpContext);
+			_logService.AddTokenInfoLog(_logger, token);
 			if (token != null)
 			{
+				_logService.AddTokenInfoLog(_logger, token, "i am here");
 				var user = _userReader.GetUserInfo(new UserInfoQuery { Token = token });
+				_logService.AddTokenInfoLog(_logger, token, $"i am here1;Id={user.Id};Email={user.Email};FirstName={user.FirstName}");
 
 				return new JsonResult(user);
 			}
